@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}	
+{% block content %}
+	{% for paper in papers %}
+		<h2>{{paper.title}}</h2>
+		<p>{{paper.author}}, {{paper.year}}</p>
+	{% endfor %}
+{% endblock content %}
