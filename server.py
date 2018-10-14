@@ -1,12 +1,13 @@
+'''
+	server.py
+	authors: Justin Chen & Devin de Hueck
+	date: 10.14.2018
+'''
+
 import os
 from flask import Flask, render_template
 from urllib.request import urlopen
-from db.db import Database
-
-# url = 'http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=1'
-# data = urlopen(url).read()
-# print(data)
-
+import db
 
 app = Flask(__name__)
 
@@ -21,6 +22,21 @@ def home():
 	db = Database()
 	db.insert(data)
 	return render_template('index.html', papers=data, title='Favorite papers')
+
+
+@app.route('/search')
+def search():
+	pass
+
+
+@app.route('/article')
+def article():
+	pass
+
+
+@app.route('/profile')
+def profile():
+	pass
 
 if __name__ == '__main__':
 	app.run()
