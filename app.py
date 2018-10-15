@@ -11,14 +11,15 @@ from database import Database
 
 app = Flask(__name__)
 
+data = [
+		{'title': 'Neuroevolution of Augmenting Topologies', 'author': 'Kenneth Stanley', 'year': '2002'}, 
+		{'title': 'Large Scale Distribute Deep Networks', 'author': 'Jeff Dean', 'year': '2012'},
+		{'title': 'Deep Gradient Compression', 'author': 'Yujun Lin', 'year': '2018'}
+]
+
 @app.route('/')
 @app.route('/home')
 def home():
-	data = [
-				{'title': 'Neuroevolution of Augmenting Topologies', 'author': 'Kenneth Stanley', 'year': '2002'}, 
-				{'title': 'Large Scale Distribute Deep Networks', 'author': 'Jeff Dean', 'year': '2012'},
-				{'title': 'Deep Gradient Compression', 'author': 'Yujun Lin', 'year': '2018'}
-		   ]
 	db = Database()
 	db.insert(data)
 	return render_template('index.html', papers=data, title='Favorite papers')
@@ -29,9 +30,9 @@ def search():
 	pass
 
 
-@app.route('/article')
-def article():
-	pass
+@app.route('/article/<id>')
+def article(id):
+	return render_template('index.html', papers=data, title='id')
 
 
 @app.route('/profile')
