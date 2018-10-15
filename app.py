@@ -22,22 +22,22 @@ data = [
 def home():
 	db = Database()
 	db.insert(data)
-	return render_template('index.html', papers=data, title='Favorite papers')
+	return render_template('index.html', papers=data, title='MIC')
 
 
 @app.route('/search')
 def search():
-	pass
+	return render_template('search.html', papers=data, title='Search')
 
 
 @app.route('/article/<id>')
 def article(id):
-	return render_template('index.html', papers=data, title='id')
+	return render_template('article.html', papers=data, title='id')
 
 
 @app.route('/profile')
 def profile():
-	pass
+	return render_template('profile.html', papers=data, title='Profile')
 
 if __name__ == '__main__':
 	app.run()
