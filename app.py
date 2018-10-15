@@ -7,7 +7,7 @@
 import os
 from flask import Flask, render_template
 from urllib.request import urlopen
-from db import Database
+from database import Database
 
 app = Flask(__name__)
 
@@ -19,8 +19,8 @@ def home():
 				{'title': 'Large Scale Distribute Deep Networks', 'author': 'Jeff Dean', 'year': '2012'},
 				{'title': 'Deep Gradient Compression', 'author': 'Yujun Lin', 'year': '2018'}
 		   ]
-	database = Database()
-	database.insert(data)
+	db = Database()
+	db.insert(data)
 	return render_template('index.html', papers=data, title='Favorite papers')
 
 
