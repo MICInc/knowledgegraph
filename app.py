@@ -10,6 +10,9 @@ from forms import LoginForm, SignupForm, CreateArticleForm
 app = Flask(__name__)
 mongo = PyMongo
 
+'''
+Home page
+'''
 @app.route('/')
 @app.route('/home')
 def home():
@@ -37,6 +40,9 @@ def logout():
 	return 
 
 
+'''
+Search routes
+'''
 @app.route('/search')
 def search():
 	form = SearchForm()
@@ -45,10 +51,51 @@ def search():
 	return
 
 
-@app.route('/create')
+'''
+Article routes
+'''
+@app.route('/article/<id>')
+def get_article(id):
+	pass
+
+
+@app.route('/article/<id>/create')
 def create_article():
 	form = CreateArticleForm()
 	return
+
+
+@app.route('/article/<id>/edit')
+def edit_article():
+	form = EditArticleForm()
+	return
+
+
+@app.route('/article/<id>/save')
+def save_article():
+	return
+
+
+@app.route('/article/<id>/like')
+def like_article():
+	return
+
+'''
+Profile routes
+'''
+@app.route('/profile/<id>')
+def get_profile(id):
+	pass
+
+
+@app.route('/profile/<id>/settings')
+def get_profile_settings(id):
+	pass
+
+
+@app.route('/profile/<id>/subscribe')
+def subscribe(id):
+	pass
 
 
 if __name__ == '__main__':
