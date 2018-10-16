@@ -7,10 +7,3 @@ from pymongo import MongoClient
 class Database(object):
 	def __init__(self, host='localhost', port=27017):
 		self.client = MongoClient(host, port)
-		self.db = self.client.kgdb
-
-	'''
-	'''
-	def insert(self, data):
-		collection = self.db.papers
-		collection.insert(data)
