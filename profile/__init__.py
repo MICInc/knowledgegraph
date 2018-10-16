@@ -1,102 +1,66 @@
 '''
+	authors: Justin Chen & Devin de Hueck
+	date: 10.16.2018
 '''
 
-from database import ProfileDB
-
-class Profile(object):
-	def __init__(self, email, pw):
-		self.db = ProfileDB
-		self.email = email
-		self.pw = pw
-		self.gender = ''
-		self.dob = ''
-		self.ethnicity = ''
-		self.education = ''
-		self.sub_users = []
-		self.sub_topics = []
-		self.followers = []
-		self.friends = ''
-		self.bio = ''
-		self.history = {}
-		self.rank = -1
+from flask import request
+from flash_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField
+from wtforms.validators import InputRequired, Email, Length
+from database import Database
+db = Database()
 
 
-	'''
-	'''
-	def update_email(self, email):
-		self.email = email
-		self.db.insert
+class LoginForm(FlaskForm):
+	username = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+	password = PasswordField('password', validators=[InputRequired(), Length(min=10, max=80)])
+	remember = BooleanField('remember me')
 
 
-	'''
-	'''
-	def update_password(self, pw):
+class SignupForm(FlaskForm):
+	email 	 = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+	username = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+	password = PasswordField('password', validators=[InputRequired(), Length(min=10, max=80)])
+	gender = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+	dob = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+	ethnicity = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+	education = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+	bio = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+
+
+class SearchForm(FlaskForm):
+	terms = StringField('search', validators=[InputRequired()])
+
+
+	def filter(terms):
 		pass
 
 
-	'''
-	'''
-	def update_gender(self, gender):
-		pass
+	def search():
+		return db.search(filter(terms))
 
 
-	'''
-	'''
-	def update_dob(self, dob):
-		pass
+class UserProfile(object):
+	email = email
+	username = ''
+	pw = pw
+	gender = ''
+	dob = ''
+	education = ''
+	sub_users = []
+	sub_topics = []
+	followers = []
+	friends = ''
+	bio = ''
+	history = {}
+	rank = -1
 
 
-	'''
-	'''
-	def update_ethnicity(self, ethnicity):
-		pass
-
-
-	'''
-	'''
-	def update_education(self, education):
-		pass
-
-
-	'''
-	'''
-	def remove_follower(self, user):
-		pass
-
-
-	'''
-	'''
-	def subscribe_topic(self, user):
-		pass
-
-
-	'''
-	'''
-	def add_friend(self, user):
-		pass
-
-
-	'''
-	'''
-	def remove_friend(self, user):
-		pass
-
-
-	'''
-	'''
-	def update_bio(self, info):
-		pass
-
-
-	'''
-	'''
-	def update_search_history(self, history):
-		pass
-
-
-	'''
-	'''
-	def update_rank(self, rank):
-		pass
-
-
+class LabProfile(object):
+	name = ''
+	location = ''
+	publications = []
+	researchers = []
+	affiliations = []
+	founded = ''
+	interests = []

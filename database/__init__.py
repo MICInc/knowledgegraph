@@ -1,6 +1,11 @@
 '''
 	Instructions of installing MongoDB on OSX:
 	https://treehouse.github.io/installation-guides/mac/mongo-mac.html
+
+	Todo:
+	- Knowledge db
+	- User db
+	- Community news db
 '''
 from pymongo import MongoClient
 
