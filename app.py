@@ -5,10 +5,11 @@
 '''
 
 from flask import Flask, render_template, jsonify, session
-from forms import LoginForm, SignupForm, CreateArticleForm
+from profile import LoginForm, SignupForm
+from article import CreateArticleForm
+from search import SearchForm
 
 app = Flask(__name__)
-mongo = PyMongo
 
 '''
 Home page
@@ -19,7 +20,7 @@ def home():
 	return render_template('index.html')
 
 
-@app.route('signup')
+@app.route('/signup')
 def signup():
 	form = SignupForm()
 	return
