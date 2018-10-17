@@ -7,12 +7,12 @@
 	- User db
 	- Community news db
 '''
-from flask.ext.pymongo import PyMongo
+from pymongo import MongoClient
 
 
 class Database(object):
 	def __init__(self, app, host='localhost', port=27017):
-		self.mongo = PyMongo(app)
+		self.db = MongoClient(host, port)
 
 
 	def search(self, term):
@@ -30,8 +30,12 @@ class KnowledgeDB(Database):
 		self.collection = self.client.knowledge
 
 
+	def filter(self, data):
+		return data
+
+
 	def search(self, data):
-		self.search(term)
+		self.search(self.filter(term))
 
 
 	def remove(self, term):
@@ -44,8 +48,11 @@ class UserDB(Database):
 		self.collection = self.client.user
 
 
+	def filter(self, data):
+		return data
+
 	def search(self, term):
-		self.search(term)
+		self.search(self.filter(term))
 
 
 	def remove(self, term):
@@ -58,8 +65,12 @@ class CommunityDB(Database):
 		self.collection = self.client.community
 
 
+	def filter(self, data):
+		return data
+
+
 	def search(self, term):
-		self.search(term)
+		self.search(self.filter(term))
 
 
 	def remove(self, term):

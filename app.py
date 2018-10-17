@@ -8,8 +8,10 @@ from flask import Flask, render_template, jsonify, session
 from profile import LoginForm, SignupForm
 from article import CreateArticleForm
 from search import SearchForm
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
+login_manager = LoginManager()
 
 '''
 Home page
@@ -23,25 +25,41 @@ def home():
 	return render_template('index.html')
 
 
-@app.route('/signup')
-def signup():
-	form = SignupForm(app)
-	# return render_template('', form=form)
+@login_manager.user_loader
+def load_user(user_id):
+	return User.query.get(int(user_id))
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
 	form = LoginForm(app)
 	
 	if form.validate_on_submit():
-		pass
-	
-	# return render_template('', form=form)	
+		user = User.query.filter_by(username=form.username.data).first()
+		if user:
+			if check_password_hash(user.password, form.password.data):
+				login_user(user, remember=form.remember.data)
+				return redirect(url_for('dashboard'))
+
+		return 'invalid credentials'
+
+
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+	form = SignupForm(app)
+
+	if form.validate_on_submit():
+		hashed_password = generate_password_hash(form.password.data, method='sha256')
+		new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+		db.session.add(new_user)
+		db.session.commit()
 
 
 @app.route('/logout')
+@login_required
 def logout():
-	# return render_template('', form=form)
+	logout_user()
+	return redirect(url_for('index'))
 
 
 '''
@@ -52,54 +70,58 @@ def search():
 	form = SearchForm(app)
 	form.search(request.args.get('terms'))
 
-	# return render_template('', form=form)
-
 
 '''
 Article routes
 '''
 @app.route('/article/<id>')
 def get_article(id):
-	# return render_template('', form=form)
+	pass
 
 
 @app.route('/article/<id>/create')
+@login_required
 def create_article():
 	form = CreateArticleForm(app)
-	# return render_template('', form=form)
 
 
 @app.route('/article/<id>/edit')
+@login_required
 def edit_article():
 	form = EditArticleForm(app)
-	# return render_template('', form=form)
 
 
 @app.route('/article/<id>/save')
+@login_required
 def save_article():
-	# return render_template('', form=form)
+	pass
 
 
 @app.route('/article/<id>/like')
+@login_required
 def like_article():
-	# return render_template('', form=form)
+	pass
+
 
 '''
 Profile routes
 '''
 @app.route('/profile/<id>')
+@login_required
 def get_profile(id):
-	# return render_template('', form=form)
+	pass
 
 
 @app.route('/profile/<id>/settings')
+@login_required
 def get_profile_settings(id):
-	# return render_template('', form=form)
+	pass
 
 
 @app.route('/profile/<id>/subscribe')
+@login_required
 def subscribe(id):
-	# return render_template('', form=form)
+	pass
 
 
 if __name__ == '__main__':
