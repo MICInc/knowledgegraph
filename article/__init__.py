@@ -5,16 +5,25 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
+from database import Database
+
 
 
 class CreateArticleForm(FlaskForm):
-	date = ''
-	author = StringField('author', validators=[InputRequired(), Length(min=4)])
-	citations = StringField('citations', validators=[InputRequired()])
-	content = StringField('content', validators=[InputRequired()])
-	prereqs = StringField('prereqs', validators=[InputRequired()])
-	references = StringField('references', validators=[InputRequired()])
-	related = StringField('related', validators=[InputRequired()])
-	subseqs = StringField('subseqs', validators=[InputRequired()])
-	title = StringField('title', validators=[InputRequired()])
-	topic = StringField('topic', validators=[InputRequired()])
+	def __init__(self, app):
+		self.db = Database(app)
+		self.date = ''
+		self.author = StringField('author', validators=[InputRequired(), Length(min=4)])
+		self.citations = StringField('citations', validators=[InputRequired()])
+		self.content = StringField('content', validators=[InputRequired()])
+		self.prereqs = StringField('prereqs', validators=[InputRequired()])
+		self.references = StringField('references', validators=[InputRequired()])
+		self.related = StringField('related', validators=[InputRequired()])
+		self.subseqs = StringField('subseqs', validators=[InputRequired()])
+		self.title = StringField('title', validators=[InputRequired()])
+		self.topic = StringField('topic', validators=[InputRequired()])
+
+
+class EditArticleForm(FlaskForm):
+	def __init__(self, app):
+		self.db = Database(app)

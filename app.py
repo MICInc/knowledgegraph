@@ -17,28 +17,31 @@ Home page
 @app.route('/')
 @app.route('/home')
 def home():
+	if 'username' in session:
+		return 'You are logged in as {}'.format(session['username'])
+
 	return render_template('index.html')
 
 
 @app.route('/signup')
 def signup():
-	form = SignupForm()
-	return
+	form = SignupForm(app)
+	# return render_template('', form=form)
 
 
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login():
-	form = LoginForm()
+	form = LoginForm(app)
 	
 	if form.validate_on_submit():
 		pass
 	
-	return	
+	# return render_template('', form=form)	
 
 
 @app.route('/logout')
 def logout():
-	return 
+	# return render_template('', form=form)
 
 
 '''
@@ -46,10 +49,10 @@ Search routes
 '''
 @app.route('/search')
 def search():
-	form = SearchForm()
+	form = SearchForm(app)
 	form.search(request.args.get('terms'))
 
-	return
+	# return render_template('', form=form)
 
 
 '''
@@ -57,46 +60,46 @@ Article routes
 '''
 @app.route('/article/<id>')
 def get_article(id):
-	pass
+	# return render_template('', form=form)
 
 
 @app.route('/article/<id>/create')
 def create_article():
-	form = CreateArticleForm()
-	return
+	form = CreateArticleForm(app)
+	# return render_template('', form=form)
 
 
 @app.route('/article/<id>/edit')
 def edit_article():
-	form = EditArticleForm()
-	return
+	form = EditArticleForm(app)
+	# return render_template('', form=form)
 
 
 @app.route('/article/<id>/save')
 def save_article():
-	return
+	# return render_template('', form=form)
 
 
 @app.route('/article/<id>/like')
 def like_article():
-	return
+	# return render_template('', form=form)
 
 '''
 Profile routes
 '''
 @app.route('/profile/<id>')
 def get_profile(id):
-	pass
+	# return render_template('', form=form)
 
 
 @app.route('/profile/<id>/settings')
 def get_profile_settings(id):
-	pass
+	# return render_template('', form=form)
 
 
 @app.route('/profile/<id>/subscribe')
 def subscribe(id):
-	pass
+	# return render_template('', form=form)
 
 
 if __name__ == '__main__':

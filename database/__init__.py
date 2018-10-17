@@ -7,11 +7,12 @@
 	- User db
 	- Community news db
 '''
-from pymongo import MongoClient
+from flask.ext.pymongo import PyMongo
+
 
 class Database(object):
-	def __init__(self, host='localhost', port=27017):
-		self.client = MongoClient(host, port)
+	def __init__(self, app, host='localhost', port=27017):
+		self.mongo = PyMongo(app)
 
 
 	def search(self, term):
