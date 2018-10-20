@@ -8,11 +8,22 @@
 	- Community news db
 '''
 from pymongo import MongoClient
+import json
 
 
 class Database(object):
 	def __init__(self, app, host='localhost', port=27017):
 		self.db = MongoClient(host, port)
+
+
+	def insert_one(self, data):
+		self.db.collection.insert_one(json.dumps(data.__dict__))
+
+	'''
+	Input: data (list) List of objects
+	'''
+	def.insert_many(self, data):
+		self.db.collection.insert_many((json.dumps(data.__dict__)))
 
 
 	def search(self, term):

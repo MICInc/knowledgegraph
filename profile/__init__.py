@@ -18,48 +18,63 @@ class LoginForm(FlaskForm):
 	username = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
 
 
-class SignupForm(FlaskForm):
+class UserSignupForm(FlaskForm):
 	bio = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
-	dob = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
-	education = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+	dob = StringField('dob', validators=[InputRequired(), Length(min=4, max=30)])
+	education = StringField('education', validators=[InputRequired(), Length(min=4, max=30)])
 	email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
-	ethnicity = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
-	gender = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
+	ethnicity = StringField('ethnicity', validators=[InputRequired(), Length(min=4, max=30)])
+	gender = StringField('gender', validators=[InputRequired(), Length(min=4, max=30)])
 	password = PasswordField('password', validators=[InputRequired(), Length(min=10, max=80)])
 	username = StringField('username', validators=[InputRequired(), Length(min=4, max=30)])
 
 
-class Profile(object):
-	def __init__(self, app):
-		self.db = Database(app)
+class LabSignupForm(FlaskForm):
+	address = StringField('address', validators=[InputRequired(), Length(min=5)])
+	bio = StringField('username', validators=[InputRequired(), Length(min=4)])
+	email = StringField('email', validators=[InputRequired(), Email(message='Invalid email')])
+	founded = StringField('dob', validators=[InputRequired(), Length(min=6, max=6)])
+	password = PasswordField('password', validators=[InputRequired(), Length(min=10, max=80)])
+	location = StringField('location', validators=[InputRequired(), Length(min=3, max=100)])
+	name = StringField('name', validators=[InputRequired(), Length(min=3, max=100)])
+	research = StringField('research', validators=[InputRequired(), Length(min=3)])
+	researchers = StringField('researchers', validators=[InputRequired()])
+	website = StringField('website', validators=[InputRequired(), Length(min=3)])
 
 
-class User(Profile):
-	def __init__(self, app):
-		super(Profile, self).__init__(app)
-		self.bio = ''
-		self.dob = ''
-		self.education = ''
-		self.email = ''
+'''
+user_type: 0=site_admin, 1=site_moderator, 2=lab_admin, 3=lab_moderator, 4=general
+'''
+class User(object):
+	def __init__(self, form):
+		self.bio = form.bio.data
+		self.dob = form.dob.data
+		self.education = form.education.data
+		self.email = form.email.data
 		self.followers = []
-		self.friends = ''
-		self.gender = ''
+		self.friends = []
+		self.gender = form.gender.data
 		self.history = {}
-		self.pw = ''
+		self.pw = generate_password_hash(form.password.data, method='sha256')
 		self.rank = -1
-		self.sub_topics = []
-		self.sub_users = []
-		self.username = ''
-		self.user_type = 'lab_admin'
+		self.subscribed_topics = []
+		self.subscribed_users = []
+		self.username = form.username.data
+		self.user_type = 4
 
 
-class Lab(Profile):
-	def __init__(self, app):
-		super(Profile, self).__init__(app)
+class Lab(object):
+	def __init__(self, form):
+		self.address = form.address.data
 		self.affiliations = []
-		self.founded = ''
-		self.interests = []
-		self.location = ''
-		self.name = ''
+		self.bio = form.bio.data
+		self.founded = form.founded.data
+		self.email = form.email.data
+		self.password = form.password.data
+		self.location = form.location.data
+		self.name = form.name.data
 		self.publications = []
-		self.researchers = []
+		self.rank = -1
+		self.research = form.research.data
+		self.researchers = form.researchers.data
+		self.website = form.website.data
