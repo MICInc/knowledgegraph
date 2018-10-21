@@ -5,11 +5,12 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
+from datetime import datetime as dt
 
 
 class CreateArticleForm(FlaskForm):
 	def __init__(self):
-		self.date = ''
+		self.date = dt.now().strftime("%Y-%m-%d %H:%M:%S")
 		self.author = StringField('author', validators=[InputRequired(), Length(min=4)])
 		self.citations = StringField('citations', validators=[InputRequired()])
 		self.content = StringField('content', validators=[InputRequired()])
