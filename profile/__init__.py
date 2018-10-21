@@ -91,7 +91,14 @@ class User(UserMixin):
 
 		for k, v in properties.items():
 			if hasattr(self, k):
+				if v.__module__ == 'wtforms.fields.core':
+					v = v.data
 				setattr(self, k, v)
+
+
+class UserSession(User):
+	def __init__(self):
+		pass
 
 
 class Lab(object):
