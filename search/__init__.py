@@ -6,12 +6,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
-from database import Database
 
 
 class SearchForm(FlaskForm):
-	def __init__(self, app):
-		self.db = Database(app)
+	def __init__(self):
 		self.terms = StringField('search', validators=[InputRequired()])
 
 

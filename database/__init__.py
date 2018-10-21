@@ -1,88 +1,30 @@
 '''
 	Instructions of installing MongoDB on OSX:
 	https://treehouse.github.io/installation-guides/mac/mongo-mac.html
-
-	Todo:
-	- Knowledge db
-	- User db
-	- Community news db
 '''
 from pymongo import MongoClient
 import json
 
-
 class Database(object):
-	def __init__(self, app, host='localhost', port=27017):
-		self.db = MongoClient(host, port)
+	def __init__(self):
+		pass
 
 
-	def insert_one(self, data):
-		self.db.collection.insert_one(json.dumps(data.__dict__))
-
-	'''
-	Input: data (list) List of objects
-	'''
-	def.insert_many(self, data):
-		self.db.collection.insert_many((json.dumps(data.__dict__)))
-
-
-	def search(self, term):
-		self.collection.find(term)
-
-
-	def remove(self, term):
-		doc = self.search(term)
-		self.collection.delete_one(doc)
-
-
-class KnowledgeDB(Database):
+class UserDB(object):
 	def __init__(self, host='localhost', port=27017):
-		Database.__init__(self)
-		self.collection = self.client.knowledge
+		self.collection = MongoClient(host, port).user
 
 
-	def filter(self, data):
-		return data
+	def insert(self, data):
+		self.collection.insert_one(json.dumps(data.__dict__))
 
 
-	def search(self, data):
-		self.search(self.filter(term))
+	def find(self, query):
+		results = self.collection.find(query)
+		print(results)
 
 
-	def remove(self, term):
-		self.remove(term)
-
-
-class UserDB(Database):
-	def __init__(self, host='localhost', port=27017):
-		Database.__init__(self)
-		self.collection = self.client.user
-
-
-	def filter(self, data):
-		return data
-
-	def search(self, term):
-		self.search(self.filter(term))
-
-
-	def remove(self, term):
-		self.remove(term)
-
-
-class CommunityDB(Database):
-	def __init__(self, host='localhost', port=27017):
-		Database.__init__(self)
-		self.collection = self.client.community
-
-
-	def filter(self, data):
-		return data
-
-
-	def search(self, term):
-		self.search(self.filter(term))
-
-
-	def remove(self, term):
-		self.remove(term)
+	def remove(self, data):
+		doc = self.find(data)
+		print(doc)
+		print(self.collection.delete_one(doc))

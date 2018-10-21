@@ -5,13 +5,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
-from database import Database
-
 
 
 class CreateArticleForm(FlaskForm):
-	def __init__(self, app):
-		self.db = Database(app)
+	def __init__(self):
 		self.date = ''
 		self.author = StringField('author', validators=[InputRequired(), Length(min=4)])
 		self.citations = StringField('citations', validators=[InputRequired()])
@@ -22,8 +19,3 @@ class CreateArticleForm(FlaskForm):
 		self.subseqs = StringField('subseqs', validators=[InputRequired()])
 		self.title = StringField('title', validators=[InputRequired()])
 		self.topic = StringField('topic', validators=[InputRequired()])
-
-
-class EditArticleForm(FlaskForm):
-	def __init__(self, app):
-		self.db = Database(app)
