@@ -20,10 +20,12 @@ class Account(UserMixin):
 		self.id = -1
 		self.user_type = -1
 		self.email = ''
+		self.email_viewable = True
 		self.username = ''
 		self.name = ''
 		self.pw = ''
 		self.dob = ''
+		self.bio = ''
 		self.location = ''
 		self.content = []
 		self.friends = []
@@ -67,6 +69,81 @@ class Account(UserMixin):
 				setattr(self, k, v)
 
 
+	'''
+	Update account description
+
+	Input: description (str) Account description
+	'''
+	def set_bio(self, description):
+		self.bio = description
+
+
+	'''
+	Get account followers
+
+	Output: followers (list) List of account followers
+	'''
+	def get_followers(self):
+		return self.followers
+
+
+	'''
+	Callable API for submitting a follow request
+
+	Input: follower (dict) Dictionary representing an account
+	'''
+	def req_follower(self, follower):
+		follower.approved = False
+		self.followers.append(follower)
+
+
+	'''
+	Return account's subscriptions
+	TODO:
+	Make subscriptions viewable or hidden
+	'''
+	def get_subscriptions(self):
+		return self.subscriptions
+
+
+	'''
+	Return account's original content
+
+	TODO:
+	Make content viewable or hidden
+	'''
+	def get_content(self):
+		return self.content
+
+
+	'''
+	Return account's contributions
+
+	TODO:
+	Allow contributions to be anonymous
+	'''
+	def get_contributions(self):
+		return self.contributions
+
+
+	'''
+	Hide account's email
+
+	Input:  hide  (bool) Flag indicating email visibility preference
+	'''
+	def hide_email(self, hide):
+		self.email_viewable = hide
+
+
+	'''
+	Update account email
+
+	Input: email (str) New email address
+	'''
+	def update_email(self, email):
+		self.email = email
+
+
 class User(Account):
 	def __init__(self):
 		super().__init__(self)
@@ -80,3 +157,4 @@ class User(Account):
 class Lab(Account):
 	def __init__(self):
 		super().__init__(self)
+
