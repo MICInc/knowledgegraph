@@ -1,3 +1,7 @@
+'''
+	authors: Devin de Hueck, Justin Chen
+'''
+
 from flask import Flask, render_template, jsonify, session
 from profile import LoginForm, UserSignupForm, LabSignupForm
 from article import CreateArticleForm
