@@ -29,6 +29,7 @@ class Account(UserMixin):
 		self.location = ''
 		self.content = []
 		self.friends = []
+		self.friend_reqs = []
 		self.followers = []
 		self.affiliations = []
 		self.subscription = []
@@ -76,6 +77,33 @@ class Account(UserMixin):
 	'''
 	def set_bio(self, description):
 		self.bio = description
+
+
+	'''
+	Update date of birth
+
+	Input: dob (str) Date formatted as %Y-%m-%d
+	'''
+	def set_dob(self, dob):
+		self.dob = dob
+
+
+	'''
+	Update friends list
+
+	Input: friend (Account) Friend to be added
+	'''
+	def set_friend(self, friend):
+		self.friends.append(friend)
+
+
+	'''
+	Send friend request to this account
+
+	Input: sender (Account) Account making request
+	'''
+	def send_friend_req(self, sender):
+		self.friend_reqs.append(sender)
 
 
 	'''
@@ -154,7 +182,44 @@ class User(Account):
 		self.occupation = ''
 
 
+	'''
+	Update education
+
+	Input: school (dict) Dictionary contain school information
+	'''
+	def set_education(self, school):
+		self.education = school
+
+
+	'''
+	Update user's gender
+
+	Input: gender (str) User's updated gender
+	'''
+	def set_gender(self, gender):
+		self.gender = gender
+
+
+	'''
+	Update user's ethnicity
+
+	Input: ethnicity (str) User's updated ethnicity
+	'''
+	def set_ethnicity(self, ethnicity):
+		self.ethnicity = ethnicity
+
+
+
 class Lab(Account):
 	def __init__(self):
 		super().__init__(self)
+
+
+	'''
+	Return lab affiliations
+
+	Output: affiliations (list)
+	'''
+	def get_affiliations(self):
+		return self.affiliations
 
