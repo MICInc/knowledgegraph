@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 '''
 	authors: Devin de Hueck, Justin Chen
 '''
