@@ -4,6 +4,7 @@
 	10.21.2018
 '''
 from flask_login import UserMixin
+from library import Library
 
 
 '''
@@ -36,6 +37,15 @@ class Account(UserMixin):
 		self.subscribers = []
 		self.website = ''
 		self.address = ''
+		self.profile_pic = ''
+		self.cover_photo = ''
+		self.bibtex = ''
+		self.social_accounts = []
+		self.companies = []
+		self.favorite_papers = []
+		self.research_interests = []
+		self.statuses = ''
+		self.library = Library(id)
 
 		# Metrics
 		self.articles_viewed = 0
@@ -170,6 +180,53 @@ class Account(UserMixin):
 	'''
 	def update_email(self, email):
 		self.email = email
+
+
+	'''
+	Profile statuses
+
+	TODO: Allow users to post dynamic content with images, audio, links, files, etc.
+
+	Input: status (str) user status
+	'''
+	def post_status(self, status):
+		self.statuses.append(status)
+
+
+	'''
+	Update user's favorite papers
+
+	TODO: Allow user to add more dynamic content.
+
+	Input: paper (Paper) Object representing a research paper or article
+	'''
+	def add_favorite_paper(self, paper):
+		self.favorite_papers.append(paper)
+
+
+	'''
+	Upload and replace user's bibtex
+
+	TODO: Logic for sorting different types of publications
+
+	Input: bibtex (dict) Dictionary containing user's work
+	'''
+	def upload_bibtex(self, bibtex):
+		self.bibtex = bibtex
+
+
+	'''
+	Upload account's profile picture
+	'''
+	def upload_profile_pic(self, pic):
+		pass
+
+
+	'''
+	Upload account's cover photo
+	'''
+	def upload_cover_photo(self, pic):
+		pass
 
 
 class User(Account):
