@@ -28,3 +28,8 @@ class UserDB(object):
 		doc = self.find(data)
 		print(doc)
 		print(self.collection.delete_one(doc))
+
+
+class Knowledgebase(object):
+	def __init__(self):
+		pass

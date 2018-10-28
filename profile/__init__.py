@@ -18,7 +18,7 @@ user_type:
 '''
 class Account(UserMixin):
 	def __init__(self):
-		self.id = -1
+		self.user_id = -1
 		self.user_type = -1
 		self.email = ''
 		self.email_viewable = True
@@ -45,7 +45,7 @@ class Account(UserMixin):
 		self.favorite_papers = []
 		self.research_interests = []
 		self.statuses = ''
-		self.library = Library(id)
+		self.library = Library(user_id)
 
 		# Metrics
 		self.articles_viewed = 0
