@@ -43,6 +43,19 @@ class Database(object):
 		self.collection = None
 
 
+	'''
+	Input: data (dict)
+	'''
+	def filter(self, data):
+		return all(k in data for k in self.attributes)
+
+	'''
+	Input: data (list)
+	'''
+	def filter_all(self, data):
+		return all([self.filter(d) for d in data])
+
+
 	def insert(self, data):
 		print(self.filter_all(data))
 		if isinstance(data, type(self)):
@@ -91,16 +104,5 @@ class EntityContent(Database):
 		self.collection = self.client.entities
 		self.attributes = entity.attributes
 
-	'''
-	Input: data (dict)
-	'''
-	def filter(self, data):
-		return all(k in data for k in self.attributes)
-
-	'''
-	Input: data (list)
-	'''
-	def filter_all(self, data):
-		return all([self.filter(d) for d in data])
 
 
