@@ -12,4 +12,5 @@ attributes = {
 	'saved_papers': [],
 	'search_history': [],
 	'following': [],
-	'rank': int}
+	'rank': int
+}

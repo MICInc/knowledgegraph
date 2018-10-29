@@ -12,4 +12,5 @@ attributes = {
 	'likes': list, 
 	'num_citations': int, 
 	'citations': list, 
-	'content_type': int}
+	'content_type': int
+}
