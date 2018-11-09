@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Parkour Theory</title>
+    <meta name="google-site-verification" content="mU8LqKAiPjCkO2_Y4JaOWF9oNJICLvE4cnsaPTWOMos" />
+    <meta name="description" content="A resource for disseminating, discovering, and referencing Parkour/Freerunning moves.">
+    <meta name="keywords" content="Parkour Theory Home Page">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/css/template.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+</head>
+<style>
+@media only screen and (min-width: 928px) {
+    body {
+        background-image: url("/img/bg.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 36%;
+        background-size: cover;
+    }
+}
+
+@media only screen and (max-width: 927px) {
+    body {
+        background-image: url("/img/bg.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 15%;
+        background-size: cover;
+    }
+    #move-bar {
+        margin-top: -2px;
+        display: inline-block;
+        width: 100%;
+        background-color: #fff;
+        border-top: 1px solid #3B3B3B;
+        border-bottom: 1px solid #3B3B3B;
+    }
+    #move-bar ul li {
+        display: inline-block;
+        list-style-type: none;
+        width: 14.28%;
+        margin: 0%;
+        padding: 0%;
+        float: left;
+    }
+    #move-bar-tab {
+        margin: 0px;
+        display: inline-block;
+        color: #000000;
+        padding: 8px 0px;
+        width: 100%;
+        font-size: 14px;
+        text-decoration: none;
+        text-align: center;
+    }
+    #move-bar-tab:hover {
+        color: #FFFFFF;
+        background-color: #383838;
+    }
+    #nav-search-bar {
+        width: 183px;
+    }
+}
+
+a {
+    text-decoration: none;
+}
+
+.view-container {
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.view-frame {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+#nav-logo {
+    padding: 0 3 0 0px;
+    display: inline;
+    float: left;
+}
+
+.home-container {
+    margin: auto;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.home-content-top {
+    margin: auto;
+    padding: 0px;
+    width: 100%;
+    height: 48%;
+}
+
+.home-content-bottom {
+    margin: 1% auto auto auto;
+    padding: 0px;
+    width: 100%;
+    height: 52%;
+    clear:both;
+}
+
+.home-content-main {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.home-center-container {
+    margin: auto;
+    padding: 0px;
+    height: 50%;
+    width: 50%;
+}
+
+.home-center-container button {
+    background: transparent;
+    border: none !important;
+    font-size: 0;
+}
+
+.home-vertical-center-container {
+    top: 70px;
+    margin-left: 5%;
+    margin-right: 30%;
+    padding: 0px;
+    height: 100%;
+}
+
+.home-vertical-right-side {
+    position: relative;
+    top: 12%;
+    padding: 0px;
+    height: 100%;
+    width: 30%;
+    float: right;
+}
+
+@media only screen and (min-width: 780px) {
+    .home-search-bar {
+        display: block;
+        height: 50%;
+        width: 70%;
+        font-size: 22px;
+        color: #555;
+        vertical-align: middle;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        padding: 15px 5%;
+        margin: 10 0 0 0px;
+        border-radius: 10px;
+    }
+}
+
+@media only screen and (max-width: 780px) {
+    .home-search-bar {
+        display: block;
+        height: 50%;
+        width: 225px;
+        font-size: 18px;
+        color: #555;
+        vertical-align: middle;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        padding: 15px 5%;
+        margin: 0px;
+        border-radius: 50px;
+    }
+}
+
+.home-search-bar:focus {
+    color: #000000;
+}
+
+.home-search-results {
+    position: relative;
+    top: 12%;
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    background-color: #ffffff;
+    padding: 15px 10px;
+    width: 50%;
+    margin-left: 7.35%;
+    margin-right: 20.59%;
+    height: auto;
+    border-left: 1px solid #DEDEDE
+}
+
+.home-search-results h1 {
+    font-size: 12px;
+    color: #B5B5B5;
+    font-weight: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px 0px 0px 0px;
+}
+
+.results {
+    font-size: 16px;
+    float: center;
+    list-style-type: none;
+    padding-bottom: 27px;
+}
+
+.results a:hover {
+    text-decoration: underline;
+}
+
+.result-preview-alias {
+    font-size: 12px;
+    color: #000000;
+    padding: 2px 0px 2px 0px;
+}
+
+.result-preview-desc {
+    font-size: 14px;
+    color: #4A4A4A;
+    padding: 2px 0px 2px 0px;
+}
+
+.result-name {
+    padding: 2px 0px 0px 0px;
+}
+
+.no-results {
+    font-size: 20px;
+}
+</style>
+
+<body>
+    <div id="nav-bar-container">
+        <div id="nav-logo">
+            <a href="/"><img src="/img/path-logo.png"></a>
+        </div>
+        <div id="move-bar">
+            <ul>
+                <li><a id="move-bar-tab" href="/category/allMoves">All</a></li>
+                <li><a id="move-bar-tab" href="/category/basicMoves">Basics</a></li>
+                <li><a id="move-bar-tab" href="/category/vaultMoves">Vaults</a></li>
+                <li><a id="move-bar-tab" href="/category/flipMoves">Flips</a></li>
+                <li><a id="move-bar-tab" href="/category/wallMoves">Wall</a></li>
+                <li><a id="move-bar-tab" href="/category/barMoves">Bar</a></li>
+                <li><a id="move-bar-tab" href="/move/random">Random</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="view-container">
+        <div class="view-frame">
+            <div class="home-container">
+                <div class="home-content-top">
+                </div>
+                <div class="home-content-bottom">
+                    <form action="/results">
+                        <div class="home-center-container">
+                            <input type="text" class="home-search-bar" data-provide="typeahead" autocomplete="off" placeholder="kong, gainer, wall flip" name="query">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

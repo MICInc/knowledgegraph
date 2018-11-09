@@ -1,0 +1,259 @@
+<header>
+    <title>Parkour Theory</title>
+    <meta name="google-site-verification" content="mU8LqKAiPjCkO2_Y4JaOWF9oNJICLvE4cnsaPTWOMos" />
+    <meta name="Description" content="Search results">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/css/template.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        background-size: 100% 100%;
+        background-attachment: fixed;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .home-container {
+        margin:auto;
+        padding:0px;
+        width:100%;
+        height:100%;
+    }
+
+    .home-content-bottom {
+        margin:auto;
+        padding:0px;
+        width:100%;
+        height:50%;
+        margin-bottom: 16%;
+    }
+
+    .home-vertical-center-container {
+        top: 60px;
+        margin-left: 7%;
+        margin-right: 7%;
+        padding: 0px;
+        height: 100%;
+    }
+
+    .home-vertical-right-side {
+        position:relative;
+        top:12%;
+        padding: 0px;
+        height: 100%;
+        width:30%;
+        float:right;
+        background-color: #000;
+    }
+
+    @media only screen and (min-width: 928px) {
+        .home-search-results {
+            position:relative;
+            top:10%;
+            font-family: Arial, Helvetica, sans-serif;
+            display:block;
+            background-color:#ffffff;
+            padding: 0px 10px;
+            width: 100%;
+            min-height: 85%;
+            border-left: 1px solid #DEDEDE;
+            margin-bottom: 40px;
+        }
+    }
+
+    @media only screen and (max-width: 927px) {
+        .home-search-results {
+            position:relative;
+            top:60px;
+            font-family: Arial, Helvetica, sans-serif;
+            display:block;
+            background-color:#ffffff;
+            padding: 0px 10px;
+            width: 100%;
+            min-height: 85%;
+            border-left: 1px solid #DEDEDE;
+            margin-bottom: 40px;
+        }
+
+        #move-bar {
+            margin-top: -2px;
+        }
+    }
+
+    .home-search-results h1 {
+        font-size: 12px;
+        color: #B5B5B5;
+        font-weight:normal;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 5px 0px 0px 0px;
+    }
+
+    #num-results {
+        padding: 0px;
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+
+    #result-msg {
+        color: #3B3B3B;
+        font-weight:normal;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    #results-list {
+        width: 100%;
+        min-height: 100%;
+    }
+
+    .results {
+        font-size: 16px;
+        float:center;
+        list-style-type: none;
+        padding-bottom: 27px;
+    }
+
+    .results a:hover {
+        text-decoration: underline;
+    }
+
+    .result-preview-alias {
+        font-size: 12px;
+        color:#000000;
+        padding: 2px 0px 2px 0px;
+    }
+
+    .result-preview-desc {
+        font-size: 14px;
+        color:#4A4A4A;
+        padding: 2px 0px 2px 0px;
+    }
+
+    .result-name { 
+        padding: 2px 0px 0px 0px;
+    }
+
+    .no-results {
+        font-size: 20px;
+    }
+
+    .fill {
+        bottom: 0px;
+        height: 10%;
+        width: 100%;
+    }
+
+    #footer-container {
+        width: 100%;
+        background-color: #fff;
+    }
+
+    </style>
+</header>
+
+<body>
+    <div id="nav-bar-container">
+        <div id="nav-logo">
+            <a href="/"><img src="/img/path-logo.png"></a>
+        </div>
+        <form id="nav-bar-search" action="/results">
+            <div id="nav-search-bar-container">
+                <input name="query" type="text" id="nav-search-bar" data-provide="typeahead" autocomplete="on" placeholder=" kong, gainer, wall flip">
+            </div>
+        </form>
+        <div id="move-bar">
+            <ul>
+                <li><a href="/category/allMoves">All</a></li>
+                <li><a href="/category/basicMoves">Basics</a></li>
+                <li><a href="/category/vaultMoves">Vaults</a></li>
+                <li><a href="/category/flipMoves">Flips</a></li>
+                <li><a href="/category/wallMoves">Wall</a></li>
+                <li><a href="/category/barMoves">Bar</a></li>
+                <li><a href="/move/random">Random</a></li>
+            </ul>
+        </div>
+    </div>
+    <div></br></br></div>
+        <div class="home-container">
+        <div class="home-vertical-center-container">
+            <div class="home-search-results">
+            	<h1 id="num-results">{{numResults}} results</h1>
+          		<h1 id="result-msg">{{resMessage}}</h1>
+			    <div id="results-list">
+			      <ul>
+			      	{{#each moves}}
+			        <li class="results">
+			          <a class="result-name" href="/move/{{ this.moveName }}">{{ this.moveName }}</a>
+			          <div class="result-preview-alias">{{ this.alias }}</div>
+			          <div class="result-preview-desc">{{ this.descript }}</div>
+			        </li>
+			        {{/each}}
+			      </ul>
+			    </div>
+            </div>
+            <div id="footer-container">
+                <div id="copyright-container">
+                    <span>© Parkour Theory 2016</span>
+                </div>
+                <div id="contact-container">
+                    <ul>
+                        <li class="contact-icon">
+                            <a href="https://www.facebook.com/parkourtheory" target="_blank">
+                                <img src="/img/fb-icon.png" onmouseover="this.src='/img/fb-icon-hover.png'" onmouseout="this.src='/img/fb-icon.png'">
+                            </a>
+                        </li>
+                        <li class="contact-icon">
+                            <a href="https://instagram.com/parkourtheory/" target="_blank">
+                                <img src="/img/insta-icon.png" onmouseover="this.src='/img/insta-icon-hover.png'" onmouseout="this.src='/img/insta-icon.png'">
+                            </a>
+                        </li>
+                        <li class="contact-icon">
+                            <a href="https://twitter.com/ParkourTheory" target="_blank">
+                                <img src="/img/twitter-icon.png" onmouseover="this.src='/img/twitter-icon-hover.png'" onmouseout="this.src='/img/twitter-icon.png'">
+                            </a>
+                        </li>
+                        <li class="contact-icon">
+                            <a href="https://plus.google.com/u/2/115248083411022704037/posts" target="_blank">
+                                <img src="/img/gplus-icon.png" onmouseover="this.src='/img/gplus-icon-hover.png'" onmouseout="this.src='/img/gplus-icon.png'">
+                            </a>
+                        </li>
+                        <li style="display: inline-block;">
+                            <a href="mailto:admin@parkourtheory.com">
+                                <img src="/img/mail-icon.png" onmouseover="this.src='/img/mail-icon-hover.png'" onmouseout="this.src='/img/mail-icon.png'">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="terms-container">
+                    <ul>
+                        <li class="footer-link">
+                            <a href="/path/terms">Terms</a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="/path/privacy">Privacy</a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="/path/help">Help</a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="/path/about">About</a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="/path/submit">New move</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<footer>
+</footer>

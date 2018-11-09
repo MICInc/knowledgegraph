@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+<title>Parkour Theory</title>
+<meta name="google-site-verification" content="mU8LqKAiPjCkO2_Y4JaOWF9oNJICLvE4cnsaPTWOMos" />
+<meta name="description" content="A resource for disseminating, discovering, and referencing Parkour/Freerunning moves.">
+<meta name="keywords" content="About">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="/css/template.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<style>
+@media only screen and (min-width: 927px) {
+    body {
+        background-image: url("/img/404-bg.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 36%;
+        background-size: cover;
+    }
+
+    #err-body-content {
+        height: 100%;
+        width: 245px;
+        margin-top: 150px;
+        margin-left: 40%;
+        padding: 0px;
+        color: #fff;
+        font-size: 5em;
+    }
+}
+
+@media only screen and (max-width: 927px) {
+    body {
+        background-image: url("/img/404-bg.jpg");
+        background-repeat: no-repeat;
+        background-position: 80% 36%;
+        background-size: cover;
+    }
+
+    #err-body-content {
+        height: 100%;
+        width: 245px;
+        margin-top: 150px;
+        margin-left: 20%;
+        padding: 0px;
+        color: #fff;
+        font-size: 5em;
+    }
+}
+
+@media only screen and (max-width: 927px) and (orientation: landscape) {
+    #err-body-content {
+        height: 100%;
+        width: 245px;
+        margin-top: 150px;
+        margin-left: 30%;
+        padding: 0px;
+        color: #fff;
+        font-size: 5em;
+    }
+}
+
+#about-body-container-bg {
+    color: #fff;
+}
+
+#err-body-container {
+    width: 100%;
+    padding: 0%;
+    margin: 0%;
+    top: 150px;
+}
+
+#err-body-content span {
+    width: 220px;
+}
+
+#err-body-content p {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 600;
+}
+</style>
+</head>
+
+<body ng-app="parkourtheory">
+    <div id="nav-bar-container">
+        <div id="nav-logo">
+            <a href="/"><img src="/img/path-logo.png"></a>
+        </div>
+        <form id="nav-bar-search" action="/results">
+            <div id="nav-search-bar-container">
+                <input name="query" type="text" id="nav-search-bar" data-provide="typeahead" autocomplete="on" placeholder=" kong, gainer, wall flip">
+            </div>
+        </form>
+        <div id="move-bar">
+            <ul>
+                <li><a href="/category/allMoves">All</a></li>
+                <li><a href="/category/basicMoves">Basics</a></li>
+                <li><a href="/category/vaultMoves">Vaults</a></li>
+                <li><a href="/category/flipMoves">Flips</a></li>
+                <li><a href="/category/wallMoves">Wall</a></li>
+                <li><a href="/category/barMoves">Bar</a></li>
+                <li><a href="/move/random">Random</a></li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        </br>
+        </br>
+    </div>
+    <div id="err-body-container">
+        <div id="err-body-content">
+            <span>404 :(</span>
+            <p>Sorry, this page is unavailable.</p>
+        </div>
+    </div>
+</body>
+
+</html>
