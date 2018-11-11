@@ -28,6 +28,7 @@ router.post('/register', function(req, res, next) {
 	var username = req.body.username;
 	var email = req.body.email;
 	var password = req.body.password;
+	console.log('registering')
 
 	if(!(username && email && password)) {
 		res.send({error: 'Please provide a username, email, and password'});
