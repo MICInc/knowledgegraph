@@ -19,7 +19,7 @@ module.exports = function(res, path, fileName)
 
   //console.log("path: "+path+fileName);
 
-  res.sendfile(fileName, options, function (err) 
+  res.sendFile(fileName, options, function (err) 
   {
     if (err) 
     {
