@@ -1,5 +1,6 @@
 module.exports = function(res, path, fileName)
 {
+  console.log(fileName)
   if(fileName === null)
   {
     fileName = '404.html';

@@ -9,7 +9,10 @@ var cluster       = require('cluster');
 var numCPUs       = require('os').cpus().length;
 var port          = process.env.PORT || 7000; //keep this or change as long as greater than 1024
 var sender        = require('./app/sender');
-var database      = require('./app/db/database')
+var database      = require('./app/db/database');
+var session       = require('express-session');
+var MongoStore    = require('connect-mongo')(session);
+
 
 // master process
 if(cluster.isMaster) 
@@ -43,6 +46,16 @@ if(cluster.isMaster)
 } 
 else 
 {
+  //use sessions for tracking logins
+  app.use(session({
+    secret: 'work hard',
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: database
+    })
+  }));
+
   var errors = require('./app/routes/errors');
   var index_route = require('./app/routes/index');
   var mic_route = require('./app/routes/mic')

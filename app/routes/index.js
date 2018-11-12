@@ -24,11 +24,12 @@ router.get('/robots.txt', function(req, res)
 });
 
 
-router.post('/register', function(req, res, next) {
+router.post('/signup', function(req, res, next) {
 	var username = req.body.username;
 	var email = req.body.email;
 	var password = req.body.password;
-	console.log('registering')
+
+	sender(res, '/vids', 'signup');
 
 	if(!(username && email && password)) {
 		res.send({error: 'Please provide a username, email, and password'});
@@ -52,16 +53,18 @@ router.post('/register', function(req, res, next) {
 	// });
 });
 
-router.get('/register', function(req, res, next) {
-	res.render('register', {
-				title: "Arxival - Register", 
-			});
+router.get('/signup', function(req, res, next) {
+	sender(res, '/forms', 'signup');
+	// res.render('signup', {
+	// 			title: "MIC - Sign up", 
+	// 		});
 });
 
 router.get('/login', function(req, res, next) {
-	res.render('login', {
-		title: "Arxival - Register", 
-	});
+	sender(res, '/forms', 'login.html');
+	// res.render('login', {
+	// 	title: "Arxival - Login", 
+	// });
 });
 
 router.post('/login', function(req, res, next) {
