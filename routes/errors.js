@@ -1,8 +1,5 @@
 /*
 	Error code handling
-
-	Todo:
-	http://jasonwatmore.com/post/2018/06/14/nodejs-mongodb-simple-api-for-authentication-registration-and-user-management
 */
 module.exports = function (err, req, res, next) 
 {
