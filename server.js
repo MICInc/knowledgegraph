@@ -8,8 +8,8 @@ var helmet        = require('helmet');
 var cluster       = require('cluster');
 var numCPUs       = require('os').cpus().length;
 var port          = process.env.PORT || 7000; //keep this or change as long as greater than 1024
-var sender        = require('./app/sender');
-var database      = require('./app/db/database');
+var sender        = require('./lib/sender');
+var database      = require('./db/database');
 var session       = require('express-session');
 var MongoStore    = require('connect-mongo')(session);
 
@@ -56,12 +56,12 @@ else
     })
   }));
 
-  var errors = require('./app/routes/errors');
-  var index_route = require('./app/routes/index');
-  var mic_route = require('./app/routes/mic')
-  var article_route = require('./app/routes/article');
-  var user_route = require('./app/routes/user');
-  var search_route = require('./app/routes/search')
+  var errors = require('./routes/errors');
+  var index_route = require('./routes/index');
+  var mic_route = require('./routes/mic')
+  var article_route = require('./routes/article');
+  var user_route = require('./routes/user');
+  var search_route = require('./routes/search')
 
   app.use(favicon(__dirname + '/public/img/favicon.ico'));
   app.use(express.static(path.join(__dirname, '/public')));

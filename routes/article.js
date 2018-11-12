@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 //filter apis
-var filter     = require('../filter');
-var sender     = require('../sender');
-var searchMove = require('../search');
+var filter     = require('../lib/filter');
+var sender     = require('../lib/sender');
+var searchMove = require('../lib/search');
 
 router.use(function(req, res, next) 
 {

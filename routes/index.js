@@ -1,7 +1,8 @@
 
 var express = require('express');
 var router = express.Router();
-var sender = require('../sender');
+var sender = require('../lib/sender');
+var UserAuth = require('../lib/user-auth.js');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -24,7 +25,7 @@ router.get('/robots.txt', function(req, res)
 });
 
 router.get('/signup', function(req, res, next) {
-	sender(res, '/forms', 'signup.html');
+	sender(res, '/../public/forms', 'signup.html');
 });
 
 router.post('/signup', function(req, res, next) {
@@ -59,7 +60,7 @@ router.post('/signup', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-	sender(res, '/forms', 'login.html');
+	sender(res, '/../public/forms', 'login.html');
 });
 
 router.post('/login', function(req, res, next) {
