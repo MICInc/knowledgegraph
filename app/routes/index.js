@@ -68,10 +68,17 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-	var usernameOrEmail = req.body.usernameOrEmail;
+	var email = req.body.email;
+	var username = req.body.username;
 	var password = req.body.password;
+	var passwordConf = req.body.passwordConf;
 
-	if(!(usernameOrEmail && password)) {
+	console.log(email);
+	console.log(username);
+	console.log(password);
+	console.log(passwordConf);
+
+	if(!(username && password)) {
 		res.send({error: 'Please provide a username/email and password'});
 	}
 
