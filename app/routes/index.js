@@ -23,16 +23,21 @@ router.get('/robots.txt', function(req, res)
   sender(res, '/path/', 'robots.txt');
 });
 
+router.get('/signup', function(req, res, next) {
+	sender(res, '/forms', 'signup.html');
+});
 
 router.post('/signup', function(req, res, next) {
-	var username = req.body.username;
+	var firstname = req.body.firstname;
+	var lastname = req.body.lastname;
 	var email = req.body.email;
 	var password = req.body.password;
+	var passwordConf = req.body.passwordConf;
+	var dob = req.body.dob;
+	var gender = req.body.gender;
 
-	sender(res, '/vids', 'signup');
-
-	if(!(username && email && password)) {
-		res.send({error: 'Please provide a username, email, and password'});
+	if(!(firstname && lastname && email && password)) {
+		res.send({error: 'Please provide your first name, last name, email, and password'});
 	}
 
 	// UserAuth.registerUser(username, email, password, function(err, user) {
@@ -53,30 +58,14 @@ router.post('/signup', function(req, res, next) {
 	// });
 });
 
-router.get('/signup', function(req, res, next) {
-	sender(res, '/forms', 'signup');
-	// res.render('signup', {
-	// 			title: "MIC - Sign up", 
-	// 		});
-});
-
 router.get('/login', function(req, res, next) {
 	sender(res, '/forms', 'login.html');
-	// res.render('login', {
-	// 	title: "Arxival - Login", 
-	// });
 });
 
 router.post('/login', function(req, res, next) {
 	var email = req.body.email;
 	var username = req.body.username;
 	var password = req.body.password;
-	var passwordConf = req.body.passwordConf;
-
-	console.log(email);
-	console.log(username);
-	console.log(password);
-	console.log(passwordConf);
 
 	if(!(username && password)) {
 		res.send({error: 'Please provide a username/email and password'});
