@@ -41,22 +41,25 @@ router.post('/signup', function(req, res, next) {
 		res.send({error: 'Please provide your first name, last name, email, and password'});
 	}
 
-	// UserAuth.registerUser(username, email, password, function(err, user) {
-	// 	if (!err) {
-	// 		// Set session info
-	// 		req.session.isAuthenticated = true;
-	// 		req.session.username = user.username;
+	UserAuth.registerUser(firstname, lastname, email, password, function(err, user) {
+		if (!err) {
+			// Set session info
+			req.session.isAuthenticated = true;
+			req.session.firstname = firstname;
+			req.session.lastname = lastname;
+			req.session.email = email;
 
-	// 		res.redirect('/user/feed');
-	// 	} else {
-	// 		res.render('register', {
-	// 			title: "Arxival - Register", 
-	// 			error: err,
-	// 			username: username,
-	// 			email: email
-	// 		});
-	// 	}
-	// });
+			res.redirect('/user/feed');
+		} else {
+			res.render('register', {
+				title: "Arxival - Register", 
+				error: err,
+				firstname: firstname,
+				lastname: lastname,
+				email: email
+			});
+		}
+	});
 });
 
 router.get('/login', function(req, res, next) {
@@ -65,24 +68,23 @@ router.get('/login', function(req, res, next) {
 
 router.post('/login', function(req, res, next) {
 	var email = req.body.email;
-	var username = req.body.username;
 	var password = req.body.password;
 
-	if(!(username && password)) {
-		res.send({error: 'Please provide a username/email and password'});
+	if(!(email && password)) {
+		res.send({error: 'Please provide a email and password'});
 	}
 
-	// UserAuth.loginUser(usernameOrEmail, password, function(err, user) {
-	// 	if (!err) {
-	// 		// Set session info
-	// 		req.session.isAuthenticated = true;
-	// 		req.session.username = user.username;
+	UserAuth.loginUser(email, password, function(err, user) {
+		if (!err) {
+			// Set session info
+			req.session.isAuthenticated = true;
+			req.session.email = user.email;
 
-	// 		res.redirect('/user/feed');
-	// 	} else {
-	// 		res.send(err);
-	// 	}
-	// });
+			res.redirect('/user/feed');
+		} else {
+			res.send(err);
+		}
+	});
 });
 
 module.exports = router;

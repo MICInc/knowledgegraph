@@ -46,15 +46,30 @@ if(cluster.isMaster)
 } 
 else 
 {
-  //use sessions for tracking logins
-  app.use(session({
-    secret: 'work hard',
-    resave: true,
-    saveUninitialized: false,
-    store: new MongoStore({
-      mongooseConnection: database
-    })
-  }));
+  // Session middleware
+  var sessionSecret = '53qS4aDGS5078hefFD7alI';
+
+  if (process.env.NODE_ENV == 'production') {
+    sessionSecret = process.env.SESSION_SECRET;
+  }
+  var sess = {
+    secret: sessionSecret,
+    cookie: {maxAge: 5184000},
+    resave: false,
+    saveUninitialized: true,
+  };
+
+  if (process.env.NODE_ENV === 'production') {
+    // TODO: Use secure cookies?
+    //app.set('trust proxy', 1); // trust first proxy
+    //sess.cookie.secure = true; // serve secure cookies
+  }
+
+  app.use(session(sess));
+
+  // view engine setup
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'pug');
 
   var errors = require('./routes/errors');
   var index_route = require('./routes/index');
