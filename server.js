@@ -76,7 +76,8 @@ else
   var mic_route = require('./routes/mic')
   var article_route = require('./routes/article');
   var user_route = require('./routes/user');
-  var search_route = require('./routes/search')
+  var search_route = require('./routes/search');
+  var profile_route = require('./routes/profile');
 
   app.use(favicon(__dirname + '/public/img/favicon.ico'));
   app.use(express.static(path.join(__dirname, '/public')));

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
 var config   = require('./config/db');
 
 var db_uri = 'mongodb://';
