@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var sender = require('../lib/sender');
 var UserAuth = require('../lib/user-auth.js');
+var db = require('../db/database');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -11,7 +12,7 @@ router.get('/', function(req, res, next) {
 	// arxiv.getSubjectsPapers(subjectId, pageNum, req.query, function(err, papers) {
 	// 	res.render('index', {
 	// 		isAuthenticated: req.session.isAuthenticated,
-	// 		title: "Arxival",
+	// 		title: "MIC",
 	// 		papers: papers,
 	// 		pageNum: pageNum,
 	// 		error: err,
@@ -29,33 +30,67 @@ router.get('/signup', function(req, res, next) {
 });
 
 router.post('/signup', function(req, res, next) {
-	var firstname = req.body.firstname;
-	var lastname = req.body.lastname;
+	var first_name = req.body.firstname;
+	var last_name = req.body.lastname;
 	var email = req.body.email;
 	var password = req.body.password;
 	var passwordConf = req.body.passwordConf;
 	var dob = req.body.dob;
 	var gender = req.body.gender;
 
-	if(!(firstname && lastname && email && password)) {
+	// Need to verify inforation before testing
+	// Need to hash password, and salt
+	// Need a unique ID generator/checker
+	console.log(db.test);
+	var new_user = new db.User({
+		user_id: 0,
+		first_name: first_name,
+		last_name: last_name,
+		email: email,
+		dob: dob,
+		gender: gender,
+		date_joined: new Date().toString(),
+		date_last_updated: new Date().toString(),
+		bio: '',
+		liked_articles: [],
+		liked_papers: [],
+		password_hash: password,
+		salt: '',
+		subjects: [],
+		library: [],
+		search_history: [],
+		following: [],
+		rank: 0
+	});
+
+	new_user.save(function(err){
+		console.log('New user added!');
+
+		if (err){
+			console.log(err);
+		}
+	});
+
+	
+	if(!(first_name && last_name && email && password)) {
 		res.send({error: 'Please provide your first name, last name, email, and password'});
 	}
 
-	UserAuth.registerUser(firstname, lastname, email, password, function(err, user) {
+	UserAuth.registerUser(first_name, last_name, email, password, function(err, user) {
 		if (!err) {
 			// Set session info
 			req.session.isAuthenticated = true;
-			req.session.firstname = firstname;
-			req.session.lastname = lastname;
+			req.session.firstname = first_name;
+			req.session.lastname = last_name;
 			req.session.email = email;
 
 			res.redirect('/user/feed');
 		} else {
 			res.render('register', {
-				title: "Arxival - Register", 
+				title: "MIC - Register", 
 				error: err,
-				firstname: firstname,
-				lastname: lastname,
+				firstname: first_name,
+				lastname: last_name,
 				email: email
 			});
 		}

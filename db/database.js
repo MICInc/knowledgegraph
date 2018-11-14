@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
-var config   = require('./config/db');
+var config  = require('./config/db');
+var User = require('./models/user.js');
+var Knowledge = require('./models/knowledge.js');
 
 var db_uri = 'mongodb://';
 // db_uri += config.user + ':';
@@ -22,4 +24,8 @@ db.once('open', function()
   }
 });
 
-module.exports = db
+var test = "this is a test string";
+
+module.exports.db = db;
+module.exports.User = User;
+module.exports.Knowledge = Knowledge;
