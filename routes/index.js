@@ -3,7 +3,6 @@ var express = require('express');
 var router = express.Router();
 var sender = require('../lib/sender');
 var UserAuth = require('../lib/user-auth.js');
-var db = require('../db/database');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -38,45 +37,15 @@ router.post('/signup', function(req, res, next) {
 	var dob = req.body.dob;
 	var gender = req.body.gender;
 
-	// Need to verify inforation before testing
-	// Need to hash password, and salt
-	// Need a unique ID generator/checker
-	console.log(db.test);
-	var new_user = new db.User({
-		user_id: 0,
-		first_name: first_name,
-		last_name: last_name,
-		email: email,
-		dob: dob,
-		gender: gender,
-		date_joined: new Date().toString(),
-		date_last_updated: new Date().toString(),
-		bio: '',
-		liked_articles: [],
-		liked_papers: [],
-		password_hash: password,
-		salt: '',
-		subjects: [],
-		library: [],
-		search_history: [],
-		following: [],
-		rank: 0
-	});
-
-	new_user.save(function(err){
-		console.log('New user added!');
-
-		if (err){
-			console.log(err);
-		}
-	});
-
+	if(password != passwordConf) {
+		res.send({error: 'Passwords did not match'});
+	}
 	
 	if(!(first_name && last_name && email && password)) {
 		res.send({error: 'Please provide your first name, last name, email, and password'});
 	}
 
-	UserAuth.registerUser(first_name, last_name, email, password, function(err, user) {
+	UserAuth.registerUser(first_name, last_name, email, password, dob, gender, function(err, user) {
 		if (!err) {
 			// Set session info
 			req.session.isAuthenticated = true;
