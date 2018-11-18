@@ -3,10 +3,28 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
+      <add-blog></add-blog>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+  import addBlog from './components/addBlog.vue'
+  export default {
+    components: {
+      'add-blog': addBlog
+    },
+    data() {
+      return {
+
+      }
+    },
+    methods: {
+
+    }
+  }
+</script>
 
 <style>
 #app {
