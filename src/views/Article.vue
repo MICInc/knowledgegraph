@@ -1,5 +1,5 @@
 <template>
-	<div class="knowledge">
+	<div class="article">
 		<PageNav></PageNav>
 		<h2>{{ paper.title }}</h2>
 		<div id="abstract">
@@ -13,7 +13,7 @@
 				<h3>Related work</h3>
 				<ul>
 					<li v-for='work in paper.related'>
-						<router-link v-bind:to="'/kg/'+work.url">{{ work.title }}</router-link>
+						<router-link v-bind:to="'/article/'+work.url">{{ work.title }}</router-link>
 					</li>
 				</ul>
 			</div>
@@ -26,7 +26,7 @@ import PageNav from '@/components/PageNav.vue'
 import LinkedArticle from '@/components/LinkedArticle.vue'
 
 export default {
-	name: 'knowledge',
+	name: 'article',
 	components: {
 		PageNav,
 	},
@@ -56,7 +56,7 @@ export default {
 	},
 
 	created() {
-		this.$http.get('127.0.0.1:7000/k/'+this.id).then(function(data){
+		this.$http.get('127.0.0.1:7000/article/'+this.id).then(function(data){
 			return data.json();
 		}).then(function (data){
 			console.log(data);

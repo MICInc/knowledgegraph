@@ -5,6 +5,8 @@
 			<ul>
 				<li><router-link tag="a" to="/">Home</router-link></li>
 				<li><router-link tag="a" to="/about">About</router-link></li>
+				<li><router-link tag="a" to="/conference">Conference</router-link></li>
+				<li><router-link tag="a" to="/community">Community</router-link></li>
 				<router-view/>
 			</ul>
 		</nav>

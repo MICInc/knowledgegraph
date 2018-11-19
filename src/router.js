@@ -19,19 +19,29 @@ export default new Router({
 			component: () => import('./views/About.vue')
 		},
 		{
+			path: '/conference',
+			name: 'conference',
+			component: () => import('./views/Conference.vue')
+		},
+		{
+			path: '/community',
+			name: 'community',
+			component: () => import('./views/Community.vue')
+		},
+		{
 			path: '/signup',
 			name: 'signup',
 			component: () => import('./views/SignUp.vue')
 		},
 		{
-			path: '/kg/2018-battaglia-relational',
-			name: 'knowledge',
-			component: () => import('./views/Knowledge.vue')
+			path: '/article/:id',
+			name: 'article',
+			component: () => import('./views/Article.vue')
 		},
 		{
-			path: '/kg/2018-zaheer-deep',
-			name: 'deepsets',
-			component: () => import('./views/DeepSets.vue')
+			path: '/add',
+			name: 'add-article',
+			component: () => import('./views/AddArticle.vue')
 		},
 	]
 })
