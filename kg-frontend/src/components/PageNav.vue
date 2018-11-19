@@ -1,5 +1,6 @@
 <template>
 	<header>
+		<title>MIC</title>
 		<nav id='nav'>
 			<ul>
 				<li><router-link tag="a" to="/">Home</router-link></li>
@@ -28,7 +29,12 @@ export default {
 			alert("You searched for " + this.searchInput)
 			this.searchInput = ''
 		}
-	}
+	},
+
+	created: function() {  
+ 		document.title = 'Machine Intelligence Community'  
+ 		document.head.querySelector('meta[name=description]').content = 'New Description'  
+ 	}
 }
 </script>
 
