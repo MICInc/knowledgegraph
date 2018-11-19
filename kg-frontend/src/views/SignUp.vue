@@ -18,7 +18,7 @@ import PageNav from '@/components/PageNav.vue'
 import LinkedArticle from '@/components/LinkedArticle.vue'
 
 export default {
-	name: 'home',
+	name: 'signup',
 	components: {
 		PageNav,
 	},

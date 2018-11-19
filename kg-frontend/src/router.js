@@ -23,5 +23,10 @@ export default new Router({
 			name: 'signup',
 			component: () => import('./views/SignUp.vue')
 		},
+		{
+			path: '/kg',
+			name: 'knowledge',
+			component: () => import('./views/Knowledge.vue')
+		},
 	]
 })
