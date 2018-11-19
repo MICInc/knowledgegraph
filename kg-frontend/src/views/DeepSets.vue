@@ -13,7 +13,7 @@
 				<h3>Related work</h3>
 				<ul>
 					<li v-for='work in paper.related'>
-						<a v-bind:href='work.url'>{{ work.title }}</a>
+						<router-link to='work.url'>{{ work.title }}</router-link>
 					</li>
 				</ul>
 			</div>

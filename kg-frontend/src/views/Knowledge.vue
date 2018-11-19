@@ -13,7 +13,7 @@
 				<h3>Related work</h3>
 				<ul>
 					<li v-for='work in paper.related'>
-						<a v-bind:href='work.url'>{{ work.title }}</a>
+						<router-link v-bind:to="'/kg/'+work.url">{{ work.title }}</router-link>
 					</li>
 				</ul>
 			</div>
@@ -33,6 +33,8 @@ export default {
 
 	data () {
 		return {
+			id: this.$route.params.id,
+			content: {},
 			paper: {
 				id: 0,
 				title: 'Relational inductive biases, deep learning, and graph networks',
@@ -46,9 +48,19 @@ export default {
 					{
 						title: 'Deep Sets',
 						url: '2018-zaheer-deep'
-					}]
+					}],
+				prereq: [''],
+				subsequent: ['']
 			}
 		}
+	},
+
+	created() {
+		this.$http.get('127.0.0.1:7000/k/'+this.id).then(function(data){
+			return data.json();
+		}).then(function (data){
+			console.log(data);
+		});
 	},
 
 	methods: {
