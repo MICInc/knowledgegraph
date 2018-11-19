@@ -24,7 +24,7 @@ export default new Router({
 			component: () => import('./views/SignUp.vue')
 		},
 		{
-			path: '/kg',
+			path: '/kg/2018-battaglia-relational',
 			name: 'knowledge',
 			component: () => import('./views/Knowledge.vue')
 		},
