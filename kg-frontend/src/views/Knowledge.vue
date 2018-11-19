@@ -3,9 +3,20 @@
 		<PageNav></PageNav>
 		<h2>{{ paper.title }}</h2>
 		<div id="abstract">
+			<h3>Abstract</h3>
 			<p class='abstract'>{{ paper.content }}</p>
+			<h3>Authors</h3>
 			<span class='authors' v-for='author in paper.authors'>{{ author }}, </span>
+			<h3>Original</h3>
 			<span class='citation'><a v-bind:href='paper.url'>Original</a></span>
+			<div id='related-work'>
+				<h3>Related work</h3>
+				<ul>
+					<li v-for='work in paper.related'>
+						<a v-bind:href='work.url'>{{ work.title }}</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </template>
@@ -30,7 +41,12 @@ export default {
 				num_liked: 102,
 				num_shared: 22,
 				num_commented: 19,
-				url: 'https://arxiv.org/abs/1806.01261'
+				url: 'https://arxiv.org/abs/1806.01261',
+				related: [
+					{
+						title: 'Deep Sets',
+						url: '2018-zaheer-deep'
+					}]
 			}
 		}
 	},

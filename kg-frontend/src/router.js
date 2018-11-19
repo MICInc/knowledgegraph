@@ -28,5 +28,10 @@ export default new Router({
 			name: 'knowledge',
 			component: () => import('./views/Knowledge.vue')
 		},
+		{
+			path: '/kg/2018-zaheer-deep',
+			name: 'deepsets',
+			component: () => import('./views/DeepSets.vue')
+		},
 	]
 })
