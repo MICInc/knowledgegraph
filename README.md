@@ -1,4 +1,4 @@
-# kg-frontend
+# machine intelligence content
 
 ## Project setup
 ```
@@ -35,3 +35,4 @@ If getting the issue below, execute the following command in the root folder `./
 Module build failed (from ./node_modules/eslint-loader/index.js): 
 Error: No ESLint configuration found
 ```
+
