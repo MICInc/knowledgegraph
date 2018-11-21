@@ -1,17 +1,20 @@
-var express       = require('express');
-var app           = express();
-var bodyParser    = require('body-parser');
-var path	        = require('path');
-var fs            = require('fs');
-var favicon       = require('serve-favicon');
-var helmet        = require('helmet');
-var cluster       = require('cluster');
 var numCPUs       = require('os').cpus().length;
-var port          = process.env.PORT || 7000; //keep this or change as long as greater than 1024
-var sender        = require('./lib/sender');
-var database      = require('./db/database');
-var session       = require('express-session');
-var MongoStore    = require('connect-mongo')(session);
+const express     = require('express');
+const app         = express();
+const bodyParser  = require('body-parser');
+const path	      = require('path');
+const fs          = require('fs');
+const favicon     = require('serve-favicon');
+const helmet      = require('helmet');
+const cluster     = require('cluster');
+const sender      = require('./lib/sender');
+const database    = require('./db/database');
+const session     = require('express-session');
+const MongoStore  = require('connect-mongo')(session);
+const morgan      = require('morgan');
+const cors        = require('cors');
+const port        = process.env.PORT || 7000; //keep this or change as long as greater than 1024
+
 
 
 // master process
@@ -82,9 +85,10 @@ else
   app.use(favicon(__dirname + '/public/img/favicon.ico'));
   app.use(express.static(path.join(__dirname, '/public')));
   app.use(errors);
-
+  app.use(morgan('combined'));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+  app.use(cors());
 
   app.use(helmet());
   app.use(helmet.xssFilter({ setOnOldIE: true }));

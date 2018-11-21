@@ -7,7 +7,7 @@ var UserAuth = require('../lib/user-auth.js');
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
 	var pageNum = req.query.page;
-	
+
 	// arxiv.getSubjectsPapers(subjectId, pageNum, req.query, function(err, papers) {
 	// 	res.render('index', {
 	// 		isAuthenticated: req.session.isAuthenticated,
