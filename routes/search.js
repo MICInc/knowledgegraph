@@ -4,7 +4,7 @@ var filter = require('../lib/filter');
 var search = require('../lib/search');
 
 router.get('/', function(req, res, next){
-	var query = filter(req.query.q_;
+	var query = filter(req.query.q_);
 	console.log(query);
 	
 	if(query_move != null && query_move.length > 1)

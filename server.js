@@ -1,19 +1,19 @@
-var numCPUs       = require('os').cpus().length;
-const express     = require('express');
-const app         = express();
-const bodyParser  = require('body-parser');
-const path	      = require('path');
-const fs          = require('fs');
-const favicon     = require('serve-favicon');
-const helmet      = require('helmet');
-const cluster     = require('cluster');
-const sender      = require('./lib/sender');
-const database    = require('./db/database');
-const session     = require('express-session');
-const MongoStore  = require('connect-mongo')(session);
-const morgan      = require('morgan');
-const cors        = require('cors');
-const port        = process.env.PORT || 7000; //keep this or change as long as greater than 1024
+var numCPUs     = require('os').cpus().length;
+var express     = require('express');
+var app         = express();
+var bodyParser  = require('body-parser');
+var path	      = require('path');
+var fs          = require('fs');
+var favicon     = require('serve-favicon');
+var helmet      = require('helmet');
+var cluster     = require('cluster');
+var sender      = require('./lib/sender');
+var database    = require('./db/database');
+var session     = require('express-session');
+var MongoStore  = require('connect-mongo')(session);
+var morgan      = require('morgan');
+var cors        = require('cors');
+var port        = process.env.PORT || 7000; //keep this or change as long as greater than 1024
 
 
 
@@ -44,8 +44,6 @@ if(cluster.isMaster)
   {
     console.log(worker.process.pid + ' died');
   });
-
-
 } 
 else 
 {
@@ -76,14 +74,12 @@ else
 
   var errors = require('./routes/errors');
   var index_route = require('./routes/index');
-  var mic_route = require('./routes/mic')
+  // var mic_route = require('./routes/mic');
   var article_route = require('./routes/article');
   var user_route = require('./routes/user');
   var search_route = require('./routes/search');
   var profile_route = require('./routes/profile');
 
-  app.use(favicon(__dirname + '/public/img/favicon.ico'));
-  app.use(express.static(path.join(__dirname, '/public')));
   app.use(errors);
   app.use(morgan('combined'));
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -93,10 +89,13 @@ else
   app.use(helmet());
   app.use(helmet.xssFilter({ setOnOldIE: true }));
   app.use('/', index_route);
-  app.use('/mic', mic_route);
+  app.use('/mic', require('./routes/mic'));
   app.use('/article', article_route);
   app.use('/user', user_route);
   app.use('/search', search_route);
+
+  app.use(favicon(__dirname + '/public/img/favicon.ico'));
+  app.use(express.static(path.join(__dirname, '/public')));
 
   app.listen(port);
   console.log('Listening on port ' + port);
