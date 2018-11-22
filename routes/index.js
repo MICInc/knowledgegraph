@@ -19,7 +19,12 @@ router.get('/', function(req, res, next) {
 	// });
 });
 
-router.get('/robots.txt', function(req, res)
+router.get('/category/*', function(req, res, next) 
+{
+  searchMove(filter(req), res, conn, false);
+});
+
+router.get('/robots.txt', function(req, res, next)
 {
   sender(res, '/path/', 'robots.txt');
 });
