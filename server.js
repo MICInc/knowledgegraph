@@ -68,13 +68,11 @@ else
 
   app.use(session(sess));
 
-  // view engine setup
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'pug');
+  app.set('views', path.join(__dirname, './public'));
 
   var errors = require('./routes/errors');
   var index_route = require('./routes/index');
-  // var mic_route = require('./routes/mic');
+  var mic_route = require('./routes/mic');
   var article_route = require('./routes/article');
   var user_route = require('./routes/user');
   var search_route = require('./routes/search');
@@ -86,6 +84,10 @@ else
   app.use(bodyParser.json());
   app.use(cors());
 
+  app.use(favicon(__dirname + '/public/img/favicon.ico'));
+  app.use(express.static('public'));
+  app.use(express.static(path.join(__dirname, '/public')));
+
   app.use(helmet());
   app.use(helmet.xssFilter({ setOnOldIE: true }));
   app.use('/', index_route);
@@ -94,8 +96,6 @@ else
   app.use('/user', user_route);
   app.use('/search', search_route);
 
-  app.use(favicon(__dirname + '/public/img/favicon.ico'));
-  app.use(express.static(path.join(__dirname, '/public')));
 
   app.listen(port);
   console.log('Listening on port ' + port);
