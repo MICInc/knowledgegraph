@@ -16,7 +16,7 @@
     "debug": "4.1.0",
     "ee-first": "1.1.1",
     "escape-html": "~1.0.3",
-    "express": "4.16.4",
+    "express": "^4.16.4",
     "express-handlebars": "3.0.0",
     "express-session": "^1.15.6",
     "finalhandler": "1.1.1",

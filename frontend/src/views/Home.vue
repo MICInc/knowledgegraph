@@ -5,7 +5,6 @@
 			<div class="linked-article" v-for="article in articles" :key="article.id">
 				<LinkedArticle :article="article"></LinkedArticle>	
 			</div>
-			{{ foo }}
 		</div>
 	</div>
 </template>
@@ -13,7 +12,7 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import LinkedArticle from '@/components/LinkedArticle.vue'
-import Api from '@/api.js'
+import ArticleService from '@/services/ArticleService'
 
 export default {
 	name: 'home',
@@ -24,6 +23,7 @@ export default {
 
 	data () {
 		return {
+			testArticles: [],
 			articles:[
 				{
 					id: 0,
@@ -45,17 +45,18 @@ export default {
 		}
 	},
 
-	method: {
-
-	},
-	computed: {
-		foo() {
-			console.log(Api);
-			Api.get('/article').then(function (response) {
-				return response;
-			});
+	methods: {
+		async getArticles () {
+			return await ArticleService.getArticles()
 		}
+	},
+
+	beforeMount () {
+		this.getArticles().then((res) => {
+			console.log(res)
+		})
 	}
+	
 }
 </script>
 
