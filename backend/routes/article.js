@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var db = require('../db/database');
 
 //filter apis
 var filter     = require('../lib/filter');
@@ -14,7 +15,16 @@ router.use(function(req, res, next)
 router.post('/', function(req, res) 
 {
 	console.log('Title: '+req.body.title+' Content: '+req.body.content);
-	res.send([{message:'Hello, articles'}]);
+	var article = new db.Article({"title": req.body.title, "content": req.body.content});
+	article.save()
+	.then(item => {
+		console.log('Saved');
+		res.send('Article saved to knowledge graph');
+	})
+	.catch(err => {
+		console.log('Error saving');
+		res.status(400).send('Save error');
+	});
 });
 
 router.get('/move/*', function(req, res) 
