@@ -68,8 +68,6 @@ else
 
   app.use(session(sess));
 
-  app.set('views', path.join(__dirname, './public'));
-
   var errors = require('./routes/errors');
   var index_route = require('./routes/index');
   var mic_route = require('./routes/mic');
@@ -85,8 +83,6 @@ else
   app.use(cors());
 
   app.use(favicon(__dirname + '/public/img/favicon.ico'));
-  app.use(express.static('public'));
-  app.use(express.static(path.join(__dirname, '/public')));
 
   app.use(helmet());
   app.use(helmet.xssFilter({ setOnOldIE: true }));

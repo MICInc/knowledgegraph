@@ -11,6 +11,11 @@ router.use(function(req, res, next)
   next();
 });
 
+router.get('/', function(req, res) 
+{
+  res.send({message:'Hello, articles'});
+});
+
 router.get('/move/*', function(req, res) 
 {
   var move = filter(req).replace(/\/move\//, '');
