@@ -19,6 +19,7 @@
 
 <script>
 import PageNav from '@/components/PageNav.vue'
+import ArticleService from '../services/ArticleService.js'
 
 export default {
 	name: 'add-article',
@@ -37,7 +38,11 @@ export default {
 
 	methods: {
 		submit() {
-			alert(this.article.content)
+			ArticleService.createArticle(this.article).then(function(data){
+				return data.json();
+			}).then(function (data){
+				console.log(data);
+			});
 		}
 	}
 }

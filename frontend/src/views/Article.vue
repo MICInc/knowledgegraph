@@ -52,16 +52,12 @@ export default {
 	},
 
 	created() {
-		this.$http.get('127.0.0.1:7000/article/'+this.id).then(function(data){
-			return data.json();
-		}).then(function (data){
-			console.log(data);
-		});
+
 	},
 
 	methods: {
 		handleSubmit() {
-			alert("You've submitted the form!")
+			alert('You\'ve submitted a new article!');
 		}
 	}
 }

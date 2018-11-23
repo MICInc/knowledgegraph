@@ -11,9 +11,10 @@ router.use(function(req, res, next)
   next();
 });
 
-router.get('/', function(req, res) 
+router.post('/', function(req, res) 
 {
-  res.send([{message:'Hello, articles'}]);
+	console.log('Title: '+req.body.title+' Content: '+req.body.content);
+	res.send([{message:'Hello, articles'}]);
 });
 
 router.get('/move/*', function(req, res) 
