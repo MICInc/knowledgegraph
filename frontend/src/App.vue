@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <router-view/>
+    <span>© 2018, Machine Intelligence Community, Inc.</span>
+ 	<span><a href="/about">about</a></span>
   </div>
 </template>
 
