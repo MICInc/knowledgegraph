@@ -82,8 +82,6 @@ else
   app.use(bodyParser.json());
   app.use(cors());
 
-  app.use(favicon(__dirname + '/public/img/favicon.ico'));
-
   app.use(helmet());
   app.use(helmet.xssFilter({ setOnOldIE: true }));
   app.use('/', index_route);

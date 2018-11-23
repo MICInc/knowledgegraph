@@ -13,7 +13,7 @@ router.use(function(req, res, next)
 
 router.get('/', function(req, res) 
 {
-  res.send({message:'Hello, articles'});
+  res.send([{message:'Hello, articles'}]);
 });
 
 router.get('/move/*', function(req, res) 
