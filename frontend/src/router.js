@@ -19,19 +19,9 @@ export default new Router({
 			component: () => import('./views/About.vue')
 		},
 		{
-			path: '/conference',
-			name: 'conference',
-			component: () => import('./views/Conference.vue')
-		},
-		{
-			path: '/community',
-			name: 'community',
-			component: () => import('./views/Community.vue')
-		},
-		{
-			path: '/signup',
-			name: 'signup',
-			component: () => import('./views/SignUp.vue')
+			path: '/add',
+			name: 'add-article',
+			component: () => import('./views/AddArticle.vue')
 		},
 		{
 			path: '/article/:id',
@@ -39,9 +29,24 @@ export default new Router({
 			component: () => import('./views/Article.vue')
 		},
 		{
-			path: '/add',
-			name: 'add-article',
-			component: () => import('./views/AddArticle.vue')
+			path: '/community',
+			name: 'community',
+			component: () => import('./views/Community.vue')
 		},
+		{
+			path: '/conference',
+			name: 'conference',
+			component: () => import('./views/Conference.vue')
+		},
+		{
+			path: '/signup',
+			name: 'signup',
+			component: () => import('./views/SignUp.vue')
+		},
+		{
+			path: '/login',
+			name: 'login',
+			component: () => import('./views/Login.vue')
+		}
 	]
 })

@@ -15,7 +15,7 @@
 			v-model="searchInput">
 		<nav>
 			<ul>
-				<li><router-link tag="a" to="join">Join</router-link></li>
+				<li><router-link tag="a" to="signup">Join</router-link></li>
 				<li><router-link tag="a" to="login">Login</router-link></li>
 			</ul>
 		</nav>
