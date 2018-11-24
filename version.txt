@@ -1,8 +1,0 @@
-date: 12.26.15
-version: v2.0.5
-state: stable
-notes:
-
-+ Random function to all pages
-+ Updated logo to PATH small logo
-+ Added submit instruction link to all page footers
