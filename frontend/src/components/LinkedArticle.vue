@@ -3,6 +3,7 @@
 		<div class="left">
 			<h2>{{article.title}}</h2>
 			<p>{{article.description}}</p>
+			<p>{{article.content}}</p>
 			<div class="actions">
 				<div class="liked">{{article.num_liked}} Liked</div>
 				<div class="shared">{{article.num_shared}} shared</div>

@@ -5,10 +5,17 @@ var mongoose = require('mongoose');
 
 router.post('/', function(req, res) 
 {	
-	var id = mongoose.Types.ObjectId();
-	console.log("_id: "+id+" title: "+req.body.title+" content: "+req.body.content);
-	var article = new db.Article({"_id": id, "title": req.body.title, "content": req.body.content});
-	console.log('type(article): '+article);
+	var data = {
+		"id": mongoose.Types.ObjectId(), 
+		"title": req.body.title, 
+		"content": req.body.content,
+		"description": req.body.content,
+		"num_liked": 0,
+		"num_shared": 0,
+		"num_commented": 0
+	};
+
+	var article = new db.Article(data);
 
 	article.save()
 	.then(item => {
@@ -27,7 +34,6 @@ router.get('/', function(req, res)
 	query = {};
 
 	db.Article.find(query, function(err, results) {
-		console.log(results);
 		res.send(results);
 	});
 });

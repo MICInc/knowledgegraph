@@ -41,14 +41,9 @@ export default {
 
 	beforeMount () {
 		this.getArticles().then((data) => {
-			var results = [];
-			var output = '';
 			for(let k in data){
-				results.push(data[k]);
-				output += data[k].content+' ';
+				this.articles.push(data[k]);
 			}
-			console.log(results);
-			alert(output);
 		})
 	}
 }
