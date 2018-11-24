@@ -2,10 +2,18 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var article_schema = new Schema({
+	citations: [{
+		type: String,
+		required: true
+	}],
 	content:  {
 		type: String,
 		required: true,
 		trim: true
+	},
+	content_type: {
+		type: String,
+		required: true
 	},
 	date_created: {
 		type: Date,
@@ -16,53 +24,61 @@ var article_schema = new Schema({
 		required: true,
 		trim: true
 	},
-	num_likes: {
-		type: Number
+	first_name:  {
+		type: String,
+		required: true,
+		trim: true
+	},
+	last_modified: {
+		type: Date,
+		required: true
+	},
+	last_name:  {
+		type: String,
+		required: true,
+		trim: true
+	},
+	num_citations: {
+		type: Number,
+		required: true
 	},
 	num_comments: {
-		type: Number
+		type: Number,
+		required: true
+	},
+	num_likes: {
+		type: Number,
+		required: true
+	},
+	num_saves: {
+		type: Number,
+		required: true
 	},
 	num_shares: {
-		type: Number
+		type: Number,
+		required: true
 	},
+	prereqs: [{
+		type: String, // content-ids
+		required: true
+	}],
+	saved_by: [{
+		type: String, //user-ids
+		required: true
+	}],
+	subseqs: [{
+		type: String, //content-ids
+		required: true
+	}],
+	tags: [{
+		type: String,
+		required: true
+	}],
 	title: {
 		type: String,
 		required: true,
 		trim: true
 	}
-	// last_updated_date: {
-	// 	type: Date,
-	// 	required: true
-	// },
-	// references: [Number],
-	// prev_article_links: [String],
-	// next_article_links: [String],
-	// author:  {
-	// 	type: Number,
-	// 	unique: true,
-	// 	required: true,
-	// 	trim: true
-	// },
-	// tags: [String],
-	// num_saves: {
-	// 	type: Number,
-	// 	required: true
-	// },
-	// saves: [String],
-	// num_likes: {
-	// 	type: Number,
-	// 	required: true
-	// },
-	// num_citations: {
-	// 	type: Number
-	// },
-	// citations: {
-	// 	type: [Number]
-	// },
-	// content_type: {
-	// 	type: Number,
-	// 	unique: true
-	// }
 });
 
 var Article = mongoose.model('Knowledge', article_schema);

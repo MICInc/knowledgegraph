@@ -12,8 +12,22 @@
 			<h3>Preview</h3>
 			<p>Title {{ article.title }}</p>
 			<p placeholder="Content..." >Content {{ article.content }}</p>
+		</div>
+		<div id="citations">
+			<h3>Citations</h3>
+			<textarea v-model="article.citations"></textarea>
+		</div>
+		<div id="tags">
+			<label>tags</label>
+			<input v-model="article.tags"></input>
+			<!-- Remove this later. Grab user information from session. -->
+			<label>firstname</label>
+			<input v-model="user.first_name" value="Justin"></input>
+			<label>lastname</label>
+			<input v-model="user.last_name" value="Chen"></input>
 			<button v-on:click.prevent="submit">Submit</button>
 		</div>
+		<button v-on:click.prevent="submit">Submit</button>
 	</div>
 </template>
 
@@ -29,16 +43,22 @@ export default {
 
 	data () {
 		return {
+			user: {
+				first_name: "",
+				last_name: ""
+			},
 			article: {
-				title: "",
-				content: ""
+				citations: "",
+				content: "",
+				tags: "",
+				title: ""
 			}
 		}
 	},
 
 	methods: {
 		submit() {
-			ArticleService.createArticle(this.article).then(function(data){
+			ArticleService.createArticle({user: this.user, article: this.article}).then(function(data){
 				return data.json();
 			}).then(function(data) {
 				alert(data);

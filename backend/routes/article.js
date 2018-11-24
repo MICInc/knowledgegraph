@@ -5,15 +5,30 @@ var mongoose = require('mongoose');
 
 router.post('/', function(req, res) 
 {	
+	var article = req.body.article;
+	var user = req.body.user;
+	console.log('content: '+article.content);
+
 	var data = {
-		"id": mongoose.Types.ObjectId(), 
-		"content": req.body.content,
+		"id": mongoose.Types.ObjectId(),
+		"citations": article.citations.split(','),
+		"content": article.content,
+		"content_type": 'article',
 		"date_created": new Date(),
-		"description": req.body.content,
-		"num_likes": 0,
-		"num_shares": 0,
+		"description": article.content,
+		"first_name": user.first_name,
+		"last_modified": new Date(),
+		"last_name": user.last_name,
+		"num_citations": 0,
 		"num_comments": 0,
-		"title": req.body.title
+		"num_likes": 0,
+		"num_saves": 0,
+		"num_shares": 0,
+		"prereqs": [],
+		"save_by": [],
+		"subseqs": [],
+		"tags": article.tags.split(','),
+		"title": article.title
 	};
 
 	var article = new db.Article(data);
