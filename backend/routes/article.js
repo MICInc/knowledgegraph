@@ -27,15 +27,8 @@ router.get('/', function(req, res)
 	query = {};
 
 	db.Article.find(query, function(err, results) {
-		var articles = {};
-
-		results.forEach(function(item){
-			articles[item._id] = item;
-		});
-
-		console.log(articles);
-
-		res.send(articles);
+		console.log(results);
+		res.send(results);
 	});
 });
 

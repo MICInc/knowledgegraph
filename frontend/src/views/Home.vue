@@ -34,14 +34,21 @@ export default {
 		async getArticles() {
 			return await ArticleService.getArticles({ params: this.user })
 			.then(function(data) {
-				return data.json();
+				return data.data;
 			});
 		}
 	},
 
 	beforeMount () {
-		this.getArticles().then((res) => {
-			alert(res);
+		this.getArticles().then((data) => {
+			var results = [];
+			var output = '';
+			for(let k in data){
+				results.push(data[k]);
+				output += data[k].content+' ';
+			}
+			console.log(results);
+			alert(output);
 		})
 	}
 }
