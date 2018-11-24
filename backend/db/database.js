@@ -24,7 +24,17 @@ db.once('open', function()
   }
 });
 
-var test = "this is a test string";
+Article.collection.dropIndexes(function(err, results){
+	if(err) {
+		console.log('database.js: '+err);
+	}
+});
+
+// User.collection.dropIndexes(function(err, results) {
+// 	if(err) {
+// 		console.log('database.js: '+err);
+// 	}
+// });
 
 module.exports.db = db;
 module.exports.User = User;

@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var article_schema = new Schema({
 	// id: {
-	// 	type: Number,
+	// 	type: String,
 	// 	unique: true,
 	// 	required: true,
 	// },

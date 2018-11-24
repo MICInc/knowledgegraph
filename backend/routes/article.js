@@ -1,10 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
+var mongoose = require('mongoose');
 
 router.post('/', function(req, res) 
-{
-	var article = new db.Article({"title": req.body.title, "content": req.body.content});
+{	
+	var id = mongoose.Types.ObjectId();
+	console.log("_id: "+id+" title: "+req.body.title+" content: "+req.body.content);
+	var article = new db.Article({"_id": id, "title": req.body.title, "content": req.body.content});
+	console.log('type(article): '+article);
 
 	article.save()
 	.then(item => {
@@ -12,7 +16,7 @@ router.post('/', function(req, res)
 		res.send('Article saved to knowledge graph');
 	})
 	.catch(err => {
-		console.log('Error saving');
+		console.log(err);
 		res.status(400).send('Save error');
 	});
 });
@@ -28,6 +32,8 @@ router.get('/', function(req, res)
 		results.forEach(function(item){
 			articles[item._id] = item;
 		});
+
+		console.log(articles);
 
 		res.send(articles);
 	});
