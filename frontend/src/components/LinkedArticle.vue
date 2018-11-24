@@ -5,8 +5,8 @@
 			<p>{{article.description}}</p>
 			<p>{{article.content}}</p>
 			<div class="actions">
-				<div class="liked">{{article.num_liked}} Liked</div>
-				<div class="shared">{{article.num_shared}} shared</div>
+				<div class="liked">{{article.num_likes}} Liked</div>
+				<div class="shared">{{article.num_shares}} shared</div>
 				<div class="comments">{{article.num_comments}} comments</div>
 			</div>
 		</div>

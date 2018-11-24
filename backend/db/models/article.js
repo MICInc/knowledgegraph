@@ -2,32 +2,41 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var article_schema = new Schema({
-	// id: {
-	// 	type: String,
-	// 	unique: true,
-	// 	required: true,
-	// },
-	// date_created: {
-	// 	type: Date,
-	// 	required: true
-	// },
-	// last_updated_date: {
-	// 	type: Date,
-	// 	required: true
-	// },
-	title: {
-		type: String,
-		required: true,
-		trim: true
-	},
-	// references: [Number],
-	// prev_article_links: [String],
-	// next_article_links: [String],
 	content:  {
 		type: String,
 		required: true,
 		trim: true
-	} //,
+	},
+	date_created: {
+		type: Date,
+		required: true
+	},
+	description: {
+		type: String,
+		required: true,
+		trim: true
+	},
+	num_likes: {
+		type: Number
+	},
+	num_comments: {
+		type: Number
+	},
+	num_shares: {
+		type: Number
+	},
+	title: {
+		type: String,
+		required: true,
+		trim: true
+	}
+	// last_updated_date: {
+	// 	type: Date,
+	// 	required: true
+	// },
+	// references: [Number],
+	// prev_article_links: [String],
+	// next_article_links: [String],
 	// author:  {
 	// 	type: Number,
 	// 	unique: true,
@@ -43,9 +52,6 @@ var article_schema = new Schema({
 	// num_likes: {
 	// 	type: Number,
 	// 	required: true
-	// },
-	// likes: {
-	// 	type: [Number]
 	// },
 	// num_citations: {
 	// 	type: Number

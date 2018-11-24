@@ -7,12 +7,13 @@ router.post('/', function(req, res)
 {	
 	var data = {
 		"id": mongoose.Types.ObjectId(), 
-		"title": req.body.title, 
 		"content": req.body.content,
+		"date_created": new Date(),
 		"description": req.body.content,
-		"num_liked": 0,
-		"num_shared": 0,
-		"num_commented": 0
+		"num_likes": 0,
+		"num_shares": 0,
+		"num_comments": 0,
+		"title": req.body.title
 	};
 
 	var article = new db.Article(data);
@@ -34,6 +35,7 @@ router.get('/', function(req, res)
 	query = {};
 
 	db.Article.find(query, function(err, results) {
+		console.log(results);
 		res.send(results);
 	});
 });
