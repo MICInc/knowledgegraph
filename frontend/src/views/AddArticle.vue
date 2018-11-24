@@ -40,8 +40,8 @@ export default {
 		submit() {
 			ArticleService.createArticle(this.article).then(function(data){
 				return data.json();
-			}).then(function (data){
-				console.log(data);
+			}).then(function(data) {
+				alert(data);
 			});
 		}
 	}

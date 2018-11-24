@@ -1,8 +1,6 @@
 
 var express = require('express');
 var router = express.Router();
-// var sender = require('../lib/sender');
-// var UserAuth = require('../lib/user-auth.js');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -36,16 +34,13 @@ router.get('/', function(req, res, next) {
 
 router.get('/category/*', function(req, res, next) 
 {
-  // searchMove(filter(req), res, conn, false);
 });
 
 router.get('/robots.txt', function(req, res, next)
 {
-  // sender(res, '/path/', 'robots.txt');
 });
 
 router.get('/signup', function(req, res, next) {
-	// sender(res, '/../public/forms', 'signup.html');
 });
 
 router.post('/signup', function(req, res, next) {
@@ -87,7 +82,6 @@ router.post('/signup', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-	// sender(res, '/../public/forms', 'login.html');
 });
 
 router.post('/login', function(req, res, next) {

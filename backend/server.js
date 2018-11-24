@@ -7,15 +7,12 @@ var fs          = require('fs');
 var favicon     = require('serve-favicon');
 var helmet      = require('helmet');
 var cluster     = require('cluster');
-var sender      = require('./lib/sender');
 var database    = require('./db/database');
 var session     = require('express-session');
 var MongoStore  = require('connect-mongo')(session);
 var morgan      = require('morgan');
 var cors        = require('cors');
 var port        = process.env.PORT || 7000; //keep this or change as long as greater than 1024
-
-
 
 // master process
 if(cluster.isMaster) 

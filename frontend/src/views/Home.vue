@@ -23,40 +23,27 @@ export default {
 
 	data () {
 		return {
-			testArticles: [],
-			articles:[
-				{
-					id: 0,
-					title: 'This is a title',
-					description: 'This is a description',
-					num_liked: 102,
-					num_shared: 22,
-					num_commented: 19,
-				},
-				{
-					id: 1,
-					title: 'This is a second title',
-					description: 'This is a second description',
-					num_liked: 230,
-					num_shared: 34,
-					num_commented: 56,
-				},
-			],
+			user: {
+				id: -1
+			},
+			articles:[]
 		}
 	},
 
 	methods: {
-		async getArticles () {
-			return await ArticleService.getArticles()
+		async getArticles() {
+			return await ArticleService.getArticles({ params: this.user })
+			.then(function(data) {
+				return data.json();
+			});
 		}
 	},
 
 	beforeMount () {
 		this.getArticles().then((res) => {
-			console.log(res)
+			alert(res);
 		})
 	}
-	
 }
 </script>
 

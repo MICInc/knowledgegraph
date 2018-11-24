@@ -12,5 +12,5 @@ module.exports = function (err, req, res, next)
       return;
     }
 
-    sender(res, '/path/', '404.html');
+    // sender(res, '/path/', '404.html');
 }
