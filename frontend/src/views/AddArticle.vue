@@ -25,7 +25,6 @@
 			<input v-model="user.first_name" value="Justin"></input>
 			<label>lastname</label>
 			<input v-model="user.last_name" value="Chen"></input>
-			<button v-on:click.prevent="submit">Submit</button>
 		</div>
 		<button v-on:click.prevent="submit">Submit</button>
 	</div>
@@ -58,7 +57,8 @@ export default {
 
 	methods: {
 		submit() {
-			ArticleService.createArticle({user: this.user, article: this.article}).then(function(data){
+			ArticleService.createArticle({user: this.user, article: this.article})
+			.then(function(data) {
 				return data.json();
 			}).then(function(data) {
 				alert(data);

@@ -81,6 +81,7 @@ var article_schema = new Schema({
 	}
 });
 
-var Article = mongoose.model('Knowledge', article_schema);
+var conn = mongoose.createConnection('mongodb://localhost:27017/knowledge', { useNewUrlParser: true });
+var Article = conn.model('paper', article_schema);
 
 module.exports = Article;

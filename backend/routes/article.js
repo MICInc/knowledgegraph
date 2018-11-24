@@ -7,7 +7,6 @@ router.post('/', function(req, res)
 {	
 	var article = req.body.article;
 	var user = req.body.user;
-	console.log('content: '+article.content);
 
 	var data = {
 		"id": mongoose.Types.ObjectId(),
@@ -32,6 +31,12 @@ router.post('/', function(req, res)
 	};
 
 	var article = new db.Article(data);
+
+	article.collection.dropIndexes(function(err, results) {
+		if(err) {
+			console.log('article.js: '+err);
+		}
+	});
 
 	article.save()
 	.then(item => {

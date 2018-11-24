@@ -7,7 +7,6 @@ var fs          = require('fs');
 var favicon     = require('serve-favicon');
 var helmet      = require('helmet');
 var cluster     = require('cluster');
-var database    = require('./db/database');
 var session     = require('express-session');
 var MongoStore  = require('connect-mongo')(session);
 var morgan      = require('morgan');
@@ -69,7 +68,6 @@ else
   var index_route = require('./routes/index');
   var mic_route = require('./routes/mic');
   var article_route = require('./routes/article');
-  var user_route = require('./routes/user');
   var search_route = require('./routes/search');
   var profile_route = require('./routes/profile');
 
@@ -82,9 +80,9 @@ else
   app.use(helmet());
   app.use(helmet.xssFilter({ setOnOldIE: true }));
   app.use('/', index_route);
-  app.use('/mic', require('./routes/mic'));
+  app.use('/mic', mic_route);
   app.use('/article', article_route);
-  app.use('/user', user_route);
+  app.use('/profile', profile_route);
   app.use('/search', search_route);
 
 

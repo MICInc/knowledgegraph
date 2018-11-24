@@ -10,7 +10,7 @@
 				<router-view/>
 			</ul>
 		</nav>
-		<input class="search" type="text" placeholder="Search here" 
+		<input class="search" type="text" placeholder="search" 
 			v-on:keydown.enter.prevent="search()" 
 			v-model="searchInput">
 		<nav>
