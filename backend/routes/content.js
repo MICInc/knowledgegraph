@@ -5,16 +5,21 @@ var mongoose = require('mongoose');
 
 router.post('/', function(req, res) 
 {	
-	var article = req.body.article;
+	var paper = req.body.content;
 	var user = req.body.user;
+	var authors = paper.authors.split(',');
+	var first_author = authors[0];
+	var author_last_name = first_author.split(' ').pop();
+	var url = req.originalUrl+'/'+paper.year+'-'+author_last_name+'-'+paper.title;
+	url = url.toLowerCase().replace(/\s/g, '_');
 
 	var data = {
 		"id": mongoose.Types.ObjectId(),
-		"citations": article.citations.split(','),
-		"content": article.content,
+		"citations": paper.citations.split(','),
+		"content": paper.content,
 		"content_type": 'article',
 		"date_created": new Date(),
-		"description": article.content,
+		"description": paper.content,
 		"first_name": user.first_name,
 		"last_modified": new Date(),
 		"last_name": user.last_name,
@@ -26,8 +31,10 @@ router.post('/', function(req, res)
 		"prereqs": [],
 		"save_by": [],
 		"subseqs": [],
-		"tags": article.tags.split(','),
-		"title": article.title
+		"tags": paper.tags.split(','),
+		"title": paper.title,
+		"url": url,
+		"year": paper.year
 	};
 
 	var article = new db.Article(data);

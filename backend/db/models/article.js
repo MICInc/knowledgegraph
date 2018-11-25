@@ -78,6 +78,11 @@ var article_schema = new Schema({
 		type: String,
 		required: true,
 		trim: true
+	},
+	url: {
+		type: String,
+		required: true,
+		trim: true
 	}
 });
 

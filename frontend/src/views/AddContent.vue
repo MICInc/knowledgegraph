@@ -1,12 +1,16 @@
 <template>
 	<div class="add-article">
 		<PageNav></PageNav>
-		<h2>Add a new article</h2>
+		<h2>Add a new paper</h2>
 		<form>
 			<label>Title</label>
 			<input type="text" v-model="content.title" required/>
 			<label>Content</label>
 			<textarea v-model="content.content"></textarea>
+			<label>Year</label>
+			<input type="text" v-model="content.year" required/>
+			<label>Authors</label>
+			<input type="text" v-model="content.authors" required/>
 		</form>
 		<div id="preview">
 			<h3>Preview</h3>
@@ -47,10 +51,12 @@ export default {
 				last_name: ""
 			},
 			content: {
+				authors: [],
 				citations: "",
 				content: "",
 				tags: "",
-				title: ""
+				title: "",
+				year: 0
 			}
 		}
 	},
