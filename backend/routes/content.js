@@ -34,14 +34,14 @@ router.post('/', function(req, res)
 
 	article.collection.dropIndexes(function(err, results) {
 		if(err) {
-			console.log('article.js: '+err);
+			console.log('content.js: '+err);
 		}
 	});
 
 	article.save()
 	.then(item => {
 		console.log('Saved');
-		res.send('Article saved to knowledge graph');
+		res.send('Content saved to knowledge graph');
 	})
 	.catch(err => {
 		console.log(err);

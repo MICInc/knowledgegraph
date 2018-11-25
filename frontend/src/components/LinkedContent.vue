@@ -1,13 +1,13 @@
 <template>
-	<div class="linked-article-wrapper">
+	<div class="linked-content-wrapper">
 		<div class="left">
-			<h2>{{article.title}}</h2>
-			<p>{{article.description}}</p>
-			<p>{{article.content}}</p>
+			<h2>{{content.title}}</h2>
+			<p>{{content.description}}</p>
+			<p>{{content.content}}</p>
 			<div class="actions">
-				<div class="liked">{{article.num_likes}} Liked</div>
-				<div class="shared">{{article.num_shares}} shared</div>
-				<div class="comments">{{article.num_comments}} comments</div>
+				<div class="liked">{{content.num_likes}} Liked</div>
+				<div class="shared">{{content.num_shares}} shared</div>
+				<div class="comments">{{content.num_comments}} comments</div>
 			</div>
 		</div>
 		<div class="right">
@@ -18,9 +18,9 @@
 
 <script>
 export default {
-	name: 'LinkedArticle',
+	name: 'LinkedContent',
 	props: {
-		article: Object,
+		content: Object,
 	}
 }
 </script>
@@ -28,7 +28,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.linked-article-wrapper {
+.linked-content-wrapper {
 	display: flex;
 	max-width: 600px;
 	height: 200px;
@@ -55,7 +55,5 @@ export default {
 .actions div:first-child {
 	margin-left: 0;
 }
-
-
 
 </style>

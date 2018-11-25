@@ -4,22 +4,22 @@
 		<h2>Add a new article</h2>
 		<form>
 			<label>Title</label>
-			<input type="text" v-model="article.title" required/>
+			<input type="text" v-model="content.title" required/>
 			<label>Content</label>
-			<textarea v-model="article.content"></textarea>
+			<textarea v-model="content.content"></textarea>
 		</form>
 		<div id="preview">
 			<h3>Preview</h3>
-			<p>Title {{ article.title }}</p>
-			<p placeholder="Content..." >Content {{ article.content }}</p>
+			<p>Title {{ content.title }}</p>
+			<p placeholder="Content..." >Content {{ content.content }}</p>
 		</div>
 		<div id="citations">
 			<h3>Citations</h3>
-			<textarea v-model="article.citations"></textarea>
+			<textarea v-model="content.citations"></textarea>
 		</div>
 		<div id="tags">
 			<label>tags</label>
-			<input v-model="article.tags"></input>
+			<input v-model="content.tags"></input>
 			<!-- Remove this later. Grab user information from session. -->
 			<label>firstname</label>
 			<input v-model="user.first_name" value="Justin"></input>
@@ -32,7 +32,7 @@
 
 <script>
 import PageNav from '@/components/PageNav.vue'
-import ArticleService from '../services/ArticleService.js'
+import ContentService from '../services/ContentService.js'
 
 export default {
 	name: 'add-article',
@@ -46,7 +46,7 @@ export default {
 				first_name: "",
 				last_name: ""
 			},
-			article: {
+			content: {
 				citations: "",
 				content: "",
 				tags: "",
@@ -57,7 +57,7 @@ export default {
 
 	methods: {
 		submit() {
-			ArticleService.createArticle({user: this.user, article: this.article})
+			ContentService.createContent({user: this.user, content: this.content})
 			.then(function(data) {
 				return data.json();
 			}).then(function(data) {

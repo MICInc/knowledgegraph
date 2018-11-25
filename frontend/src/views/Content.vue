@@ -23,7 +23,7 @@
 
 <script>
 import PageNav from '@/components/PageNav.vue'
-import LinkedArticle from '@/components/LinkedArticle.vue'
+import LinkedContent from '@/components/LinkedContent.vue'
 
 export default {
 	name: 'article',

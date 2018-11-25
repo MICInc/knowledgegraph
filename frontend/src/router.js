@@ -20,13 +20,13 @@ export default new Router({
 		},
 		{
 			path: '/add',
-			name: 'add-article',
-			component: () => import('./views/AddArticle.vue')
+			name: 'add-content',
+			component: () => import('./views/AddContent.vue')
 		},
 		{
-			path: '/article/:id',
-			name: 'article',
-			component: () => import('./views/Article.vue')
+			path: '/content/:id',
+			name: 'content',
+			component: () => import('./views/Content.vue')
 		},
 		{
 			path: '/community',

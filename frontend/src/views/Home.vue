@@ -1,9 +1,9 @@
 <template>
 	<div class="home">
 		<PageNav></PageNav>
-		<div class="linked-articles-list">
-			<div class="linked-article" v-for="article in articles" :key="article.id">
-				<LinkedArticle :article="article"></LinkedArticle>	
+		<div class="linked-content-list">
+			<div class="linked-content" v-for="item in content" :key="item.id">
+				<LinkedContent :content="item"></LinkedContent>	
 			</div>
 		</div>
 	</div>
@@ -11,13 +11,13 @@
 
 <script>
 import PageNav from '@/components/PageNav.vue'
-import LinkedArticle from '@/components/LinkedArticle.vue'
-import ArticleService from '@/services/ArticleService'
+import LinkedContent from '@/components/LinkedContent.vue'
+import ContentService from '@/services/ContentService'
 
 export default {
 	name: 'home',
 	components: {
-		LinkedArticle,
+		LinkedContent,
 		PageNav,
 	},
 
@@ -26,13 +26,13 @@ export default {
 			user: {
 				id: -1
 			},
-			articles:[]
+			content:[]
 		}
 	},
 
 	methods: {
-		async getArticles() {
-			return await ArticleService.getArticles({ params: this.user })
+		async getContent() {
+			return await ContentService.getContent({ params: this.user })
 			.then(function(data) {
 				return data.data;
 			});
@@ -40,9 +40,9 @@ export default {
 	},
 
 	beforeMount () {
-		this.getArticles().then((data) => {
+		this.getContent().then((data) => {
 			for(let k in data){
-				this.articles.push(data[k]);
+				this.content.push(data[k]);
 			}
 		})
 	}
@@ -52,7 +52,7 @@ export default {
 
 <style scoped>
 	
-.linked-articles-list {
+.linked-content-list {
 	margin: 25px 0;
 	display: flex;
 	flex-direction: column;

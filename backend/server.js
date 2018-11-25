@@ -67,7 +67,7 @@ else
   var errors = require('./routes/errors');
   var index_route = require('./routes/index');
   var mic_route = require('./routes/mic');
-  var article_route = require('./routes/article');
+  var content_route = require('./routes/content');
   var search_route = require('./routes/search');
   var profile_route = require('./routes/profile');
 
@@ -81,7 +81,7 @@ else
   app.use(helmet.xssFilter({ setOnOldIE: true }));
   app.use('/', index_route);
   app.use('/mic', mic_route);
-  app.use('/article', article_route);
+  app.use('/content', content_route);
   app.use('/profile', profile_route);
   app.use('/search', search_route);
 
