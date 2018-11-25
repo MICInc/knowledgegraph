@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var article_schema = new Schema({
+var paper_schema = new Schema({
+	authors: [{
+		type: String,
+		required: true
+	}],
 	citations: [{
 		type: String,
 		required: true
@@ -58,6 +62,9 @@ var article_schema = new Schema({
 		type: Number,
 		required: true
 	},
+	original_url: {
+		type: String
+	},
 	prereqs: [{
 		type: String, // content-ids
 		required: true
@@ -87,6 +94,6 @@ var article_schema = new Schema({
 });
 
 var conn = mongoose.createConnection('mongodb://localhost:27017/knowledge', { useNewUrlParser: true });
-var Article = conn.model('paper', article_schema);
+var Paper = conn.model('paper', paper_schema);
 
-module.exports = Article;
+module.exports = Paper;

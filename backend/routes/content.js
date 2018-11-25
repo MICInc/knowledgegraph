@@ -3,11 +3,11 @@ var router = express.Router();
 var db = require('../db/database');
 var mongoose = require('mongoose');
 var format_paper = require('../lib/format_paper');
+var utils = require('../lib/utils');
 
-router.post('/', function(req, res) 
-{	
+router.post('/', function(req, res) {	
 	var data = format_paper(req);
-	var article = new db.Article(data);
+	var article = new db.Paper(data);
 
 	article.collection.dropIndexes(function(err, results) {
 		if(err) {
@@ -26,15 +26,25 @@ router.post('/', function(req, res)
 	});
 });
 
-router.get('/', function(req, res) 
-{
-	query = req.query.id;
-	query = {};
+router.get('/', function(req, res) {
+	if (req.query.url) {
+		var query = { url: '/content/'+req.query.url};
 
-	db.Article.find(query, function(err, results) {
-		console.log(results);
-		res.send(results);
-	});
+		db.Paper.find(query, function(err, results) {
+			console.log(results);
+			res.send(results);
+		});
+	}
+	else if (req.query.id == -1) {
+		var query = {};
+		db.Paper.find(query, function(err, results) {
+			var shuff = utils.data.shuffle(results);
+			console.log(shuff);
+			res.send(shuff);
+		});
+	} else {
+		// return recommended content
+	}
 });
 
 module.exports = router;

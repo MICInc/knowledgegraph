@@ -1,7 +1,7 @@
 <template>
 	<div class="linked-content-wrapper">
 		<div class="left">
-			<h2>{{content.title}}</h2>
+			<h2><router-link tag="a" v-bind:to="content.url">{{content.title}}</router-link></h2>
 			<p>{{content.description}}</p>
 			<p>{{content.content}}</p>
 			<div class="actions">

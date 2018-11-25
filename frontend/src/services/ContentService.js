@@ -10,6 +10,6 @@ export default {
 			return Api().post('/content', data)
 		},
 		editContent(data) {
-			return Api().post('/content', data)
+			return Api().post('/content/edit', data)
 		}
 }

@@ -12,6 +12,7 @@ module.exports = function(req)
 
 	return {
 		"id": mongoose.Types.ObjectId(),
+		"authors": paper.authors.split(','),
 		"citations": paper.citations.split(','),
 		"content": paper.content,
 		"content_type": 'article',
@@ -33,5 +34,4 @@ module.exports = function(req)
 		"url": url,
 		"year": paper.year
 	};
-
 }

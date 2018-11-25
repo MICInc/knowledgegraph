@@ -39,12 +39,12 @@ export default {
 		}
 	},
 
-	beforeMount () {
-		this.getContent().then((data) => {
+	beforeMount() {
+		this.getContent().then(data => {
 			for(let k in data){
 				this.content.push(data[k]);
 			}
-		})
+		});
 	}
 }
 </script>

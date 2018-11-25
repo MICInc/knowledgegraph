@@ -1,18 +1,18 @@
 <template>
-	<div class="article">
+	<div class="content">
 		<PageNav></PageNav>
-		<h2>{{ paper.title }}</h2>
+		<h2>{{ content.title }}</h2>
 		<div id="abstract">
 			<h3>Abstract</h3>
-			<p class='abstract'>{{ paper.content }}</p>
+			<p class='abstract'>{{ content.content }}</p>
 			<h3>Authors</h3>
-			<span class='authors' v-for='author in paper.authors'>{{ author }}, </span>
+			<span class='authors' v-for='author in content.authors'>{{ author }}, </span>
 			<h3>Original</h3>
-			<span class='citation'><a v-bind:href='paper.url'>Original</a></span>
+			<span class='citation'><a v-bind:href='content.original_url'>Original</a></span>
 			<div id='related-work'>
 				<h3>Related work</h3>
 				<ul>
-					<li v-for='work in paper.related'>
+					<li v-for='work in content.related'>
 						<router-link v-bind:to="'/article/'+work.url">{{ work.title }}</router-link>
 					</li>
 				</ul>
@@ -23,42 +23,37 @@
 
 <script>
 import PageNav from '@/components/PageNav.vue'
-import LinkedContent from '@/components/LinkedContent.vue'
+import ContentService from '@/services/ContentService'
 
 export default {
-	name: 'article',
+	name: 'content',
 	components: {
-		PageNav,
+		PageNav
 	},
 
-	data () {
+	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
-			id: this.$route.params.id,
-			content: {},
-			paper: {
-				id: 0,
-				title: '',
-				authors: [],
-				content: '',
-				num_liked: 0,
-				num_shared: 0,
-				num_commented: 0,
-				url: '',
-				related: [],
-				prereq: [],
-				subsequent: []
-			}
+			url: this.$route.params.id,
+			user: {
+				id: 0
+			},
+			content: {}
 		}
-	},
-
-	created() {
-
 	},
 
 	methods: {
-		handleSubmit() {
-			alert('You\'ve submitted a new article!');
+		async getContent() {
+			return await ContentService.getContent({ params: { url: this.url } })
+			.then(function(data) {
+				return data.data[0];
+			});
 		}
+	},
+
+	beforeMount() {
+		this.getContent().then(data => {
+			this.content = data;
+		});
 	}
 }
 </script>
