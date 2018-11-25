@@ -7,7 +7,7 @@ module.exports = function(req)
 	var authors = paper.authors.split(',');
 	var first_author = authors[0];
 	var author_last_name = first_author.split(' ').pop();
-	var url = req.originalUrl+'/'+paper.year+'-'+author_last_name+'-'+paper.title;
+	var url = paper.year+'-'+author_last_name+'-'+paper.title;
 	url = url.toLowerCase().replace(/\s/g, '_');
 
 	return {

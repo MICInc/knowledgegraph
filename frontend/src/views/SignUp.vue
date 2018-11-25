@@ -7,6 +7,8 @@
 				<input type="text" placeholder="Last Name" v-model="profile.last_name" required>
 			</div>
 			<input type="email" placeholder="Email" v-model="profile.email" required>
+			<input type="email" placeholder="Gender" v-model="profile.gender" required>
+			<input type="email" placeholder="Birthday" v-model="profile.dob" required>
 			<input type="password" placeholder="Password" v-model="profile.password" required>
 			<input type="password" placeholder="Confirm Password" v-model="profile.confirm_password" required>
 		</form>
@@ -27,11 +29,13 @@ export default {
 	data () {
 		return {
 			profile: {
-				first_name: "",
-				last_name: "",
+				confirm_password: "",
+				dob: "",
 				email: "",
-				password: "",
-				confirm_password: ""
+				first_name: "",
+				gender: "",
+				last_name: "",
+				password: ""
 			}
 		}
 	},

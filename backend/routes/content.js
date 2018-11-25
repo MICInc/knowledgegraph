@@ -28,7 +28,7 @@ router.post('/', function(req, res) {
 
 router.get('/', function(req, res) {
 	if (req.query.url) {
-		var query = { url: '/content/'+req.query.url};
+		var query = { url: req.query.url };
 
 		db.Paper.find(query, function(err, results) {
 			console.log(results);

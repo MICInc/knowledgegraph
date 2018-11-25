@@ -2,16 +2,10 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../db/database');
-
+var format_user = require('../lib/format_user');
 
 router.post('/', function(req, res) {
-	console.log(req.body);
-	var data = {
-		"id": mongoose.Types.ObjectId(),
-		"first_name": req.body.first_name
-	};
-
-	var user = new db.User(data);
+	var user = new db.User(format_user(req));
 
 	user.collection.dropIndexes(function(err, results) {
 		if(err) {
@@ -32,6 +26,7 @@ router.post('/', function(req, res) {
 
 router.get('/', function(req, res) {
 	query = {};
+	// console.log(req.query.url);
 
 	db.User.find(query, function(err, results) {
 		console.log(results);
