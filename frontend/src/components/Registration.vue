@@ -8,16 +8,21 @@
 			<input type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
 			<label>Hey {{ profile.first_name }}, nice to meet you. What's your last name?</label><br>
 			<input type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
-			<label>Birthday</label><br>
-			<select name="year" v-model="profile.dob_year">
-				<option></option>
-			</select>
-			<select name="month" v-model="profile.dob_month">
-				<option></option>
-			</select>
-			<select name="day" v-model="profile.dob_day">
-				<option></option>
-			</select>
+			<div>
+				<label>Birthday</label><br>
+				<label>Year: </label>
+				<select name="year" v-model="profile.dob_year">
+					<option v-for="year in conf_reg.years">{{ year }}</option>
+				</select>
+				<label>Month: </label>
+				<select name="month" v-model="profile.dob_month">
+					<option v-for="(value, index) in 12">{{ index+1 }}</option>
+				</select>
+				<label>Day: </label>
+				<select name="day" v-model="profile.dob_day">
+					<option v-for="(value, index) in 31">{{ value }}</option>
+				</select>
+			</div>
 			<label>Where can we contact you?</label><br>
 			<input type="text" value="email" placeholder="email" v-model.trim="profile.email"><br>
 			<label>Password</label><br>
@@ -64,6 +69,10 @@
 import ProfileService from '../services/ProfileService.js'
 import RegistrationService from '../services/RegistrationService.js'
 
+var years = function range(size, today) {
+	return [...Array(size).keys()].map(i => today - i);
+}
+
 export default {
 	name: 'signup_form',
 
@@ -73,10 +82,14 @@ export default {
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 				'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
 				affiliation: '',
+				dob_day: [],
+				dob_month: [],
+				dob_year: [],
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				food_allergens: '',
 				gender: ['Female', 'Male', 'Non-binary'],
-				message: ''
+				message: '',
+				years: years(100, (new Date()).getFullYear())
 			},
 			profile: {
 				confirm_password: '',
