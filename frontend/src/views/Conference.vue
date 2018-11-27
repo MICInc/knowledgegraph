@@ -1,21 +1,22 @@
 <template>
 	<div class="conference">
 		<PageNav></PageNav>
-		<h1>Conference Page</h1>
-		<SignUp></SignUp>
+		<h1>Machine Intelligence Conference 2019</h1>
+		<Registration></Registration>
 	</div>
 </template>
 
 
 <script>
 import PageNav from '@/components/PageNav.vue'
-import SignUp from '@/components/SignUp.vue'
+import Registration from '@/components/Registration.vue'
 
 export default {
 	name: 'conference',
+
 	components: {
 		PageNav,
-		SignUp
+		Registration
 	},
 
 	data() {
@@ -24,3 +25,6 @@ export default {
 	}
 }
 </script>
+
+<style>
+</style>

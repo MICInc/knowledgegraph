@@ -8,7 +8,7 @@
 			<label>Content</label>
 			<textarea v-model="content.content"></textarea>
 			<label>Year</label>
-			<input type="text" v-model="content.year" required/>
+			<input type="text" v-model.number="content.year" required/>
 			<label>Authors</label>
 			<input type="text" v-model="content.authors" required/>
 		</form>
