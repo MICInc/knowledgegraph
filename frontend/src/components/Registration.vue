@@ -11,15 +11,15 @@
 			<div>
 				<label>Birthday</label><br>
 				<label>Year: </label>
-				<select name="year" v-model="profile.dob_year">
+				<select name="year" v-model.number="profile.dob_year">
 					<option v-for="year in conf_reg.years">{{ year }}</option>
 				</select>
 				<label>Month: </label>
-				<select name="month" v-model="profile.dob_month">
+				<select name="month" v-model.number="profile.dob_month">
 					<option v-for="(value, index) in 12">{{ index+1 }}</option>
 				</select>
 				<label>Day: </label>
-				<select name="day" v-model="profile.dob_day">
+				<select name="day" v-model.number="profile.dob_day">
 					<option v-for="(value, index) in 31">{{ value }}</option>
 				</select>
 			</div>
@@ -82,9 +82,6 @@ export default {
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 				'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
 				affiliation: '',
-				dob_day: [],
-				dob_month: [],
-				dob_year: [],
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				food_allergens: '',
 				gender: ['Female', 'Male', 'Non-binary'],
@@ -93,6 +90,9 @@ export default {
 			},
 			profile: {
 				confirm_password: '',
+				dob_day: 0,
+				dob_month: 0,
+				dob_year: 0,
 				email: '',
 				ethnicity: '',
 				first_name: '',
