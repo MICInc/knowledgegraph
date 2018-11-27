@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var user_schema = new Schema({
+    affiliation: {
+        type: String,
+        required: true
+    },
 	bio: {
         type: String,
         trim: true
@@ -24,6 +28,10 @@ var user_schema = new Schema({
         required: true,
         trim: true
     },
+    ethnicity: {
+        type: String,
+        required: true
+    },
     first_name: {
         type: String,
         required: true,
@@ -32,6 +40,10 @@ var user_schema = new Schema({
     following: [{
     	type: String
     }],
+    grade: {
+        type: String,
+        required: true
+    },
     gender: {
         type: String,
         unique: true,
@@ -65,6 +77,9 @@ var user_schema = new Schema({
 		type: String,
 		required: true,
 	},
+    school: {
+        type: String
+    },
 	subjects: [{
 		type: String // entity ids
 	}],

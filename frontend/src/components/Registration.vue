@@ -16,7 +16,7 @@
 				</select>
 				<label>Month: </label>
 				<select name="month" v-model.number="profile.dob_month">
-					<option v-for="(value, index) in 12">{{ index+1 }}</option>
+					<option v-for="(value, index) in 12">{{ value }}</option>
 				</select>
 				<label>Day: </label>
 				<select name="day" v-model.number="profile.dob_day">
