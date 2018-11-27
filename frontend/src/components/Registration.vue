@@ -12,7 +12,7 @@
 				<label>Birthday</label><br>
 				<label>Year: </label>
 				<select name="year" v-model.number="profile.dob_year">
-					<option v-for="year in conf_reg.years">{{ year }}</option>
+					<option v-for="year in form.years">{{ year }}</option>
 				</select>
 				<label>Month: </label>
 				<select name="month" v-model.number="profile.dob_month">
@@ -30,27 +30,26 @@
 			<label>Confirm password</label><br>
 			<input type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password"><br>
 			<span>Affiliation</span><br>
-			<input type="radio" value="alumni" v-model="conf_reg.affiliation">Alumni<br>
-			<input type="radio" value="industry" v-model="conf_reg.affiliation">Industry<br>
-			<input type="radio" value="mic" v-model="conf_reg.affiliation">MIC member<br>
-			<input type="radio" value="non-mic" v-model="conf_reg.affiliation">Non-MIC member<br>
-			<input type="radio" value="non-student" v-model="conf_reg.affiliation">Non-student<br>
-			<input type="radio" value="sponsor" v-model="conf_reg.affiliation">Sponsor<br>
+			<ul>
+				<li v-for="affiliation in form.affiliation">
+					<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation">{{ affiliation }}
+				</li>
+			</ul>
 			<label>What school do you attend?</label><br>
-			<select name="school">
-				<option>school</option>
+			<select name="school" v-model="profile.school">
+				<option v-for="school in form.schools">{{ school }}</option>
 			</select><br>
 			<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
 			<select name="grade" v-model="profile.grade">
-				<option v-for="grade in conf_reg.academic_year">{{ grade }}</option>
+				<option v-for="grade in form.academic_year">{{ grade }}</option>
 			</select><br>
 			<label>Gender</label><br>
 			<select name="gender" v-model="profile.gender">
-				<option v-for="gender in conf_reg.gender">{{ gender }}</option>
+				<option v-for="gender in form.gender">{{ gender }}</option>
 			</select><br>
 			<label>What is your ethnicity?</label><br>
 			<select name="ethnicity" v-model="profile.ethnicity">
-				<option v-for="ethnicity in conf_reg.ethnicity">{{ ethnicity }}</option>
+				<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 			</select><br>
 			<label>Please list any food you're allergic to:</label><br>
 			<input v-model.trim="conf_reg.food_allergens"></input><br>
@@ -79,16 +78,20 @@ export default {
 	data() {
 		return {
 			conf_reg: {
-				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
-				'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
-				affiliation: '',
-				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				food_allergens: '',
+				message: ''
+			},
+			form: {
+				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
+				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
+					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
+				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
-				message: '',
+				schools: ['Boston University'],
 				years: years(100, (new Date()).getFullYear())
 			},
 			profile: {
+				affiliation: '',
 				confirm_password: '',
 				dob_day: 0,
 				dob_month: 0,
@@ -99,7 +102,8 @@ export default {
 				gender: '',
 				grade: '',
 				last_name: '',
-				password: ''
+				password: '',
+				school: ''
 			},
 			reveal: false
 		}
