@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
-var mongoose = require('mongoose');
 var format_paper = require('../lib/format_paper');
 var utils = require('../lib/utils');
 

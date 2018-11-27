@@ -5,9 +5,19 @@
 		</div>
 		<form v-if="reveal">
 			<label>What's your first name?</label><br>
-			<input type="text" placeholder="First name" v-model.trim="profile.firstname" required><br>
-			<label>Hey {{ conf_reg.firstname }}, nice to meet you. What's your last name?</label><br>
-			<input type="text" placeholder="Last name" v-model.trim="profile.lastname" required><br>
+			<input type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
+			<label>Hey {{ profile.first_name }}, nice to meet you. What's your last name?</label><br>
+			<input type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
+			<label>Birthday</label><br>
+			<select name="year" v-model="profile.dob_year">
+				<option></option>
+			</select>
+			<select name="month" v-model="profile.dob_month">
+				<option></option>
+			</select>
+			<select name="day" v-model="profile.dob_day">
+				<option></option>
+			</select>
 			<label>Where can we contact you?</label><br>
 			<input type="text" value="email" placeholder="email" v-model.trim="profile.email"><br>
 			<label>Password</label><br>
@@ -26,34 +36,16 @@
 				<option>school</option>
 			</select><br>
 			<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
-			<select name="grade" v-model="conf_reg.grade">
-				<option>Not in school</option>
-				<option>Elementary school</option>
-				<option>Middle school</option>
-				<option>High school</option>
-				<option>Freshman</option>
-				<option>Sophomore</option>
-				<option>Junior</option>
-				<option>Senior</option>
-				<option>Masters</option>
-				<option>PhD</option>
-				<option>Postdoc</option>
+			<select name="grade" v-model="profile.grade">
+				<option v-for="grade in conf_reg.academic_year">{{ grade }}</option>
 			</select><br>
 			<label>Gender</label><br>
-			<select name="gender" v-model="conf_reg.gender">
-				<option>Female</option>
-				<option>Male</option>
-				<option>Non-binary</option>
+			<select name="gender" v-model="profile.gender">
+				<option v-for="gender in conf_reg.gender">{{ gender }}</option>
 			</select><br>
 			<label>What is your ethnicity?</label><br>
-			<select name="ethnicity" v-model="conf_reg.ethnicity">
-				<option>African</option>
-				<option>Asian</option>
-				<option>European</option>
-				<option>Hispanic</option>
-				<option>Multiracial</option>
-				<option>Native American</option>
-				<option>Pacific Islander</option>
+			<select name="ethnicity" v-model="profile.ethnicity">
+				<option v-for="ethnicity in conf_reg.ethnicity">{{ ethnicity }}</option>
 			</select><br>
 			<label>Please list any food you're allergic to:</label><br>
 			<input v-model.trim="conf_reg.food_allergens"></input><br>
@@ -63,12 +55,14 @@
 			<textarea v-model.trim="conf_reg.message"></textarea><br>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
+		<router-link to="/login" tag="button">Login</router-link>
 		<button v-on:click.prevent="reveal_form">Register</button>
 	</div>
 </template>
 
 <script>
 import ProfileService from '../services/ProfileService.js'
+import RegistrationService from '../services/RegistrationService.js'
 
 export default {
 	name: 'signup_form',
@@ -76,17 +70,21 @@ export default {
 	data() {
 		return {
 			conf_reg: {
+				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
+				'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
 				affiliation: '',
-				ethnicity: '',
+				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				food_allergens: '',
-				grade: '',
-				gender: '',
+				gender: ['Female', 'Male', 'Non-binary'],
 				message: ''
 			},
 			profile: {
 				confirm_password: '',
 				email: '',
+				ethnicity: '',
 				first_name: '',
+				gender: '',
+				grade: '',
 				last_name: '',
 				password: ''
 			},
@@ -96,8 +94,13 @@ export default {
 
 	methods: {
 		submit() {
-			ProfileService.createProfile({profile: this.profile, conf_reg: this.conf_reg })
-			.then(function(data){
+			ProfileService.createProfile(this.profile)
+			.then(function(data) {
+				alert(data);
+			});
+
+			RegistrationService.registerConf(this.conf_reg)
+			.then(function(data) {
 				alert(data);
 			});
 		},

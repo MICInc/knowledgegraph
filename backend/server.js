@@ -70,6 +70,7 @@ else
   var content_route = require('./routes/content');
   var search_route = require('./routes/search');
   var profile_route = require('./routes/profile');
+  var conf_route = require('./routes/conference');
 
   app.use(errors);
   app.use(morgan('combined'));
@@ -84,6 +85,7 @@ else
   app.use('/content', content_route);
   app.use('/profile', profile_route);
   app.use('/search', search_route);
+  app.use('/conference', conf_route);
 
 
   app.listen(port);

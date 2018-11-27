@@ -8,8 +8,5 @@ export default {
 		},
 		createProfile(data) {
 			return Api().post('/profile', data)
-		},
-		registerConf(data) {
-			return Api().post('/conference', data)
 		}
 }

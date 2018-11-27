@@ -40,10 +40,10 @@ router.get('/robots.txt', function(req, res, next)
 {
 });
 
-router.get('/signup', function(req, res, next) {
+router.get('/signup', function(req, res) {
 });
 
-router.post('/signup', function(req, res, next) {
+router.post('/signup', function(req, res) {
 	var first_name = req.body.firstname;
 	var last_name = req.body.lastname;
 	var email = req.body.email;
