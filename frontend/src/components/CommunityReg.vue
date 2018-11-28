@@ -28,11 +28,16 @@
 			<label v-if="form.exists">Does {{ organization.name}} have advisors?</label>
 			<label v-else>Does {{ organization.school }} MIC have advisors?</label>
 			<ul>
-				<li><input type="text"></li>
+				<li v-for="(value, index) in organization.advisors">
+					<input :ref="'advisor'+index" type="text" v-model="organization.advisors[index]" 
+					v-on:keyup.enter="add_advisor(index)">
+				</li>
 			</ul>
 			<label>What are your current sources of funding?</label><br>
-			<ul><br>
-				<li><input type="text"></li>
+			<ul>
+				<li v-for="(value, index) in organization.funding" >
+					<input type="text" v-model="organization.funding[index]" v-on:keyup.enter="add_funding(index)">
+				</li>
 			</ul>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
@@ -48,13 +53,15 @@ export default {
 	data() {
 		return {
 			form: {
+				current: '',
 				execs: ['President', 'Vice-president (co-president)', 'Treasurer', 'Secretary'],
 				exists: false,
 				reveal: false,
 				schools: ['MIT', 'Boston University', 'Harvard']
 			},
 			organization: {
-				advisors: [],
+				advisors: [''],
+				funding: [''],
 				members: [],
 				name: '',
 				execs: {
@@ -69,8 +76,16 @@ export default {
 		}
 	},
 	methods: {
+		add_advisor(index) {
+			var next = index + 1;
+			this.organization.advisors.splice(next, 0, '');
+			this.$refs['advisor'+next].focus();
+		},
 		add_exec() {
 
+		},
+		add_funding(index) {
+			this.organization.funding.splice(index+1, 0, '');
 		},
 		reveal_form() {
 			this.form.reveal = !this.form.reveal;

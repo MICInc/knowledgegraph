@@ -12,7 +12,7 @@
 		</nav>
 		<input class="search" type="text" placeholder="search" 
 			v-on:keydown.enter.prevent="search()" 
-			v-model="searchInput">
+			v-model="searchInput" autofocus>
 		<nav>
 			<ul>
 				<li><router-link tag="a" to="/signup">Join</router-link></li>
