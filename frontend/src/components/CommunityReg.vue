@@ -79,7 +79,7 @@ export default {
 		add_advisor(index) {
 			var next = index + 1;
 			this.organization.advisors.splice(next, 0, '');
-			this.$refs['advisor'+next].focus();
+			this.$nextTick(() => this.$refs['advisor'+index].focus());
 		},
 		add_exec() {
 
