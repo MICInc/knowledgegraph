@@ -3,15 +3,17 @@
 		<PageNav></PageNav>
 		<h2>Add a new paper</h2>
 		<form>
-			<label>Title</label>
-			<input type="text" v-model="content.title" required/>
-			<label>Content</label>
-			<textarea v-model="content.content"></textarea>
-			<label>Year</label>
-			<input type="text" v-model.number="content.year" required/>
-			<label>Authors</label>
+			<label>Title</label><br>
+			<input type="text" v-model="content.title" required/><br>
+			<label>Content</label><br>
+			<div v-for="(value, index) in content.info">
+				<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)"></textarea><br>
+			</div>
+			<label>Year</label><br>
+			<input type="text" v-model.number="content.year" required/><br>
+			<label>Authors</label><br>
 			<input type="text" v-model="content.authors" required/>
-		</form>
+		</form><br>
 		<div id="preview">
 			<h3>Preview</h3>
 			<p>Title {{ content.title }}</p>
@@ -22,13 +24,13 @@
 			<textarea v-model="content.citations"></textarea>
 		</div>
 		<div id="tags">
-			<label>tags</label>
-			<input v-model="content.tags"></input>
+			<label>tags</label><br>
+			<input v-model="content.tags"></input><br>
 			<!-- Remove this later. Grab user information from session. -->
-			<label>firstname</label>
-			<input v-model="user.first_name" value="Justin"></input>
-			<label>lastname</label>
-			<input v-model="user.last_name" value="Chen"></input>
+			<label>firstname</label><br>
+			<input v-model="user.first_name" value="Justin"></input><br>
+			<label>lastname</label><br>
+			<input v-model="user.last_name" value="Chen"></input><br>
 		</div>
 		<button v-on:click.prevent="submit">Submit</button>
 	</div>
@@ -53,7 +55,7 @@ export default {
 			content: {
 				authors: [],
 				citations: "",
-				content: "",
+				info: [""],
 				tags: "",
 				title: "",
 				year: 0
@@ -69,6 +71,10 @@ export default {
 			}).then(function(data) {
 				alert(data);
 			});
+		},
+		add_content(index) {
+			var next = index + 1;
+			this.content.info.splice(next, 0, '');
 		}
 	}
 }
@@ -79,6 +85,14 @@ export default {
 .input-row {
 	display: flex;
 	align-items: center;
+}
+
+ul {
+  list-style-type: none;
+}
+
+textarea {
+   resize: none;
 }
 
 </style>

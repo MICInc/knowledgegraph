@@ -27,18 +27,14 @@
 			<label>Advisors</label><br>
 			<label v-if="form.exists">Does {{ organization.name}} have advisors?</label>
 			<label v-else>Does {{ organization.school }} MIC have advisors?</label>
-			<ul>
-				<li v-for="(value, index) in organization.advisors">
-					<input :ref="'advisor'+index" type="text" v-model="organization.advisors[index]" 
-					v-on:keyup.enter="add_advisor(index)">
-				</li>
-			</ul>
+			<div v-for="(value, index) in organization.advisors">
+				<input :ref="'advisor'+index" type="text" v-model="organization.advisors[index]" 
+				v-on:keyup.enter="add_advisor(index)">
+			</div>
 			<label>What are your current sources of funding?</label><br>
-			<ul>
-				<li v-for="(value, index) in organization.funding" >
-					<input type="text" v-model="organization.funding[index]" v-on:keyup.enter="add_funding(index)">
-				</li>
-			</ul>
+			<div v-for="(value, index) in organization.funding" >
+				<input type="text" v-model="organization.funding[index]" v-on:keyup.enter="add_funding(index)">
+			</div>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
 		<button v-on:click.prevent="reveal_form">Start a Community</button>
@@ -101,4 +97,7 @@ export default {
 </script>
 
 <style>
+ul {
+  list-style-type: none;
+}
 </style>
