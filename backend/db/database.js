@@ -3,6 +3,7 @@ mongoose.set('useCreateIndex', true);
 var config  = require('./config/db');
 var User = require('./models/user.js');
 var Paper = require('./models/paper.js');
+var Community = require('./models/community.js');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -16,3 +17,4 @@ db.once('open', function()
 
 module.exports.User = User;
 module.exports.Paper = Paper;
+module.exports.Community = Community;

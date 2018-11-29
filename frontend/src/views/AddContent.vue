@@ -64,6 +64,10 @@ export default {
 	},
 
 	methods: {
+		add_content(index) {
+			var next = index + 1;
+			this.content.info.splice(next, 0, '');
+		},
 		submit() {
 			ContentService.createContent({user: this.user, content: this.content})
 			.then(function(data) {
@@ -71,10 +75,6 @@ export default {
 			}).then(function(data) {
 				alert(data);
 			});
-		},
-		add_content(index) {
-			var next = index + 1;
-			this.content.info.splice(next, 0, '');
 		}
 	}
 }
