@@ -6,6 +6,7 @@
 			<label>Title</label><br>
 			<input type="text" v-model="content.title" required/><br>
 			<label>Content</label><br>
+			<Editor></Editor>
 			<div v-for="(value, index) in content.info">
 				<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)"></textarea><br>
 			</div>
@@ -39,11 +40,13 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import ContentService from '../services/ContentService.js'
+import Editor from '@/components/Editor.vue'
 
 export default {
 	name: 'add-article',
 	components: {
 		PageNav,
+		Editor
 	},
 
 	data () {
