@@ -125,7 +125,7 @@ export default {
 		submit() {
 			CommunityService.submitCommunity(this.org)
 			.then(function(data){
-				alert(data);
+				alert('Submitted community');
 			});
 		}
 	}
