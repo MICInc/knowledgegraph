@@ -41,6 +41,9 @@
 			<div v-for="(value, index) in org.funding">
 				<input type="text" placeholder="Source" v-model.trim="org.funding[index].src">
 				<input type="text" placeholder="$ (USD)" v-model.number="org.funding[index].amount" v-on:keyup.enter="add_funding(index)">
+				<select v-model.trim="org.funding[index].frequency">
+					<option v-for="freq in form.funding_freq">{{ freq }}</option>
+				</select>
 			</div>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
@@ -57,6 +60,7 @@ export default {
 		return {
 			form: {
 				exists: false,
+				funding_freq: ['Annually', 'Semesterly', 'Quarterly', 'Monthly', 'Weekly', 'Daily'],
 				reveal: false,
 				schools: ['MIT', 'Boston University', 'Harvard']
 			},
