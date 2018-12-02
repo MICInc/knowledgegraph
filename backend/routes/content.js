@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
+// var test_db = require('../db/test_db');
 var format_paper = require('../lib/format_paper');
 var utils = require('../lib/utils');
 
@@ -36,12 +37,18 @@ router.get('/', function(req, res) {
 	}
 	else if (req.query.id == -1) {
 		var query = {};
+
 		db.Paper.find(query, function(err, results) {
+			if(err) {
+				console.log(err);
+			}
+
 			var shuff = utils.data.shuffle(results);
 			console.log(shuff);
 			res.send(shuff);
 		});
-	} else {
+	} 
+	else {
 		// return recommended content
 	}
 });

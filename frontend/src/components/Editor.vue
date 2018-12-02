@@ -1,5 +1,7 @@
 <template>
-	<div class="editor"></div>
+	<div id="editor">
+		hello
+	</div>
 </template>
 
 <script>
@@ -21,14 +23,14 @@ export default {
 	},
 
 	mounted() {
-		this.editor = new Quill(this.$ref.editor, {
+		this.editor = new Quill('#editor', {
 			modules: {
 				toolbar: [
 					[{header: [1,2,3,4,false] }],
 					['bold', 'italic', 'underline']
 				]
 			},
-			theme: 'bubble',
+			theme: 'snow',
 			format: ['bold', 'underline', 'header', 'italic']
 		});
 		this.editor.root.innerHTML = this.value;

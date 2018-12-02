@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 module.exports = function(req)
 {
 	var paper = req.body.content;
+	console.log(paper);
 	var user = req.body.user;
 	var authors = paper.authors.split(',');
 	var first_author = authors[0];
@@ -14,10 +15,10 @@ module.exports = function(req)
 		"id": mongoose.Types.ObjectId(),
 		"authors": paper.authors.split(','),
 		"citations": paper.citations.split(','),
-		"content": paper.content,
+		"content": paper.info,
 		"content_type": 'article',
 		"date_created": new Date(),
-		"description": paper.content,
+		"description": paper.info,
 		"first_name": user.first_name,
 		"last_modified": new Date(),
 		"last_name": user.last_name,

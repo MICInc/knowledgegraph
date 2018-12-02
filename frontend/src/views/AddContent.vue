@@ -6,7 +6,7 @@
 			<label>Title</label><br>
 			<input type="text" v-model="content.title" required/><br>
 			<label>Content</label><br>
-			<Editor></Editor>
+			<!-- <Editor></Editor> -->
 			<div v-for="(value, index) in content.info">
 				<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)"></textarea><br>
 			</div>

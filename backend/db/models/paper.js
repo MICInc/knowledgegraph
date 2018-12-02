@@ -1,7 +1,7 @@
+var Content = require('./content');
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 
-var paper_schema = new Schema({
+var paper_schema = new mongoose.Schema({
 	authors: [{
 		type: String,
 		required: true
@@ -10,11 +10,11 @@ var paper_schema = new Schema({
 		type: String,
 		required: true
 	}],
-	content:  {
+	content:  [{
 		type: String,
 		required: true,
 		trim: true
-	},
+	}],
 	content_type: {
 		type: String,
 		required: true
@@ -23,11 +23,11 @@ var paper_schema = new Schema({
 		type: Date,
 		required: true
 	},
-	description: {
+	description: [{
 		type: String,
 		required: true,
 		trim: true
-	},
+	}],
 	first_name:  {
 		type: String,
 		required: true,
@@ -80,20 +80,7 @@ var paper_schema = new Schema({
 	tags: [{
 		type: String,
 		required: true
-	}],
-	title: {
-		type: String,
-		required: true,
-		trim: true
-	},
-	url: {
-		type: String,
-		required: true,
-		trim: true
-	}
-});
+	}]
+}, Content.options);
 
-var conn = mongoose.createConnection('mongodb://localhost:27017/knowledge', { useNewUrlParser: true });
-var Paper = conn.model('paper', paper_schema);
-
-module.exports = Paper;
+module.exports.Paper = Content.model.discriminator('Paper', paper_schema);

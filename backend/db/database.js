@@ -16,5 +16,5 @@ db.once('open', function()
 });
 
 module.exports.User = User;
-module.exports.Paper = Paper;
+module.exports.Paper = Paper.Paper;
 module.exports.Community = Community;
