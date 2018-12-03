@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 module.exports = function(req)
 {
 	var paper = req.body.content;
-	console.log(paper);
 	var user = req.body.user;
 	var authors = paper.authors.split(',');
 	var first_author = authors[0];

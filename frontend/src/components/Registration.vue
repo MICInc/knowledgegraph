@@ -3,7 +3,7 @@
 		<div>
 			Please create an account to register for our conference.
 		</div>
-		<form v-if="reveal">
+		<form v-if="form.show">
 			<label>What's your first name?</label><br>
 			<input type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
 			<label>Hey {{ profile.first_name }}, nice to meet you. What's your last name?</label><br>
@@ -55,6 +55,31 @@
 			<input v-model.trim="conf_reg.food_allergens"></input><br>
 			<label>Opt-in to share your resume with sponsors</label><br>
 			<button v-on:click.prevent="upload_resume">Upload</button><br>
+			Do you need travel and lodging assistance? <button v-on:click.prevent="reveal_travel">Show</button><br>
+			<div id="travel-form" v-if="form.travel">
+				<label>Travel and Lodging Reimbursement Form</label><br>
+				<input type="text" v-model.trim="reimburse.address" placeholder="Receipient's Address"><br>
+				<label>Travel</label><br>
+				<span v-for="(value, index) in reimburse.travel">
+					<input type="text" v-model.trim="reimburse.travel[index].date" placeholder="Date">
+					<input type="text" v-model.trim="reimburse.travel[index].src" placeholder="Source">
+					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
+					<input type="text" v-model.number="reimburse.travel[index].cost" placeholder="Amount ($ USD)"
+					v-on:keyup.enter="add_travel(index)">
+					<button>Add Receipt</button><br>
+				</span><br>
+				<label>Hotel</label><br>
+				<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
+				<input type="text" v-model.trim="reimburse.hotel.nights" placeholder="Nights"><br>
+				<input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
+				<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
+				<input type="text" v-model.number="reimburse.hotel.amount" placeholder="Total amount ($ USD)">
+				<br>
+				<label>Miscellaneous</label><br>
+				<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
+				<input type="text" v-model.trim="reimburse.misc.amount" placeholder="Amount ($ USD)"><br>
+			</div>
+			<label>{{ reimburse.total }}</label>
 			<label>What do you want out of this conference and anything else we should know?</label><br>
 			<textarea v-model.trim="conf_reg.message"></textarea><br>
 			<button v-on:click.prevent="submit">Submit</button>
@@ -88,6 +113,8 @@ export default {
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
 				schools: ['Boston University'],
+				show: false,
+				travel: false,
 				years: years(100, (new Date()).getFullYear())
 			},
 			profile: {
@@ -105,11 +132,37 @@ export default {
 				password: '',
 				school: ''
 			},
-			reveal: false
+			reimburse: {
+				address: '',
+				travel: [{
+					amount: '',
+					date: '',
+					dest: '',
+					src: '',
+					receipts: '',
+				}],
+				hotel: [{
+					amount: 0,
+					check_in: '',
+					check_out: '',
+					name: '',
+					receipts: ''
+				}],
+				misc: [{
+					amout: 0,
+					item: '',
+				}],
+				total: 0
+			}
 		}
 	},
 
 	methods: {
+		add_travel(index) {
+			var next = index + 1;
+			this.reimburse.travel.splice(next, 0, {});
+			this.reimburse.total = this.sum();
+		},
 		submit() {
 			ProfileService.createProfile(this.profile)
 			.then(function(data) {
@@ -121,8 +174,14 @@ export default {
 				alert(data);
 			});
 		},
+		sum() {
+			
+		},
 		reveal_form() {
-			this.reveal = !this.reveal;
+			this.form.show = !this.form.show;
+		},
+		reveal_travel() {
+			this.form.travel = !this.form.travel;
 		},
 		upload_resume() {
 
