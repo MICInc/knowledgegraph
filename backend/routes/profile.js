@@ -15,7 +15,7 @@ router.post('/', function(req, res) {
 
 	user.save()
 	.then(item => {
-		console.log('Saved');
+		console.log('Saved profile');
 		res.send('User saved to db');
 	})
 	.catch(err => {

@@ -14,7 +14,7 @@ router.post('/', function(req, res) {
 
 	community.save()
 	.then(item => {
-		console.log('Saved');
+		console.log('Saved community');
 		res.send('Community');
 	})
 	.catch(err => {

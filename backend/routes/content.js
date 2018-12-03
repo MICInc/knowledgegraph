@@ -17,7 +17,7 @@ router.post('/', function(req, res) {
 
 	article.save()
 	.then(item => {
-		console.log('Saved');
+		console.log('Saved content');
 		res.send('Content saved to knowledge graph');
 	})
 	.catch(err => {

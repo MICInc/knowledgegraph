@@ -3,7 +3,7 @@
 		<div>
 			Please create an account to register for our conference.
 		</div>
-		<form v-if="form.show">
+		<form v-if="form.show" enctype="multipart/form-data">
 			<label>What's your first name?</label><br>
 			<input type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
 			<label>Hey {{ profile.first_name }}, nice to meet you. What's your last name?</label><br>
@@ -66,7 +66,7 @@
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
 					<input type="text" v-model.number="reimburse.travel[index].cost" placeholder="Amount ($ USD)"
 					v-on:keyup.enter="add_travel(index)">
-					<button>Add Receipt</button><br>
+					<input type="file" :ref="'receipt-'+index" multiple v-on:change="reimburse.travel[index].receipt"><br>
 				</span><br>
 				<label>Hotel</label><br>
 				<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
@@ -79,7 +79,7 @@
 				<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
 				<input type="text" v-model.trim="reimburse.misc.amount" placeholder="Amount ($ USD)"><br>
 			</div>
-			<label>{{ reimburse.total }}</label>
+			<label>Total: $ {{ reimburse.total }}</label><br>
 			<label>What do you want out of this conference and anything else we should know?</label><br>
 			<textarea v-model.trim="conf_reg.message"></textarea><br>
 			<button v-on:click.prevent="submit">Submit</button>
@@ -90,6 +90,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import ProfileService from '../services/ProfileService.js'
 import RegistrationService from '../services/RegistrationService.js'
 
@@ -104,7 +105,8 @@ export default {
 		return {
 			conf_reg: {
 				food_allergens: '',
-				message: ''
+				message: '',
+				reimbursements: {}
 			},
 			form: {
 				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
@@ -139,14 +141,14 @@ export default {
 					date: '',
 					dest: '',
 					src: '',
-					receipts: '',
+					receipt: ''
 				}],
 				hotel: [{
 					amount: 0,
 					check_in: '',
 					check_out: '',
 					name: '',
-					receipts: ''
+					receipt: ''
 				}],
 				misc: [{
 					amout: 0,
@@ -163,16 +165,20 @@ export default {
 			this.reimburse.travel.splice(next, 0, {});
 			this.reimburse.total = this.sum();
 		},
-		submit() {
-			ProfileService.createProfile(this.profile)
-			.then(function(data) {
-				alert(data);
-			});
+		create_formdata() {
+			var files = new FormData();
 
-			RegistrationService.registerConf(this.conf_reg)
-			.then(function(data) {
-				alert(data);
-			});
+			for (var i = 0; i < this.reimburse.length; i++) {
+				files.append('receipt-'+i, this.reimburse.travel[i].receipt);
+			}
+			console.log(this.reimburse);
+			return files;
+		},
+		submit() {
+			this.conf_reg.reimbursements = this.create_formdata();
+			console.log(this.conf_reg.reimbursements);
+			Promise.all([ProfileService.createProfile(this.profile), 
+						 RegistrationService.registerConf(this.conf_reg)]);
 		},
 		sum() {
 			
