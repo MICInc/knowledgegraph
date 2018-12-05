@@ -5,27 +5,32 @@
 			<p>
 				Before you start a community checkout our Machine Intelligence Community agreement, general code of conduct, and media kit!
 			</p>
+<!-- 			<button v-on:click.prevent="reveal_form" class="form-button"><span v-if="form.reveal">Close form</span><span v-else>Start a Community</span></button> -->
 		</div>
 		<form id="community-reg-form" v-if="form.reveal">
- 			<label>Where will MIC's next community be?</label><br>
+ 			<label>Where will MIC's next community be?</label>
 			<select v-model.trim="org.school">
 				<option v-for="school in form.schools">{{ school }}</option>
-			</select><br>
-			<label>Does your community already exist?</label><input type="checkbox" value="yes" v-model="form.exists"><br>
+			</select>
+			<label>Does your community already exist?</label><input type="checkbox" value="yes" v-model="form.exists">
 			<div v-if="form.exists">
-				<label>What's the name of your organizaion?</label><br>
-				<input type="text" v-model.trim="org.name"><br>
-				<label>Who will be {{ org.school }} MIC's executives?</label><br>
+				<label>What's the name of your organizaion?</label>
+				<input type="text" class="mar-left" v-model.trim="org.name"><br>
+				<label>Who will be {{ org.name }}'s executives upon joining MIC?</label>
 			</div>
 			<div v-else>
-				<label>Who will be {{ org.name }}'s executives upon joining MIC?</label><br>
+				<label>Who will be {{ org.school }} MIC's executives?</label>
 			</div>
 			<div v-for="(value, index) in org.execs.core">
-				<label>{{ value.position }}</label><br>
-				<input :ref="'exec_first_name'+index" type="text" placeholder="First name" v-model.trim="org.execs.core[index].first_name">
-				<input :ref="'exec_last_name'+index" type="text" placeholder="Last name" v-model.trim="org.execs.core[index].last_name">
+				<div class="name">
+					<label>{{ value.position }}:</label>
+					<div>
+						<input :ref="'exec_first_name'+index" type="text" placeholder="First name" v-model.trim="org.execs.core[index].first_name">
+						<input :ref="'exec_last_name'+index" type="text" placeholder="Last name" v-model.trim="org.execs.core[index].last_name">
+					</div>
+				</div>
 			</div>
-			<label>Additional executives</label><br>
+			<label>Additional executives</label>
 			<div v-for="(value, index) in org.execs.misc">
 				<input :ref="'exec'+index" type="text" placeholder="First name" v-model.trim="org.execs.misc[index].first_name">
 				<input :ref="'exec'+index" type="text" placeholder="Last name" v-model.trim="org.execs.misc[index].last_name" v-on:keyup.enter="add_exec(index)">
@@ -37,7 +42,7 @@
 				<input :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name" v-on:keyup.enter="add_advisor(index)">
 				<!-- <button v-on:click.prevent="remove_advisor(index)">remove</button> -->
 			</div>
-			<label>What are your current sources of funding?</label><br>
+			<label>What are your current sources of funding?</label>
 			<div v-for="(value, index) in org.funding">
 				<input type="text" placeholder="Source" v-model.trim="org.funding[index].src">
 				<input type="text" placeholder="$ (USD)" v-model.number="org.funding[index].amount" v-on:keyup.enter="add_funding(index)">
@@ -123,17 +128,47 @@ export default {
 			this.form.reveal = !this.form.reveal;
 		},
 		submit() {
-			CommunityService.submitCommunity(this.org)
+			CommunityService.submitCommunity(this.validate_form(this.org))
 			.then(function(data){
 				alert('Submitted community');
 			});
+		},
+		validate_form(form) {
+			return form;
 		}
 	}
 }
 </script>
+<style scoped>
+.form-button {
+	margin-bottom: 15px;
+}
 
-<style>
-ul {
-  list-style-type: none;
+form {
+	display: flex;
+	flex-direction: column;
+  align-items: baseline;
+}
+
+.name {
+	display: flex;
+	flex-direction: column;
+}
+
+.mar-left {
+	margin-left: 10px;
+}
+
+label {
+	font-size: 13px;
+	font-weight: 600;
+}
+
+input {
+	margin-right: 10px;
+}
+
+.name div {
+	display: flex;
 }
 </style>

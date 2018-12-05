@@ -1,5 +1,5 @@
 <template>
-	<div id="signup_form">
+	<div id="signup-form">
 		<div>
 			Please create an account to register for our conference.
 		</div>
@@ -8,7 +8,7 @@
 			<input type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
 			<label>Hey {{ profile.first_name }}, nice to meet you. What's your last name?</label><br>
 			<input type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
-			<div>
+			<div class="birthday">
 				<label>Birthday</label><br>
 				<label>Year: </label>
 				<select name="year" v-model.number="profile.dob_year">
@@ -29,7 +29,7 @@
 			<input type="password" value="password" placeholder="password" v-model="profile.password"><br>
 			<label>Confirm password</label><br>
 			<input type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password"><br>
-			<span>Affiliation</span><br>
+			<label>Affiliation</label><br>
 			<ul>
 				<li v-for="affiliation in form.affiliation">
 					<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation">{{ affiliation }}
@@ -84,8 +84,10 @@
 			<textarea v-model.trim="conf_reg.message"></textarea><br>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
-		<router-link to="/login" tag="button">Login</router-link>
-		<button v-on:click.prevent="reveal_form">Register</button>
+		<div v-if="!selected" class="action-buttons">
+			<router-link to="/login" tag="button">Login</router-link>
+			<button v-on:click.prevent="reveal_form">Register</button>
+		</div>
 	</div>
 </template>
 
@@ -103,6 +105,7 @@ export default {
 
 	data() {
 		return {
+			selected: false,
 			conf_reg: {
 				food_allergens: '',
 				message: '',
@@ -166,24 +169,27 @@ export default {
 			this.reimburse.total = this.sum();
 		},
 		create_formdata() {
-			let files = new FormData();
+			var files = new FormData();
 
 			for (var i = 0; i < this.reimburse.length; i++) {
 				files.append('receipt-'+i, this.reimburse.travel[i].receipt);
 			}
-			console.log(files);
+
+			console.log(this.reimburse);
 			return files;
 		},
 		submit() {
 			this.conf_reg.reimbursements = this.create_formdata();
-			RegistrationService.registerConf(this.conf_reg);
-			// Promise.all([ProfileService.createProfile(this.profile), RegistrationService.registerConf(this.conf_reg)]);
+			console.log(this.conf_reg.reimbursements);
+			Promise.all([ProfileService.createProfile(this.profile), 
+						 RegistrationService.registerConf(this.conf_reg)]);
 		},
 		sum() {
 			
 		},
 		reveal_form() {
 			this.form.show = !this.form.show;
+			this.selected = true;
 		},
 		reveal_travel() {
 			this.form.travel = !this.form.travel;
@@ -195,5 +201,49 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+#signup-form {
+	margin-top: 20px;
+}
+
+label {
+	font-size: 13px;
+	font-weight: 600;
+}
+
+input {
+	width: 600px;
+}
+
+ul li input {
+	margin: 5px 10px 0 0;
+	width: 10px;
+}
+
+ul {
+	margin-bottom: 10px;
+}
+
+.action-buttons {
+	margin-top: 10px;
+}
+
+.action-buttons button {
+	margin-right: 10px;
+}
+
+button {
+	margin: 10px 0;
+}
+
+textarea {
+  width: calc(600px - 10px);
+  min-height: 75px;
+}
+
+.birthday select {
+	margin-right: 10px;
+}
+
 </style>

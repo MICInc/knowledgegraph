@@ -1,8 +1,10 @@
 <template>
-	<div id="signup">
+	<div class="signup main">
 		<PageNav></PageNav>
-		<Join></Join>
-		<button v-on:click.prevent="submit">Submit</button>
+		<div class="container">
+			<Join></Join>
+			<button v-on:click.prevent="submit">Submit</button>
+		</div>
 	</div>
 </template>
 
@@ -26,5 +28,22 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+button {
+	margin-top: 5px;
+	width: 300px;
+}
+
 </style>

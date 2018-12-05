@@ -1,21 +1,23 @@
 <template>
-	<div class="content">
+	<div class="content main">
 		<PageNav></PageNav>
-		<h2>{{ content.title }}</h2>
-		<div id="abstract">
-			<h3>Abstract</h3>
-			<p class='abstract'>{{ content.content }}</p>
-			<h3>Authors</h3>
-			<span class='authors' v-for='author in content.authors'>{{ author }}, </span>
-			<h3>Original</h3>
-			<span class='citation'><a v-bind:href='content.original_url'>Original</a></span>
-			<div id='related-work'>
-				<h3>Related work</h3>
-				<ul>
-					<li v-for='work in content.related'>
-						<router-link v-bind:to="'/article/'+work.url">{{ work.title }}</router-link>
-					</li>
-				</ul>
+		<div class="container">
+			<h2>{{ content.title }}</h2>
+			<div id="abstract">
+				<h3>Abstract</h3>
+				<p class='abstract'>{{ content.content[0] }}</p>
+				<h3>Authors</h3>
+				<span class='authors' v-for='author in content.authors'>{{ author }}, </span>
+				<h3>Original</h3>
+				<span class='citation'><a v-bind:href='content.original_url'>Original</a></span>
+				<div id='related-work'>
+					<h3>Related work</h3>
+					<ul>
+						<li v-for='work in content.related'>
+							<router-link v-bind:to="'/article/'+work.url">{{ work.title }}</router-link>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -59,6 +61,18 @@ export default {
 </script>
 
 <style scoped>
+
+.content {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1;
+	border: 1px solid #3c3c3c;
+	border-top: none;
+	padding: 25px;
+}
 
 .input-row {
 	display: flex;

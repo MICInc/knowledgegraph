@@ -1,8 +1,10 @@
 <template>
 	<div class="about">
 		<PageNav></PageNav>
-		<h1>Mission statement</h1>
-		<p>{{ mission.statement }}</p>
+		<div class="container">
+			<h1>Mission statement</h1>
+			<p>{{ mission.statement }}</p>
+		</div>
 	</div>
 </template>
 
@@ -25,3 +27,17 @@ export default {
 	}
 }
 </script>
+
+<style>
+	
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1;
+	width: 1080px;
+}
+
+</style>
