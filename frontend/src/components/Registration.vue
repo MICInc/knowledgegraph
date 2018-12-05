@@ -166,19 +166,18 @@ export default {
 			this.reimburse.total = this.sum();
 		},
 		create_formdata() {
-			var files = new FormData();
+			let files = new FormData();
 
 			for (var i = 0; i < this.reimburse.length; i++) {
 				files.append('receipt-'+i, this.reimburse.travel[i].receipt);
 			}
-			console.log(this.reimburse);
+			console.log(files);
 			return files;
 		},
 		submit() {
 			this.conf_reg.reimbursements = this.create_formdata();
-			console.log(this.conf_reg.reimbursements);
-			Promise.all([ProfileService.createProfile(this.profile), 
-						 RegistrationService.registerConf(this.conf_reg)]);
+			RegistrationService.registerConf(this.conf_reg);
+			// Promise.all([ProfileService.createProfile(this.profile), RegistrationService.registerConf(this.conf_reg)]);
 		},
 		sum() {
 			
