@@ -53,4 +53,35 @@ export default {
 	align-items: center;
 }
 
+.input-row input {
+	width: calc(50% - 8px);
+}
+
+.input-row input:first-child {
+	margin-right: 4px;
+}
+
+.input-row input:last-child {
+	margin-left: 4px;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 300px;
+	margin: 80px 0 0 0;
+}
+
+input {
+	margin: 5px 0;
+	padding: 5px;
+	border: none;
+	background: #535353;
+}
+
+label, a {
+	font-size: 12px;
+}
+
 </style>

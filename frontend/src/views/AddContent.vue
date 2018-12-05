@@ -1,39 +1,41 @@
 <template>
 	<div class="add-article">
 		<PageNav></PageNav>
-		<h2>Add a new paper</h2>
-		<form>
-			<label>Title</label><br>
-			<input type="text" v-model="content.title" required/><br>
-			<label>Content</label><br>
-			<!-- <Editor></Editor> -->
-			<div v-for="(value, index) in content.info">
-				<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)"></textarea><br>
+		<div class="container">
+			<h2>Add a new paper</h2>
+			<form>
+				<label>Title</label><br>
+				<input type="text" v-model="content.title" required/><br>
+				<label>Content</label><br>
+				<!-- <Editor></Editor> -->
+				<div v-for="(value, index) in content.info">
+					<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)"></textarea><br>
+				</div>
+				<label>Year</label><br>
+				<input type="text" v-model.number="content.year" required/><br>
+				<label>Authors</label><br>
+				<input type="text" v-model="content.authors" required/>
+			</form><br>
+			<div id="preview">
+				<h3>Preview</h3>
+				<p>Title {{ content.title }}</p>
+				<p placeholder="Content..." >Content {{ content.content }}</p>
 			</div>
-			<label>Year</label><br>
-			<input type="text" v-model.number="content.year" required/><br>
-			<label>Authors</label><br>
-			<input type="text" v-model="content.authors" required/>
-		</form><br>
-		<div id="preview">
-			<h3>Preview</h3>
-			<p>Title {{ content.title }}</p>
-			<p placeholder="Content..." >Content {{ content.content }}</p>
+			<div id="citations">
+				<h3>Citations</h3>
+				<textarea v-model="content.citations"></textarea>
+			</div>
+			<div id="tags">
+				<label>tags</label><br>
+				<input v-model="content.tags"></input><br>
+				<!-- Remove this later. Grab user information from session. -->
+				<label>firstname</label><br>
+				<input v-model="user.first_name" value="Justin"></input><br>
+				<label>lastname</label><br>
+				<input v-model="user.last_name" value="Chen"></input><br>
+			</div>
+			<button v-on:click.prevent="submit">Submit</button>
 		</div>
-		<div id="citations">
-			<h3>Citations</h3>
-			<textarea v-model="content.citations"></textarea>
-		</div>
-		<div id="tags">
-			<label>tags</label><br>
-			<input v-model="content.tags"></input><br>
-			<!-- Remove this later. Grab user information from session. -->
-			<label>firstname</label><br>
-			<input v-model="user.first_name" value="Justin"></input><br>
-			<label>lastname</label><br>
-			<input v-model="user.last_name" value="Chen"></input><br>
-		</div>
-		<button v-on:click.prevent="submit">Submit</button>
 	</div>
 </template>
 

@@ -1,9 +1,14 @@
 <template>
-	<div class="home">
+	<div class="home main">
 		<PageNav></PageNav>
-		<div class="linked-content-list">
-			<div class="linked-content" v-for="item in content" :key="item.id">
-				<LinkedContent :content="item"></LinkedContent>	
+		<div class="container">
+			<div class="linked-content-list">
+				<div class="linked-content" v-for="item in content" :key="item.id">
+					<LinkedContent :content="item"></LinkedContent>	
+				</div>
+			</div>
+			<div class="side-menu">
+				
 			</div>
 		</div>
 	</div>
@@ -51,12 +56,35 @@ export default {
 
 
 <style scoped>
-	
-.linked-content-list {
-	margin: 25px 0;
+
+.home {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+}
+
+.container {
+	flex: 1;
+	display: flex;
+
+}
+	
+.linked-content-list {
+	flex: 1;
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #3c3c3c;
+	border-top: none;
+}
+
+.linked-content {
+	margin: 5px 0;
+}
+
+.side-menu {
+	width: 300px;
+	border-right: 1px solid #3c3c3c;
+	border-bottom: 1px solid #3c3c3c;
 }
 
 </style>

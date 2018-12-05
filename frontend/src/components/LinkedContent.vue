@@ -1,17 +1,12 @@
 <template>
 	<div class="linked-content-wrapper">
-		<div class="left">
-			<h2><router-link tag="a" v-bind:to="{path: '/content/' + content.url}">{{content.title}}</router-link></h2>
-			<p>{{content.description}}</p>
-			<p>{{content.content}}</p>
-			<div class="actions">
-				<div class="liked">{{content.num_likes}} Liked</div>
-				<div class="shared">{{content.num_shares}} shared</div>
-				<div class="comments">{{content.num_comments}} comments</div>
-			</div>
-		</div>
-		<div class="right">
-			<img src="https://picsum.photos/300/200/?random">
+		<h2><router-link tag="a" v-bind:to="{path: '/content/' + content.url}">{{content.title}}</router-link></h2>
+		<!--<p>{{content.description}}</p>-->
+		<!--<p>{{content.content}}</p>-->
+		<div class="actions">
+			<div class="liked">{{content.num_likes}} Liked</div>
+			<div class="shared">{{content.num_shares}} shared</div>
+			<div class="comments">{{content.num_comments}} comments</div>
 		</div>
 	</div>
 </template>
@@ -28,32 +23,28 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.linked-content-wrapper {
-	display: flex;
-	max-width: 600px;
-	height: 200px;
-	border: 1px solid #000;
-	margin-bottom: 25px;
+h2 {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 500;
 }
 
-.left, .right {
-	width: 300px;
+h2 a {
+	color: #fff;
+	text-decoration: none;
 }
-
-.left {
-	padding: 10px;
-}
-
+	
 .actions {
 	display: flex;
+	font-size: 12px;
 }
 
 .actions div {
-	margin: 5px 5px;
+	margin-right: 10px;
 }
 
-.actions div:first-child {
-	margin-left: 0;
-}
+.actions div:last-child {
+	margin-right: 0;
+} 
 
 </style>
