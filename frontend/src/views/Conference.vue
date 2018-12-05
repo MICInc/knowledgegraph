@@ -1,5 +1,5 @@
 <template>
-	<div class="conference">
+	<div class="conference main">
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Machine Intelligence Conference 2019</h1>
@@ -29,4 +29,14 @@ export default {
 </script>
 
 <style>
+	
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1;
+	width: 1080px;
+}
 </style>

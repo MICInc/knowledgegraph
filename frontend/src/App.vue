@@ -33,6 +33,20 @@ button {
   color: #fff;
 }
 
+textarea, input {
+  background: #535353;
+  border: none;
+  padding: 5px;
+  margin: 10px 0;
+  color: #fff;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 #app {
 	display: flex;
 	flex-direction: column;

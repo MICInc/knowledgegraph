@@ -55,14 +55,9 @@ export default {
 	flex-direction: 
 }
 
-h2 {
-
-}
-
 form {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	width: 300px;
 	margin: 80px 0 0 0;
 }

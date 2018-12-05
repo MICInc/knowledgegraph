@@ -1,38 +1,31 @@
 <template>
-	<div class="add-article">
+	<div class="add-article main">
 		<PageNav></PageNav>
 		<div class="container">
 			<h2>Add a new paper</h2>
 			<form>
-				<label>Title</label><br>
-				<input type="text" v-model="content.title" required/><br>
-				<label>Content</label><br>
+				<input type="text" v-model="content.title" placeholder="Title" required/>
 				<!-- <Editor></Editor> -->
 				<div v-for="(value, index) in content.info">
-					<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)"></textarea><br>
+					<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
 				</div>
-				<label>Year</label><br>
-				<input type="text" v-model.number="content.year" required/><br>
-				<label>Authors</label><br>
-				<input type="text" v-model="content.authors" required/>
-			</form><br>
-			<div id="preview">
+				<input type="text" v-model="content.year" placeholder="Year" required/>
+				<input type="text" v-model="content.authors" placeholder="Authors" required/>
+			</form>
+			<!--<div id="preview">
 				<h3>Preview</h3>
 				<p>Title {{ content.title }}</p>
 				<p placeholder="Content..." >Content {{ content.content }}</p>
-			</div>
+			</div>-->
 			<div id="citations">
-				<h3>Citations</h3>
-				<textarea v-model="content.citations"></textarea>
+				<h3>Additional Info</h3>
+				<textarea v-model="content.citations" placeholder="Citations"></textarea>
 			</div>
 			<div id="tags">
-				<label>tags</label><br>
-				<input v-model="content.tags"></input><br>
+				<input v-model="content.tags" placeholder="Tags"></input>
 				<!-- Remove this later. Grab user information from session. -->
-				<label>firstname</label><br>
-				<input v-model="user.first_name" value="Justin"></input><br>
-				<label>lastname</label><br>
-				<input v-model="user.last_name" value="Chen"></input><br>
+				<input v-model="user.first_name" placeholder="Your First Name"></input>
+				<input v-model="user.last_name" placeholder="Your Last Name"></input>
 			</div>
 			<button v-on:click.prevent="submit">Submit</button>
 		</div>
@@ -63,7 +56,7 @@ export default {
 				info: [""],
 				tags: "",
 				title: "",
-				year: 0
+				year: undefined
 			}
 		}
 	},
@@ -87,17 +80,37 @@ export default {
 
 <style scoped>
 
-.input-row {
+.main {
 	display: flex;
-	align-items: center;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1;
+}
+
+form {
+	width: 600px;
+	display: flex;
+	flex-direction: column;
+}
+
+textarea {
+  width: calc(600px - 10px);
+  min-height: 75px;
+}
+
+input {
+	max-width: calc(600px - 10px);
 }
 
 ul {
   list-style-type: none;
 }
 
-textarea {
-   resize: none;
+#tags {
+	display: flex;
+	flex-direction: column;
 }
 
 </style>

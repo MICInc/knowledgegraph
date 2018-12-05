@@ -81,10 +81,10 @@ export default {
 	margin: 5px 0;
 }
 
-.side-menu {
+/*.side-menu {
 	width: 300px;
 	border-right: 1px solid #3c3c3c;
 	border-bottom: 1px solid #3c3c3c;
-}
+}*/
 
 </style>

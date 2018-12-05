@@ -1,5 +1,5 @@
 <template>
-	<div class="community">
+	<div class="community main">
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Community Page</h1>
@@ -26,3 +26,16 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+	
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1;
+}
+
+</style>
