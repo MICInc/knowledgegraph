@@ -33,6 +33,14 @@ var paper_schema = new mongoose.Schema({
 		required: true,
 		trim: true
 	},
+	hints: [{
+		type: String,
+		trim: true
+	}],
+	images: [{
+		type: String,
+		trim: true
+	}],
 	last_modified: {
 		type: Date,
 		required: true
@@ -69,13 +77,28 @@ var paper_schema = new mongoose.Schema({
 		type: String, // content-ids
 		required: true
 	}],
+	questions: [
+		type: String,
+		required: true,
+		trim: true
+	],
 	saved_by: [{
 		type: String, //user-ids
 		required: true
 	}],
+	solutions: [{
+		type: String,
+		required: true,
+		trim: true
+	}],
 	subseqs: [{
 		type: String, //content-ids
 		required: true
+	}],
+	table_of_contents: [{
+		type: String,
+		required: true,
+		trim: true
 	}],
 	tags: [{
 		type: String,
