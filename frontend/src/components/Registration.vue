@@ -58,6 +58,12 @@
 			<button v-on:click.prevent="upload_resume">Upload</button><br>
 			Do you need travel and lodging assistance? <button v-on:click.prevent="reveal_travel">Show</button><br>
 			<div id="travel-form" v-if="form.travel">
+				<ul id="reimbursement-notice">
+					<li>Completing this form does not guarantee travel or lodging reimbursements.</li>
+					<li>Receipts must be uploaded for this form to be considered complete.</li>
+					<li>Receipts must match the amount requested for reimbursements.</li>
+					<li>Please view your profile for reimbursement status</li>
+				</ul>
 				<label>Travel and Lodging Reimbursement Form</label><br>
 				<input type="text" v-model.trim="reimburse.address" placeholder="Receipient's Address"><br>
 				<label>Travel</label><br>
@@ -272,6 +278,12 @@ textarea {
 
 .birthday select {
 	margin-right: 10px;
+}
+
+#reimbursement-notice {
+	list-style-type: circle;
+	font-size: .9em;
+	margin: 10px 15px;
 }
 
 </style>
