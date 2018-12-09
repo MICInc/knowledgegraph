@@ -39,7 +39,7 @@
 			</ul>
 			<label>What school do you attend?</label><br>
 			<select name="school" v-model="profile.school">
-				<option v-for="school in form.schools">{{ school }}</option>
+				<option v-for="school in form.schools">{{ school.name }}</option>
 			</select><br>
 			<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
 			<select name="grade" v-model="profile.grade">
@@ -108,6 +108,7 @@
 import axios from 'axios'
 import ProfileService from '../services/ProfileService.js'
 import RegistrationService from '../services/RegistrationService.js'
+import institutions from '@/data/schools.json'
 
 var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
@@ -132,7 +133,7 @@ export default {
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
 				months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-				schools: ['Boston University'],
+				schools: institutions,
 				show: false,
 				travel: false,
 				years: years(100, (new Date()).getFullYear())

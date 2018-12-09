@@ -58,6 +58,7 @@
 
 <script>
 import CommunityService from '@/services/CommunityService';
+import institutions from '@/data/schools.json'
 
 export default {
 	name: 'community-reg',
@@ -67,7 +68,7 @@ export default {
 				exists: false,
 				funding_freq: ['Annually', 'Semesterly', 'Quarterly', 'Monthly', 'Weekly', 'Daily'],
 				reveal: false,
-				schools: ['MIT', 'Boston University', 'Harvard']
+				schools: institutions
 			},
 			org: {
 				advisors: [{}],
