@@ -72,20 +72,24 @@
 					<input type="text" v-model.trim="reimburse.travel[index].date" placeholder="Date">
 					<input type="text" v-model.trim="reimburse.travel[index].src" placeholder="Source">
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
-					<input type="text" v-model.number="reimburse.travel[index].cost" placeholder="Amount ($ USD)"
+					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)"
 					v-on:keyup.enter="add_travel(index)">
 					<input type="file" :ref="'receipt-'+index" multiple v-on:change="reimburse.travel[index].receipt"><br>
 				</span><br>
 				<label>Hotel</label><br>
-				<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
-				<input type="text" v-model.trim="reimburse.hotel.nights" placeholder="Nights"><br>
-				<input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
-				<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
-				<input type="text" v-model.number="reimburse.hotel.amount" placeholder="Total amount ($ USD)">
+				<span v-for="(value, index) in reimburse.hotel">
+					<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
+					<input type="text" v-model.trim="reimburse.hotel.nights" placeholder="Nights"><br>
+					<input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
+					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
+					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
+				</span>
 				<br>
 				<label>Miscellaneous</label><br>
-				<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
-				<input type="text" v-model.trim="reimburse.misc.amount" placeholder="Amount ($ USD)"><br>
+				<span v-for="(value, index) in reimburse.misc">
+					<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
+					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
+				</span><br>
 				<label>Total: $ {{ reimburse.total }}</label><br>
 				<button v-on:click.prevent="reveal_travel">Hide</button>
 			</div>
@@ -151,7 +155,7 @@ export default {
 			reimburse: {
 				address: '',
 				travel: [{
-					amount: '',
+					amount: 0,
 					date: '',
 					dest: '',
 					src: '',
@@ -165,7 +169,7 @@ export default {
 					receipt: ''
 				}],
 				misc: [{
-					amout: 0,
+					amount: 0,
 					item: '',
 				}],
 				total: 0
@@ -174,10 +178,13 @@ export default {
 	},
 
 	methods: {
+		add_hotel(index) {
+			var next = index + 1;
+			this.reimburse.hotel.splice(next, 0, {});
+		},
 		add_travel(index) {
 			var next = index + 1;
 			this.reimburse.travel.splice(next, 0, {});
-			this.reimburse.total = this.sum();
 		},
 		create_formdata() {
 			var files = new FormData();
@@ -200,6 +207,9 @@ export default {
 					return 31
 			}
 		},
+		is_string(data) {
+			return (typeof data === 'string' || data instanceof String);
+		},
 		reveal_form() {
 			this.form.show = !this.form.show;
 			this.selected = true;
@@ -208,9 +218,7 @@ export default {
 			this.form.travel = !this.form.travel;
 		},
 		submit() {
-			var v = this.vali_date();
-			console.log('bool:'+v);
-			if(v) {
+			if(this.vali_date()) {
 				this.form.err = '';
 				this.conf_reg.reimbursements = this.create_formdata();
 				Promise.all([ProfileService.createProfile(this.profile), 
@@ -220,8 +228,25 @@ export default {
 				this.form.err = 'Please enter a valid birthday.';
 			}
 		},
-		sum() {
-			
+		sum(data) {
+			var total = 0;
+
+			for (var i = 0; i < data.length; i++) {
+				total += data[i].amount;
+			}
+
+			if (this.is_string(total)) {
+				total = 0;
+			}
+
+			return total;
+		},
+		total() {
+			var travel = this.sum(this.reimburse.travel);
+			var hotel = this.sum(this.reimburse.hotel);
+			var misc = this.sum(this.reimburse.misc);
+
+			this.reimburse.total = travel + hotel + misc;
 		},
 		upload_resume() {
 
