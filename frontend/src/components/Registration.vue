@@ -7,8 +7,9 @@
 		<form v-if="form.show" enctype="multipart/form-data">
 			<label>What's your first name?</label><br>
 			<input type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
-			<label>Hey {{ profile.first_name }}, nice to meet you. What's your last name?</label><br>
+			<label>What's your last name?</label><br>
 			<input type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
+			<label v-if="profile.first_name.length > 0 && profile.last_name.length > 0">Hey {{ profile.first_name }} {{ profile.last_name}}, nice to meet you.</label>
 			<div class="birthday">
 				<label>Birthday</label><br>
 				<label>Month: </label>
