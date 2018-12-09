@@ -2,6 +2,7 @@
 	<div id="signup-form">
 		<div>
 			Please create an account to register for our conference.
+			<p v-if="form.err.length > 0">{{ form.err }}</p>
 		</div>
 		<form v-if="form.show" enctype="multipart/form-data">
 			<label>What's your first name?</label><br>
@@ -10,17 +11,17 @@
 			<input type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
 			<div class="birthday">
 				<label>Birthday</label><br>
-				<label>Year: </label>
-				<select name="year" v-model.number="profile.dob_year">
-					<option v-for="year in form.years">{{ year }}</option>
-				</select>
 				<label>Month: </label>
-				<select name="month" v-model.number="profile.dob_month">
-					<option v-for="(value, index) in 12">{{ value }}</option>
+				<select name="month" v-model="profile.dob_month">
+					<option v-for="(value, index) in form.months">{{ value }}</option>
 				</select>
 				<label>Day: </label>
 				<select name="day" v-model.number="profile.dob_day">
 					<option v-for="(value, index) in 31">{{ value }}</option>
+				</select>
+				<label>Year: </label>
+				<select name="year" v-model.number="profile.dob_year">
+					<option v-for="year in form.years">{{ year }}</option>
 				</select>
 			</div>
 			<label>Where can we contact you?</label><br>
@@ -78,8 +79,9 @@
 				<label>Miscellaneous</label><br>
 				<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
 				<input type="text" v-model.trim="reimburse.misc.amount" placeholder="Amount ($ USD)"><br>
+				<label>Total: $ {{ reimburse.total }}</label><br>
+				<button v-on:click.prevent="reveal_travel">Hide</button>
 			</div>
-			<label>Total: $ {{ reimburse.total }}</label><br>
 			<label>What do you want out of this conference and anything else we should know?</label><br>
 			<textarea v-model.trim="conf_reg.message"></textarea><br>
 			<button v-on:click.prevent="submit">Submit</button>
@@ -115,8 +117,10 @@ export default {
 				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
+				err: '',
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
+				months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 				schools: ['Boston University'],
 				show: false,
 				travel: false,
@@ -178,14 +182,16 @@ export default {
 			console.log(this.reimburse);
 			return files;
 		},
-		submit() {
-			this.conf_reg.reimbursements = this.create_formdata();
-			console.log(this.conf_reg.reimbursements);
-			Promise.all([ProfileService.createProfile(this.profile), 
-						 RegistrationService.registerConf(this.conf_reg)]);
-		},
-		sum() {
-			
+		daysInMonth(month, year) {
+			// original: https://stackoverflow.com/questions/1433030/validate-number-of-days-in-a-given-month/1433119#1433119
+			switch (month) {
+				case 1 :
+					return (year % 4 == 0 && year % 100) || year % 400 == 0 ? 29 : 28;
+				case 8 : case 3 : case 5 : case 10 :
+					return 30;
+				default :
+					return 31
+			}
 		},
 		reveal_form() {
 			this.form.show = !this.form.show;
@@ -194,8 +200,30 @@ export default {
 		reveal_travel() {
 			this.form.travel = !this.form.travel;
 		},
+		submit() {
+			var v = this.vali_date();
+			console.log('bool:'+v);
+			if(v) {
+				this.form.err = '';
+				this.conf_reg.reimbursements = this.create_formdata();
+				Promise.all([ProfileService.createProfile(this.profile), 
+							 RegistrationService.registerConf(this.conf_reg)]);
+			}
+			else {
+				this.form.err = 'Please enter a valid birthday.';
+			}
+		},
+		sum() {
+			
+		},
 		upload_resume() {
 
+		},
+		vali_date() {
+			var year = this.profile.dob_year;
+			var month = this.form.months.indexOf(this.profile.dob_month);
+			var day = this.profile.dob_day;
+			return month >= 0 && month < 12 && day > 0 && day <= this.daysInMonth(month, year)
 		}
 	}
 }

@@ -38,7 +38,6 @@ textarea, input {
   border-width: thin;
   padding: 5px;
   margin: 10px 0;
-  color: #fff;
 }
 
 ul {
