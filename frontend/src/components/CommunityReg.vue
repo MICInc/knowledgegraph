@@ -14,7 +14,7 @@
 			</select>
 			<label>Does your community already exist?</label><input type="checkbox" value="yes" v-model="form.exists">
 			<div v-if="form.exists">
-				<label>What's the name of your organizaion?</label>
+				<label>What's the name of your organizaion?</label><br>
 				<input type="text" class="mar-left" v-model.trim="org.name"><br>
 				<label>Who will be {{ org.name }}'s executives upon joining MIC?</label>
 			</div>

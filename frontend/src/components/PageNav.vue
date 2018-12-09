@@ -53,7 +53,7 @@ header {
 	align-items: center;
 	height: 50px;
 	padding: 0 20px;
-	border-bottom: 1px solid #3c3c3c;
+	border-bottom: 1px solid #EAEAEA;
 }
 
 nav, input {
@@ -83,7 +83,6 @@ nav ul li:first-child {
 
 nav ul li a {
 	text-decoration: none;
-	color: #fff;
 	font-weight: 400;
 	font-size: 14px;
 }
@@ -91,12 +90,9 @@ nav ul li a {
 input.search {
 	height: auto;
 	width: 300px;
-	border: none;
 	border-radius: 3px;
 	padding: 5px 5px;
 	font-size: 12px;
-	background: #535353;
-	color: #fff;
 }
 
 </style>

@@ -13,8 +13,6 @@
 body {
   margin: 0;
   padding: 0;
-  background: #1c1c1c;
-  color: #fff;
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale
@@ -35,8 +33,9 @@ button {
 }
 
 textarea, input {
-  background: #535353;
-  border: none;
+  border-radius: 3px;
+  border-color: #535353;
+  border-width: thin;
   padding: 5px;
   margin: 10px 0;
   color: #fff;
@@ -64,7 +63,7 @@ ul {
 }
 
 #footer p {
-	margin: 10px 0;
+	margin: 10px;
 	font-size: 12px;
 	color: #525252;
 }
