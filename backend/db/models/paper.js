@@ -77,11 +77,11 @@ var paper_schema = new mongoose.Schema({
 		type: String, // content-ids
 		required: true
 	}],
-	questions: [
+	questions: [{
 		type: String,
 		required: true,
 		trim: true
-	],
+	}],
 	saved_by: [{
 		type: String, //user-ids
 		required: true
