@@ -10,7 +10,7 @@
 		<form id="community-reg-form" v-if="form.reveal">
  			<label>Where will MIC's next community be?</label>
 			<select v-model.trim="org.school">
-				<option v-for="school in form.schools">{{ school }}</option>
+				<option v-for="school in form.schools">{{ school.name }}</option>
 			</select>
 			<label>Does your community already exist?</label><input type="checkbox" value="yes" v-model="form.exists">
 			<div v-if="form.exists">

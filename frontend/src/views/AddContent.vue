@@ -12,11 +12,6 @@
 				<input type="text" v-model="content.year" placeholder="Year" required/>
 				<input type="text" v-model="content.authors" placeholder="Authors" required/>
 			</form>
-			<!--<div id="preview">
-				<h3>Preview</h3>
-				<p>Title {{ content.title }}</p>
-				<p placeholder="Content..." >Content {{ content.content }}</p>
-			</div>-->
 			<div id="citations">
 				<h3>Additional Info</h3>
 				<textarea v-model="content.citations" placeholder="Citations"></textarea>
@@ -28,6 +23,11 @@
 				<input v-model="user.last_name" placeholder="Your Last Name"></input>
 			</div>
 			<button v-on:click.prevent="submit">Submit</button>
+		</div>
+		<div class="preview">
+			<h3>Preview</h3>
+			<p>Title {{ content.title }}</p>
+			<p placeholder="Content..." >Content {{ content.content }}</p>
 		</div>
 	</div>
 </template>
@@ -86,7 +86,14 @@ export default {
 }
 
 .container {
-	flex: 1;
+	width: 50%;
+	/*flex: 1;*/
+	float: left;
+}
+
+.preview {
+	width: 50%;
+	float: left;
 }
 
 form {
