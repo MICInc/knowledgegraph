@@ -2,4 +2,5 @@
 !/.gitignore
 *.pyc
 node_modules/
-backend/storage/conference/resumesy
+backend/storage/conference/resume
+backend/storage/profile
