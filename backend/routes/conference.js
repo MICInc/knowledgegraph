@@ -14,4 +14,9 @@ router.post('/resume', function(req, res) {
 	file_handler(req, res, './storage/conference/resumes');
 });
 
+router.post('/receipt', function(req, res) {
+	console.log('uploading receipt:');
+	file_handler(req, res, './storage/conference/receipts');
+});
+
 module.exports = router;

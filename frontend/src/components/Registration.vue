@@ -56,7 +56,7 @@
 			<label>Please list any food you're allergic to:</label><br>
 			<input v-model.trim="conf_reg.food_allergens"></input><br>
 			<label>Opt-in to share your resume with sponsors</label><br>
-			<input type="file" name="resume" multiple v-on:change="upload_file($event)"><br>
+			<input type="file" name="resume" multiple v-on:change="upload_resume($event)"><br>
 			Do you need travel and lodging assistance? <button v-on:click.prevent="reveal_travel">Show</button><br>
 			<div id="travel-form" v-if="form.travel">
 				<ul id="reimbursement-notice">
@@ -74,7 +74,7 @@
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
 					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)"
 					v-on:keyup.enter="add_travel(index)">
-					<input type="file" :ref="'receipt-'+index" multiple v-on:change="reimburse.travel[index].receipt"><br>
+					<input type="file" name="travel-receipt" multiple v-on:change="upload_receipt($event)"><br>
 				</span><br>
 				<label>Hotel</label><br>
 				<span v-for="(value, index) in reimburse.hotel">
@@ -83,12 +83,14 @@
 					<input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
 					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
 					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
+					<input type="file" name="hotel-receipt" multiple v-on:change="upload_receipt($event)"><br>
 				</span>
 				<br>
 				<label>Miscellaneous</label><br>
 				<span v-for="(value, index) in reimburse.misc">
 					<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
 					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
+					<input type="file" name="misc-receipt" multiple v-on:change="upload_receipt($event)"><br>
 				</span><br>
 				<label>Total: $ {{ reimburse.total }}</label><br>
 				<button v-on:click.prevent="reveal_travel">Hide</button>
@@ -249,7 +251,7 @@ export default {
 
 			this.reimburse.total = travel + hotel + misc;
 		},
-		upload_file (event) {
+		upload_file (event, api) {
 			var data = new FormData();
 			var file = event.target.files[0];
 
@@ -263,9 +265,15 @@ export default {
 
 			console.log(typeof data);
 
-			ContentService.uploadFile('/conference/resume', data, config).then(function(data){
+			ContentService.uploadFile(api, data, config).then(function(data){
 				alert(data);
 			});
+		},
+		upload_receipt(event) {
+			this.upload_file(event, '/conference/receipt');
+		},
+		upload_resume (event) {
+			this.upload_file(event, '/conference/resume');
 		},
 		vali_date() {
 			var year = this.profile.dob_year;

@@ -7,8 +7,9 @@ module.exports = function(req, res, dir, keep_ext=true) {
 	form.keepExtensions = keep_ext;
 
 	form.parse(req, function(err, fields, files) {
-		res.writeHead(200, {'content-type': 'text/plain'});
+		res.writeHead(200, {'Content-Type': 'text/plain'});
 		res.write('uploaded');
-		console.log("file name: "+JSON.stringify(files.name));
+		// console.log("file name: "+JSON.stringify(files));
+		console.log(files);
 	});
 }
