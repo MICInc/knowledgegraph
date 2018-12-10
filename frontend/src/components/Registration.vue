@@ -56,7 +56,7 @@
 			<label>Please list any food you're allergic to:</label><br>
 			<input v-model.trim="conf_reg.food_allergens"></input><br>
 			<label>Opt-in to share your resume with sponsors</label><br>
-			<input type="file" name="resume" multiple v-on:change="upload_resume($event)"><br>
+			<input type="file" name="resume" multiple v-on:change="add_file($event, 'resume')"><br>
 			Do you need travel and lodging assistance? <button v-on:click.prevent="reveal_travel">Show</button><br>
 			<div id="travel-form" v-if="form.travel">
 				<ul id="reimbursement-notice">
@@ -74,7 +74,7 @@
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
 					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)"
 					v-on:keyup.enter="add_travel(index)">
-					<input type="file" name="travel-receipt" multiple v-on:change="upload_receipt($event)"><br>
+					<input type="file" name="travel-receipt" multiple v-on:change="add_file($event, 'travel')"><br>
 				</span><br>
 				<label>Hotel</label><br>
 				<span v-for="(value, index) in reimburse.hotel">
@@ -83,14 +83,14 @@
 					<input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
 					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
 					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="hotel-receipt" multiple v-on:change="upload_receipt($event)"><br>
+					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, 'hotel')"><br>
 				</span>
 				<br>
 				<label>Miscellaneous</label><br>
 				<span v-for="(value, index) in reimburse.misc">
 					<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
 					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="misc-receipt" multiple v-on:change="upload_receipt($event)"><br>
+					<input type="file" name="misc-receipt" multiple v-on:change="add_file($event, 'misc')"><br>
 				</span><br>
 				<label>Total: $ {{ reimburse.total }}</label><br>
 				<button v-on:click.prevent="reveal_travel">Hide</button>
@@ -125,8 +125,7 @@ export default {
 			conf_reg: {
 				food_allergens: '',
 				message: '',
-				reimbursements: {},
-				resume: ''
+				resume: {}
 			},
 			form: {
 				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
@@ -163,24 +162,41 @@ export default {
 					date: '',
 					dest: '',
 					src: '',
-					receipt: ''
+					receipts: {}
 				}],
 				hotel: [{
 					amount: 0,
 					check_in: '',
 					check_out: '',
 					name: '',
-					receipt: ''
+					receipts: {}
 				}],
 				misc: [{
 					amount: 0,
 					item: '',
+					receipts: {}
 				}],
 				total: 0
 			}
 		}
 	},
 	methods: {
+		add_file(event, type) {
+			var file = event.target.files[0];
+
+			if(type == 'resume') {
+				this.conf_reg.push(file);
+			}
+			else if(type == 'travel') {
+				this.reimburse.travel.push(file);
+			}
+			else if(type == 'hotel') {
+				this.reimburse.hotel.push(file);
+			}
+			else {
+				this.reimburse.misc.push(file);
+			}
+		},
 		add_hotel(index) {
 			var next = index + 1;
 			this.reimburse.hotel.splice(next, 0, {});
@@ -190,14 +206,21 @@ export default {
 			this.reimburse.travel.splice(next, 0, {});
 		},
 		create_formdata() {
-			var files = new FormData();
-
-			for (var i = 0; i < this.reimburse.length; i++) {
-				files.append('receipt-'+i, this.reimburse.travel[i].receipt);
+			var data = new FormData();
+			
+			for(var i = 0; i < this.reimburse.travel.length; i++) {
+				data.append('travel-'+i, this.reimburse.travel[i]);
+			}
+			
+			for(var i = 0; i < this.reimburse.hotel.length; i++) {
+				data.append('hotel-'+i, this.reimburse.hotel[i]);
 			}
 
-			console.log(this.reimburse);
-			return files;
+			for(var i = 0; i < this.reimburse.misc.length; i++) {
+				data.append('misc-'+i, this.reimburse.misc[i]);
+			}
+
+			return data;
 		},
 		daysInMonth(month, year) {
 			// original: https://stackoverflow.com/questions/1433030/validate-number-of-days-in-a-given-month/1433119#1433119
@@ -221,11 +244,20 @@ export default {
 			this.form.travel = !this.form.travel;
 		},
 		submit() {
+			// Add more valdation here
 			if(this.vali_date()) {
 				this.form.err = '';
-				this.conf_reg.reimbursements = this.create_formdata();
+				var files = this.create_formdata();
+
+				var config = {
+					header: {
+						'Content-Type' : 'multipart/form-data'
+					}
+				}
+
 				Promise.all([ProfileService.createProfile(this.profile), 
-							 RegistrationService.registerConf(this.conf_reg)]);
+							 RegistrationService.registerConf(this.conf_reg),
+							 ContentService.uploadFile('/conference/upload', files, config)]);
 			}
 			else {
 				this.form.err = 'Please enter a valid birthday.';
@@ -250,30 +282,6 @@ export default {
 			var misc = this.sum(this.reimburse.misc);
 
 			this.reimburse.total = travel + hotel + misc;
-		},
-		upload_file (event, api) {
-			var data = new FormData();
-			var file = event.target.files[0];
-
-			data.append('file', file);
-
-			var config = {
-				header : {
-					'Content-Type' : 'multipart/form-data'
-				}
-			}
-
-			console.log(typeof data);
-
-			ContentService.uploadFile(api, data, config).then(function(data){
-				alert(data);
-			});
-		},
-		upload_receipt(event) {
-			this.upload_file(event, '/conference/receipt');
-		},
-		upload_resume (event) {
-			this.upload_file(event, '/conference/resume');
 		},
 		vali_date() {
 			var year = this.profile.dob_year;

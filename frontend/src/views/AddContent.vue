@@ -2,8 +2,10 @@
 	<div class="add-article main">
 		<PageNav></PageNav>
 		<div class="container">
-			<h2>Add a new paper</h2>
+			<h2>Add a new concept</h2>
 			<form>
+				<p>Upload content for parsing</p>
+				<input type="file" name="paper-upload" multiple v-on:change="upload_file($event)"><br>
 				<input type="text" v-model="content.title" placeholder="Title" required/>
 				<!-- <Editor></Editor> -->
 				<div v-for="(value, index) in content.info">
@@ -72,6 +74,22 @@ export default {
 				return data.json();
 			}).then(function(data) {
 				alert(data);
+			});
+		},
+		upload_file(event) {
+			var data = new FormData();
+			var file = event.target.files[0];
+
+			data.append('file', file);
+
+			var config = {
+				header: {
+					'Content-Type': 'multipart/form-data'
+				}
+			}
+
+			ContentService.uploadFile('/content/parse', data, config).then(function(data) {
+				console.log(data);
 			});
 		}
 	}

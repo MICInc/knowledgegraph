@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
-// var test_db = require('../db/test_db');
 var format_paper = require('../lib/format_paper');
 var utils = require('../lib/utils');
+var file_handler = require('../lib/file_handler');
 
 router.post('/', function(req, res) {	
 	var data = format_paper(req);
@@ -24,6 +24,12 @@ router.post('/', function(req, res) {
 		console.log(err);
 		res.status(400).send('Save error');
 	});
+});
+
+router.post('/parse', function(req, res) {
+	console.log('parsing paper');
+	file_handler(req, res, './storage/content/new');
+	// call pdf parsing code here
 });
 
 router.get('/', function(req, res) {
