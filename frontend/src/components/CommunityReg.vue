@@ -38,7 +38,7 @@
 			<label v-if="form.exists">Does {{ org.name }} have advisors?</label>
 			<label v-else>Does {{ org.school }} MIC have advisors?</label>
 			<div v-for="(value, index) in org.advisors">
-				<input :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
+				<input v-autofocus :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
 				<input :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name" v-on:keyup.enter="add_advisor(index)">
 				<!-- <button v-on:click.prevent="remove_advisor(index)">remove</button> -->
 			</div>
@@ -103,6 +103,9 @@ export default {
 			}
 		}
 	},
+	// directives:{
+	// 	autofocus: autofocus
+	// },
 	methods: {
 		add_advisor(index) {
 			var next = index + 1;

@@ -56,7 +56,7 @@
 			<label>Please list any food you're allergic to:</label><br>
 			<input v-model.trim="conf_reg.food_allergens"></input><br>
 			<label>Opt-in to share your resume with sponsors</label><br>
-			<button v-on:click.prevent="upload_resume">Upload</button><br>
+			<input type="file" name="resume" multiple v-on:change="upload_file($event)"><br>
 			Do you need travel and lodging assistance? <button v-on:click.prevent="reveal_travel">Show</button><br>
 			<div id="travel-form" v-if="form.travel">
 				<ul id="reimbursement-notice">
@@ -108,6 +108,7 @@
 import axios from 'axios'
 import ProfileService from '../services/ProfileService.js'
 import RegistrationService from '../services/RegistrationService.js'
+import ContentService from '@/services/ContentService.js'
 import institutions from '@/data/schools.json'
 
 var years = function range(size, today) {
@@ -116,14 +117,14 @@ var years = function range(size, today) {
 
 export default {
 	name: 'signup_form',
-
 	data() {
 		return {
 			selected: false,
 			conf_reg: {
 				food_allergens: '',
 				message: '',
-				reimbursements: {}
+				reimbursements: {},
+				resume: ''
 			},
 			form: {
 				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
@@ -177,7 +178,6 @@ export default {
 			}
 		}
 	},
-
 	methods: {
 		add_hotel(index) {
 			var next = index + 1;
@@ -249,8 +249,23 @@ export default {
 
 			this.reimburse.total = travel + hotel + misc;
 		},
-		upload_resume() {
+		upload_file (event) {
+			var data = new FormData();
+			var file = event.target.files[0];
 
+			data.append('file', file);
+
+			var config = {
+				header : {
+					'Content-Type' : 'multipart/form-data'
+				}
+			}
+
+			console.log(typeof data);
+
+			ContentService.uploadFile('/conference/resume', data, config).then(function(data){
+				alert(data);
+			});
 		},
 		vali_date() {
 			var year = this.profile.dob_year;

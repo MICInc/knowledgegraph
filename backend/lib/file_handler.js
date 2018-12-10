@@ -9,6 +9,6 @@ module.exports = function(req, res, dir, keep_ext=true) {
 	form.parse(req, function(err, fields, files) {
 		res.writeHead(200, {'content-type': 'text/plain'});
 		res.write('uploaded');
-		console.log("file name: "+JSON.stringify(files.fileUploaded.name));
+		console.log("file name: "+JSON.stringify(files.name));
 	});
 }

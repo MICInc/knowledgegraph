@@ -11,5 +11,8 @@ export default {
 		},
 		editContent(data) {
 			return Api().post('/content/edit', data)
+		},
+		uploadFile(uri, data, config) {
+			return Api().post(uri, data, config)
 		}
 }
