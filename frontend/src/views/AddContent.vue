@@ -2,29 +2,32 @@
 	<div class="add-article main">
 		<PageNav></PageNav>
 		<div class="container">
-			<h2>Add a new concept</h2>
+			<!-- <h2 v-if="bibtex.values.title.length == 0">Article Title</h2>
+			<h2 v-else>{{ bibtex.values.title }}</h2> -->
 			<form>
-				<p>Upload content for parsing</p>
-				<input type="file" name="paper-upload" multiple v-on:change="upload_file($event)"><br>
-				<input type="text" v-model="content.title" placeholder="Title" required/>
+				<input id="title" type="text" v-model="bibtex.values.title" v-on:blur="add_bibtex('title')" placeholder="Title"/>
+				<input type="text" v-model="bibtex.values.author" v-on:blur="add_bibtex('author')" placeholder="Co-authors"/>
+				<div v-for="(paper, index) in display.papers">
+					{{ paper }}
+				</div>
 				<!-- <Editor></Editor> -->
 				<div v-for="(value, index) in content.info">
 					<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
 				</div>
-				<input type="text" v-model="content.year" placeholder="Year" required/>
-				<input type="text" v-model="content.authors" placeholder="Authors" required/>
 			</form>
 			<div id="citations">
 				<h3>Additional Info</h3>
-				<textarea v-model="content.citations" placeholder="Citations"></textarea>
+				<div class="upload">
+					Upload content for parsing:<br>
+					<input type="file" name="paper-upload" multiple v-on:change="parse_file($event)"><br>
+				</div>
+				<textarea v-model="content.citations" placeholder="Citations"></textarea><br>
+				<h4>BibTeX citation</h4>
+				<p>{{ bibtex.to_string }}</p>
 			</div>
 			<div id="tags">
 				<input v-model="content.tags" placeholder="Tags"></input>
-				<!-- Remove this later. Grab user information from session. -->
-				<input v-model="user.first_name" placeholder="Your First Name"></input>
-				<input v-model="user.last_name" placeholder="Your Last Name"></input>
 			</div>
-			<button v-on:click.prevent="submit">Submit</button>
 		</div>
 		<div class="preview">
 			<h3>Preview</h3>
@@ -45,42 +48,102 @@ export default {
 		PageNav,
 		Editor
 	},
-
+	beforeDestroy() {
+		this.save();
+	},
 	data () {
 		return {
+			bibtex: {
+				properties: [],
+				values: {
+					address: "",
+					annotate: "",
+					author: "",
+					booktitle: "",
+					chapter: "",
+					crossref: "",
+					doi: "",
+					edition: "",
+					editor: "",
+					howpublished: "",
+					institution: "",
+					journal: "",
+					key: "",
+					month: "",
+					note: "",
+					number: "",
+					organization: "",
+					pages: "",
+					publisher: "",
+					school: "",
+					series: "",
+					title: "",
+					type: "@article",
+					volume: "",
+					year: ""
+				},
+				to_string: "",
+			},
+			content: {
+				coauthors: [""],
+				citations: "",
+				date: new Date(),
+				info: [""],
+				tags: "",
+				title: ""
+			},
+			display: {
+				papers: []
+			},
 			user: {
 				first_name: "",
 				last_name: ""
-			},
-			content: {
-				authors: [],
-				citations: "",
-				info: [""],
-				tags: "",
-				title: "",
-				year: undefined
 			}
 		}
 	},
 
 	methods: {
+		add_bibtex(property) {
+			var index = this.bibtex.properties.indexOf(property);
+			
+			if(index == -1) {
+				this.bibtex.properties.push(property);
+			}
+			else {
+				this.bibtex.properties.splice(index, 1);
+			}
+
+			this.bibtex_to_string();
+		},
 		add_content(index) {
 			var next = index + 1;
 			this.content.info.splice(next, 0, '');
 		},
-		submit() {
-			ContentService.createContent({user: this.user, content: this.content})
-			.then(function(data) {
-				return data.json();
-			}).then(function(data) {
-				alert(data);
-			});
-		},
-		upload_file(event) {
-			var data = new FormData();
-			var file = event.target.files[0];
+		bibtex_to_string() {
+			var bib = this.bibtex.values.type+'{';
+			var properties = this.bibtex.properties;
 
-			data.append('file', file);
+			for(var i = 0; i < properties.length; i++) {
+				var p = properties[i];
+				console.log(p)
+				bib += p + '= {' + this.bibtex.values[p] + '}';
+
+				if(i+1 < properties.length) {
+					bib += ',';
+				}
+			}
+			
+			bib += '}';
+			this.bibtex.to_string = bib;
+		},
+		parse_file(event) {
+			var data = new FormData();
+
+			for(var i = 0; i < event.target.files.length; i++) {
+				var paper = event.target.files[i];
+				data.append('file-'+i, paper);
+				this.display.papers.push(paper.name);
+			}
 
 			var config = {
 				header: {
@@ -89,7 +152,15 @@ export default {
 			}
 
 			ContentService.uploadFile('/content/parse', data, config).then(function(data) {
-				console.log(data);
+				alert(data.json());
+			});
+		},
+		save() {
+			ContentService.createContent({user: this.user, content: this.content})
+			.then(function(data) {
+				return data.json();
+			}).then(function(data) {
+				alert(data);
 			});
 		}
 	}
@@ -136,6 +207,14 @@ ul {
 #tags {
 	display: flex;
 	flex-direction: column;
+}
+
+#title {
+	font-size: 2em;
+}
+
+.upload * {
+	font-size: 0.7em;
 }
 
 </style>

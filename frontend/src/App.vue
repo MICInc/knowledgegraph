@@ -37,11 +37,17 @@ button {
 }
 
 textarea, input {
-  border-radius: 3px;
-  border-color: #535353;
-  border-width: thin;
+  border: 0px;
+  outline: 0px;
+  background: transparent;
   padding: 5px;
   margin: 10px 0;
+  resize: none;
+  font-size: 1.5em;
+}
+
+textarea:focus, input:focus {
+  outline: none;
 }
 
 ul {
