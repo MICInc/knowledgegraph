@@ -1,13 +1,16 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../db/database');
-var format_paper = require('../lib/format_paper');
-var utils = require('../lib/utils');
+var format_content = require('../lib/format_content');
 var file_handler = require('../lib/file_handler');
+var utils = require('../lib/utils');
+var db = require('../db/database');
 
-router.post('/', function(req, res) {	
-	var data = format_paper(req);
-	var article = new db.Paper(data);
+router.post('/', function(req, res) {
+	console.log('Creating content!');
+	console.log(req.body);
+
+	var data = format_content(req);
+	var article = new db.Content(data);
 
 	article.collection.dropIndexes(function(err, results) {
 		if(err) {
@@ -36,7 +39,7 @@ router.get('/', function(req, res) {
 	if (req.query.url) {
 		var query = { url: req.query.url };
 
-		db.Paper.find(query, function(err, results) {
+		db.Content.find(query, function(err, results) {
 			console.log(results);
 			res.send(results);
 		});
@@ -44,7 +47,7 @@ router.get('/', function(req, res) {
 	else if (req.query.id == -1) {
 		var query = {};
 
-		db.Paper.find(query, function(err, results) {
+		db.Content.find(query, function(err, results) {
 			if(err) {
 				console.log(err);
 			}

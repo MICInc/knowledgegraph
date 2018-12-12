@@ -42,16 +42,18 @@ import PageNav from '@/components/PageNav.vue'
 import ContentService from '../services/ContentService.js'
 import Editor from '@/components/Editor.vue'
 
+window.onbeforeunload = function(){
+    return "Are you sure you want to close the window?";
+}
+
 export default {
 	name: 'add-article',
-	beforeDestroy() {
-		this.save();
-	},
 	components: {
 		PageNav,
 		Editor
 	},
 	created () {
+		window.addEventListener('beforeunload', this.save);
 		this.bibtex_to_string();
 	},
 	data () {
@@ -89,23 +91,21 @@ export default {
 				to_string: "",
 			},
 			content: {
-				coauthors: [""],
 				citations: "",
 				date: new Date(),
 				info: [""],
+				last_modified: undefined,
 				tags: "",
-				title: ""
 			},
 			display: {
 				papers: []
 			},
 			user: {
-				first_name: "",
-				last_name: ""
+				first_name: "Justin",
+				last_name: "Chen"
 			}
 		}
 	},
-
 	methods: {
 		add_bibtex(property) {
 			var index = this.bibtex.properties.indexOf(property);
@@ -177,13 +177,18 @@ export default {
 			});
 		},
 		save() {
-			ContentService.createContent({user: this.user, content: this.content})
+			this.content.last_modified = new Date();
+
+			ContentService.createContent({user: this.user, content: this.content, bibtex: this.bibtex})
 			.then(function(data) {
 				return data.json();
 			}).then(function(data) {
 				alert(data);
 			});
 		}
+	},
+	ready: function() {
+		Vue.util.on(window, 'beforeunload', this.save, false);
 	}
 }
 </script>
