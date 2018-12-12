@@ -6,8 +6,10 @@ var utils = require('../lib/utils');
 var db = require('../db/database');
 
 router.post('/', function(req, res) {
-	console.log('Creating content!');
-	console.log(req.body);
+	console.log('saving content');
+	/*
+	Todo: save to user's profile
+	*/
 
 	var data = format_content(req);
 	var article = new db.Content(data);

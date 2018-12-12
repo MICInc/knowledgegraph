@@ -2,8 +2,7 @@
 	<div class="add-article main">
 		<PageNav></PageNav>
 		<div class="container">
-			<!-- <h2 v-if="bibtex.values.title.length == 0">Article Title</h2>
-			<h2 v-else>{{ bibtex.values.title }}</h2> -->
+			<button>Publish</button>
 			<form>
 				<input id="title" type="text" v-model="bibtex.values.title" v-on:blur="add_bibtex('title')" placeholder="Title"/>
 				<input type="text" v-model="bibtex.values.author" v-on:blur="add_bibtex('author')" placeholder="Co-authors"/>
@@ -28,9 +27,11 @@
 			<div id="tags">
 				<input v-model="content.tags" placeholder="Tags"></input>
 			</div>
+			<button>Publish</button>
 		</div>
 		<div class="preview">
 			<h3>Preview</h3>
+			<button>Publish</button>
 			<p>Title {{ content.title }}</p>
 			<p placeholder="Content..." >Content {{ content.content }}</p>
 		</div>
