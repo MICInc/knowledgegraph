@@ -13,9 +13,8 @@ export default {
 			return Api().post('/content/edit', data)
 		},
 		getPaperInfo(name) {
-			var api = 'http://export.arxiv.org/api/query?search_query=all:1812.03170&start=0&max_results=1';
-			return Api().get(api, );
-			1812.03170
+			// var api = 'http://export.arxiv.org/api/query?search_query=all:1812.03170&start=0&max_results=1';
+			// return Api().get(api, );
 		},
 		uploadFile(uri, data, config) {
 			return Api().post(uri, data, config)

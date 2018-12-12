@@ -44,17 +44,21 @@ import Editor from '@/components/Editor.vue'
 
 export default {
 	name: 'add-article',
+	beforeDestroy() {
+		this.save();
+	},
 	components: {
 		PageNav,
 		Editor
 	},
-	beforeDestroy() {
-		this.save();
+	created () {
+		this.bibtex_to_string();
 	},
 	data () {
 		return {
 			bibtex: {
-				properties: [],
+				name: "",
+				properties: ["year"],
 				values: {
 					address: "",
 					annotate: "",
@@ -80,7 +84,7 @@ export default {
 					title: "",
 					type: "@article",
 					volume: "",
-					year: ""
+					year: (new Date()).getFullYear()
 				},
 				to_string: "",
 			},
@@ -105,11 +109,11 @@ export default {
 	methods: {
 		add_bibtex(property) {
 			var index = this.bibtex.properties.indexOf(property);
-			
-			if(index == -1) {
+
+			if(index < 0) {
 				this.bibtex.properties.push(property);
 			}
-			else {
+			else if(this.bibtex.values[property].length == 0) {
 				this.bibtex.properties.splice(index, 1);
 			}
 
@@ -121,15 +125,32 @@ export default {
 		},
 		bibtex_to_string() {
 			var bib = this.bibtex.values.type+'{';
-			var properties = this.bibtex.properties;
+			var properties = this.bibtex.properties.sort();
+			var values = this.bibtex.values;
+
+			if(this.bibtex.name.length == 0 && values.author.length > 0 && values.title.length > 0) {
+				var authors = values.author.split(' ');
+				var auth = '';
+
+				if(authors.length > 1) {
+					auth = authors[1];
+				}
+				else {
+					auth = authors[0];
+				}
+
+				this.bibtex.name = (auth + values.year + values.title.split(' ')[0]).toLowerCase();
+			}
+
+			bib += this.bibtex.name+', ';
 
 			for(var i = 0; i < properties.length; i++) {
 				var p = properties[i];
-				console.log(p)
+				console.log(p);
 				bib += p + '= {' + this.bibtex.values[p] + '}';
 
 				if(i+1 < properties.length) {
-					bib += ',';
+					bib += ', ';
 				}
 			}
 			
