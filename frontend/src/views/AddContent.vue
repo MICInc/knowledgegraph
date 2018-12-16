@@ -202,8 +202,8 @@ export default {
 }
 
 .container {
-	width: 50%;
-	/*flex: 1;*/
+	/*width: 50%;*/
+	flex: 1;
 	float: left;
 }
 

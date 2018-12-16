@@ -125,7 +125,7 @@ export default {
 			conf_reg: {
 				food_allergens: '',
 				message: '',
-				resume: {}
+				resume: undefined
 			},
 			form: {
 				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
@@ -176,7 +176,7 @@ export default {
 					item: '',
 					receipts: {}
 				}],
-				total: 0
+				total: '0'
 			}
 		}
 	},
@@ -185,7 +185,7 @@ export default {
 			var file = event.target.files[0];
 
 			if(type == 'resume') {
-				this.conf_reg.push(file);
+				this.conf_reg.resume = file;
 			}
 			else if(type == 'travel') {
 				this.reimburse.travel.push(file);
@@ -243,6 +243,9 @@ export default {
 		reveal_travel() {
 			this.form.travel = !this.form.travel;
 		},
+		round(amount) {
+			return parseFloat(Math.round(amount * 100) / 100);
+		},
 		submit() {
 			// Add more valdation here
 			if(this.vali_date()) {
@@ -267,7 +270,7 @@ export default {
 			var total = 0;
 
 			for (var i = 0; i < data.length; i++) {
-				total += data[i].amount;
+				total += this.round(data[i].amount);
 			}
 
 			if (this.is_string(total)) {
@@ -281,7 +284,7 @@ export default {
 			var hotel = this.sum(this.reimburse.hotel);
 			var misc = this.sum(this.reimburse.misc);
 
-			this.reimburse.total = travel + hotel + misc;
+			this.reimburse.total = (travel + hotel + misc).toFixed(2);;
 		},
 		vali_date() {
 			var year = this.profile.dob_year;

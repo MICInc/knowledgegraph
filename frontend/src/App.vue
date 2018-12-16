@@ -36,6 +36,11 @@ button {
   color: #fff;
 }
 
+button:hover {
+  background: #4b59a3;
+  cursor: pointer;
+}
+
 textarea, input {
   border: 0px;
   outline: 0px;
