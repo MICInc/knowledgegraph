@@ -171,19 +171,19 @@ export default {
 					check_in: '',
 					check_out: '',
 					name: '',
-					receipt: {}
+					receipt: undefined
 				}],
 				misc: [{
 					amount: 0,
 					item: '',
-					receipt: {}
+					receipt: undefined
 				}],
 				total: '0'
 			}
 		}
 	},
 	methods: {
-		add_file(event, type, index) {
+		add_file(event, type) {
 			var file = event.target.files[0];
 
 			if(type == 'resume') {
@@ -226,6 +226,8 @@ export default {
 				data.append('misc-'+i, this.reimburse.misc[i]);
 			}
 
+			data.append(this.conf_reg);
+
 			return data;
 		},
 		daysInMonth(month, year) {
@@ -256,7 +258,6 @@ export default {
 			// Add more valdation here
 			if(this.vali_date()) {
 				this.form.err = '';
-				var files = this.create_formdata();
 
 				var config = {
 					header: {
@@ -264,9 +265,13 @@ export default {
 					}
 				}
 
-				Promise.all([ProfileService.createProfile(this.profile), 
-							 RegistrationService.registerConf(this.conf_reg),
-							 ContentService.uploadFile('/conference/upload', files, config)]);
+				ContentService.uploadFile('/conference/register', this.create_formdata(), config).then(function(data) {
+					console.log(data);
+				});
+
+				ProfileService.createProfile(this.profile).then(function(data) {
+					console.log(data);
+				});
 			}
 			else {
 				this.form.err = 'Please enter a valid birthday.';
