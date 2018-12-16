@@ -72,10 +72,10 @@
 					<input type="text" v-model.trim="reimburse.travel[index].date" placeholder="Date">
 					<input type="text" v-model.trim="reimburse.travel[index].src" placeholder="Source">
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
-					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)"
-					v-on:keyup.enter="add_travel(index)">
+					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="travel-receipt" multiple v-on:change="add_file($event, 'travel')"><br>
 				</span><br>
+				<button v-on:click.prevent="extend_form('travel')">+</button><br>
 				<label>Hotel</label><br>
 				<span v-for="(value, index) in reimburse.hotel">
 					<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
@@ -84,7 +84,8 @@
 					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
 					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, 'hotel')"><br>
-				</span>
+				</span><br>
+				<button v-on:click.prevent="extend_form('hotel')">+</button><br>
 				<br>
 				<label>Miscellaneous</label><br>
 				<span v-for="(value, index) in reimburse.misc">
@@ -92,6 +93,7 @@
 					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="misc-receipt" multiple v-on:change="add_file($event, 'misc')"><br>
 				</span><br>
+				<button v-on:click.prevent="extend_form('misc')">+</button><br>
 				<label>Total: $ {{ reimburse.total }}</label><br>
 				<button v-on:click.prevent="reveal_travel">Hide</button>
 			</div>
@@ -162,48 +164,52 @@ export default {
 					date: '',
 					dest: '',
 					src: '',
-					receipts: {}
+					receipt: undefined
 				}],
 				hotel: [{
 					amount: 0,
 					check_in: '',
 					check_out: '',
 					name: '',
-					receipts: {}
+					receipt: {}
 				}],
 				misc: [{
 					amount: 0,
 					item: '',
-					receipts: {}
+					receipt: {}
 				}],
 				total: '0'
 			}
 		}
 	},
 	methods: {
-		add_file(event, type) {
+		add_file(event, type, index) {
 			var file = event.target.files[0];
 
 			if(type == 'resume') {
 				this.conf_reg.resume = file;
 			}
 			else if(type == 'travel') {
-				this.reimburse.travel.push(file);
+				this.reimburse.travel.receipt = file;
 			}
 			else if(type == 'hotel') {
-				this.reimburse.hotel.push(file);
+				this.reimburse.hotel.receipt = file;
 			}
 			else {
-				this.reimburse.misc.push(file);
+				this.reimburse.misc.receipt = file;
 			}
 		},
-		add_hotel(index) {
-			var next = index + 1;
-			this.reimburse.hotel.splice(next, 0, {});
-		},
-		add_travel(index) {
-			var next = index + 1;
-			this.reimburse.travel.splice(next, 0, {});
+		extend_form(type) {
+
+			if(type == 'travel') {
+				this.reimburse.travel.push({});
+			}
+			else if(type == 'hotel'){
+				this.reimburse.hotel.push({});
+			}
+			else {
+				this.reimburse.misc.push({});
+			}
 		},
 		create_formdata() {
 			var data = new FormData();
