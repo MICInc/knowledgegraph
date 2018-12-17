@@ -6,7 +6,7 @@ var file_handler = require('../lib/file_handler');
 router.post('/register', function(req, res) {
 	console.log('conference reg data:');
 	console.log(req.body);
-	// file_handler(req, res, './storage/conference/resumes');
+	file_handler(req, res, './storage/conference/resumes');
 });
 
 module.exports = router;

@@ -2,7 +2,6 @@
 	<div id="signup-form">
 		<div>
 			Please create an account to register for our conference.
-			<p v-if="form.err.length > 0">{{ form.err }}</p>
 		</div>
 		<form v-if="form.show" enctype="multipart/form-data">
 			<label>What's your first name?</label><br>
@@ -54,9 +53,9 @@
 				<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 			</select><br>
 			<label>Please list any food you're allergic to:</label><br>
-			<input v-model.trim="conf_reg.food_allergens"></input><br>
+			<input v-model.trim="conf_resp.food_allergens"></input><br>
 			<label>Opt-in to share your resume with sponsors</label><br>
-			<input type="file" name="resume" multiple v-on:change="add_file($event, 'resume')"><br>
+			<input type="file" name="resume" multiple v-on:change="add_file($event, 0, 'resume')"><br>
 			Do you need travel and lodging assistance? <button v-on:click.prevent="reveal_travel">Show</button><br>
 			<div id="travel-form" v-if="form.travel">
 				<ul id="reimbursement-notice">
@@ -73,7 +72,7 @@
 					<input type="text" v-model.trim="reimburse.travel[index].src" placeholder="Source">
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
 					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="travel-receipt" multiple v-on:change="add_file($event, 'travel')"><br>
+					<input type="file" name="travel-receipt" multiple v-on:change="add_file($event, index, 'travel')"><br>
 					<button v-on:click.prevent="delete_item('travel', index)">-</button>
 				</span><br>
 				<button v-on:click.prevent="extend_form('travel')">+</button><br>
@@ -84,7 +83,7 @@
 					<input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
 					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
 					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, 'hotel')"><br>
+					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, index, 'hotel')"><br>
 					<button v-on:click.prevent="delete_item('hotel', index)">-</button>
 				</span><br>
 				<button v-on:click.prevent="extend_form('hotel')">+</button><br>
@@ -93,7 +92,7 @@
 				<span v-for="(value, index) in reimburse.misc">
 					<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
 					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="misc-receipt" multiple v-on:change="add_file($event, 'misc')"><br>
+					<input type="file" name="misc-receipt" multiple v-on:change="add_file($event, index, 'misc')"><br>
 					<button v-on:click.prevent="delete_item('misc', index)">-</button>
 				</span><br>
 				<button v-on:click.prevent="extend_form('misc')">+</button><br>
@@ -101,7 +100,10 @@
 				<button v-on:click.prevent="reveal_travel">Hide</button>
 			</div>
 			<label>What do you want out of this conference and anything else we should know?</label><br>
-			<textarea v-model.trim="conf_reg.message"></textarea><br>
+			<textarea v-model.trim="conf_resp.message"></textarea><br>
+			<div>
+				<p v-if="form.err.length > 0">{{ form.err }}</p>
+			</div>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
 		<div v-if="!selected" class="action-buttons">
@@ -127,15 +129,15 @@ export default {
 	data() {
 		return {
 			selected: false,
-			conf_reg: {
+			conf_resp: {
 				food_allergens: '',
 				message: '',
-				resume: undefined
 			},
 			form: {
 				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
+				data: new FormData(),
 				err: '',
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
@@ -167,69 +169,59 @@ export default {
 					date: '',
 					dest: '',
 					src: '',
-					receipt: undefined
 				}],
 				hotel: [{
 					amount: 0,
 					check_in: '',
 					check_out: '',
 					name: '',
-					receipt: undefined
 				}],
 				misc: [{
 					amount: 0,
 					item: '',
-					receipt: undefined
 				}],
 				total: '0'
 			}
 		}
 	},
 	methods: {
-		add_file(event, type) {
+		add_file(event, index, type) {
 			var file = event.target.files[0];
+			var filename = file.name+file.type;
 
 			if(type == 'resume') {
-				this.conf_reg.resume = file;
+				this.conf_resp.resume = filename;
+				this.form.data.append('resume', file, filename);
 			}
 			else if(type == 'travel') {
-				this.reimburse.travel.receipt = file;
+				this.reimburse.travel.receipt = filename;
+				this.form.data.append('travel_'+index, file, filename);
 			}
 			else if(type == 'hotel') {
-				this.reimburse.hotel.receipt = file;
+				this.reimburse.hotel.receipt = filename;
+				this.form.data.append('hotel_'+index, file, filename);
 			}
 			else if(type == 'misc') {
-				this.reimburse.misc.receipt = file;
-			}
-		},
-		extend_form(type) {
-
-			if(type == 'travel') {
-				this.reimburse.travel.push({});
-			}
-			else if(type == 'hotel'){
-				this.reimburse.hotel.push({});
-			}
-			else {
-				this.reimburse.misc.push({});
+				this.reimburse.misc.receipt = filename;
+				this.form.data.append('misc_'+index, file, filename);
 			}
 		},
 		create_formdata() {
 			var data = new FormData();
 			
 			for(var i = 0; i < this.reimburse.travel.length; i++) {
-				data.append('travel-'+i, this.reimburse.travel[i]);
+				data.append('travel-'+i, JSON.stringify(this.reimburse.travel[i]));
 			}
 			
 			for(var i = 0; i < this.reimburse.hotel.length; i++) {
-				data.append('hotel-'+i, this.reimburse.hotel[i]);
+				data.append('hotel-'+i, JSON.stringify(this.reimburse.hotel[i]));
 			}
 
 			for(var i = 0; i < this.reimburse.misc.length; i++) {
-				data.append('misc-'+i, this.reimburse.misc[i]);
+				data.append('misc-'+i, JSON.stringify(this.reimburse.misc[i]));
 			}
 
-			data.append(this.conf_reg);
+			data.append('conf_resp', JSON.stringify(this.conf_resp));
 
 			return data;
 		},
@@ -257,6 +249,18 @@ export default {
 
 			this.total();
 		},
+		extend_form(type) {
+
+			if(type == 'travel') {
+				this.reimburse.travel.push({});
+			}
+			else if(type == 'hotel'){
+				this.reimburse.hotel.push({});
+			}
+			else {
+				this.reimburse.misc.push({});
+			}
+		},
 		is_string(data) {
 			return (typeof data === 'string' || data instanceof String);
 		},
@@ -280,14 +284,21 @@ export default {
 						'Content-Type' : 'multipart/form-data'
 					}
 				}
+				var file = this.form.data;
 
-				ContentService.uploadFile('/conference/register', this.create_formdata(), config).then(function(data) {
+				ContentService.uploadFile('/conference/register', file, config).then(function(data) {
 					console.log(data);
 				});
 
-				ProfileService.createProfile(this.profile).then(function(data) {
+				var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
+				
+				ContentService.uploadFile('/conference/register', resp).then(function(data) {
 					console.log(data);
 				});
+
+				// ProfileService.createProfile(this.profile).then(function(data) {
+				// 	console.log(data);
+				// });
 			}
 			else {
 				this.form.err = 'Please enter a valid birthday.';
