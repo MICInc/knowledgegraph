@@ -74,6 +74,7 @@
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
 					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="travel-receipt" multiple v-on:change="add_file($event, 'travel')"><br>
+					<button v-on:click.prevent="delete_item('travel', index)">-</button>
 				</span><br>
 				<button v-on:click.prevent="extend_form('travel')">+</button><br>
 				<label>Hotel</label><br>
@@ -84,6 +85,7 @@
 					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
 					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, 'hotel')"><br>
+					<button v-on:click.prevent="delete_item('hotel', index)">-</button>
 				</span><br>
 				<button v-on:click.prevent="extend_form('hotel')">+</button><br>
 				<br>
@@ -92,6 +94,7 @@
 					<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
 					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="misc-receipt" multiple v-on:change="add_file($event, 'misc')"><br>
+					<button v-on:click.prevent="delete_item('misc', index)">-</button>
 				</span><br>
 				<button v-on:click.prevent="extend_form('misc')">+</button><br>
 				<label>Total: $ {{ reimburse.total }}</label><br>
@@ -195,7 +198,7 @@ export default {
 			else if(type == 'hotel') {
 				this.reimburse.hotel.receipt = file;
 			}
-			else {
+			else if(type == 'misc') {
 				this.reimburse.misc.receipt = file;
 			}
 		},
@@ -240,6 +243,19 @@ export default {
 				default :
 					return 31
 			}
+		},
+		delete_item(type, index) {
+			if(type == 'travel') {
+				this.reimburse.travel.splice(index, 1);
+			}
+			else if(type == 'hotel') {
+				this.reimburse.hotel.splice(index, 1);
+			}
+			else if(type == 'misc') {
+				this.reimburse.misc.splice(index, 1);
+			}
+
+			this.total();
 		},
 		is_string(data) {
 			return (typeof data === 'string' || data instanceof String);
@@ -292,8 +308,10 @@ export default {
 		},
 		total() {
 			var travel = this.sum(this.reimburse.travel);
+			console.log('typeof '+travel+': '+(typeof travel));
 			var hotel = this.sum(this.reimburse.hotel);
 			var misc = this.sum(this.reimburse.misc);
+			console.log('typeof '+misc+': '+(typeof misc));
 
 			this.reimburse.total = (travel + hotel + misc).toFixed(2);;
 		},
