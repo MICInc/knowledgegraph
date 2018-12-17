@@ -187,7 +187,7 @@ export default {
 	methods: {
 		add_file(event, index, type) {
 			var file = event.target.files[0];
-			var filename = file.name+file.type;
+			var filename = file.name;
 
 			if(type == 'resume') {
 				this.conf_resp.resume = filename;
@@ -205,25 +205,6 @@ export default {
 				this.reimburse.misc.receipt = filename;
 				this.form.data.append('misc_'+index, file, filename);
 			}
-		},
-		create_formdata() {
-			var data = new FormData();
-			
-			for(var i = 0; i < this.reimburse.travel.length; i++) {
-				data.append('travel-'+i, JSON.stringify(this.reimburse.travel[i]));
-			}
-			
-			for(var i = 0; i < this.reimburse.hotel.length; i++) {
-				data.append('hotel-'+i, JSON.stringify(this.reimburse.hotel[i]));
-			}
-
-			for(var i = 0; i < this.reimburse.misc.length; i++) {
-				data.append('misc-'+i, JSON.stringify(this.reimburse.misc[i]));
-			}
-
-			data.append('conf_resp', JSON.stringify(this.conf_resp));
-
-			return data;
 		},
 		daysInMonth(month, year) {
 			// original: https://stackoverflow.com/questions/1433030/validate-number-of-days-in-a-given-month/1433119#1433119
@@ -291,7 +272,7 @@ export default {
 				});
 
 				var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
-				
+
 				ContentService.uploadFile('/conference/register', resp).then(function(data) {
 					console.log(data);
 				});
