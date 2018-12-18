@@ -4,14 +4,14 @@
 		<div class="container">
 			<button>Publish</button>
 			<form>
-				<input id="title" type="text" v-model="bibtex.values.title" v-on:blur="add_bibtex('title')" placeholder="Title"/>
-				<input type="text" v-model="bibtex.values.author" v-on:blur="add_bibtex('author')" placeholder="Co-authors"/>
+				<input class="content" type="text" v-model="bibtex.values.author" v-on:blur="add_bibtex('author')" placeholder="Co-authors"/>
+				<input id="title" class="content" type="text" v-model="bibtex.values.title" v-on:blur="add_bibtex('title')" placeholder="Title"/>
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
 				<!-- <Editor></Editor> -->
-				<div v-for="(value, index) in content.info">
-					<textarea :ref="'content'+index" v-model="content.info[index]" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
+				<div v-for="(value, index) in content">
+					<textarea class='content' :ref="'content'+index" v-model="content[index].value" v-on:keyup="adjust_textarea(this)" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
 				</div>
 			</form>
 			<div id="citations">
@@ -20,7 +20,7 @@
 					Upload content for parsing:<br>
 					<input type="file" name="paper-upload" multiple v-on:change="parse_file($event)"><br>
 				</div>
-				<textarea v-model="content.citations" placeholder="Citations"></textarea><br>
+				<textarea v-model="citations" placeholder="Citations"></textarea><br>
 				<h4>BibTeX citation</h4>
 				<p>{{ bibtex.to_string }}</p>
 			</div>
@@ -91,13 +91,13 @@ export default {
 				},
 				to_string: "",
 			},
-			content: {
-				citations: "",
+			citations: "",
+			content: [{
 				date: new Date(),
-				info: [""],
-				last_modified: undefined,
+				last_modified: new Date(),
 				tags: "",
-			},
+				value: "",
+			}],
 			display: {
 				papers: []
 			},
@@ -122,7 +122,11 @@ export default {
 		},
 		add_content(index) {
 			var next = index + 1;
-			this.content.info.splice(next, 0, '');
+			this.content.splice(next, 0, '');
+		},
+		adjust_textarea(tag) {
+			tag.style.height = "1px";
+			tag.style.height = (25+tag.scrollHeight)+"px";
 		},
 		bibtex_to_string() {
 			var bib = this.bibtex.values.type+'{';
@@ -221,6 +225,19 @@ form {
 textarea {
   width: calc(600px - 10px);
   min-height: 75px;
+}
+.content {
+	-o-transition:.5s;
+	-ms-transition:.5s;
+	-moz-transition:.5s;
+	-webkit-transition:.5s;
+	transition:.5s;
+	min-height: 1em;
+	overflow:hidden;
+}
+
+.content:hover {
+	box-shadow: 0 0 1px #bcbcbc;
 }
 
 input {
