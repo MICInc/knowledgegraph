@@ -1,9 +1,17 @@
 <template>
-	<div id="editor">
-		hello
+	<div id="editor_container">
+		<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+		<div id="toolbar">
+			<button class="ql-bold">Bold</button>
+			<button class="ql-italic">Italic</button>
+		</div>
+		<div id="editor">
+			hello
+		</div>
 	</div>
 </template>
 
+<script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 <script>
 import Quill from 'quill';
 
@@ -25,16 +33,13 @@ export default {
 	mounted() {
 		this.editor = new Quill('#editor', {
 			modules: {
-				toolbar: [
-					[{header: [1,2,3,4,false] }],
-					['bold', 'italic', 'underline']
-				]
+				toolbar: '#toolbar'
 			},
 			theme: 'snow',
-			format: ['bold', 'underline', 'header', 'italic']
+			// format: ['bold', 'underline', 'header', 'italic']
 		});
-		this.editor.root.innerHTML = this.value;
-		this.editor.on('text-change', () => this.update());
+		// this.editor.root.innerHTML = this.value;
+		// this.editor.on('text-change', () => this.update());
 	},
 
 	methods: {

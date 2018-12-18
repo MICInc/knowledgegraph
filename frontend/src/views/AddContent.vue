@@ -9,9 +9,9 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<!-- <Editor></Editor> -->
+				<Editor></Editor>
 				<div v-for="(value, index) in content">
-					<textarea class='content' :ref="'content'+index" v-model="content[index].value" v-on:keyup="adjust_textarea(this)" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
+					<textarea class='content' :ref="'content'+index" v-model="content[index].value" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
 				</div>
 			</form>
 			<div id="citations">
@@ -237,7 +237,7 @@ textarea {
 }
 
 .content:hover {
-	box-shadow: 0 0 1px #bcbcbc;
+	box-shadow: 0 0 1px #E8E8E8;
 }
 
 input {
