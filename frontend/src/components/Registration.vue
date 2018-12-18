@@ -292,8 +292,27 @@ export default {
 				this.reimburse.misc.push({});
 			}
 		},
-		form_complete() {
+		is_complete(data) {
+			var keys = Object.keys(data);
+			var is_complete = false;
 
+			for(var i = 0; i < keys.length; i++) {
+				is_complete = is_complete && !this.is_empty(data[keys[i]]);
+			}
+
+			return is_complete;
+		},
+		is_empty(data) {
+			return ((typeof data == 'string' || data instanceof String) && data.length == 0) || data == 0;
+		},
+		is_list_complete(data) {
+			var is_complete = false;
+
+			for(var i = 0; i < data.length; i++) {
+				is_complete = this.is_complete(data[i]);
+			}
+
+			return is_complete;
 		},
 		is_string(data) {
 			return (typeof data === 'string' || data instanceof String);
@@ -308,7 +327,7 @@ export default {
 				if(k != 'dob') {
 					var v = this.profile[k].value;
 
-					if(((typeof v == 'string' || v instanceof String) && v.length == 0) || v == 0) {
+					if(this.is_empty(v)) {
 						this.profile[k].err = 'Missing '+k;
 						flag = false;
 					}
@@ -316,6 +335,12 @@ export default {
 			}
 
 			return flag;
+		},
+		registration_complete() {
+			return this.is_complete(this.reimburse.address) &&
+			this.is_list_complete(this.reimburse.travel) &&
+			this.is_list_complete(this.reimburse.hotel) &&
+			this.is_list_complete(this.reimburse.misc);
 		},
 		reveal_form() {
 			this.form.show = !this.form.show;
@@ -328,19 +353,12 @@ export default {
 			return parseFloat(Math.round(amount * 100) / 100);
 		},
 		submit() {
+
 			if(!this.vali_date()) {
 				this.profile.dob.err = 'Please enter a valid birthday.';
 			}
 
-			if(this.profile_complete()) {
-				ProfileService.createProfile(this.profile).then(function(data) {
-					console.log(data);
-				});
-			}
-
-			if (this.form_complete()) {
-				this.form.err = '';
-
+			if (this.registration_complete()) {
 				var config = {
 					header: {
 						'Content-Type' : 'multipart/form-data'
@@ -358,6 +376,15 @@ export default {
 					console.log(data);
 				});
 			}		
+
+			if(this.profile_complete()) {
+				ProfileService.createProfile(this.profile).then(function(data) {
+					console.log(data);
+				});
+
+				this.reveal_form();
+			}
+
 		},
 		sum(data) {
 			var total = 0;
