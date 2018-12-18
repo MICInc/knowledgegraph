@@ -5,51 +5,61 @@
 		</div>
 		<form v-if="form.show" enctype="multipart/form-data">
 			<label>What's your first name?</label><br>
-			<input type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
+			<p class="error" v-if="profile.first_name.err.length > 0">{{ profile.first_name.err }}</p>
+			<input type="text" placeholder="First name" v-model.trim="profile.first_name.value" required><br>
 			<label>What's your last name?</label><br>
-			<input type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
-			<label v-if="profile.first_name.length > 0 && profile.last_name.length > 0">Hey {{ profile.first_name }} {{ profile.last_name}}, nice to meet you.</label>
+			<p class="error" v-if="profile.last_name.err.length > 0">{{ profile.last_name.err }}</p>
+			<input type="text" placeholder="Last name" v-model.trim="profile.last_name.value" required><br>
+			<label v-if="profile.first_name.value.length > 0 && profile.last_name.value.length > 0">Hey {{ profile.first_name.value }} {{ profile.last_name.value }}, nice to meet you.</label>
 			<div class="birthday">
 				<label>Birthday</label><br>
+				<p class="error" v-if="profile.dob.err.length > 0">{{ profile.dob.err }}</p>
 				<label>Month: </label>
-				<select name="month" v-model="profile.dob_month">
+				<select name="month" v-model="profile.dob.month">
 					<option v-for="(value, index) in form.months">{{ value }}</option>
 				</select>
 				<label>Day: </label>
-				<select name="day" v-model.number="profile.dob_day">
+				<select name="day" v-model.number="profile.dob.day">
 					<option v-for="(value, index) in 31">{{ value }}</option>
 				</select>
 				<label>Year: </label>
-				<select name="year" v-model.number="profile.dob_year">
+				<select name="year" v-model.number="profile.dob.year">
 					<option v-for="year in form.years">{{ year }}</option>
 				</select>
 			</div>
 			<label>Where can we contact you?</label><br>
-			<input type="text" value="email" placeholder="email" v-model.trim="profile.email"><br>
+			<p class="error" v-if="profile.email.err.length > 0">{{ profile.email.err }}</p>
+			<input type="text" value="email" placeholder="email" v-model.trim="profile.email.value"><br>
 			<label>Password</label><br>
-			<input type="password" value="password" placeholder="password" v-model="profile.password"><br>
+			<p class="error" v-if="profile.password.err.length > 0">{{ profile.password.err }}</p>
+			<input type="password" value="password" placeholder="password" v-model="profile.password.value"><br>
 			<label>Confirm password</label><br>
-			<input type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password"><br>
+			<input type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password.value"><br>
 			<label>Affiliation</label><br>
+			<p class='error' v-if="profile.affiliation.err.length > 0">{{ profile.affiliation.err }}</p>
 			<ul>
 				<li v-for="affiliation in form.affiliation">
-					<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation">{{ affiliation }}
+					<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation.value">{{ affiliation }}
 				</li>
 			</ul>
 			<label>What school do you attend?</label><br>
-			<select name="school" v-model="profile.school">
+			<p class="error" v-if="profile.school.err.length > 0">{{ profile.school.err }}</p>
+			<select name="school" v-model="profile.school.value">
 				<option v-for="school in form.schools">{{ school.name }}</option>
 			</select><br>
 			<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
-			<select name="grade" v-model="profile.grade">
+			<p class="error" v-if="profile.grade.err.length > 0">{{ profile.grade.err }}</p>
+			<select name="grade" v-model="profile.grade.value">
 				<option v-for="grade in form.academic_year">{{ grade }}</option>
 			</select><br>
 			<label>Gender</label><br>
-			<select name="gender" v-model="profile.gender">
+			<p class="error" v-if="profile.gender.err.length > 0">{{ profile.gender.err }}</p>
+			<select name="gender" v-model="profile.gender.value">
 				<option v-for="gender in form.gender">{{ gender }}</option>
 			</select><br>
 			<label>What is your ethnicity?</label><br>
-			<select name="ethnicity" v-model="profile.ethnicity">
+			<p class="error" v-if="profile.ethnicity.err.length > 0">{{ profile.ethnicity.err }}</p>
+			<select name="ethnicity" v-model="profile.ethnicity.value">
 				<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 			</select><br>
 			<label>Please list any food you're allergic to:</label><br>
@@ -69,7 +79,7 @@
 				<input type="text" v-model.trim="reimburse.address.street" placeholder="Street name">
 				<input type="text" v-model.trim="reimburse.address.apt" placeholder="Apartment number">
 				<input type="text" v-model.trim="reimburse.address.city" placeholder="City">
-				<input type="text" v-model.trim="reimburse.address.state" placeholder="State">
+				<input type="text" v-model.trim="reimburse.address.state" placeholder="State/Prefecture/Province">
 				<input type="text" v-model.trim="reimburse.address.zip" placeholder="Zip code"><br>
 				<label>Travel</label><br>
 				<span v-for="(value, index) in reimburse.travel">
@@ -106,9 +116,6 @@
 			</div>
 			<label>What do you want out of this conference and anything else we should know?</label><br>
 			<textarea v-model.trim="conf_resp.message"></textarea><br>
-			<div>
-				<p v-if="form.err.length > 0">{{ form.err }}</p>
-			</div>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
 		<div v-if="!selected" class="action-buttons">
@@ -143,7 +150,6 @@ export default {
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
 				data: new FormData(),
-				err: '',
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
 				months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -153,19 +159,52 @@ export default {
 				years: years(100, (new Date()).getFullYear())
 			},
 			profile: {
-				affiliation: '',
-				confirm_password: '',
-				dob_day: 0,
-				dob_month: 0,
-				dob_year: 0,
-				email: '',
-				ethnicity: '',
-				first_name: '',
-				gender: '',
-				grade: '',
-				last_name: '',
-				password: '',
-				school: ''
+				affiliation: {
+					err: '',
+					value: ''
+				},
+				confirm_password: {
+					err: '',
+					value: ''
+				},
+				dob: {
+					day: 0,
+					month: 0,
+					year: 0,
+					err: ''
+				},
+				email: {
+					err: '',
+					value: ''
+				},
+				ethnicity: {
+					err: '',
+					value: ''
+				},
+				first_name: {
+					err: '',
+					value: ''
+				},
+				gender: {
+					err: '',
+					value: ''
+				},
+				grade: {
+					err: '',
+					value: ''
+				},
+				last_name: {
+					err: '',
+					value: ''
+				},
+				password: {
+					err: '',
+					value: ''
+				},
+				school: {
+					err: '',
+					value: ''
+				}
 			},
 			reimburse: {
 				address: {
@@ -260,7 +299,23 @@ export default {
 			return (typeof data === 'string' || data instanceof String);
 		},
 		profile_complete() {
+			console.log('checking profile');
+			var keys = Object.keys(this.profile);
+			var flag = true;
 
+			for(var i = 0; i < keys.length; i++) {
+				var k = keys[i];
+				if(k != 'dob') {
+					var v = this.profile[k].value;
+
+					if(((typeof v == 'string' || v instanceof String) && v.length == 0) || v == 0) {
+						this.profile[k].err = 'Missing '+k;
+						flag = false;
+					}
+				}
+			}
+
+			return flag;
 		},
 		reveal_form() {
 			this.form.show = !this.form.show;
@@ -273,44 +328,36 @@ export default {
 			return parseFloat(Math.round(amount * 100) / 100);
 		},
 		submit() {
-			// Add more valdation here
-			if(this.vali_date()) {
-				if (this.form_complete()){
-					this.form.err = '';
+			if(!this.vali_date()) {
+				this.profile.dob.err = 'Please enter a valid birthday.';
+			}
 
-					var config = {
-						header: {
-							'Content-Type' : 'multipart/form-data'
-						}
+			if(this.profile_complete()) {
+				ProfileService.createProfile(this.profile).then(function(data) {
+					console.log(data);
+				});
+			}
+
+			if (this.form_complete()) {
+				this.form.err = '';
+
+				var config = {
+					header: {
+						'Content-Type' : 'multipart/form-data'
 					}
-					var file = this.form.data;
-
-					ContentService.uploadFile('/conference/register', file, config).then(function(data) {
-						console.log(data);
-					});
-
-					var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
-
-					ContentService.uploadFile('/conference/register', resp).then(function(data) {
-						console.log(data);
-					});
 				}
-				else {
+				var file = this.form.data;
 
-				}
+				ContentService.uploadFile('/conference/register', file, config).then(function(data) {
+					console.log(data);
+				});
 
-				if(this.profile_complete()) {
-					ProfileService.createProfile(this.profile).then(function(data) {
-						console.log(data);
-					});
-				}
-				else {
+				var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
 
-				}
-			}
-			else {
-				this.form.err = 'Please enter a valid birthday.';
-			}
+				ContentService.uploadFile('/conference/register', resp).then(function(data) {
+					console.log(data);
+				});
+			}		
 		},
 		sum(data) {
 			var total = 0;
@@ -327,17 +374,16 @@ export default {
 		},
 		total() {
 			var travel = this.sum(this.reimburse.travel);
-			console.log('typeof '+travel+': '+(typeof travel));
 			var hotel = this.sum(this.reimburse.hotel);
 			var misc = this.sum(this.reimburse.misc);
-			console.log('typeof '+misc+': '+(typeof misc));
 
 			this.reimburse.total = (travel + hotel + misc).toFixed(2);;
 		},
 		vali_date() {
-			var year = this.profile.dob_year;
-			var month = this.form.months.indexOf(this.profile.dob_month);
-			var day = this.profile.dob_day;
+			var year = this.profile.dob.year;
+			var month = this.form.months.indexOf(this.profile.dob.month);
+			var day = this.profile.dob.day;
+
 			return month >= 0 && month < 12 && day > 0 && day <= this.daysInMonth(month, year)
 		}
 	}
@@ -393,6 +439,10 @@ textarea {
 	list-style-type: circle;
 	font-size: .9em;
 	margin: 10px 15px;
+}
+
+.error {
+	color: red;
 }
 
 </style>
