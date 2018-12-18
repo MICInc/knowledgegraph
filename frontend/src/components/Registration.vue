@@ -65,7 +65,12 @@
 					<li>Please view your profile for reimbursement status</li>
 				</ul>
 				<label>Travel and Lodging Reimbursement Form</label><br>
-				<input type="text" v-model.trim="reimburse.address" placeholder="Receipient's Address"><br>
+				<label>Address</label><br>
+				<input type="text" v-model.trim="reimburse.address.street" placeholder="Street name">
+				<input type="text" v-model.trim="reimburse.address.apt" placeholder="Apartment number">
+				<input type="text" v-model.trim="reimburse.address.city" placeholder="City">
+				<input type="text" v-model.trim="reimburse.address.state" placeholder="State">
+				<input type="text" v-model.trim="reimburse.address.zip" placeholder="Zip code"><br>
 				<label>Travel</label><br>
 				<span v-for="(value, index) in reimburse.travel">
 					<input type="text" v-model.trim="reimburse.travel[index].date" placeholder="Date">
@@ -163,7 +168,13 @@ export default {
 				school: ''
 			},
 			reimburse: {
-				address: '',
+				address: {
+					apt: '',
+					city: '',
+					state: '',
+					street: '',
+					zip: ''
+				},
 				travel: [{
 					amount: 0,
 					date: '',
@@ -242,8 +253,14 @@ export default {
 				this.reimburse.misc.push({});
 			}
 		},
+		form_complete() {
+
+		},
 		is_string(data) {
 			return (typeof data === 'string' || data instanceof String);
+		},
+		profile_complete() {
+
 		},
 		reveal_form() {
 			this.form.show = !this.form.show;
@@ -258,28 +275,38 @@ export default {
 		submit() {
 			// Add more valdation here
 			if(this.vali_date()) {
-				this.form.err = '';
+				if (this.form_complete()){
+					this.form.err = '';
 
-				var config = {
-					header: {
-						'Content-Type' : 'multipart/form-data'
+					var config = {
+						header: {
+							'Content-Type' : 'multipart/form-data'
+						}
 					}
+					var file = this.form.data;
+
+					ContentService.uploadFile('/conference/register', file, config).then(function(data) {
+						console.log(data);
+					});
+
+					var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
+
+					ContentService.uploadFile('/conference/register', resp).then(function(data) {
+						console.log(data);
+					});
 				}
-				var file = this.form.data;
+				else {
 
-				ContentService.uploadFile('/conference/register', file, config).then(function(data) {
-					console.log(data);
-				});
+				}
 
-				var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
+				if(this.profile_complete()) {
+					ProfileService.createProfile(this.profile).then(function(data) {
+						console.log(data);
+					});
+				}
+				else {
 
-				ContentService.uploadFile('/conference/register', resp).then(function(data) {
-					console.log(data);
-				});
-
-				// ProfileService.createProfile(this.profile).then(function(data) {
-				// 	console.log(data);
-				// });
+				}
 			}
 			else {
 				this.form.err = 'Please enter a valid birthday.';
