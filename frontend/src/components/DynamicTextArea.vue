@@ -1,7 +1,7 @@
 <template>
 	<div id="container">
 		<div v-for="(value, index) in content">
-			<textarea v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
+			<textarea v-model="content[index].value" v-bind:ref="'content-'+index" v-on:mouseup="highlight" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
 		</div>
 	</div>
 </template>
@@ -33,6 +33,24 @@ export default {
 		},
 		emit_content() {
 			this.$emit('content', this.content);
+		},
+		highlight() {
+			// source: https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
+			var text = "";
+			var activeEl = document.activeElement;
+			var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+			var is_textarea = (activeElTagName == "textarea");
+			var active_tag = (activeElTagName == "input" && /^(?:text|search|password|tel|url)$/i.test(activeEl.type));
+			var is_number = (typeof activeEl.selectionStart == "number");
+
+			if (is_textarea || active_tag && is_number) {
+				text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
+			} 
+			else if (window.getSelection) {
+				text = window.getSelection().toString();
+			}
+
+			return text;
 		}
 	}
 }

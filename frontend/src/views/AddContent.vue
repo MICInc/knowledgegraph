@@ -27,7 +27,7 @@
 			<button>Publish</button>
 		</div>
 		<div class="preview">
-			<h3>Preview</h3>
+			<h3>Slide Preview</h3>
 			<button>Publish</button>
 			<p>Title {{ bibtex.values.title }}</p>
 			<div v-for="(value, index) in content">
@@ -46,27 +46,6 @@ import DynamicTextArea from '@/components/DynamicTextArea'
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
 }
-
-function get_selected() {
-	// source: https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
-	var text = "";
-	var activeEl = document.activeElement;
-	var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
-	var is_textarea = (activeElTagName == "textarea");
-	var active_tag = (activeElTagName == "input" && /^(?:text|search|password|tel|url)$/i.test(activeEl.type));
-	var is_number = (typeof activeEl.selectionStart == "number");
-
-	if (is_textarea || active_tag && is_number) {
-		text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
-	} else if (window.getSelection) {
-		text = window.getSelection().toString();
-	}
-	return text;
-}
-
-document.onmouseup = document.onselectionchange = function() {
-	console.log(get_selected());
-};
 
 export default {
 	name: 'add-article',
@@ -128,6 +107,11 @@ export default {
 				first_name: "Justin",
 				last_name: "Chen"
 			}
+		}
+	},
+	filter: {
+		highlight(word) {
+
 		}
 	},
 	methods: {
