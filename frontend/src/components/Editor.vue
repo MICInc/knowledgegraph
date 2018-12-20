@@ -4,10 +4,11 @@
 		<div id="toolbar">
 			<button class="ql-bold">Bold</button>
 			<button class="ql-italic">Italic</button>
+			<button class="ql-underline">Underline</button>
+			<button class="ql-script" value="sub"></button>
+			<button class="ql-script" value="super"></button>
 		</div>
-		<div id="editor">
-			hello
-		</div>
+		<p id='editor'></p>
 	</div>
 </template>
 
@@ -26,7 +27,8 @@ export default {
 
 	data() {
 		return {
-			editor: null
+			editor: null,
+			text: ''
 		};
 	},
 
@@ -36,15 +38,15 @@ export default {
 				toolbar: '#toolbar'
 			},
 			theme: 'snow',
-			// format: ['bold', 'underline', 'header', 'italic']
 		});
-		// this.editor.root.innerHTML = this.value;
-		// this.editor.on('text-change', () => this.update());
 	},
 
 	methods: {
 		update() {
 			this.$emit('input', this.editor.getText());
+		},
+		processEditOperation: function (operation) {
+			this.text = operation.api.origElements.innerHTML;
 		}
 	}
 }

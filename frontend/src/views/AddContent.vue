@@ -9,9 +9,8 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<Editor></Editor>
 				<div v-for="(value, index) in content">
-					<textarea class='content' :ref="'content'+index" v-model="content[index].value" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
+					<textarea v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
 				</div>
 			</form>
 			<div id="citations">
@@ -41,11 +40,32 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import ContentService from '../services/ContentService.js'
-import Editor from '@/components/Editor.vue'
+import Editor from '@/components/Editor'
 
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
 }
+
+function get_selected() {
+	// source: https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
+	var text = "";
+	var activeEl = document.activeElement;
+	var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+	var is_textarea = (activeElTagName == "textarea");
+	var active_tag = (activeElTagName == "input" && /^(?:text|search|password|tel|url)$/i.test(activeEl.type));
+	var is_number = (typeof activeEl.selectionStart == "number");
+
+	if (is_textarea || active_tag && is_number) {
+		text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
+	} else if (window.getSelection) {
+		text = window.getSelection().toString();
+	}
+	return text;
+}
+
+document.onmouseup = document.onselectionchange = function() {
+	console.log(get_selected());
+};
 
 export default {
 	name: 'add-article',
@@ -53,11 +73,11 @@ export default {
 		PageNav,
 		Editor
 	},
-	created () {
+	created() {
 		window.addEventListener('beforeunload', this.save);
 		this.bibtex_to_string();
 	},
-	data () {
+	data() {
 		return {
 			bibtex: {
 				name: "",
@@ -122,7 +142,15 @@ export default {
 		},
 		add_content(index) {
 			var next = index + 1;
-			this.content.splice(next, 0, '');
+			this.content.splice(next, 0, {
+				date: new Date(),
+				last_modified: new Date(),
+				tags: "",
+				value: "",
+			});
+			this.$nextTick(() => {
+				this.$refs['content-'+next][0].focus()
+			});
 		},
 		adjust_textarea(tag) {
 			tag.style.height = "1px";
