@@ -1,18 +1,24 @@
 <template>
-	<div class="conference">
+	<div class="conference main">
 		<PageNav></PageNav>
-		<h1>Conference Page</h1>
+		<div class="container">
+			<h1>Machine Intelligence Conference 2019</h1>
+			<Registration></Registration>
+		</div>
 	</div>
 </template>
 
 
 <script>
 import PageNav from '@/components/PageNav.vue'
+import Registration from '@/components/Registration.vue'
 
 export default {
 	name: 'conference',
+
 	components: {
 		PageNav,
+		Registration
 	},
 
 	data() {
@@ -21,3 +27,17 @@ export default {
 	}
 }
 </script>
+
+<style>
+	
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1;
+	width: 1080px;
+}
+
+</style>

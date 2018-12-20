@@ -1,9 +1,13 @@
 <template>
-	<div class="home">
+	<div class="home main">
 		<PageNav></PageNav>
-		<div class="linked-articles-list">
-			<div class="linked-article" v-for="article in articles" :key="article.id">
-				<LinkedArticle :article="article"></LinkedArticle>	
+		<div class="container">
+			<div class="linked-content-list">
+				<div class="linked-content" v-for="item in content" :key="item.id">
+					<LinkedContent :content="item"></LinkedContent>	
+				</div>
+			</div>
+			<div class="side-menu">
 			</div>
 		</div>
 	</div>
@@ -11,13 +15,13 @@
 
 <script>
 import PageNav from '@/components/PageNav.vue'
-import LinkedArticle from '@/components/LinkedArticle.vue'
-import ArticleService from '@/services/ArticleService'
+import LinkedContent from '@/components/LinkedContent.vue'
+import ContentService from '@/services/ContentService'
 
 export default {
 	name: 'home',
 	components: {
-		LinkedArticle,
+		LinkedContent,
 		PageNav,
 	},
 
@@ -26,37 +30,54 @@ export default {
 			user: {
 				id: -1
 			},
-			articles:[]
+			content:[]
 		}
 	},
 
 	methods: {
-		async getArticles() {
-			return await ArticleService.getArticles({ params: this.user })
+		async getContent() {
+			return await ContentService.getContent({ params: this.user })
 			.then(function(data) {
 				return data.data;
 			});
 		}
 	},
 
-	beforeMount () {
-		this.getArticles().then((data) => {
+	beforeMount() {
+		this.getContent().then(data => {
 			for(let k in data){
-				this.articles.push(data[k]);
+				this.content.push(data[k]);
 			}
-		})
+		});
 	}
 }
 </script>
 
 
 <style scoped>
-	
-.linked-articles-list {
-	margin: 25px 0;
+
+.home {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+}
+
+.container {
+	flex: 1;
+	display: flex;
+
+}
+	
+.linked-content-list {
+	flex: 1;
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #3c3c3c;
+	border-top: none;
+}
+
+.linked-content {
+	margin: 5px 0;
 }
 
 </style>

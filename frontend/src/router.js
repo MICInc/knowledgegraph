@@ -20,13 +20,13 @@ export default new Router({
 		},
 		{
 			path: '/add',
-			name: 'add-article',
-			component: () => import('./views/AddArticle.vue')
+			name: 'add-content',
+			component: () => import('./views/AddContent.vue')
 		},
 		{
-			path: '/article/:id',
-			name: 'article',
-			component: () => import('./views/Article.vue')
+			path: '/content/:id',
+			name: 'content',
+			component: () => import('./views/Content.vue')
 		},
 		{
 			path: '/community',
@@ -39,14 +39,19 @@ export default new Router({
 			component: () => import('./views/Conference.vue')
 		},
 		{
-			path: '/signup',
-			name: 'signup',
-			component: () => import('./views/SignUp.vue')
-		},
-		{
 			path: '/login',
 			name: 'login',
 			component: () => import('./views/Login.vue')
+		},
+		{
+			path: '/profile/:id',
+			name: 'profile',
+			component: () => import('./views/Profile.vue')
+		},
+		{
+			path: '/signup',
+			name: 'signup',
+			component: () => import('./views/SignUp.vue')
 		}
 	]
 })

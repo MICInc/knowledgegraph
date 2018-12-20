@@ -1,48 +1,49 @@
 <template>
-	<div id="signup">
+	<div class="signup main">
 		<PageNav></PageNav>
-		<form v-on:submit.prevent="handleSubmit">
-			<div class="input-row">
-				<input type="text" placeholder="First Name" v-model="formData.first_name" required>
-				<input type="text" placeholder="Last Name" v-model="formData.last_name" required>
-			</div>
-			<input type="email" placeholder="Email" v-model="formData.email" required>
-			<input type="password" placeholder="Password" v-model="formData.password" required>
-			<input type="password" placeholder="Comfirm Password" v-model="formData.comfirm_password" required>
-		</form>
+		<div class="container">
+			<Join></Join>
+			<button v-on:click.prevent="submit">Submit</button>
+		</div>
 	</div>
 </template>
 
 <script>
 import PageNav from '@/components/PageNav.vue'
-import LinkedArticle from '@/components/LinkedArticle.vue'
-
+import Join from '@/components/Join'
 export default {
 	name: 'signup',
 	components: {
 		PageNav,
+		Join
 	},
-
-	data () {
-		return {
-			formData: {}
-		}
-	},
-
 	methods: {
-		handleSubmit() {
-			alert("You've submitted the form!")
+		submit() {
+			ProfileService.createProfile(this.profile)
+			.then(function(data){
+				alert(data);
+			});
 		}
 	}
 }
 </script>
 
-
 <style scoped>
 
-.input-row {
+.main {
 	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
 	align-items: center;
+}
+
+button {
+	margin-top: 5px;
+	width: 300px;
 }
 
 </style>

@@ -1,7 +1,6 @@
 <template>
 	<header>
-		<title>MIC</title>
-		<nav id='nav'>
+		<nav id='left'>
 			<ul>
 				<li><router-link tag="a" to="/">Home</router-link></li>
 				<li><router-link tag="a" to="/conference">Conference</router-link></li>
@@ -10,13 +9,13 @@
 				<router-view/>
 			</ul>
 		</nav>
-		<input class="search" type="text" placeholder="Search here" 
+		<input class="search" type="text" placeholder="search" 
 			v-on:keydown.enter.prevent="search()" 
-			v-model="searchInput">
-		<nav>
+			v-model="searchInput" autofocus>
+		<nav id=right>
 			<ul>
-				<li><router-link tag="a" to="signup">Join</router-link></li>
-				<li><router-link tag="a" to="login">Login</router-link></li>
+				<li><router-link tag="a" to="/signup">Join</router-link></li>
+				<li><router-link tag="a" to="/login">Login</router-link></li>
 			</ul>
 		</nav>
 	</header>
@@ -40,8 +39,7 @@ export default {
 	},
 
 	created: function() {  
- 		document.title = 'Machine Intelligence Community'  
- 		document.head.querySelector('meta[name=description]').content = 'New Description'  
+ 		document.title = 'Machine Intelligence Community'
  	}
 }
 </script>
@@ -55,7 +53,16 @@ header {
 	align-items: center;
 	height: 50px;
 	padding: 0 20px;
-	border-bottom: 1px solid #000;
+	border-bottom: 1px solid #EAEAEA;
+}
+
+nav, input {
+	width: 33.33%;
+}
+
+#right {
+	display: flex;
+	justify-content: flex-end;
 }
 
 nav ul {
@@ -76,17 +83,16 @@ nav ul li:first-child {
 
 nav ul li a {
 	text-decoration: none;
-	color: #000;
-	font-weight: 600;
+	font-weight: 400;
+	font-size: 14px;
 }
 
 input.search {
 	height: auto;
 	width: 300px;
-	border: 1px solid #000;
+	border-radius: 3px;
 	padding: 5px 5px;
 	font-size: 12px;
-
 }
 
 </style>
