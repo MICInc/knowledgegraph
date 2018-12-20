@@ -57,7 +57,5 @@ export default {
 </script>
 
 <style>
-.dynamic_field {
 
-}
 </style>

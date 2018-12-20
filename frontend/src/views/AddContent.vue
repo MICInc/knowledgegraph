@@ -9,7 +9,7 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<DynamicTextArea v-on:content="update_content($event)"></DynamicTextArea>
+				<DynamicTextArea class="content" v-on:content="update_content($event)"></DynamicTextArea>
 			</form>
 			<div id="citations">
 				<h3>Additional Info</h3>
@@ -232,18 +232,19 @@ textarea {
   width: calc(600px - 10px);
   min-height: 75px;
 }
+
 .content {
-	-o-transition:.5s;
-	-ms-transition:.5s;
-	-moz-transition:.5s;
-	-webkit-transition:.5s;
-	transition:.5s;
-	min-height: 1em;
-	overflow:hidden;
+  -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  transition:.5s;
+  min-height: 1em;
+  overflow:hidden;
 }
 
 .content:hover {
-	box-shadow: 0 0 1px #E8E8E8;
+  box-shadow: 0 0 1px #E8E8E8;
 }
 
 input {
