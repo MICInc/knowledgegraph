@@ -9,9 +9,7 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<div v-for="(value, index) in content">
-					<textarea v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
-				</div>
+				<DynamicTextArea v-on:content="update_content($event)"></DynamicTextArea>
 			</form>
 			<div id="citations">
 				<h3>Additional Info</h3>
@@ -24,15 +22,17 @@
 				<p>{{ bibtex.to_string }}</p>
 			</div>
 			<div id="tags">
-				<input v-model="content.tags" placeholder="Tags"></input>
+				<input v-model="tags" placeholder="Tags"></input>
 			</div>
 			<button>Publish</button>
 		</div>
 		<div class="preview">
 			<h3>Preview</h3>
 			<button>Publish</button>
-			<p>Title {{ content.title }}</p>
-			<p placeholder="Content..." >Content {{ content.content }}</p>
+			<p>Title {{ bibtex.values.title }}</p>
+			<div v-for="(value, index) in content">
+				<p placeholder="Content..." >{{ content[index].value }}</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -41,6 +41,7 @@
 import PageNav from '@/components/PageNav.vue'
 import ContentService from '../services/ContentService.js'
 import Editor from '@/components/Editor'
+import DynamicTextArea from '@/components/DynamicTextArea'
 
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
@@ -71,7 +72,8 @@ export default {
 	name: 'add-article',
 	components: {
 		PageNav,
-		Editor
+		Editor,
+		DynamicTextArea
 	},
 	created() {
 		window.addEventListener('beforeunload', this.save);
@@ -121,6 +123,7 @@ export default {
 			display: {
 				papers: []
 			},
+			tags: [''],
 			user: {
 				first_name: "Justin",
 				last_name: "Chen"
@@ -139,18 +142,6 @@ export default {
 			}
 
 			this.bibtex_to_string();
-		},
-		add_content(index) {
-			var next = index + 1;
-			this.content.splice(next, 0, {
-				date: new Date(),
-				last_modified: new Date(),
-				tags: "",
-				value: "",
-			});
-			this.$nextTick(() => {
-				this.$refs['content-'+next][0].focus()
-			});
 		},
 		adjust_textarea(tag) {
 			tag.style.height = "1px";
@@ -218,6 +209,9 @@ export default {
 			}).then(function(data) {
 				alert(data);
 			});
+		},
+		update_content(content) {
+			this.content = content;
 		}
 	},
 	ready: function() {
