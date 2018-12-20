@@ -1,7 +1,7 @@
 <template>
 	<div id="container">
 		<div v-for="(value, index) in content">
-			<textarea v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
+			<textarea v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
 		</div>
 	</div>
 </template>
@@ -30,9 +30,10 @@ export default {
 			this.$nextTick(() => {
 				this.$refs['content-'+next][0].focus()
 			});
-
-			this.$emit('content', this.content);
 		},
+		emit_content() {
+			this.$emit('content', this.content);
+		}
 	}
 }
 </script>
