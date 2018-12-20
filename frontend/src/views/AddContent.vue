@@ -9,7 +9,7 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<DynamicTextArea class="content" v-on:content="update_content($event)"></DynamicTextArea>
+				<DynamicTextArea v-on:content="update_content($event)"></DynamicTextArea>
 			</form>
 			<div id="citations">
 				<h3>Additional Info</h3>

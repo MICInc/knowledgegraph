@@ -1,7 +1,7 @@
 <template>
 	<div id="container">
 		<div v-for="(value, index) in content">
-			<textarea v-model="content[index].value" v-bind:ref="'content-'+index" v-on:mouseup="highlight" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
+			<textarea class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:mouseup="highlight" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index)" placeholder="Content"></textarea>
 		</div>
 	</div>
 </template>
@@ -57,5 +57,19 @@ export default {
 </script>
 
 <style>
+.content {
+	width: 100%;
+	-o-transition:.5s;
+	-ms-transition:.5s;
+	-moz-transition:.5s;
+	-webkit-transition:.5s;
+	transition:.5s;
+	min-height: 1em;
+	overflow:hidden;
+	margin: 5px;
+}
 
+.content:hover {
+  box-shadow: 0 0 1px #E8E8E8;
+}
 </style>
