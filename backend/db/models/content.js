@@ -7,8 +7,7 @@ var content_schema = new mongoose.Schema({
 		required: true
 	}],
 	citations: [{
-		type: String,
-		required: true
+		type: String
 	}],
 	content:  [{
 		type: String,
@@ -96,9 +95,17 @@ var content_schema = new mongoose.Schema({
 		trim: true
 	}],
 	tags: [{
+		type: String
+	}],
+	title: {
 		type: String,
+		trim: true
+	},
+	url: {
+		type: String,
+		trim: true,
 		required: true
-	}]
+	}
 }, Content.options);
 
 module.exports.Content = Content.model.discriminator('Content', content_schema);

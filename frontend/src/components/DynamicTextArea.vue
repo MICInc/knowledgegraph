@@ -12,7 +12,6 @@
 		<div v-for="(value, index) in content">
 			<p v-bind:id="'content-'+index" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index, $event)" contenteditable></p>
 		</div>
-		<p>{{ content[0].value }}</p>
 	</div>
 </template>
 
@@ -44,7 +43,7 @@ export default {
 			});
 		},
 		emit_content() {
-			this.$emit('content', this.content);
+			this.$emit('content', this.data);
 		},
 		prevent_nl(event) {
 			event.preventDefault();
@@ -53,8 +52,15 @@ export default {
 			var el = event.target;
 			var id = el.getAttribute('id');
 			if(id != null && el.nodename != 'INPUT' && el.nodename != 'TEXTAREA') {
-				this.data[id] = el.innerHTML;
-				console.log(JSON.stringify(this.data));
+
+				if(this.data[id] != undefined) {
+					this.data[id].value = el.innerHTML;
+				}
+				else {
+					this.data[id] = {date: new Date(), last_modified: new Date(), tags:'', value: ''}
+				}
+
+				// console.log(JSON.stringify(this.data));
 			}
 		},
 		stylize(style) {

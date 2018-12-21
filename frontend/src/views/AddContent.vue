@@ -1,8 +1,9 @@
 <template>
-	<div class="add-article main">
+	<div class="add-article main" v-on:keyup="save($event)" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
 		<div class="container">
 			<button>Publish</button>
+			<span>{{ save_status }}</span>
 			<form>
 				<input class="content" type="text" v-model="bibtex.values.author" v-on:blur="add_bibtex('author')" placeholder="Co-authors"/>
 				<input id="title" class="content" type="text" v-model="bibtex.values.title" v-on:blur="add_bibtex('title')" placeholder="Title"/>
@@ -17,7 +18,7 @@
 					Upload content for parsing:<br>
 					<input type="file" name="paper-upload" multiple v-on:change="parse_file($event)"><br>
 				</div>
-				<textarea v-model="citations" placeholder="Citations"></textarea><br>
+				<textarea v-model="content.citations" placeholder="Citations"></textarea><br>
 				<h4>BibTeX citation</h4>
 				<p>{{ bibtex.to_string }}</p>
 			</div>
@@ -31,7 +32,7 @@
 			<button>Publish</button>
 			<p>{{ bibtex.values.title }}</p>
 			<div v-for="(value, index) in content">
-				<p placeholder="Content..." >{{ content[index].value }}</p>
+				<!-- <p placeholder="Content..." >{{ content[index].value }}</p> -->
 			</div>
 		</div>
 	</div>
@@ -40,7 +41,6 @@
 <script>
 import PageNav from '@/components/PageNav'
 import ContentService from '../services/ContentService.js'
-// import Editor from '@/components/Editor'
 import DynamicTextArea from '@/components/DynamicTextArea'
 
 window.onbeforeunload = function(){
@@ -54,7 +54,6 @@ export default {
 		DynamicTextArea
 	},
 	created() {
-		window.addEventListener('beforeunload', this.save);
 		this.bibtex_to_string();
 	},
 	data() {
@@ -92,15 +91,17 @@ export default {
 				to_string: "",
 			},
 			citations: "",
-			content: [{
-				date: new Date(),
-				last_modified: new Date(),
-				tags: "",
-				value: "",
-			}],
+			content: {
+				date_created: new Date(),
+				citations: '',
+				content: undefined,
+				last_modified: undefined,
+				tags: ''
+			},
 			display: {
 				papers: []
 			},
+			save_status: '',
 			tags: [''],
 			user: {
 				first_name: "Justin",
@@ -178,18 +179,30 @@ export default {
 				alert(data.json());
 			});
 		},
+		prevent_default(event) {
+			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
+				event.preventDefault();
+				//should make this async
+				this.save();
+			}
+		},
 		save() {
-			this.content.last_modified = new Date();
+			if(this.content != null) {
+				this.save_status = 'saving...';
+				this.content.last_modified = new Date();
 
-			ContentService.createContent({user: this.user, content: this.content, bibtex: this.bibtex})
-			.then(function(data) {
-				return data.json();
-			}).then(function(data) {
-				alert(data);
-			});
+				ContentService.createContent({user: this.user, content: this.content, bibtex: this.bibtex})
+				.then(function(data) {
+					if(data != null) {
+						return data.json();
+					}
+				});
+
+				this.save_status = 'saved';
+			}
 		},
 		update_content(content) {
-			this.content = content;
+			this.content.content = content;
 		}
 	},
 	ready: function() {
