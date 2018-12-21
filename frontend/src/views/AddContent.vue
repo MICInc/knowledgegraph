@@ -29,7 +29,7 @@
 		<div class="preview">
 			<h3>Slide Preview</h3>
 			<button>Publish</button>
-			<p>Title {{ bibtex.values.title }}</p>
+			<p>{{ bibtex.values.title }}</p>
 			<div v-for="(value, index) in content">
 				<p placeholder="Content..." >{{ content[index].value }}</p>
 			</div>
@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import PageNav from '@/components/PageNav.vue'
+import PageNav from '@/components/PageNav'
 import ContentService from '../services/ContentService.js'
-import Editor from '@/components/Editor'
+// import Editor from '@/components/Editor'
 import DynamicTextArea from '@/components/DynamicTextArea'
 
 window.onbeforeunload = function(){
@@ -51,7 +51,6 @@ export default {
 	name: 'add-article',
 	components: {
 		PageNav,
-		Editor,
 		DynamicTextArea
 	},
 	created() {
@@ -107,11 +106,6 @@ export default {
 				first_name: "Justin",
 				last_name: "Chen"
 			}
-		}
-	},
-	filter: {
-		highlight(word) {
-
 		}
 	},
 	methods: {
