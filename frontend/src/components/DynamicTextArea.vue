@@ -10,7 +10,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertImage')">Image</button>
 		</div>
 		<div v-for="(value, index) in content">
-			<p v-bind:id="'content-'+index" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index)" contenteditable></p>
+			<p v-bind:id="'content-'+index" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index, $event)" contenteditable></p>
 		</div>
 		<p>{{ content[0].value }}</p>
 	</div>
@@ -31,7 +31,7 @@ export default {
 		}
 	},
 	methods: {
-		add_content(index) {
+		add_content(index, event) {
 			var next = index + 1;
 			this.content.splice(next, 0, {
 				date: new Date(),
@@ -45,6 +45,9 @@ export default {
 		},
 		emit_content() {
 			this.$emit('content', this.content);
+		},
+		prevent_nl(event) {
+			event.preventDefault();
 		},
 		save(event) {
 			var el = event.target;
