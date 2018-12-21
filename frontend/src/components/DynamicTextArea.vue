@@ -1,15 +1,18 @@
 <template>
-	<div id="container">
+	<div id="container" v-on:keyup="save($event)" v-on:click="save($event)">
 		<div id="editbar">
+			<!-- https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand -->
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
 			<button class="toolbar" v-on:click.prevent="stylize('underline')">Underline</button>
-			<button class="toolbar" v-on:click.prevent="stylize('link')">Link</button>
-			<button class="toolbar" v-on:click.prevent="stylize('bullet')">Bullet</button>
+			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
+			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
+			<button class="toolbar" v-on:click.prevent="stylize('insertImage')">Image</button>
 		</div>
 		<div v-for="(value, index) in content">
-			<p v-html="" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index)" contenteditable></p>
+			<p v-bind:id="'content-'+index" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keyup="emit_content" v-on:keyup.enter="add_content(index)" contenteditable></p>
 		</div>
+		<p>{{ content[0].value }}</p>
 	</div>
 </template>
 
@@ -17,6 +20,7 @@
 export default { 
 	data() {
 		return {
+			data: {},
 			content: [{
 				date: new Date(),
 				last_modified: new Date(),
@@ -42,26 +46,17 @@ export default {
 		emit_content() {
 			this.$emit('content', this.content);
 		},
-		// highlight(index) {
-		// 	// source: https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
-		// 	var text = "";
-		// 	var activeEl = document.activeElement;
-		// 	var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
-		// 	var is_textarea = (activeElTagName == "textarea");
-		// 	var active_tag = (activeElTagName == "input" && /^(?:text|search|password|tel|url)$/i.test(activeEl.type));
-		// 	var is_number = (typeof activeEl.selectionStart == "number");
-
-		// 	if (is_textarea || active_tag && is_number) {
-		// 		text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
-		// 	} 
-		// 	else if (window.getSelection) {
-		// 		text = window.getSelection().toString();
-		// 	}
-
-		// 	this.highlighted = {index: index, value: text};
-		// },
+		save(event) {
+			var el = event.target;
+			var id = el.getAttribute('id');
+			if(id != null && el.nodename != 'INPUT' && el.nodename != 'TEXTAREA') {
+				this.data[id] = el.innerHTML;
+				console.log(JSON.stringify(this.data));
+			}
+		},
 		stylize(style) {
 			document.execCommand(style, false, null);
+			console.log(this.content[0].value);
 		}
 	}
 }
