@@ -116,9 +116,10 @@
 			</div>
 			<label>What do you want out of this conference and anything else we should know?</label><br>
 			<textarea v-model.trim="conf_resp.message"></textarea><br>
+			<button v-on:click.prevent="reveal_form">Hide form</button><br>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
-		<div v-if="!selected" class="action-buttons">
+		<div v-if="!form.show" class="action-buttons">
 			<router-link to="/login" tag="button">Login</router-link>
 			<button v-on:click.prevent="reveal_form">Register</button>
 		</div>
@@ -140,7 +141,6 @@ export default {
 	name: 'signup_form',
 	data() {
 		return {
-			selected: false,
 			conf_resp: {
 				food_allergens: '',
 				message: '',
@@ -344,7 +344,6 @@ export default {
 		},
 		reveal_form() {
 			this.form.show = !this.form.show;
-			this.selected = true;
 		},
 		reveal_travel() {
 			this.form.travel = !this.form.travel;
