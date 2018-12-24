@@ -7,16 +7,23 @@
 			<button class="toolbar" v-on:click.prevent="stylize('underline')">Underline</button>
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
-			<button class="toolbar" v-on:click.prevent="stylize('insertImage', $event)" type="file" name="image" multiple >Image</button>
+			<button class="toolbar" type="file" name="image" multiple v-on:click.prevent="add_image()">Image</button>
 		</div>
-		<div v-for="(value, index) in content">
+		<div id="content-container" v-for="(value, index) in content">
 			<p v-bind:id="'content-'+index" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)" contenteditable></p>
 		</div>
 	</div>
 </template>
 
 <script>
+import ContentService from '../services/ContentService.js'
+
 export default { 
+	created() {
+		var dropZone = document.getElementById('contain-container');
+		dropZone.addEventListener('dragover', handleDrag, false);
+		dropZone.addEventListener('drop', handleDrop, false);
+	},
 	data() {
 		return {
 			content: [{
@@ -24,7 +31,8 @@ export default {
 				created: new Date(),
 				last_modified: new Date(),
 				text: '',
-				html: ''
+				html: '',
+				form: new FormData()
 			}],
 			form: {
 				data: new FormData()
@@ -39,6 +47,49 @@ export default {
 				html: ''
 			});
 			this.focus(next);
+		},
+		add_image() {
+			// ContentService.getImage().then(function(data) {
+			// 	console.log(data);
+			// 	var html = '<img src="data:image/png;base64,'+data.data+'">'
+			// 	document.execCommand('insertHTML', false, html);
+
+			// });
+			// https://jsfiddle.net/Xeoncross/4tUDk/
+			var html = '<b>herro</b>';
+			var sel, range;
+			if (window.getSelection) {
+				// IE9 and non-IE
+				sel = window.getSelection();
+				if (sel.getRangeAt && sel.rangeCount) {
+					range = sel.getRangeAt(0);
+					range.deleteContents();
+
+					// Range.createContextualFragment() would be useful here but is
+					// non-standard and not supported in all browsers (IE9, for one)
+					var el = document.createElement("div");
+					el.innerHTML = html;
+					var frag = document.createDocumentFragment(), node, lastNode;
+
+					while ((node = el.firstChild)) {
+						lastNode = frag.appendChild(node);
+					}
+
+					range.insertNode(frag);
+
+					// Preserve the selection
+					if (lastNode) {
+						range = range.cloneRange();
+						range.setStartAfter(lastNode);
+						range.collapse(true);
+						sel.removeAllRanges();
+						sel.addRange(range);
+					}
+				}
+			} else if (document.selection && document.selection.type != "Control") {
+				// IE < 9
+				document.selection.createRange().pasteHTML(html);
+			}
 		},
 		emit_content() {
 			this.$emit('content', this.content);
@@ -86,12 +137,13 @@ export default {
 			}
 		},
 		stylize(style) {
+			console.log(window.getSelection().getRangeAt(0));
+
 			if(style == 'createLink') {
 
 			}
 			else if(style == 'insertImage') {
-				var image = event.target.files[0];
-				this.form.data.append(image.name, image, image.name);
+				
 			}
 
 			document.execCommand(style, false, null);
