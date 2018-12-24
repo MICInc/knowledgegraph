@@ -10,7 +10,7 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<DynamicTextArea v-on:content="update_content($event)"></DynamicTextArea>
+				<DynamicParagraph v-on:content="update_content($event)"></DynamicParagraph>
 			</form>
 			<div id="citations">
 				<h3>Additional Info</h3>
@@ -41,7 +41,7 @@
 <script>
 import PageNav from '@/components/PageNav'
 import ContentService from '../services/ContentService.js'
-import DynamicTextArea from '@/components/DynamicTextArea'
+import DynamicParagraph from '@/components/DynamicParagraph'
 
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
@@ -51,7 +51,7 @@ export default {
 	name: 'add-article',
 	components: {
 		PageNav,
-		DynamicTextArea
+		DynamicParagraph
 	},
 	created() {
 		this.bibtex_to_string();
@@ -150,7 +150,7 @@ export default {
 
 			for(var i = 0; i < properties.length; i++) {
 				var p = properties[i];
-				console.log(p);
+
 				bib += p + '= {' + this.bibtex.values[p] + '}';
 
 				if(i+1 < properties.length) {

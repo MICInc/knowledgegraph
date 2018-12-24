@@ -91,7 +91,6 @@ export default {
 			}
 			else if(style == 'insertImage') {
 				var image = event.target.files[0];
-				console.log(image.name);
 				this.form.data.append(image.name, image, image.name);
 			}
 
