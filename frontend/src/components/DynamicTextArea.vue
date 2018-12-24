@@ -64,17 +64,10 @@ export default {
 				else {
 					this.focus(prev);
 				}
-				//iterate over this.content and insert corresponding html into dom
+
 				for(var i = 0; i < this.content.length; i++) {
 					this.$refs['content-'+i][0].innerHTML = this.content[i].html;
 				}
-				delete this.$refs['content-'+index];
-				// var old = document.getElementById('content-0');
-				// var p = document.createElement('p');
-				// p.innerText = 'hello';
-				// p.innerHTML = '<b>hello</p>';
-				// old.parentNode.replaceChild(p, old);
-
 			}
 		},
 		save() {			
@@ -103,6 +96,11 @@ export default {
 			}
 
 			document.execCommand(style, false, null);
+
+			for(var i = 0; i < this.content.length; i++) {
+				this.content[i].html = this.$refs['content-'+i][0].innerHTML;
+			}
+
 			this.emit_content();
 		},
 		trim(str) {
