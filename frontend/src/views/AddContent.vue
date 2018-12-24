@@ -10,7 +10,7 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<DynamicTextArea v-on:content="update_content($event)"></DynamicTextArea>
+				<DynamicParagraph v-on:content="update_content($event)"></DynamicParagraph>
 			</form>
 			<div id="citations">
 				<h3>Additional Info</h3>
@@ -18,7 +18,7 @@
 					Upload content for parsing:<br>
 					<input type="file" name="paper-upload" multiple v-on:change="parse_file($event)"><br>
 				</div>
-				<textarea v-model="content.citations" placeholder="Citations"></textarea><br>
+				<textarea v-model="data.citations" placeholder="Citations"></textarea><br>
 				<h4>BibTeX citation</h4>
 				<p>{{ bibtex.to_string }}</p>
 			</div>
@@ -31,8 +31,8 @@
 			<h3>Slide Preview</h3>
 			<button>Publish</button>
 			<p>{{ bibtex.values.title }}</p>
-			<div v-for="(value, index) in content">
-				<!-- <p placeholder="Content..." >{{ content[index].value }}</p> -->
+			<div v-for="(value, index) in data.content">
+				<p v-html="value.html" contenteditable></p>
 			</div>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 <script>
 import PageNav from '@/components/PageNav'
 import ContentService from '../services/ContentService.js'
-import DynamicTextArea from '@/components/DynamicTextArea'
+import DynamicParagraph from '@/components/DynamicParagraph'
 
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
@@ -51,13 +51,14 @@ export default {
 	name: 'add-article',
 	components: {
 		PageNav,
-		DynamicTextArea
+		DynamicParagraph
 	},
 	created() {
 		this.bibtex_to_string();
 	},
 	data() {
 		return {
+			test: '',
 			bibtex: {
 				name: "",
 				properties: ["year"],
@@ -91,7 +92,7 @@ export default {
 				to_string: "",
 			},
 			citations: "",
-			content: {
+			data: {
 				date_created: new Date(),
 				citations: '',
 				content: undefined,
@@ -149,7 +150,7 @@ export default {
 
 			for(var i = 0; i < properties.length; i++) {
 				var p = properties[i];
-				console.log(p);
+
 				bib += p + '= {' + this.bibtex.values[p] + '}';
 
 				if(i+1 < properties.length) {
@@ -189,7 +190,7 @@ export default {
 		save() {
 			if(this.content != null) {
 				this.save_status = 'saving...';
-				this.content.last_modified = new Date();
+				this.data.last_modified = new Date();
 
 				ContentService.createContent({user: this.user, content: this.content, bibtex: this.bibtex})
 				.then(function(data) {
@@ -202,7 +203,7 @@ export default {
 			}
 		},
 		update_content(content) {
-			this.content.content = content;
+			this.data.content = content;
 		}
 	},
 	ready: function() {
