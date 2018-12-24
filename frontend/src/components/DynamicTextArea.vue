@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup="save($event)" v-on:click="save($event)">
+	<div id="container" v-on:keyup="save()">
 		<div id="editbar">
 			<!-- https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand -->
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -7,10 +7,10 @@
 			<button class="toolbar" v-on:click.prevent="stylize('underline')">Underline</button>
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
-			<button class="toolbar" v-on:click.prevent="stylize('insertImage')">Image</button>
+			<button class="toolbar" v-on:click.prevent="stylize('insertImage', $event)" type="file" name="image" multiple >Image</button>
 		</div>
 		<div v-for="(value, index) in content">
-			<p v-bind:id="'content-'+index" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup="emit_content($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)" contenteditable></p>
+			<p v-bind:id="'content-'+index" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)" contenteditable></p>
 		</div>
 	</div>
 </template>
@@ -19,60 +19,94 @@
 export default { 
 	data() {
 		return {
-			data: {},
 			content: [{
-				date: new Date(),
+				id: '',
+				created: new Date(),
 				last_modified: new Date(),
-				tags: "",
-				value: "",
+				text: '',
+				html: ''
 			}],
-			highlighted: undefined
+			form: {
+				data: new FormData()
+			}
 		}
 	},
 	methods: {
 		add_content(index) {
 			var next = index + 1;
 			this.content.splice(next, 0, {
-				date: new Date(),
-				last_modified: new Date(),
-				tags: "",
-				value: "",
+				text: '',
+				html: ''
 			});
-			this.$nextTick(() => {
-				this.$refs['content-'+next][0].focus()
-			});
+			this.focus(next);
 		},
-		emit_content(event) {
-			this.$emit('content', this.data);
+		emit_content() {
+			this.$emit('content', this.content);
+		},
+		focus(index) {
+			this.$nextTick(() => {
+				this.$refs['content-'+index][0].focus()
+			});
 		},
 		prevent_nl(event) {
 			event.preventDefault();
 		},
 		remove_content(index) {
-			var prev = index - 1;
-			this.content.shift();
-			this.$nextTick(() => {
-				this.$refs['content-'+prev][0].focus()
-			});
-		},
-		save(event) {
 			var el = event.target;
-			var id = el.getAttribute('id');
-			if(id != null && el.nodename != 'INPUT' && el.nodename != 'TEXTAREA') {
 
-				if(this.data[id] != undefined) {
-					this.data[id].value = el.innerHTML;
+			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
+				this.content.splice(index, 1);
+				var prev = index - 1;
+
+				if(this.content.length > 0 && prev < 0) {
+					this.focus(index);
 				}
 				else {
-					this.data[id] = {date: new Date(), last_modified: new Date(), tags:'', value: ''}
+					this.focus(prev);
 				}
+				//iterate over this.content and insert corresponding html into dom
+				for(var i = 0; i < this.content.length; i++) {
+					this.$refs['content-'+i][0].innerHTML = this.content[i].html;
+				}
+				delete this.$refs['content-'+index];
+				// var old = document.getElementById('content-0');
+				// var p = document.createElement('p');
+				// p.innerText = 'hello';
+				// p.innerHTML = '<b>hello</p>';
+				// old.parentNode.replaceChild(p, old);
 
-				// console.log(JSON.stringify(this.data));
+			}
+		},
+		save() {			
+			var el = event.target;
+			var id = el.getAttribute('id');
+			var index = id[id.length-1];
+
+			if(this.content[index] != null) {
+				this.content[index].id = id;
+				this.content[index].created = new Date();
+				this.content[index].last_modified = new Date();
+				this.content[index].text = this.trim(el.innerText);
+				this.content[index].html = el.innerHTML;
+
+				this.emit_content();
 			}
 		},
 		stylize(style) {
+			if(style == 'createLink') {
+
+			}
+			else if(style == 'insertImage') {
+				var image = event.target.files[0];
+				console.log(image.name);
+				this.form.data.append(image.name, image, image.name);
+			}
+
 			document.execCommand(style, false, null);
-			console.log(this.content[0].value);
+			this.emit_content();
+		},
+		trim(str) {
+			return str.replace(/\n|\r/g, "");
 		}
 	}
 }

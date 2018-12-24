@@ -18,7 +18,7 @@
 					Upload content for parsing:<br>
 					<input type="file" name="paper-upload" multiple v-on:change="parse_file($event)"><br>
 				</div>
-				<textarea v-model="content.citations" placeholder="Citations"></textarea><br>
+				<textarea v-model="data.citations" placeholder="Citations"></textarea><br>
 				<h4>BibTeX citation</h4>
 				<p>{{ bibtex.to_string }}</p>
 			</div>
@@ -31,8 +31,8 @@
 			<h3>Slide Preview</h3>
 			<button>Publish</button>
 			<p>{{ bibtex.values.title }}</p>
-			<div v-for="(value, index) in content">
-				<!-- <p placeholder="Content..." >{{ content[index].value }}</p> -->
+			<div v-for="(value, index) in data.content">
+				<p v-html="value.html" contenteditable></p>
 			</div>
 		</div>
 	</div>
@@ -58,6 +58,7 @@ export default {
 	},
 	data() {
 		return {
+			test: '',
 			bibtex: {
 				name: "",
 				properties: ["year"],
@@ -91,7 +92,7 @@ export default {
 				to_string: "",
 			},
 			citations: "",
-			content: {
+			data: {
 				date_created: new Date(),
 				citations: '',
 				content: undefined,
@@ -189,7 +190,7 @@ export default {
 		save() {
 			if(this.content != null) {
 				this.save_status = 'saving...';
-				this.content.last_modified = new Date();
+				this.data.last_modified = new Date();
 
 				ContentService.createContent({user: this.user, content: this.content, bibtex: this.bibtex})
 				.then(function(data) {
@@ -202,7 +203,7 @@ export default {
 			}
 		},
 		update_content(content) {
-			this.content.content = content;
+			this.data.content = content;
 		}
 	},
 	ready: function() {

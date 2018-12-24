@@ -4,6 +4,7 @@
 			Please create an account to register for our conference.
 		</div>
 		<form v-if="form.show" enctype="multipart/form-data">
+			<button v-on:click.prevent="reveal_form">Hide form</button><br>
 			<label>What's your first name?</label><br>
 			<p class="error" v-if="profile.first_name.err.length > 0">{{ profile.first_name.err }}</p>
 			<input type="text" placeholder="First name" v-model.trim="profile.first_name.value" required><br>
@@ -119,10 +120,6 @@
 			<button v-on:click.prevent="reveal_form">Hide form</button><br>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
-		<div v-if="!form.show" class="action-buttons">
-			<router-link to="/login" tag="button">Login</router-link>
-			<button v-on:click.prevent="reveal_form">Register</button>
-		</div>
 	</div>
 </template>
 
@@ -154,7 +151,7 @@ export default {
 				gender: ['Female', 'Male', 'Non-binary'],
 				months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 				schools: institutions,
-				show: false,
+				show: true,
 				travel: false,
 				years: years(100, (new Date()).getFullYear())
 			},
