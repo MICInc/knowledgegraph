@@ -7,10 +7,18 @@
 			<button class="toolbar" v-on:click.prevent="stylize('underline')">Underline</button>
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
-			<button class="toolbar" type="file" name="image" multiple v-on:click.prevent="add_image()">Image</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content">
-			<p v-bind:id="'content-'+index" class="content" v-model="content[index].value" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)" contenteditable></p>
+			<div class='tag_type'>
+				<input class="tag_switch" type="file" name="image" v-on:click="switch_content('img', index)" v-on:change="add_image(index, $event)">
+				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
+				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
+			</div>
+			<img v-if="'img' == content[index].tag" v-bind:src="content[index].src" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index, $event)">
+			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index, $event)" v-on:keyup.enter="add_content(index)">
+				<hr v-bind:id="'content-'+index">
+			</div>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-on:keyup="test()" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)"  contenteditable></p>
 		</div>
 	</div>
 </template>
@@ -20,18 +28,19 @@ import ContentService from '../services/ContentService.js'
 
 export default { 
 	created() {
-		var dropZone = document.getElementById('contain-container');
-		dropZone.addEventListener('dragover', handleDrag, false);
-		dropZone.addEventListener('drop', handleDrop, false);
+		// v-on:keyup.delete="remove_active()"
 	},
 	data() {
 		return {
+			active_index: 0,
 			content: [{
 				id: '',
 				created: new Date(),
 				last_modified: new Date(),
+				tag: 'p',
 				text: '',
 				html: '',
+				src: '',
 				form: new FormData()
 			}],
 			form: {
@@ -40,56 +49,42 @@ export default {
 		}
 	},
 	methods: {
-		add_content(index) {
+		test() {
+			console.log(this.$refs['content-0'][0].innerHTML);
+		},
+		add_content(index=this.content.length-1) {
 			var next = index + 1;
 			this.content.splice(next, 0, {
 				text: '',
-				html: ''
+				html: '',
+				tag: 'p'
 			});
 			this.focus(next);
 		},
-		add_image() {
-			// ContentService.getImage().then(function(data) {
-			// 	console.log(data);
-			// 	var html = '<img src="data:image/png;base64,'+data.data+'">'
-			// 	document.execCommand('insertHTML', false, html);
+		add_image(index, event) {
+			//create image node
+			var file = event.target;
 
-			// });
-			// https://jsfiddle.net/Xeoncross/4tUDk/
-			var html = '<b>herro</b>';
-			var sel, range;
-			if (window.getSelection) {
-				// IE9 and non-IE
-				sel = window.getSelection();
-				if (sel.getRangeAt && sel.rangeCount) {
-					range = sel.getRangeAt(0);
-					range.deleteContents();
-
-					// Range.createContextualFragment() would be useful here but is
-					// non-standard and not supported in all browsers (IE9, for one)
-					var el = document.createElement("div");
-					el.innerHTML = html;
-					var frag = document.createDocumentFragment(), node, lastNode;
-
-					while ((node = el.firstChild)) {
-						lastNode = frag.appendChild(node);
-					}
-
-					range.insertNode(frag);
-
-					// Preserve the selection
-					if (lastNode) {
-						range = range.cloneRange();
-						range.setStartAfter(lastNode);
-						range.collapse(true);
-						sel.removeAllRanges();
-						sel.addRange(range);
-					}
+			if(file.files && file.files[0]) {
+				var reader = new FileReader();
+				reader.onload = (e) => {
+					this.$refs['content-'+index][0].src = e.target.result;
+					this.content[index].src = e.target.result;
+					this.content[index].html = '<img src="'+e.target.result+'"">'
 				}
-			} else if (document.selection && document.selection.type != "Control") {
-				// IE < 9
-				document.selection.createRange().pasteHTML(html);
+				reader.readAsDataURL(file.files[0]);
 			}
+		},
+		arrayBufferToBase64(buffer) {
+			var binary = '';
+			var bytes = new Uint8Array( buffer );
+			var len = bytes.byteLength;
+
+			for (var i = 0; i < len; i++) {
+				binary += String.fromCharCode( bytes[ i ] );
+			}
+
+			return window.btoa( binary );
 		},
 		emit_content() {
 			this.$emit('content', this.content);
@@ -101,6 +96,18 @@ export default {
 		},
 		prevent_nl(event) {
 			event.preventDefault();
+		},
+		remove_active() {
+			if(this.active_index > -1) {
+				var el = this.$refs['content-'+this.active_index][0];
+
+				this.content.splice(this.content[this.active_index], 1);
+				this.add_content();
+				this.focus(this.content.length-1);
+				this.update_refs();
+			}
+
+			this.active_index = -1;
 		},
 		remove_content(index) {
 			var el = event.target;
@@ -116,9 +123,7 @@ export default {
 					this.focus(prev);
 				}
 
-				for(var i = 0; i < this.content.length; i++) {
-					this.$refs['content-'+i][0].innerHTML = this.content[i].html;
-				}
+				this.update_refs();
 			}
 		},
 		save() {			
@@ -135,6 +140,16 @@ export default {
 
 				this.emit_content();
 			}
+		},
+		set_active(index, event) {
+			var id = event.target.getAttribute('id');
+			
+			if(this.active_index > -1) {
+				this.$refs['content-'+this.active_index][0].style.outline = '';
+			}
+			
+			this.active_index = parseInt(id[id.length-1], 10);
+			event.target.style.outline = 'solid blue 1px';
 		},
 		stylize(style) {
 			console.log(window.getSelection().getRangeAt(0));
@@ -154,8 +169,29 @@ export default {
 
 			this.emit_content();
 		},
+		switch_content(tag, index) {
+			var content = this.content[index];
+			content.tag = tag;
+			content.text = '';
+
+			if(tag == 'p') {
+				content.html = '<p></p>';
+			}
+			else if(tag == 'hr') {
+				content.html = '<hr>';
+			}
+
+			if(this.content[this.content.length-1].tag != 'p') { 
+				this.add_content();
+			}
+		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
+		},
+		update_refs() {
+			for(var i = 0; i < this.content.length; i++) {
+				this.$refs['content-'+i][0].innerHTML = this.content[i].html;
+			}
 		}
 	}
 }
@@ -176,5 +212,9 @@ export default {
 
 .content:hover {
   box-shadow: 0 0 1px #E8E8E8;
+}
+
+.content-hr {
+	min-height: 20px;
 }
 </style>
