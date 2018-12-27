@@ -14,7 +14,7 @@
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
 			</div>
-			<img v-if="'img' == content[index].tag" v-bind:src="content[index].src" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index, $event)">
+			<img v-if="'img' == content[index].tag" v-bind:src="content[index].src" v-bind:id="'content-'+index" class="image-content" v-bind:ref="'content-'+index" v-on:click="set_active(index, $event)">
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index, $event)" v-on:keyup.enter="add_content(index)">
 				<hr v-bind:id="'content-'+index">
 			</div>
@@ -216,5 +216,13 @@ export default {
 
 .content-hr {
 	min-height: 20px;
+}
+
+.image-content {
+	display: block;
+	margin: auto;
+	max-width: 100%;
+	max-height: 100%;
+	vertical-align: middle; 
 }
 </style>
