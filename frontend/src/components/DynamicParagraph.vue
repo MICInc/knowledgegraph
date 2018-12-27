@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup="save()">
+	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" tabindex="0">
 		<div id="editbar">
 			<!-- https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand -->
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -14,11 +14,14 @@
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
 			</div>
-			<img v-if="'img' == content[index].tag" v-bind:src="content[index].src" v-bind:id="'content-'+index" class="image-content" v-bind:ref="'content-'+index" v-on:click="set_active(index, $event)">
+			<figure v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:keyup.delete="remove_content(index)">
+				<img v-bind:id="'content-'+index" class="image-content" v-bind:src="content[index].src" v-on:click="set_active(index, $event)">
+				<figcaption v-model="content[index].caption"></figcaption>
+			</figure>
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index, $event)" v-on:keyup.enter="add_content(index)">
 				<hr v-bind:id="'content-'+index">
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-on:keyup="test()" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)"  contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)"  contenteditable></p>
 		</div>
 	</div>
 </template>
@@ -27,14 +30,12 @@
 import ContentService from '../services/ContentService.js'
 
 export default { 
-	created() {
-		// v-on:keyup.delete="remove_active()"
-	},
 	data() {
 		return {
 			active_index: 0,
 			content: [{
 				id: '',
+				caption: '',
 				created: new Date(),
 				last_modified: new Date(),
 				tag: 'p',
@@ -49,28 +50,33 @@ export default {
 		}
 	},
 	methods: {
-		test() {
-			console.log(this.$refs['content-0'][0].innerHTML);
-		},
 		add_content(index=this.content.length-1) {
 			var next = index + 1;
 			this.content.splice(next, 0, {
+				id: '',
+				caption: '',
+				created: new Date(),
+				last_modified: new Date(),
+				tag: 'p',
 				text: '',
 				html: '',
-				tag: 'p'
+				src: '',
+				form: new FormData()
 			});
 			this.focus(next);
 		},
 		add_image(index, event) {
-			//create image node
 			var file = event.target;
 
 			if(file.files && file.files[0]) {
 				var reader = new FileReader();
 				reader.onload = (e) => {
 					this.$refs['content-'+index][0].src = e.target.result;
+					this.content[index].id = index;
+					this.content[index].tag = 'img';
 					this.content[index].src = e.target.result;
-					this.content[index].html = '<img src="'+e.target.result+'"">'
+					this.content[index].html = '<img src="'+e.target.result+'"">';
+					this.content[index].last_modified = new Date();
 				}
 				reader.readAsDataURL(file.files[0]);
 			}
@@ -98,6 +104,8 @@ export default {
 			event.preventDefault();
 		},
 		remove_active() {
+			console.log('removing active: '+this.active_index);
+			
 			if(this.active_index > -1) {
 				var el = this.$refs['content-'+this.active_index][0];
 
@@ -110,10 +118,14 @@ export default {
 			this.active_index = -1;
 		},
 		remove_content(index) {
+			console.log('removing content');
+			console.log(document.getElementById('content-'+index).selectionStart);
+
 			var el = event.target;
 
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
+
 				var prev = index - 1;
 
 				if(this.content.length > 0 && prev < 0) {
@@ -126,7 +138,7 @@ export default {
 				this.update_refs();
 			}
 		},
-		save() {			
+		save() {
 			var el = event.target;
 			var id = el.getAttribute('id');
 			var index = id[id.length-1];
@@ -143,6 +155,7 @@ export default {
 		},
 		set_active(index, event) {
 			var id = event.target.getAttribute('id');
+			console.log('active: '+id)
 			
 			if(this.active_index > -1) {
 				this.$refs['content-'+this.active_index][0].style.outline = '';
