@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" tabindex="0">
+	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()">
 		<div id="editbar">
 			<!-- https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand -->
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -8,17 +8,17 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<div id="content-container" v-for="(value, index) in content">
+		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index">
 			<div class='tag_type'>
 				<input class="tag_switch" type="file" name="image" v-on:click="switch_content('img', index)" v-on:change="add_image(index, $event)">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
 			</div>
-			<figure v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:keyup.delete="remove_content(index)">
-				<img v-bind:id="'content-'+index" class="image-content" v-bind:src="content[index].src" v-on:click="set_active(index, $event)">
+			<figure v-bind:id="'content-'+index" v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:keyup.delete="remove_content(index)">
+				<img class="image-content" v-bind:src="content[index].src" v-on:click="set_active(index)">
 				<figcaption v-model="content[index].caption"></figcaption>
 			</figure>
-			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index, $event)" v-on:keyup.enter="add_content(index)">
+			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr v-bind:id="'content-'+index">
 			</div>
 			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)"  contenteditable></p>
@@ -32,7 +32,7 @@ import ContentService from '../services/ContentService.js'
 export default { 
 	data() {
 		return {
-			active_index: 0,
+			active_index: -1,
 			content: [{
 				id: '',
 				caption: '',
@@ -75,11 +75,12 @@ export default {
 					this.content[index].id = index;
 					this.content[index].tag = 'img';
 					this.content[index].src = e.target.result;
-					this.content[index].html = '<img src="'+e.target.result+'"">';
+					this.content[index].html = '<img class=\"image-content\" src="'+e.target.result+'"">';
 					this.content[index].last_modified = new Date();
 				}
 				reader.readAsDataURL(file.files[0]);
 			}
+			console.log(this.content[index]);
 		},
 		arrayBufferToBase64(buffer) {
 			var binary = '';
@@ -107,11 +108,7 @@ export default {
 			console.log('removing active: '+this.active_index);
 			
 			if(this.active_index > -1) {
-				var el = this.$refs['content-'+this.active_index][0];
-
-				this.content.splice(this.content[this.active_index], 1);
-				this.add_content();
-				this.focus(this.content.length-1);
+				this.content.splice(this.active_index, 1);
 				this.update_refs();
 			}
 
@@ -119,7 +116,6 @@ export default {
 		},
 		remove_content(index) {
 			console.log('removing content');
-			console.log(document.getElementById('content-'+index).selectionStart);
 
 			var el = event.target;
 
@@ -137,6 +133,7 @@ export default {
 
 				this.update_refs();
 			}
+			console.log(this.content);
 		},
 		save() {
 			var el = event.target;
@@ -153,16 +150,14 @@ export default {
 				this.emit_content();
 			}
 		},
-		set_active(index, event) {
-			var id = event.target.getAttribute('id');
-			console.log('active: '+id)
-			
+		set_active(index) {
+			console.log(index);
+			//highlight selection
 			if(this.active_index > -1) {
 				this.$refs['content-'+this.active_index][0].style.outline = '';
 			}
 			
-			this.active_index = parseInt(id[id.length-1], 10);
-			event.target.style.outline = 'solid blue 1px';
+			this.active_index = index;
 		},
 		stylize(style) {
 			console.log(window.getSelection().getRangeAt(0));
@@ -204,6 +199,7 @@ export default {
 		update_refs() {
 			for(var i = 0; i < this.content.length; i++) {
 				this.$refs['content-'+i][0].innerHTML = this.content[i].html;
+				console.log(this.content[i].tag);
 			}
 		}
 	}
