@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()">
+	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keydown.tab="print_tag()">
 		<div id="editbar">
 			<!-- https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand -->
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -8,18 +8,15 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index">
+		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="index">
 			<div class='tag_type'>
-				<input class="tag_switch" type="file" name="image" v-on:click="switch_content('img', index)" v-on:change="add_image(index, $event)">
+				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
 			</div>
-			<figure v-bind:id="'content-'+index" v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:keyup.delete="remove_content(index)">
-				<img class="image-content" v-bind:src="content[index].src" v-on:click="set_active(index)">
-				<figcaption v-model="content[index].caption"></figcaption>
-			</figure>
+			<img class="image-content" v-bind:src="content[index].src" v-bind:id="'content-'+index" v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:click="set_active(index)">
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
-				<hr v-bind:id="'content-'+index">
+				<hr>
 			</div>
 			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)"  contenteditable></p>
 		</div>
@@ -50,6 +47,9 @@ export default {
 		}
 	},
 	methods: {
+		test() {
+			this.print_tag();
+		},
 		add_content(index=this.content.length-1) {
 			var next = index + 1;
 			this.content.splice(next, 0, {
@@ -66,21 +66,26 @@ export default {
 			this.focus(next);
 		},
 		add_image(index, event) {
-			var file = event.target;
+			var el = event.target;
 
-			if(file.files && file.files[0]) {
+			if(el.files && el.files[0]) {
 				var reader = new FileReader();
 				reader.onload = (e) => {
-					this.$refs['content-'+index][0].src = e.target.result;
-					this.content[index].id = index;
-					this.content[index].tag = 'img';
-					this.content[index].src = e.target.result;
-					this.content[index].html = '<img class=\"image-content\" src="'+e.target.result+'"">';
-					this.content[index].last_modified = new Date();
+					var filename = e.target.result;
+
+					if(filename.length > 0) {
+						this.content[index].id = index;
+						this.content[index].tag = 'img';
+						this.content[index].src = filename;
+						this.content[index].html = '<img class=\"image-content\" src="'+filename+'"">';
+						this.content[index].last_modified = new Date();
+						this.$refs['content-'+index][0].innerHTML = this.content[index].html;
+					}
 				}
-				reader.readAsDataURL(file.files[0]);
+				reader.readAsDataURL(el.files[0]);
 			}
-			console.log(this.content[index]);
+
+			this.switch_content('img', index);
 		},
 		arrayBufferToBase64(buffer) {
 			var binary = '';
@@ -104,19 +109,44 @@ export default {
 		prevent_nl(event) {
 			event.preventDefault();
 		},
+		print_tag() {
+			console.log('==== content ('+this.content.length+'), ref ('+this.max_ref()+') ====');
+			for(var i = 0; i < this.content.length+1; i++) {
+				if(this.content[i] != null) {
+				console.log('index: '+i+' content: '+this.content[i].tag+' id: '+this.content[i].id+' ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
+				}
+				else if(this.$refs['content-'+i] != null) {
+					if (this.$refs['content-'+i][0] != null) {
+						console.log('index: '+i+' content: null id: null ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
+					}
+				}
+			}
+		},
+		max_ref() {
+			var len = this.content.length;
+			if(this.$refs['content-'+(len+1)] != null) {
+				return len+1;
+			}
+			return len;
+		},
 		remove_active() {
-			console.log('removing active: '+this.active_index);
-			
 			if(this.active_index > -1) {
-				this.content.splice(this.active_index, 1);
-				this.update_refs();
+				var el = this.content[this.active_index];
+				if(el.tag == 'img') {
+					el.tag = 'p';
+					el.src = '';
+					el.html = '';
+				}
+				this.$refs['img-button-'+this.active_index][0].value = '';
+			}
+
+			if(this.content.length == 0) {
+				this.add_content();
 			}
 
 			this.active_index = -1;
 		},
 		remove_content(index) {
-			console.log('removing content');
-
 			var el = event.target;
 
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
@@ -130,10 +160,7 @@ export default {
 				else {
 					this.focus(prev);
 				}
-
-				this.update_refs();
 			}
-			console.log(this.content);
 		},
 		save() {
 			var el = event.target;
@@ -151,7 +178,6 @@ export default {
 			}
 		},
 		set_active(index) {
-			console.log(index);
 			//highlight selection
 			if(this.active_index > -1) {
 				this.$refs['content-'+this.active_index][0].style.outline = '';
@@ -195,12 +221,6 @@ export default {
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
-		},
-		update_refs() {
-			for(var i = 0; i < this.content.length; i++) {
-				this.$refs['content-'+i][0].innerHTML = this.content[i].html;
-				console.log(this.content[i].tag);
-			}
 		}
 	}
 }
