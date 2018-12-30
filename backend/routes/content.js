@@ -64,4 +64,9 @@ router.get('/', function(req, res) {
 	}
 });
 
+router.get('/img', function(req, res) {
+	console.log('sending image');
+	res.sendFile('./content/new/parkourtheory.png', {root: './storage'})
+});
+
 module.exports = router;
