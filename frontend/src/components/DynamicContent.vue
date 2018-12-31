@@ -12,12 +12,14 @@
 				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
+				<button class="tag_switch" v-on:click.prevent="switch_content('canvas', index)">canvas</button>
 			</div>
 			<img class="image-content" v-bind:src="content[index].src" v-bind:id="'content-'+index" v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:click="set_active(index)">
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
 			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:click="set_active(index)" contenteditable></p>
+			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
 </template>
@@ -127,14 +129,16 @@ export default {
 			return len;
 		},
 		remove_active() {
-			// console.log('remove_active('+this.active_index+')');
+			console.log('remove_active('+this.active_index+')');
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
-				if(el.tag == 'img') {
+
+				if(el.tag == 'img' || el.tag == 'canvas') {
 					el.tag = 'p';
 					el.src = '';
 					el.html = '';
 				}
+
 				this.$refs['img-button-'+this.active_index][0].value = '';
 			}
 
@@ -181,7 +185,7 @@ export default {
 		},
 		set_active(index) {
 			//highlight selection
-			// console.log(index);
+			console.log(index);
 			if(this.active_index > -1) {
 				this.$refs['content-'+this.active_index][0].style.outline = '';
 			}
