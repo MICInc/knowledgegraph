@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keydown.tab="print_tag()">
+	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="print_tag()">
 		<div id="editbar">
 			<!-- https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand -->
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -8,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="index">
+		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="value">
 			<div class='tag_type'>
 				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
@@ -18,7 +18,7 @@
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.enter="add_content(index)" v-on:keyup.delete="remove_content(index)"  contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:click="set_active(index)" contenteditable></p>
 		</div>
 	</div>
 </template>
@@ -50,8 +50,8 @@ export default {
 		test() {
 			this.print_tag();
 		},
-		add_content(index=this.content.length-1) {
-			var next = index + 1;
+		add_content() {
+			var next = this.active_index + 1;
 			this.content.splice(next, 0, {
 				id: '',
 				caption: '',
@@ -113,7 +113,7 @@ export default {
 			console.log('==== content ('+this.content.length+'), ref ('+this.max_ref()+') ====');
 			for(var i = 0; i < this.content.length+1; i++) {
 				if(this.content[i] != null) {
-				console.log('index: '+i+' content: '+this.content[i].tag+' id: '+this.content[i].id+' ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
+				console.log('index: '+i+' content: '+this.content[i].tag+' html: '+this.content[i].html+' id: '+this.content[i].id+' ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
 				}
 				else if(this.$refs['content-'+i] != null) {
 					if (this.$refs['content-'+i][0] != null) {
@@ -130,6 +130,7 @@ export default {
 			return len;
 		},
 		remove_active() {
+			// console.log('remove_active('+this.active_index+')');
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 				if(el.tag == 'img') {
@@ -147,7 +148,11 @@ export default {
 			this.active_index = -1;
 		},
 		remove_content(index) {
+			// console.log('remove_content('+index+') = '+this.content[index].html);
 			var el = event.target;
+
+			// console.log('before removing');
+			// this.print_tag();
 
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
@@ -179,6 +184,7 @@ export default {
 		},
 		set_active(index) {
 			//highlight selection
+			// console.log(index);
 			if(this.active_index > -1) {
 				this.$refs['content-'+this.active_index][0].style.outline = '';
 			}
