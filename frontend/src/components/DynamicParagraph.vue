@@ -1,7 +1,6 @@
 <template>
 	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="print_tag()">
 		<div id="editbar">
-			<!-- https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand -->
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
 			<button class="toolbar" v-on:click.prevent="stylize('underline')">Underline</button>
@@ -47,9 +46,6 @@ export default {
 		}
 	},
 	methods: {
-		test() {
-			this.print_tag();
-		},
 		add_content() {
 			var next = this.active_index + 1;
 			this.content.splice(next, 0, {
@@ -102,6 +98,7 @@ export default {
 			this.$emit('content', this.content);
 		},
 		focus(index) {
+			this.active_index = index;
 			this.$nextTick(() => {
 				this.$refs['content-'+index][0].focus()
 			});
@@ -210,20 +207,11 @@ export default {
 			this.emit_content();
 		},
 		switch_content(tag, index) {
+			this.remove_active();
+
 			var content = this.content[index];
 			content.tag = tag;
 			content.text = '';
-
-			if(tag == 'p') {
-				content.html = '<p></p>';
-			}
-			else if(tag == 'hr') {
-				content.html = '<hr>';
-			}
-
-			if(this.content[this.content.length-1].tag != 'p') { 
-				this.add_content();
-			}
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
@@ -233,6 +221,10 @@ export default {
 </script>
 
 <style>
+*:focus {
+    outline: none;
+}
+
 .content {
 	width: 100%;
 	-o-transition:.5s;
