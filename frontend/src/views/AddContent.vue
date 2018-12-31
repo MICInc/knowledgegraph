@@ -3,9 +3,8 @@
 		<PageNav></PageNav>
 		<div class="container">
 			<button>Publish</button>
-			<button v-on:click="switch_editor()">{{ editor }}</button>
 			<span>{{ save_status }}</span>
-			<form v-if="editor == 'Article'">
+			<form>
 				<input class="content" type="text" v-model="bibtex.values.author" v-on:blur="add_bibtex('author')" placeholder="Co-authors"/>
 				<input id="title" class="content" type="text" v-model="bibtex.values.title" v-on:blur="add_bibtex('title')" placeholder="Title"/>
 				<div v-for="(paper, index) in display.papers">
@@ -13,7 +12,6 @@
 				</div>
 				<DynamicParagraph v-on:content="update_content($event)"></DynamicParagraph>
 			</form>
-			<Slide v-if="editor == 'Slides'"></Slide>
 			<div id="citations">
 				<h3>Additional Info</h3>
 				<div class="upload">
@@ -29,14 +27,6 @@
 			</div>
 			<button>Publish</button>
 		</div>
-		<!-- <div class="preview">
-			<h3>Slide Preview</h3>
-			<button>Publish</button>
-			<p>{{ bibtex.values.title }}</p>
-			<div v-for="(value, index) in data.content">
-				<p v-html="value.html" contenteditable></p>
-			</div>
-		</div> -->
 	</div>
 </template>
 
@@ -44,7 +34,6 @@
 import PageNav from '@/components/PageNav';
 import ContentService from '../services/ContentService.js';
 import DynamicParagraph from '@/components/DynamicParagraph';
-import Slide from '@/components/Slide'
 
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
@@ -54,8 +43,7 @@ export default {
 	name: 'add-article',
 	components: {
 		PageNav,
-		DynamicParagraph,
-		Slide
+		DynamicParagraph
 	},
 	created() {
 		this.bibtex_to_string();
@@ -106,7 +94,6 @@ export default {
 			display: {
 				papers: []
 			},
-			editor: 'Article',
 			save_status: '',
 			tags: [''],
 			user: {
@@ -205,14 +192,6 @@ export default {
 				});
 
 				this.save_status = 'saved';
-			}
-		},
-		switch_editor() {
-			if(this.editor == 'Article') {
-				this.editor = 'Slides';
-			}
-			else {
-				this.editor = 'Article';
 			}
 		},
 		update_content(content) {
