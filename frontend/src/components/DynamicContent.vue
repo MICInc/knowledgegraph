@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="print_tag()">
+	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -7,7 +7,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="value">
+		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
 			<div class='tag_type'>
 				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
@@ -99,10 +99,11 @@ export default {
 		emit_content() {
 			this.$emit('content', this.content);
 		},
-		focus(index) {
+		focus(index=this.active_index+1) {
 			this.active_index = index;
 			this.$nextTick(() => {
 				this.$refs['content-'+index][0].focus()
+				this.set_end_contenteditable(this.$refs['content-'+index][0]);
 			});
 		},
 		prevent_nl(event) {
@@ -129,7 +130,6 @@ export default {
 			return len;
 		},
 		remove_active() {
-			console.log('remove_active('+this.active_index+')');
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
@@ -149,11 +149,7 @@ export default {
 			this.active_index = -1;
 		},
 		remove_content(index) {
-			// console.log('remove_content('+index+') = '+this.content[index].html);
 			var el = event.target;
-
-			// console.log('before removing');
-			// this.print_tag();
 
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
@@ -170,10 +166,11 @@ export default {
 		},
 		save() {
 			var el = event.target;
-			var id = el.getAttribute('id');
-			var index = id[id.length-1];
+			
+			if(el != null && this.content[index] != null) {
+				var id = el.getAttribute('id');
+				var index = id[id.length-1];
 
-			if(this.content[index] != null) {
 				this.content[index].id = id;
 				this.content[index].created = new Date();
 				this.content[index].last_modified = new Date();
@@ -184,16 +181,33 @@ export default {
 			}
 		},
 		set_active(index) {
-			//highlight selection
-			console.log(index);
 			if(this.active_index > -1) {
 				this.$refs['content-'+this.active_index][0].style.outline = '';
 			}
 			
 			this.active_index = index;
 		},
+		set_end_contenteditable(element) {
+			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
+			var range, selection;
+
+			if(document.createRange) {
+				range = document.createRange();//Create a range (a range is a like the selection but invisible)
+				range.selectNodeContents(element);//Select the entire contents of the element with the range
+				range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+				selection = window.getSelection();//get the selection object (allows you to change selection)
+				selection.removeAllRanges();//remove any selections already made
+				selection.addRange(range);//make 
+			}
+			else if(document.selection) {
+				range = document.body.createTextRange();//Create a range (a range is a like the selection but invisible)
+				range.moveToElementText(element);//Select the entire contents of the element with the range
+				range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+				range.select();
+			}
+
+		},
 		stylize(style) {
-			console.log(window.getSelection().getRangeAt(0));
 
 			if(style == 'createLink') {
 
