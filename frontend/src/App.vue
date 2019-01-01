@@ -49,13 +49,12 @@ button {
   border: none;
   box-shadow: none;
   outline: none;
-  background: #545f99;
   padding: 5px 10px;
-  color: #fff;
+  color: #000;
 }
 
 button:hover {
-  background: #4b59a3;
+  background: #f7f7f7;
   cursor: pointer;
 }
 

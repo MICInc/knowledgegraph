@@ -1,16 +1,16 @@
 <template>
 	<div id="container">
 		<div id="program-nav">
-			<ul id="nav-bar" v-for="(program, index) in programs">
-				<li><button v-on:click="switch_panel(program.name)">{{ program.name }}</button></li>
+			<ul id="nav-bar">
+				<li><button v-on:click="switch_panel('conference')">Conference</button></li>
+				<li><button v-on:click="switch_panel('community')">Communities</button></li>
+				<li><button v-on:click="switch_panel('content')">Content</button></li>
 			</ul>
 		</div>
 		<div id="program-panel">
 			<ConfPanel v-if="active == 'conference'"></ConfPanel>
 			<CommPanel v-if="active == 'community'"></CommPanel>
 			<ContentPanel v-if="active == 'content'"></ContentPanel>
-			<!-- <CommunityPanel v-if="activate == 1"></CommunityPanel>
-			<ContentPanel v-if="activate == 2"></ContentPanel> -->
 		</div>
 	</div>
 </template>
@@ -30,18 +30,7 @@ export default {
 	data() {
 		return {
 			active: '',
-			panels: [],
-			programs: [
-				{
-					name: 'content',
-				},
-				{
-					name: 'community',
-				},
-				{
-					name: 'conference',
-				}
-			]
+			panels: []
 		}
 	},
 	methods: {
@@ -56,7 +45,19 @@ export default {
 </script>
 
 <style scoped>
+
+#program-nav {
+	margin: auto;
+	width: 50%;
+}
+
+#nav-bar {
+	margin: auto;
+	width: 50%;
+}
+
 #nav-bar li {
 	display: inline;
 }
+
 </style>
