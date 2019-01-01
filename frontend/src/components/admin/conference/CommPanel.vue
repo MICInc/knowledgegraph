@@ -1,6 +1,6 @@
 <template>
 	<div id="container" v-on:panel="show($event)">
-		<h2>Conference Panel</h2>
+		<h2>Community Panel</h2>
 		<div v-on:program_panels="update_panels($event)">
 			<ul v-for="(panel, index) in panels">
 				<button v-on:click="show(panel.name)">{{ panel.name }}</button>
@@ -8,29 +8,22 @@
 		</div>
 		<div>
 			<Overview v-if="view == 'overview'"></Overview>
-			<Applications v-if="view == 'applications'"></Applications>
 		</div>
 	</div>
 </template>
 
 <script>
-import Overview from '@/components/admin/conference/Overview'
-import Applications from '@/components/admin/conference/Applications'
-
+import Overview from '@/components/admin/conference/Overview';
 export default {
-	name: 'ConfPanel',
+	name: 'CommPanel',
 	components: {
-		Applications,
 		Overview
 	},
 	data() {
 		return {
 			panels: [
 				{
-					name: 'overview'
-				},
-				{
-					name: 'applications'
+					name: 'overview',
 				}
 			],
 			selected: false,

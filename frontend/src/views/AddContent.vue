@@ -10,7 +10,7 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<DynamicParagraph v-on:content="update_content($event)"></DynamicParagraph>
+				<DynamicContent v-on:content="update_content($event)"></DynamicContent>
 			</form>
 			<div id="citations">
 				<h3>Additional Info</h3>
@@ -33,7 +33,7 @@
 <script>
 import PageNav from '@/components/PageNav';
 import ContentService from '../services/ContentService.js';
-import DynamicParagraph from '@/components/DynamicParagraph';
+import DynamicContent from '@/components/DynamicContent';
 
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
@@ -43,7 +43,7 @@ export default {
 	name: 'add-article',
 	components: {
 		PageNav,
-		DynamicParagraph
+		DynamicContent
 	},
 	created() {
 		this.bibtex_to_string();
