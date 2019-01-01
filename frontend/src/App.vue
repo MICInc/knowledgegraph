@@ -2,11 +2,29 @@
   <div id="app">
     <router-view/>
     <div id="footer">
-    	<p>© 2018, Machine Intelligence Community, Inc.</p>
+    	<p>© {{ year }}, Machine Intelligence Community, Inc.</p>
       <p><a href="/about"> about</a></p>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      year: 0
+    }
+  },
+  methods: {
+    update_year() {
+      this.year = (new Date()).getFullYear();
+    }
+  },
+  mounted() {
+    this.update_year();
+  }
+}
+</script>
 
 <style>
 
