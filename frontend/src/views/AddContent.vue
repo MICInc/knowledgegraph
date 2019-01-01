@@ -96,6 +96,7 @@ export default {
 			},
 			save_status: '',
 			tags: [''],
+			upload: [],
 			user: {
 				first_name: "Justin",
 				last_name: "Chen"

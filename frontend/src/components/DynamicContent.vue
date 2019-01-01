@@ -1,5 +1,6 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()">
+	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keydown.up="print_tag()">
+		<input name="file" type="file" v-on:change="import_file($event)">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -50,6 +51,7 @@ export default {
 	methods: {
 		add_content() {
 			var next = this.active_index + 1;
+
 			this.content.splice(next, 0, {
 				id: '',
 				caption: '',
@@ -61,6 +63,7 @@ export default {
 				src: '',
 				form: new FormData()
 			});
+			
 			this.focus(next);
 		},
 		add_image(index, event) {
@@ -105,6 +108,21 @@ export default {
 				this.$refs['content-'+index][0].focus()
 				this.set_end_contenteditable(this.$refs['content-'+index][0]);
 			});
+		},
+		import_file(event) {
+			var el = event.target;
+			if(el.files && el.files[0]) {
+				var reader = new FileReader();
+				reader.onload = (e) => {
+					var content = e.target.result.split('\n\n');
+
+					for(var i = 0; i < content.length; i++) {
+						this.add_content();
+						this.content[i].html = content[i];
+					}
+				}
+				reader.readAsText(el.files[0])
+			}
 		},
 		prevent_nl(event) {
 			event.preventDefault();
@@ -233,6 +251,15 @@ export default {
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
+		}
+	},
+	updated() {
+		var foo = this.$refs['content-1'];
+
+		if(typeof foo != 'undefined') {
+			for(var i = 0; i < this.content.length; i++) {
+				this.$refs['content-'+i][0].innerHTML = this.content[i].html;
+			}
 		}
 	}
 }

@@ -16,6 +16,7 @@
 <script>
 import Overview from '@/components/admin/conference/Overview'
 import Applications from '@/components/admin/conference/Applications'
+import RegistrationService from '@/services/RegistrationService'
 
 export default {
 	name: 'ConfPanel',
@@ -25,6 +26,7 @@ export default {
 	},
 	data() {
 		return {
+			applications: [],
 			panels: [
 				{
 					name: 'overview'
@@ -34,13 +36,27 @@ export default {
 				}
 			],
 			selected: false,
-			view: ''
+			view: 'overview'
 		}
 	},
 	methods: {
+		async getApplications() {
+			return await RegistrationService.getRegistrations()
+			.then(function(data) {
+				return data.data;
+			});
+		},
 		show(view) {
 			this.view = view;
 		}
+	},
+	beforeMount() {
+		this.getApplications().then(data => {
+			console.log(data);
+			for(let k in data) {
+				this.applications.push(data[k]);
+			}
+		});
 	}
 }
 </script>
