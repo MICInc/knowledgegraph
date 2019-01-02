@@ -254,7 +254,7 @@ export default {
 
 		if(typeof foo != 'undefined') {
 			for(var i = 0; i < this.content.length; i++) {
-				this.$refs['content-'+i][0].innerHTML = this.content[i].html;
+				// this.$refs['content-'+i][0].innerHTML = this.content[i].html;
 			}
 		}
 	}
