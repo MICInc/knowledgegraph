@@ -1,6 +1,5 @@
 <template>
 	<div id="container" v-on:panel="show($event)">
-		<h2>Community Panel</h2>
 		<div v-on:program_panels="update_panels($event)">
 			<ul v-for="(panel, index) in panels">
 				<button v-on:click="show(panel.name)">{{ panel.name }}</button>

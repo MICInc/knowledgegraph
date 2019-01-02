@@ -1,6 +1,5 @@
 <template>
 	<div id="container" v-on:panel="show($event)">
-		<h2>Conference Panel</h2>
 		<div id="panel-nav" v-on:program_panels="update_panels($event)">
 			<ul v-for="(panel, index) in panels">
 				<button class="conf-button" v-on:click="show(panel.name)">{{ panel.name }}</button>
@@ -64,8 +63,8 @@ export default {
 <style>
 .conf-button {
 	margin: 0px;
-	border: 1px solid;
 	padding: 32px 64px;
+	width: 180px;
 	font-size: 1em;
 }
 
