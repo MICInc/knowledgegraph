@@ -2,19 +2,19 @@
 	<div id="container" class="main">
 		<PageNav></PageNav>
 		<h2>Admin console</h2>
-		<ProgramPanel></ProgramPanel>
+		<Console></Console>
 	</div>
 </template>
 
 <script>
 import PageNav from '@/components/PageNav';
-import ProgramPanel from '@/components/admin/ProgramPanel';
+import Console from '@/components/admin/Console';
 
 export default {
 	name: 'admin-console',
 	components: {
 		PageNav,
-		ProgramPanel
+		Console
 	},
 	data() {
 		return {
