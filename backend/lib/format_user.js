@@ -3,29 +3,30 @@ var mongoose = require('mongoose');
 module.exports = function(req)
 {	
 	var user = req.body;
-	var dob = user.dob || new Date(user.dob_year, user.dob_month, user.dob_day);
+	console.log('user: '+JSON.stringify(user));
+
 	return {
 		"id": mongoose.Types.ObjectId(),
-		"affiliation": user.affiliation,
+		"affiliation": user.affiliation.value,
 		"bio": "",
 		"date_joined": new Date(),
-		"dob": dob,
-		"email": user.email,
-		"ethnicity": user.ethnicity,
-		"first_name": user.first_name,
+		"dob": new Date(user.dob.year, user.dob.month, user.dob.day),
+		"email": user.email.value,
+		"ethnicity": user.ethnicity.value,
+		"first_name": user.first_name.value,
 		"following": [],
-		"grade": user.grade,
-		"gender": user.gender,
-		"last_name": user.last_name,
+		"grade": user.grade.value,
+		"gender": user.gender.value,
+		"last_name": user.last_name.value,
 		"library": [],
 		"liked_articles": [],
 		"liked_papers": [],
 		"password_hash": "default",
 		"rank": 0,
 		"salt": "salt",
-		"school": user.school,
+		"school": user.school.value,
 		"search_history": [],
 		"subjects": [],
-		"url": (user.first_name+'-'+user.last_name).toLowerCase()
+		"url": (user.first_name.value+'-'+user.last_name.value).toLowerCase()
 	};
 }

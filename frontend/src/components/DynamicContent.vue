@@ -226,21 +226,17 @@ export default {
 
 		},
 		stylize(style) {
-
+			
 			if(style == 'createLink') {
 
-			}
-			else if(style == 'insertImage') {
-				
 			}
 
 			document.execCommand(style, false, null);
 
-			for(var i = 0; i < this.content.length; i++) {
-				this.content[i].html = this.$refs['content-'+i][0].innerHTML;
-			}
-
-			this.emit_content();
+			// for(var i = 0; i < this.content.length; i++) {
+			// 	this.content[i].html = this.$refs['content-'+i][0].innerHTML;
+			// 	console.log(this.content[i].html);
+			// }
 		},
 		switch_content(tag, index) {
 			this.remove_active();
