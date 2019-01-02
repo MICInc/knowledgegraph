@@ -63,7 +63,10 @@ export default {
 				src: '',
 				form: new FormData()
 			});
-			
+
+			this.update_content();
+			this.update_refs();
+
 			this.focus(next);
 		},
 		add_image(index, event) {
@@ -128,7 +131,7 @@ export default {
 			event.preventDefault();
 		},
 		print_tag() {
-			console.log('==== content ('+this.content.length+'), ref ('+this.max_ref()+') ====');
+			console.log('==== content ('+this.content.length+' ====');
 			for(var i = 0; i < this.content.length+1; i++) {
 				if(this.content[i] != null) {
 				console.log('index: '+i+' content: '+this.content[i].tag+' html: '+this.content[i].html+' id: '+this.content[i].id+' ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
@@ -139,13 +142,6 @@ export default {
 					}
 				}
 			}
-		},
-		max_ref() {
-			var len = this.content.length;
-			if(this.$refs['content-'+(len+1)] != null) {
-				return len+1;
-			}
-			return len;
 		},
 		remove_active() {
 			if(this.active_index > -1) {
@@ -194,8 +190,6 @@ export default {
 				this.content[index].last_modified = new Date();
 				this.content[index].text = this.trim(el.innerText);
 				this.content[index].html = el.innerHTML;
-
-				this.emit_content();
 			}
 		},
 		set_active(index) {
@@ -233,10 +227,11 @@ export default {
 
 			document.execCommand(style, false, null);
 
-			// for(var i = 0; i < this.content.length; i++) {
-			// 	this.content[i].html = this.$refs['content-'+i][0].innerHTML;
-			// 	console.log(this.content[i].html);
-			// }
+			for(var i = 0; i < this.content.length; i++) {
+				this.content[i].html = this.$refs['content-'+i][0].innerHTML;
+			}
+
+			// this.update();
 		},
 		switch_content(tag, index) {
 			this.remove_active();
@@ -247,16 +242,30 @@ export default {
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
+		},
+		update_content() {
+			for(var i = 0; i < this.content.length; i++) {
+				if(this.$refs['content-'+i] != null) {
+					this.content[i].id = i;
+					this.content[i].created = new Date();
+					this.content[i].last_modified = new Date();
+					this.content[i].text = this.trim(this.$refs['content-'+i][0].innerText);
+					this.content[i].html = this.$refs['content-'+i][0].innerHTML;
+				}
+			}
+		},
+		update_refs() {
+			var foo = this.$refs['content-1'];
+
+			for(var i = 0; i < this.content.length; i++) {
+				if(typeof this.$refs['content-'+i] != 'undefined') {
+					this.$refs['content-'+i][0].innerHTML = this.content[i].html;
+				}
+			}
 		}
 	},
 	updated() {
-		var foo = this.$refs['content-1'];
-
-		if(typeof foo != 'undefined') {
-			for(var i = 0; i < this.content.length; i++) {
-				// this.$refs['content-'+i][0].innerHTML = this.content[i].html;
-			}
-		}
+		this.update_refs();
 	}
 }
 </script>
