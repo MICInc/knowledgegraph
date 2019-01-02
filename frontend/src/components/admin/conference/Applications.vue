@@ -1,6 +1,6 @@
 <template>
 	<div id="container">
-		<h2>Applications</h2>
+		Display applications
 	</div>
 </template>
 
