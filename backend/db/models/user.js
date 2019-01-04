@@ -5,7 +5,7 @@ var user_schema = new Schema({
     affiliation: {
         type: String
     },
-	bio: {
+    bio: {
         type: String,
         trim: true
     },
@@ -36,7 +36,7 @@ var user_schema = new Schema({
         trim: true
     },
     following: [{
-    	type: String
+        type: String
     }],
     grade: {
         type: String
@@ -54,34 +54,34 @@ var user_schema = new Schema({
         trim: true
     },
     library: [{
-		type: String // content ids
-	}],
+        type: String // content ids
+    }],
     liked_articles: [{
-    	type: String // content ids
+        type: String // content ids
     }],
     liked_papers: [{
-    	type: String // content ids
+        type: String // content ids
     }],
-	password_hash: {
-		type: String,
-		required: true,
-	},
+    password_hash: {
+        type: String,
+        required: true,
+    },
     rank: {
         type: Number,
         required: true
     },
-	salt: {
-		type: String,
-		required: true,
-	},
+    salt: {
+        type: String,
+        required: true,
+    },
     school: {
         type: String
     },
-	subjects: [{
-		type: String // entity ids
-	}],
+    subjects: [{
+        type: String // entity ids
+    }],
     search_history: [{ 
-    	type: String
+        type: String
     }],
     url: {
         type: String

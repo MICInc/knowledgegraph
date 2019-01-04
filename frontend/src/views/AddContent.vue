@@ -180,22 +180,22 @@ export default {
 			}
 		},
 		save() {
-			console.log('saving');
-			this.save_status = 'saving...';
-			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, content: this.data, bibtex: this.bibtex }
+			// console.log('saving');
+			// this.save_status = 'saving...';
+			// this.data.last_modified = new Date();
+			// var article = { id: this.content_id, user: this.user, content: this.data, bibtex: this.bibtex }
 
-			ContentService.saveContent(article)
-			.then((data) => {
-				if(data != null) {
-					if(this.content_id.length == 0) {
-						this.content_id = data['data'].id;
-						console.log(this.content_id);
-					}
-				}
-			});
+			// ContentService.saveContent(article)
+			// .then((data) => {
+			// 	if(data != null) {
+			// 		if(this.content_id.length == 0) {
+			// 			this.content_id = data['data'].id;
+			// 			console.log(this.content_id);
+			// 		}
+			// 	}
+			// });
 
-			this.save_status = 'saved';
+			// this.save_status = 'saved';
 		},
 		update_content(data) {
 			this.data.content = data.content;
