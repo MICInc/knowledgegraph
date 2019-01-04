@@ -1,16 +1,15 @@
 <template>
-	<div class="birthday">
-		<label>Birthday</label><br>
+	<div class="date">
 		<label>Year: </label>
-		<select name="year" v-model.number="profile.dob_year">
+		<select name="year" v-model.number="year" v-bind:input="emit()">
 			<option v-for="year in form.years">{{ year }}</option>
 		</select>
 		<label>Month: </label>
-		<select name="month" v-model.number="profile.dob_month">
+		<select name="month" v-model.number="month" v-bind:input="emit()">
 			<option v-for="(value, index) in 12">{{ value }}</option>
 		</select>
 		<label>Day: </label>
-		<select name="day" v-model.number="profile.dob_day">
+		<select name="day" v-model.number="day" v-bind:input="emit()">
 			<option v-for="(value, index) in 31">{{ value }}</option>
 		</select>
 	</div>
@@ -22,17 +21,21 @@ var years = function range(size, today) {
 }
 
 export default {
-	name: 'Birthday',
+	name: 'DateSelector',
 	data() {
 		return {
 			form: {
 				years: years(100, (new Date()).getFullYear())
 			},
-			profile: {
-				dob_day: 0,
-				dob_month: 0,
-				dob_year: 0,
-				gender: ''
+			day: 0,
+			month: 0,
+			year: 0
+		}
+	},
+	methods: {
+		emit() {
+			if(this.day > 0 && this.month > 0 && this.year > 0) {
+				this.$emit('date', new Date(this.year, this.month, this.day));
 			}
 		}
 	}

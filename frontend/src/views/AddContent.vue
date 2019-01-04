@@ -1,5 +1,5 @@
 <template>
-	<div class="add-article main" v-on:keyup="save($event)" v-on:keydown="prevent_default($event)">
+	<div class="add-article main" v-on:keyup="save()" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
 		<div class="container">
 			<button>Publish</button>
@@ -10,7 +10,7 @@
 				<div v-for="(paper, index) in display.papers">
 					{{ paper }}
 				</div>
-				<DynamicContent v-on:content="update_content($event)"></DynamicContent>
+				<DynamicContent v-on:edit="update_content($event)"></DynamicContent>
 			</form>
 			<div id="citations">
 				<h3>Additional Info</h3>
@@ -51,6 +51,7 @@ export default {
 	data() {
 		return {
 			test: '',
+			content_id: '',
 			bibtex: {
 				name: "",
 				properties: ["year"],
@@ -83,11 +84,10 @@ export default {
 				},
 				to_string: "",
 			},
-			citations: "",
 			data: {
 				date_created: new Date(),
 				citations: '',
-				content: undefined,
+				content: [],
 				last_modified: undefined,
 				tags: ''
 			},
@@ -176,27 +176,33 @@ export default {
 		prevent_default(event) {
 			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
 				event.preventDefault();
-				//should make this async
 				this.save();
 			}
 		},
 		save() {
-			if(this.content != null) {
-				this.save_status = 'saving...';
-				this.data.last_modified = new Date();
+			console.log('saving');
+			this.save_status = 'saving...';
+			this.data.last_modified = new Date();
+			var article = { id: this.content_id, user: this.user, content: this.data, bibtex: this.bibtex }
 
-				ContentService.createContent({user: this.user, content: this.content, bibtex: this.bibtex})
-				.then(function(data) {
-					if(data != null) {
-						return data.json();
+			ContentService.saveContent(article)
+			.then((data) => {
+				if(data != null) {
+					if(this.content_id.length == 0) {
+						this.content_id = data['data'].id;
+						console.log(this.content_id);
 					}
-				});
+				}
+			});
 
-				this.save_status = 'saved';
-			}
+			this.save_status = 'saved';
 		},
-		update_content(content) {
-			this.data.content = content;
+		update_content(data) {
+			this.data.content = data.content;
+
+			if(data.button) {
+				this.save();
+			}
 		}
 	},
 	ready: function() {
