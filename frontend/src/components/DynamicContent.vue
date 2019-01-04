@@ -32,22 +32,25 @@ export default {
 			active_index: -1,
 			content: [{
 				id: Math.random(),
-				tag: 'p'
+				tag: 'p',
+				src: ''
 			}],
 			emit_save: {
 				button: false,
 				content: []
-			},
-			form: {
-				data: new FormData()
-			},
-			saved_content: []
+			}
 		}
 	},
 	methods: {
 		add_content() {
 			var next = this.active_index + 1;
-			this.content.splice(next, 0, { id: Math.random(), tag: 'p' });
+
+			this.content.splice(next, 0, {
+				id: Math.random(),
+				tag: 'p',
+				src: ''
+			});
+
 			this.focus(next);
 		},
 		add_image(index, event) {
@@ -56,15 +59,12 @@ export default {
 			if(el.files && el.files[0]) {
 				var reader = new FileReader();
 				reader.onload = (e) => {
-					var filename = e.target.result;
+					var src = e.target.result;
 
-					if(filename.length > 0) {
-						this.content[index].id = index;
+					if(src.length > 0) {
 						this.content[index].tag = 'img';
-						this.content[index].src = filename;
-						this.content[index].html = '<img class=\"image-content\" src="'+filename+'"">';
-						this.content[index].last_modified = new Date();
-						this.$refs['content-'+index][0].innerHTML = this.content[index].html;
+						this.content[index].src = src;
+						this.$refs['content-'+index][0].innerHTML = '<img class=\"image-content\" src="'+src+'"">';
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
@@ -124,11 +124,7 @@ export default {
 
 				if(el.tag == 'img' || el.tag == 'canvas') {
 					el.tag = 'p';
-					el.src = '';
-					el.html = '';
 				}
-
-				this.$refs['img-button-'+this.active_index][0].value = '';
 			}
 
 			if(this.content.length == 0) {
@@ -171,7 +167,7 @@ export default {
 
 			this.emit_save.content = temp;
 
-			this.$emit('edit', this.emit_save);
+			// this.$emit('edit', this.emit_save);
 		},
 		set_active(index) {
 			if(this.active_index > -1) {
@@ -179,6 +175,7 @@ export default {
 			}
 			
 			this.active_index = index;
+			console.log('active_index: '+this.active_index);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
@@ -214,18 +211,24 @@ export default {
 			for(var i = 0; i < this.content.length; i++) {
 				this.content[i].html = this.$refs['content-'+i][0].innerHTML;
 			}
-
-			this.emit_save.button = true;
-			this.save();
 		},
 		switch_content(tag, index) {
 			this.remove_active();
-
-			var content = this.content[index];
-			content.tag = tag;
+			this.content[index].tag = tag;
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
+		},
+		update_content() {
+			for(var i = 0; i < this.content.length; i++) {
+				if(this.$refs['content-'+i] != null) {
+					this.content[i].id = i;
+					this.content[i].created = new Date();
+					this.content[i].last_modified = new Date();
+					this.content[i].text = this.trim(this.$refs['content-'+i][0].innerText);
+					this.content[i].html = this.$refs['content-'+i][0].innerHTML;
+				}
+			}
 		}
 	}
 }
