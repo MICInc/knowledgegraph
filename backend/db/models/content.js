@@ -2,6 +2,9 @@ var Content = require('./entity');
 var mongoose = require('mongoose');
 
 var content_schema = new mongoose.Schema({
+	_id: {
+		type: String
+	},
 	authors: [{
 		type: String,
 		required: true
@@ -10,9 +13,6 @@ var content_schema = new mongoose.Schema({
 		type: String
 	}],
 	content:  [{
-		type: String,
-		required: true,
-		trim: true
 	}],
 	date_created: {
 		type: Date,

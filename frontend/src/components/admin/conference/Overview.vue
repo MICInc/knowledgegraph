@@ -1,6 +1,6 @@
 <template>
 	<div id="container">
-		<h2>Overview</h2>
+		Display overview
 	</div>
 </template>
 

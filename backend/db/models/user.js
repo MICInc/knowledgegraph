@@ -3,8 +3,7 @@ var Schema = mongoose.Schema;
 
 var user_schema = new Schema({
     affiliation: {
-        type: String,
-        required: true
+        type: String
     },
 	bio: {
         type: String,
@@ -17,7 +16,7 @@ var user_schema = new Schema({
         trim: true
     },
     dob: {
-        type: String,
+        type: Date,
         unique: false,
         required: true,
         trim: true
@@ -29,8 +28,7 @@ var user_schema = new Schema({
         trim: true
     },
     ethnicity: {
-        type: String,
-        required: true
+        type: String
     },
     first_name: {
         type: String,
@@ -41,8 +39,7 @@ var user_schema = new Schema({
     	type: String
     }],
     grade: {
-        type: String,
-        required: true
+        type: String
     },
     gender: {
         type: String,

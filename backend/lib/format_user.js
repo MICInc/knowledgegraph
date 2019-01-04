@@ -10,7 +10,7 @@ module.exports = function(req)
 		"affiliation": user.affiliation.value,
 		"bio": "",
 		"date_joined": new Date(),
-		"dob": new Date(user.dob.year, user.dob.month, user.dob.day),
+		"dob": user.dob.value,
 		"email": user.email.value,
 		"ethnicity": user.ethnicity.value,
 		"first_name": user.first_name.value,

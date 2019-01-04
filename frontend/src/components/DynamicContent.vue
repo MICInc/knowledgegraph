@@ -1,6 +1,5 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keydown.up="print_tag()">
-		<input name="file" type="file" v-on:change="import_file($event)">
+	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keyup.up="print_tag()">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -26,47 +25,29 @@
 </template>
 
 <script>
-import ContentService from '../services/ContentService.js'
 
 export default { 
 	data() {
 		return {
 			active_index: -1,
 			content: [{
-				id: '',
-				caption: '',
-				created: new Date(),
-				last_modified: new Date(),
-				tag: 'p',
-				text: '',
-				html: '',
-				src: '',
-				form: new FormData()
+				id: Math.random(),
+				tag: 'p'
 			}],
+			emit_save: {
+				button: false,
+				content: []
+			},
 			form: {
 				data: new FormData()
-			}
+			},
+			saved_content: []
 		}
 	},
 	methods: {
 		add_content() {
 			var next = this.active_index + 1;
-
-			this.content.splice(next, 0, {
-				id: '',
-				caption: '',
-				created: new Date(),
-				last_modified: new Date(),
-				tag: 'p',
-				text: '',
-				html: '',
-				src: '',
-				form: new FormData()
-			});
-
-			this.update_content();
-			this.update_refs();
-
+			this.content.splice(next, 0, { id: Math.random(), tag: 'p' });
 			this.focus(next);
 		},
 		add_image(index, event) {
@@ -102,9 +83,6 @@ export default {
 
 			return window.btoa( binary );
 		},
-		emit_content() {
-			this.$emit('content', this.content);
-		},
 		focus(index=this.active_index+1) {
 			this.active_index = index;
 			this.$nextTick(() => {
@@ -112,29 +90,14 @@ export default {
 				this.set_end_contenteditable(this.$refs['content-'+index][0]);
 			});
 		},
-		import_file(event) {
-			var el = event.target;
-			if(el.files && el.files[0]) {
-				var reader = new FileReader();
-				reader.onload = (e) => {
-					var content = e.target.result.split('\n\n');
-
-					for(var i = 0; i < content.length; i++) {
-						this.add_content();
-						this.content[i].html = content[i];
-					}
-				}
-				reader.readAsText(el.files[0])
-			}
-		},
 		prevent_nl(event) {
 			event.preventDefault();
 		},
 		print_tag() {
-			console.log('==== content ('+this.content.length+' ====');
+			console.log('==== content ('+this.content.length+'), ref ('+this.max_ref()+') ====');
 			for(var i = 0; i < this.content.length+1; i++) {
 				if(this.content[i] != null) {
-				console.log('index: '+i+' content: '+this.content[i].tag+' html: '+this.content[i].html+' id: '+this.content[i].id+' ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
+				console.log('index: '+i+' content: '+this.content[i].tag+' id: '+this.content[i].id+' ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
 				}
 				else if(this.$refs['content-'+i] != null) {
 					if (this.$refs['content-'+i][0] != null) {
@@ -142,6 +105,18 @@ export default {
 					}
 				}
 			}
+
+			console.log('==== saving ====');
+			for(var i = 0; i < this.saved_content.length; i++) {
+				console.log(this.saved_content[i]);
+			}
+		},
+		max_ref() {
+			var len = this.content.length;
+			if(this.$refs['content-'+(len+1)] != null) {
+				return len+1;
+			}
+			return len;
 		},
 		remove_active() {
 			if(this.active_index > -1) {
@@ -179,18 +154,24 @@ export default {
 			}
 		},
 		save() {
-			var el = event.target;
-			
-			if(el != null && this.content[index] != null) {
-				var id = el.getAttribute('id');
-				var index = id[id.length-1];
+			var temp = [];
 
-				this.content[index].id = id;
-				this.content[index].created = new Date();
-				this.content[index].last_modified = new Date();
-				this.content[index].text = this.trim(el.innerText);
-				this.content[index].html = el.innerHTML;
+			for(var i = 0; i < this.content.length; i++) {
+				var el = this.$refs['content-'+i][0];
+
+				temp.push({
+					id: i,
+					tag: el.nodeName,
+					date_created: new Date(),
+					last_modified: new Date(),
+					text: this.trim(el.innerText),
+					html: el.innerHTML
+				});
 			}
+
+			this.emit_save.content = temp;
+
+			this.$emit('edit', this.emit_save);
 		},
 		set_active(index) {
 			if(this.active_index > -1) {
@@ -220,9 +201,12 @@ export default {
 
 		},
 		stylize(style) {
-			
+
 			if(style == 'createLink') {
 
+			}
+			else if(style == 'insertImage') {
+				
 			}
 
 			document.execCommand(style, false, null);
@@ -231,41 +215,18 @@ export default {
 				this.content[i].html = this.$refs['content-'+i][0].innerHTML;
 			}
 
-			// this.update();
+			this.emit_save.button = true;
+			this.save();
 		},
 		switch_content(tag, index) {
 			this.remove_active();
 
 			var content = this.content[index];
 			content.tag = tag;
-			content.text = '';
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
-		},
-		update_content() {
-			for(var i = 0; i < this.content.length; i++) {
-				if(this.$refs['content-'+i] != null) {
-					this.content[i].id = i;
-					this.content[i].created = new Date();
-					this.content[i].last_modified = new Date();
-					this.content[i].text = this.trim(this.$refs['content-'+i][0].innerText);
-					this.content[i].html = this.$refs['content-'+i][0].innerHTML;
-				}
-			}
-		},
-		update_refs() {
-			var foo = this.$refs['content-1'];
-
-			for(var i = 0; i < this.content.length; i++) {
-				if(typeof this.$refs['content-'+i] != 'undefined') {
-					this.$refs['content-'+i][0].innerHTML = this.content[i].html;
-				}
-			}
 		}
-	},
-	updated() {
-		this.update_refs();
 	}
 }
 </script>

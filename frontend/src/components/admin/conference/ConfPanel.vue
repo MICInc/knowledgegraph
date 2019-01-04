@@ -1,9 +1,8 @@
 <template>
 	<div id="container" v-on:panel="show($event)">
-		<h2>Conference Panel</h2>
 		<div id="panel-nav" v-on:program_panels="update_panels($event)">
 			<ul v-for="(panel, index) in panels">
-				<button class="conf-button" v-on:click="show(panel.name)">{{ panel.name }}</button>
+				<button class="conf-button" v-on:click="show(panel.name)" v-bind:class="{display_button: display==panel.name}">{{ panel.name }}</button>
 			</ul>
 		</div>
 		<div id="content">
@@ -27,6 +26,7 @@ export default {
 	data() {
 		return {
 			applications: [],
+			display: '',
 			panels: [
 				{
 					name: 'overview'
@@ -48,6 +48,7 @@ export default {
 		},
 		show(view) {
 			this.view = view;
+			this.display = view;
 		}
 	},
 	beforeMount() {
@@ -62,10 +63,14 @@ export default {
 </script>
 
 <style>
+.display_button {
+	font-weight: bold;
+}
+
 .conf-button {
 	margin: 0px;
-	border: 1px solid;
 	padding: 32px 64px;
+	width: 180px;
 	font-size: 1em;
 }
 

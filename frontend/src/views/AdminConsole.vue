@@ -1,7 +1,6 @@
 <template>
 	<div id="container" class="main">
 		<PageNav></PageNav>
-		<h2>Admin console</h2>
 		<Console></Console>
 	</div>
 </template>

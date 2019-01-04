@@ -2,30 +2,31 @@
 	<div id="join">
 		<form v-on:submit.prevent="handleSubmit">
 			<div class="input-row">
-				<input type="text" placeholder="First Name" v-model.trim="profile.first_name" required>
-				<input type="text" placeholder="Last Name" v-model.trim="profile.last_name" required>
+				<input type="text" placeholder="First Name" v-model.trim="profile.first_name.value" required>
+				<input type="text" placeholder="Last Name" v-model.trim="profile.last_name.value" required>
 			</div>
-			<input type="email" placeholder="Email" v-model.trim="profile.email" required>
-			<select name="gender" placeholder="Gender" v-model="profile.gender">
+			<input type="email" placeholder="Email" v-model.trim="profile.email.value" required>
+			<select name="gender" placeholder="Gender" v-model="profile.gender.value">
 				<option value="" disabled selected>Select your gender</option>
 				<option v-for="gender in form.gender">{{ gender }}</option>
 			</select>
-			<Birthday></Birthday>
-			<!-- <input type="email" placeholder="Birthday" v-model="profile.dob" required> -->
-			<input type="password" placeholder="Password" v-model="profile.password" required>
-			<input type="password" placeholder="Confirm Password" v-model="profile.confirm_password" required>
+			<label>Birthday</label><br>
+			<DateSelector v-on:date="set_date($event)"></DateSelector>
+			<input type="password" placeholder="Password" v-model="profile.password.value" required>
+			<input type="password" placeholder="Confirm Password" v-model="profile.confirm_password.value" required>
+			<button v-on:click.prevent="submit">Submit</button>
 		</form>
 	</div>
 </template>
 
 <script>
-import ProfileService from '../services/ProfileService.js'
-import Birthday from './BirthdayForm.vue'
+import ProfileService from '@/services/ProfileService'
+import DateSelector from '@/components/DateSelector'
 
 export default {
 	name: 'join',
 	components: {
-		Birthday
+		DateSelector
 	},
 	data () {
 		return {
@@ -33,21 +34,61 @@ export default {
 				gender: ['Female', 'Male', 'Non-binary']
 			},
 			profile: {
-				confirm_password: "",
-				dob: "",
-				email: "",
-				first_name: "",
-				gender: "",
-				last_name: "",
-				password: ""
+				affiliation: {
+					err: '',
+					value: ''
+				},
+				confirm_password: {
+					err: '',
+					value: ''
+				},
+				dob: {
+					err: '',
+					value: undefined
+				},
+				email: {
+					err: '',
+					value: ''
+				},
+				ethnicity: {
+					err: '',
+					value: ''
+				},
+				first_name: {
+					err: '',
+					value: ''
+				},
+				gender: {
+					err: '',
+					value: ''
+				},
+				grade: {
+					err: '',
+					value: ''
+				},
+				last_name: {
+					err: '',
+					value: ''
+				},
+				password: {
+					err: '',
+					value: ''
+				},
+				school: {
+					err: '',
+					value: ''
+				}
 			}
 		}
 	},
 
 	methods: {
+		set_date(date) {
+			this.profile.dob.value = date;
+		},
 		submit() {
 			ProfileService.createProfile(this.profile)
-			.then(function(data){
+			.then(function(data) {
 				alert(data);
 			});
 		}
