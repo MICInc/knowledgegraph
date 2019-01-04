@@ -33,18 +33,13 @@ export default {
 		return {
 			active_index: -1,
 			content: [{
-				id: '',
-				caption: '',
-				created: new Date(),
-				last_modified: new Date(),
+				id: Math.random(),
 				tag: 'p',
-				text: '',
-				html: '',
-				src: '',
-				form: new FormData()
+				src: ''
 			}],
-			form: {
-				data: new FormData()
+			emit_save: {
+				button: false,
+				content: []
 			}
 		}
 	},
@@ -53,19 +48,10 @@ export default {
 			var next = this.active_index + 1;
 
 			this.content.splice(next, 0, {
-				id: '',
-				caption: '',
-				created: new Date(),
-				last_modified: new Date(),
+				id: Math.random(),
 				tag: 'p',
-				text: '',
-				html: '',
-				src: '',
-				form: new FormData()
+				src: ''
 			});
-
-			this.update_content();
-			this.update_refs();
 
 			this.focus(next);
 		},
@@ -75,15 +61,12 @@ export default {
 			if(el.files && el.files[0]) {
 				var reader = new FileReader();
 				reader.onload = (e) => {
-					var filename = e.target.result;
+					var src = e.target.result;
 
-					if(filename.length > 0) {
-						this.content[index].id = index;
+					if(src.length > 0) {
 						this.content[index].tag = 'img';
-						this.content[index].src = filename;
-						this.content[index].html = '<img class=\"image-content\" src="'+filename+'"">';
-						this.content[index].last_modified = new Date();
-						this.$refs['content-'+index][0].innerHTML = this.content[index].html;
+						this.content[index].src = src;
+						this.$refs['content-'+index][0].innerHTML = '<img class=\"image-content\" src="'+src+'"">';
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
@@ -149,11 +132,7 @@ export default {
 
 				if(el.tag == 'img' || el.tag == 'canvas') {
 					el.tag = 'p';
-					el.src = '';
-					el.html = '';
 				}
-
-				this.$refs['img-button-'+this.active_index][0].value = '';
 			}
 
 			if(this.content.length == 0) {
@@ -179,18 +158,24 @@ export default {
 			}
 		},
 		save() {
-			var el = event.target;
-			
-			if(el != null && this.content[index] != null) {
-				var id = el.getAttribute('id');
-				var index = id[id.length-1];
+			var temp = [];
 
-				this.content[index].id = id;
-				this.content[index].created = new Date();
-				this.content[index].last_modified = new Date();
-				this.content[index].text = this.trim(el.innerText);
-				this.content[index].html = el.innerHTML;
+			for(var i = 0; i < this.content.length; i++) {
+				var el = this.$refs['content-'+i][0];
+
+				temp.push({
+					id: i,
+					tag: el.nodeName,
+					date_created: new Date(),
+					last_modified: new Date(),
+					text: this.trim(el.innerText),
+					html: el.innerHTML
+				});
 			}
+
+			this.emit_save.content = temp;
+
+			// this.$emit('edit', this.emit_save);
 		},
 		set_active(index) {
 			if(this.active_index > -1) {
@@ -198,6 +183,7 @@ export default {
 			}
 			
 			this.active_index = index;
+			console.log('active_index: '+this.active_index);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
@@ -230,15 +216,10 @@ export default {
 			for(var i = 0; i < this.content.length; i++) {
 				this.content[i].html = this.$refs['content-'+i][0].innerHTML;
 			}
-
-			// this.update();
 		},
 		switch_content(tag, index) {
 			this.remove_active();
-
-			var content = this.content[index];
-			content.tag = tag;
-			content.text = '';
+			this.content[index].tag = tag;
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
@@ -253,19 +234,7 @@ export default {
 					this.content[i].html = this.$refs['content-'+i][0].innerHTML;
 				}
 			}
-		},
-		update_refs() {
-			var foo = this.$refs['content-1'];
-
-			for(var i = 0; i < this.content.length; i++) {
-				if(typeof this.$refs['content-'+i] != 'undefined') {
-					this.$refs['content-'+i][0].innerHTML = this.content[i].html;
-				}
-			}
 		}
-	},
-	updated() {
-		this.update_refs();
 	}
 }
 </script>
