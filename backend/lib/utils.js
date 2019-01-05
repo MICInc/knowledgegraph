@@ -1,5 +1,5 @@
-exports.data = {
-  shuffle: function(array){
+module.exports = {
+  shuffle: function(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...
@@ -16,5 +16,14 @@ exports.data = {
     }
 
     return array;
+  },
+  uniqueID: function() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
   }
 }

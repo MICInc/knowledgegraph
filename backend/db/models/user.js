@@ -3,20 +3,21 @@ var Schema = mongoose.Schema;
 
 var user_schema = new Schema({
     affiliation: {
-        type: String,
-        required: true
+        type: String
     },
-	bio: {
+    bio: {
         type: String,
         trim: true
     },
     date_joined: {
         type: Date,
+        unique: false,
         required: true,
         trim: true
     },
     dob: {
-        type: String,
+        type: Date,
+        unique: false,
         required: true,
         trim: true
     },
@@ -27,8 +28,7 @@ var user_schema = new Schema({
         trim: true
     },
     ethnicity: {
-        type: String,
-        required: true
+        type: String
     },
     first_name: {
         type: String,
@@ -36,51 +36,52 @@ var user_schema = new Schema({
         trim: true
     },
     following: [{
-    	type: String
+        type: String
     }],
     grade: {
-        type: String,
-        required: true
+        type: String
     },
     gender: {
         type: String,
+        unique: true,
         required: true,
         trim: true
     },
     last_name: {
         type: String,
+        unique: false,
         required: true,
         trim: true
     },
     library: [{
-		type: String // content ids
-	}],
+        type: String // content ids
+    }],
     liked_articles: [{
-    	type: String // content ids
+        type: String // content ids
     }],
     liked_papers: [{
-    	type: String // content ids
+        type: String // content ids
     }],
-	password_hash: {
-		type: String,
-		required: true,
-	},
+    password_hash: {
+        type: String,
+        required: true,
+    },
     rank: {
         type: Number,
         required: true
     },
-	salt: {
-		type: String,
-		required: true,
-	},
+    salt: {
+        type: String,
+        required: true,
+    },
     school: {
         type: String
     },
-	subjects: [{
-		type: String // entity ids
-	}],
+    subjects: [{
+        type: String // entity ids
+    }],
     search_history: [{ 
-    	type: String
+        type: String
     }],
     url: {
         type: String

@@ -24,6 +24,11 @@ export default new Router({
 			component: () => import('./views/AddContent.vue')
 		},
 		{
+			path: '/admin',
+			name: 'admin-console',
+			component: () => import('./views/AdminConsole.vue')
+		},
+		{
 			path: '/content/:id',
 			name: 'content',
 			component: () => import('./views/Content.vue')

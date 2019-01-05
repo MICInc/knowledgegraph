@@ -14,7 +14,7 @@
 			<label v-if="profile.first_name.value.length > 0 && profile.last_name.value.length > 0">Hey {{ profile.first_name.value }} {{ profile.last_name.value }}, nice to meet you.</label>
 			<div class="birthday">
 				<label>Birthday</label><br>
-				<p class="error" v-if="profile.dob.err.length > 0">{{ profile.dob.err }}</p>
+				<!-- <p class="error" v-if="profile.dob.err.length > 0">{{ profile.dob.err }}</p>
 				<label>Month: </label>
 				<select name="month" v-model="profile.dob.month">
 					<option v-for="(value, index) in form.months">{{ value }}</option>
@@ -26,7 +26,8 @@
 				<label>Year: </label>
 				<select name="year" v-model.number="profile.dob.year">
 					<option v-for="year in form.years">{{ year }}</option>
-				</select>
+				</select> -->
+				<DateSelector v-on:date="set_dob($event)"></DateSelector>
 			</div>
 			<label>Where can we contact you?</label><br>
 			<p class="error" v-if="profile.email.err.length > 0">{{ profile.email.err }}</p>
@@ -84,7 +85,8 @@
 				<input type="text" v-model.trim="reimburse.address.zip" placeholder="Zip code"><br>
 				<label>Travel</label><br>
 				<span v-for="(value, index) in reimburse.travel">
-					<input type="text" v-model.trim="reimburse.travel[index].date" placeholder="Date">
+					<!-- <input type="text" v-model.trim="reimburse.travel[index].date" placeholder="Date"> -->
+					<DateSelector v-on:date="set_travel_date(index, $event)"></DateSelector>
 					<input type="text" v-model.trim="reimburse.travel[index].src" placeholder="Source">
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
 					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
@@ -96,8 +98,10 @@
 				<span v-for="(value, index) in reimburse.hotel">
 					<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
 					<input type="text" v-model.trim="reimburse.hotel.nights" placeholder="Nights"><br>
-					<input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
-					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date">
+					<!-- <input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
+					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date"> -->
+					<DateSelector v-on:date="set_checkin_date(index, $event)"></DateSelector>
+					<DateSelector v-on:date="set_checkout_date(index, $event)"></DateSelector>
 					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, index, 'hotel')"><br>
 					<button v-on:click.prevent="delete_item('hotel', index)">-</button>
@@ -107,6 +111,7 @@
 				<label>Miscellaneous</label><br>
 				<span v-for="(value, index) in reimburse.misc">
 					<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
+					<DateSelector v-on:date="set_misc_date(index, $event)"></DateSelector>
 					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="misc-receipt" multiple v-on:change="add_file($event, index, 'misc')"><br>
 					<button v-on:click.prevent="delete_item('misc', index)">-</button>
@@ -129,6 +134,7 @@ import ProfileService from '../services/ProfileService.js'
 import RegistrationService from '../services/RegistrationService.js'
 import ContentService from '@/services/ContentService.js'
 import institutions from '@/data/schools.json'
+import DateSelector from '@/components/DateSelector'
 
 var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
@@ -136,6 +142,9 @@ var years = function range(size, today) {
 
 export default {
 	name: 'signup_form',
+	components: {
+		DateSelector
+	},
 	data() {
 		return {
 			conf_resp: {
@@ -165,10 +174,8 @@ export default {
 					value: ''
 				},
 				dob: {
-					day: 0,
-					month: 0,
-					year: 0,
-					err: ''
+					err: '',
+					value: undefined
 				},
 				email: {
 					err: '',
@@ -213,18 +220,19 @@ export default {
 				},
 				travel: [{
 					amount: 0,
-					date: '',
+					date: undefined,
 					dest: '',
 					src: '',
 				}],
 				hotel: [{
 					amount: 0,
-					check_in: '',
-					check_out: '',
+					check_in: undefined,
+					check_out: undefined,
 					name: '',
 				}],
 				misc: [{
 					amount: 0,
+					date: undefined,
 					item: '',
 				}],
 				total: '0'
@@ -291,25 +299,28 @@ export default {
 		},
 		is_complete(data) {
 			var keys = Object.keys(data);
-			var is_complete = false;
 
-			for(var i = 0; i < keys.length; i++) {
-				is_complete = is_complete && !this.is_empty(data[keys[i]]);
+			if(data.amount > 0) {
+				for(var i = 0; i < keys.length; i++) {
+					if(this.is_empty(data[keys[i]])) {
+						return false;
+					}
+				}
 			}
 
-			return is_complete;
+			return true;
 		},
 		is_empty(data) {
 			return ((typeof data == 'string' || data instanceof String) && data.length == 0) || data == 0;
 		},
 		is_list_complete(data) {
-			var is_complete = false;
+			var complete = true;
 
 			for(var i = 0; i < data.length; i++) {
-				is_complete = this.is_complete(data[i]);
+				complete = complete && this.is_complete(data[i]);
 			}
 
-			return is_complete;
+			return complete;
 		},
 		is_string(data) {
 			return (typeof data === 'string' || data instanceof String);
@@ -348,38 +359,55 @@ export default {
 		round(amount) {
 			return parseFloat(Math.round(amount * 100) / 100);
 		},
+		set_dob(date) {
+			this.profile.dob.value = date;
+		},
+		set_travel_date(index, date) {
+			this.reimburse.travel[index].date = date;
+		},
+		set_checkin_date(index, date) {
+			this.reimburse.hotel[index].check_in = date;
+		},
+		set_checkout_date(index, date) {
+			this.reimburse.hotel[index].check_out = date;
+		},
+		set_misc_date(index, date) {
+			this.reimburse.misc[index].date = date;
+		},
 		submit() {
 
 			if(!this.vali_date()) {
 				this.profile.dob.err = 'Please enter a valid birthday.';
 			}
 
-			if (this.registration_complete()) {
-				var config = {
-					header: {
-						'Content-Type' : 'multipart/form-data'
-					}
-				}
-				var file = this.form.data;
+			if(this.registration_complete()) {
+				console.log('Submitting completed registration');
 
-				ContentService.uploadFile('/conference/register', file, config).then(function(data) {
-					console.log(data);
-				});
+				// var config = {
+				// 	header: {
+				// 		'Content-Type' : 'multipart/form-data'
+				// 	}
+				// }
+				// var file = this.form.data;
+
+				// ContentService.uploadFile('/conference/register', file, config).then(function(data) {
+				// 	console.log(data);
+				// });
 
 				var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
 
-				ContentService.uploadFile('/conference/register', resp).then(function(data) {
+				RegistrationService.register(resp).then(function(data) {
 					console.log(data);
 				});
 			}		
 
-			if(this.profile_complete()) {
-				ProfileService.createProfile(this.profile).then(function(data) {
-					console.log(data);
-				});
+			// if(this.profile_complete()) {
+			// 	ProfileService.createProfile(this.profile).then(function(data) {
+			// 		console.log(data);
+			// 	});
 
-				this.reveal_form();
-			}
+			// 	this.reveal_form();
+			// }
 
 		},
 		sum(data) {

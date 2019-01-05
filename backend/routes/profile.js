@@ -5,7 +5,9 @@ var db = require('../db/database');
 var format_user = require('../lib/format_user');
 
 router.post('/', function(req, res) {
+	console.log('creating profile');
 	var user = new db.User(format_user(req));
+	console.log('formatted user: '+JSON.stringify(user));
 
 	user.collection.dropIndexes(function(err, results) {
 		if(err) {

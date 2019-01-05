@@ -6,28 +6,42 @@ var utils = require('../lib/utils');
 var db = require('../db/database');
 
 router.post('/', function(req, res) {
-	console.log('saving content');
-	/*
-	Todo: save to user's profile
-	*/
 
 	var data = format_content(req);
 	var article = new db.Content(data);
 
-	article.collection.dropIndexes(function(err, results) {
-		if(err) {
-			console.log('content.js: '+err);
-		}
-	});
+	db.Content.countDocuments({_id: data._id}, function (err, count) {
+		if(count > 0) {
+			var updated = article.toObject();
+			delete updated._id;
 
-	article.save()
-	.then(item => {
-		console.log('Saved content');
-		res.send('Content saved to knowledge graph');
-	})
-	.catch(err => {
-		console.log(err);
-		res.status(400).send('Save error');
+			db.Content.updateOne({_id: data._id}, updated, function(err) {
+				if(err) {
+					console.log(err);
+				}
+				else {
+					console.log('updated: '+article._id);
+					res.send({ id: data._id.toString() });
+				}
+			});
+		}
+		else {
+			article.collection.dropIndexes(function(err, results) {
+				if(err) {
+					console.log('content.js: '+err);
+				}
+			});
+
+			article.save()
+			.then(item => {
+				console.log('Saved content');
+				res.send({ id: data._id.toString() });
+			})
+			.catch(err => {
+				console.log(err);
+				res.status(400).send('Save error');
+			});
+		}
 	});
 });
 
@@ -54,7 +68,7 @@ router.get('/', function(req, res) {
 				console.log(err);
 			}
 
-			var shuff = utils.data.shuffle(results);
+			var shuff = utils.shuffle(results);
 			console.log(shuff);
 			res.send(shuff);
 		});
@@ -62,6 +76,11 @@ router.get('/', function(req, res) {
 	else {
 		// return recommended content
 	}
+});
+
+router.get('/img', function(req, res) {
+	console.log('sending image');
+	res.sendFile('./content/new/parkourtheory.png', {root: './storage'})
 });
 
 module.exports = router;
