@@ -7,6 +7,7 @@ function handleError(err) {
 
 module.exports = {
 	
+	// TODO: Update this to match model - replace defaults
 	registerUser: function(first_name, last_name, email, password, dob, gender, callback) {
 		var self = this;
 				
@@ -18,15 +19,18 @@ module.exports = {
 				// Hash password
 				crypto.pbkdf2(password, salt, 10000, 64, 'sha512', function(err, key){
 					if (err) handleError(err);
-
+					console.log(key.toString('hex'))
 					var newUser = new User({
 						first_name: first_name,
 						last_name: last_name,
 						email: email,
-						passwordHash: key.toString('hex'),
+						password_hash: key.toString('hex'),
 						salt: salt,
 						dob: dob,
 						gender: gender,
+						grade: 'default',
+						affiliation: 'default',
+						ethnicity: 'default',
 						date_joined: new Date().toString(),
 						date_last_updated: new Date().toString(),
 						bio: '',
@@ -63,7 +67,8 @@ module.exports = {
 				// Salt password to see if hashes will match with the user's salt
 				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key){
 					if (err) handleError(err);
-
+					
+					console.log(key.toString('hex'))
 					if (user.passwordHash == key.toString('hex')) {
 						process.nextTick(function() {
 							callback(null, user);

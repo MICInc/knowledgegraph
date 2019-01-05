@@ -12,13 +12,11 @@ var user_schema = new Schema({
     },
     date_joined: {
         type: Date,
-        unique: false,
         required: true,
         trim: true
     },
     dob: {
         type: String,
-        unique: false,
         required: true,
         trim: true
     },
@@ -46,13 +44,11 @@ var user_schema = new Schema({
     },
     gender: {
         type: String,
-        unique: true,
         required: true,
         trim: true
     },
     last_name: {
         type: String,
-        unique: false,
         required: true,
         trim: true
     },
