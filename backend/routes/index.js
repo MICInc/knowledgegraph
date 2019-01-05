@@ -72,7 +72,6 @@ router.post('/signup', function(req, res) {
 			});
 
 		} else {
-			console.log(err)
 			res.send({error: err.message})
 		}
 	});

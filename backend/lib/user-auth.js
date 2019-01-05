@@ -64,12 +64,12 @@ module.exports = {
 			if (err) handleError(err);
 
 			if (user != null) {
+				console.log(user)
 				// Salt password to see if hashes will match with the user's salt
 				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key){
 					if (err) handleError(err);
 					
-					console.log(key.toString('hex'))
-					if (user.passwordHash == key.toString('hex')) {
+					if (user.password_hash == key.toString('hex')) {
 						process.nextTick(function() {
 							callback(null, user);
 						});
