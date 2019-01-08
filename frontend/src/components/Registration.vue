@@ -395,6 +395,7 @@ export default {
 				// });
 
 				var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
+				console.log(resp);
 
 				RegistrationService.register(resp).then(function(data) {
 					console.log(data);

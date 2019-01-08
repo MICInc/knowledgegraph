@@ -34,7 +34,12 @@ router.post('/register', function(req, res) {
 
 router.get('/register', function(req, res) {
 	console.log(req.body);
-	res.send('conf_apples');
+	// res.send('conf_apples');
+	// req.app.io.on('REGISTRATIONS', function(socket) {
+	// 	socket.emit('hello socket.io');
+	// });
+	// console.log('get register route');
+	// req.app.io.emit('REGISTRATIONS', 'conf_apples2');
 });
 
 module.exports = router;

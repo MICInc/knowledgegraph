@@ -12,6 +12,8 @@ var MongoStore  = require('connect-mongo')(session);
 var morgan      = require('morgan');
 var cors        = require('cors');
 var port        = process.env.PORT || 7000; //keep this or change as long as greater than 1024
+const http      = require('http').Server(app);
+// app.io          = require('socket.io')(http);
 
 // master process
 if(cluster.isMaster) 
@@ -77,7 +79,20 @@ else
   app.use(morgan('combined'));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-  app.use(cors());
+
+  const whitelist = ['localhost:8080'];
+  const options = {
+    credentials: false,
+    origin: (origin, callback) => {
+      if(whitelist.includes(origin)) {
+        return callback(null, true);
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  }
+  app.use(cors(options));
+  // app.use(cors());
+
 
   app.use(helmet());
   app.use(helmet.xssFilter({ setOnOldIE: true }));
@@ -90,6 +105,13 @@ else
   app.use('/community', community_route);
 
 
-  app.listen(port);
+  var server = app.listen(port);
+  var io  = require('socket.io')(http);
+  io.on('connection', function(socket) {
+    console.log(socket.id)
+    socket.on('SEND_MESSAGE', function(data) {
+        io.emit('MESSAGE', data)
+    });
+  });
   console.log('Listening on port ' + port);
 }
