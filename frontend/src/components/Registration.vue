@@ -14,19 +14,6 @@
 			<label v-if="profile.first_name.value.length > 0 && profile.last_name.value.length > 0">Hey {{ profile.first_name.value }} {{ profile.last_name.value }}, nice to meet you.</label>
 			<div class="birthday">
 				<label>Birthday</label><br>
-				<!-- <p class="error" v-if="profile.dob.err.length > 0">{{ profile.dob.err }}</p>
-				<label>Month: </label>
-				<select name="month" v-model="profile.dob.month">
-					<option v-for="(value, index) in form.months">{{ value }}</option>
-				</select>
-				<label>Day: </label>
-				<select name="day" v-model.number="profile.dob.day">
-					<option v-for="(value, index) in 31">{{ value }}</option>
-				</select>
-				<label>Year: </label>
-				<select name="year" v-model.number="profile.dob.year">
-					<option v-for="year in form.years">{{ year }}</option>
-				</select> -->
 				<DateSelector v-on:date="set_dob($event)"></DateSelector>
 			</div>
 			<label>Where can we contact you?</label><br>
@@ -85,7 +72,6 @@
 				<input type="text" v-model.trim="reimburse.address.zip" placeholder="Zip code"><br>
 				<label>Travel</label><br>
 				<span v-for="(value, index) in reimburse.travel">
-					<!-- <input type="text" v-model.trim="reimburse.travel[index].date" placeholder="Date"> -->
 					<DateSelector v-on:date="set_travel_date(index, $event)"></DateSelector>
 					<input type="text" v-model.trim="reimburse.travel[index].src" placeholder="Source">
 					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
@@ -98,9 +84,9 @@
 				<span v-for="(value, index) in reimburse.hotel">
 					<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
 					<input type="text" v-model.trim="reimburse.hotel.nights" placeholder="Nights"><br>
-					<!-- <input type="text" v-model.trim="reimburse.hotel.check_in" placeholder="Check in date">
-					<input type="text" v-model.trim="reimburse.hotel.check_out" placeholder="Check out date"> -->
+					<span>Check-in</span>
 					<DateSelector v-on:date="set_checkin_date(index, $event)"></DateSelector>
+					<span>Check-out</span>
 					<DateSelector v-on:date="set_checkout_date(index, $event)"></DateSelector>
 					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
 					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, index, 'hotel')"><br>
@@ -394,10 +380,9 @@ export default {
 				// 	console.log(data);
 				// });
 
-				var resp = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
-				console.log(resp);
+				var reg = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
 
-				RegistrationService.register(resp).then(function(data) {
+				RegistrationService.register(reg).then(function(data) {
 					console.log(data);
 				});
 			}		

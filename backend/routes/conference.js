@@ -12,6 +12,7 @@ router.post('/register', function(req, res) {
 	}
 	else {
 		var conf = new db.Conference(req.body);
+		console.log(req.body);
 		
 		conf.collection.dropIndexes(function(err, results) {
 			if(err) {
