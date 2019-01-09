@@ -3,26 +3,31 @@
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Community Page</h1>
-			<CommunityReg></CommunityReg>
+			<a href="/community/start">Start a community</a>
 		</div>
 	</div>
 </template>
 
 
 <script>
-import PageNav from '@/components/PageNav.vue'
-import CommunityReg from '@/components/CommunityReg.vue'
+import PageNav from '@/components/PageNav'
+import MemberReg from '@/components/MemberReg'
 
 export default {
 	name: 'community',
 	components: {
 		PageNav,
-		CommunityReg
+		MemberReg
 	},
 
 	data() {
 		return {
+			form: {
+				reveal: ''
+			}
 		}
+	},
+	methods: {
 	}
 }
 </script>
@@ -36,6 +41,7 @@ export default {
 
 .container {
 	flex: 1;
+	width: 1080px;
 }
 
 </style>

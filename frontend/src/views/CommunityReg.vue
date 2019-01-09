@@ -1,22 +1,38 @@
 <template>
-	<div id="community-reg">
+	<div id="community-reg" class="community main">
+		<PageNav></PageNav>
 		<div>
 			<h2>READ.ME</h2>
 			<p>
 				Before you start a community checkout our Machine Intelligence Community agreement, general code of conduct, and media kit!
 			</p>
-<!-- 			<button v-on:click.prevent="reveal_form" class="form-button"><span v-if="form.reveal">Close form</span><span v-else>Start a Community</span></button> -->
 		</div>
-		<form id="community-reg-form" v-if="form.reveal">
+		<form id="community-reg-form">
  			<label>Where will MIC's next community be?</label>
 			<select v-model.trim="org.school">
 				<option v-for="school in form.schools">{{ school.name }}</option>
 			</select>
-			<label>Does your community already exist?</label><input type="checkbox" value="yes" v-model="form.exists">
+			<label>Does your community already exist?</label>
+			<input type="checkbox" value="yes" v-model="form.exists">
 			<div v-if="form.exists">
 				<label>What's the name of your organizaion?</label><br>
 				<input type="text" class="mar-left" v-model.trim="org.name"><br>
-				<label>Who will be {{ org.name }}'s executives upon joining MIC?</label>
+				<span v-if="org.name.length > 0">
+					<label>Is {{ org.name }} affiliated with an institution? </label>
+					<input type="checkbox" value="yes" v-model="org.aff_exists">
+					<br>
+					<span v-if="org.aff_exists">
+						<label>What's the name of the institution:</label>
+						<br>
+						<input type="text" class="mar-left" v-model.trim="org.affiliation.name"><br>
+						<span v-if="org.affiliation.name.length > 0">
+							<label>Who can we contact at {{ org.affiliation.name }}?</label><br>
+							Name: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.name"><br>
+							Email: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.email"><br>
+						</span>
+					</span>
+					<label>Who will be {{ org.name }}'s executives upon joining MIC?</label>
+				</span>
 			</div>
 			<div v-else>
 				<label>Who will be {{ org.school }} MIC's executives?</label>
@@ -38,9 +54,8 @@
 			<label v-if="form.exists">Does {{ org.name }} have advisors?</label>
 			<label v-else>Does {{ org.school }} MIC have advisors?</label>
 			<div v-for="(value, index) in org.advisors">
-				<input v-autofocus :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
+				<input :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
 				<input :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name" v-on:keyup.enter="add_advisor(index)">
-				<!-- <button v-on:click.prevent="remove_advisor(index)">remove</button> -->
 			</div>
 			<label>What are your current sources of funding?</label>
 			<div v-for="(value, index) in org.funding">
@@ -51,27 +66,39 @@
 				</select>
 			</div>
 			<button v-on:click.prevent="submit">Submit</button>
+			<span v-if="form.server_resp.length > 0">{{ form.server_resp }}</span>
 		</form>
-		<button v-on:click.prevent="reveal_form"><span v-if="form.reveal">Close form</span><span v-else>Start a Community</span></button>
 	</div>
 </template>
 
 <script>
 import CommunityService from '@/services/CommunityService';
 import institutions from '@/data/schools.json'
+import PageNav from '@/components/PageNav'
 
 export default {
 	name: 'community-reg',
+	components: {
+		PageNav
+	},
 	data() {
 		return {
 			form: {
 				exists: false,
 				funding_freq: ['Annually', 'Semesterly', 'Quarterly', 'Monthly', 'Weekly', 'Daily'],
-				reveal: false,
-				schools: institutions
+				schools: institutions,
+				aff_exists: false,
+				server_resp: ''
 			},
 			org: {
 				advisors: [{}],
+				affiliation: {
+					name: '',
+					contact: {
+						email: '',
+						name: ''
+					}
+				},
 				execs: {
 					core: [
 					{
@@ -103,9 +130,6 @@ export default {
 			}
 		}
 	},
-	// directives:{
-	// 	autofocus: autofocus
-	// },
 	methods: {
 		add_advisor(index) {
 			var next = index + 1;
@@ -128,13 +152,10 @@ export default {
 				this.org.advisors.splice(index, 1);
 			}
 		},
-		reveal_form() {
-			this.form.reveal = !this.form.reveal;
-		},
 		submit() {
 			CommunityService.submitCommunity(this.validate_form(this.org))
-			.then(function(data){
-				alert('Submitted community');
+			.then((data) => {
+				this.form.server_resp = data['data'];
 			});
 		},
 		validate_form(form) {
@@ -144,6 +165,17 @@ export default {
 }
 </script>
 <style scoped>
+
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1;
+	width: 1080px;
+}
+
 .form-button {
 	margin-bottom: 15px;
 }
@@ -151,7 +183,7 @@ export default {
 form {
 	display: flex;
 	flex-direction: column;
-  align-items: baseline;
+	align-items: baseline;
 }
 
 .name {

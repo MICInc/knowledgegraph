@@ -39,6 +39,11 @@ export default new Router({
 			component: () => import('./views/Community.vue')
 		},
 		{
+			path: '/community/start',
+			name: 'community-reg',
+			component: () => import('./views/CommunityReg.vue')
+		},
+		{
 			path: '/conference',
 			name: 'conference',
 			component: () => import('./views/Conference.vue')
