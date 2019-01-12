@@ -12,6 +12,19 @@ var community_schema = new Schema({
 			required: true
 		}
 	}],
+    affiliation: {
+        name: {
+            type: String
+        },
+        contact: {
+            email: {
+                type: String
+            },
+            name: {
+                type: String
+            }
+        }
+    },
 	execs: {
 		core: [{
 			position: {

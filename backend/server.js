@@ -13,6 +13,7 @@ var morgan      = require('morgan');
 var cors        = require('cors');
 var port        = process.env.PORT || 7000; //keep this or change as long as greater than 1024
 
+
 // master process
 if(cluster.isMaster) 
 {
@@ -79,6 +80,7 @@ else
   app.use(bodyParser.json());
   app.use(cors());
 
+
   app.use(helmet());
   app.use(helmet.xssFilter({ setOnOldIE: true }));
   app.use('/', index_route);
@@ -90,6 +92,6 @@ else
   app.use('/community', community_route);
 
 
-  app.listen(port);
+  var server = app.listen(port);
   console.log('Listening on port ' + port);
 }

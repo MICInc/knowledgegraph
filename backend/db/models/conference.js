@@ -82,6 +82,6 @@ var conference_schema = new Schema({
 });
 
 var conn = mongoose.createConnection('mongodb://localhost:27017/profile', { useNewUrlParser: true });
-var Conference = conn.model('community', conference_schema);
+var Conference = conn.model('conference', conference_schema);
 
 module.exports = Conference;

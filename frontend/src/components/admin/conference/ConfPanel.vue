@@ -7,7 +7,7 @@
 		</div>
 		<div id="content">
 			<Overview v-if="view == 'overview'"></Overview>
-			<Applications v-if="view == 'applications'"></Applications>
+			<Applications v-if="view == 'applications'" v-bind:applications="applications"></Applications>
 		</div>
 	</div>
 </template>
@@ -25,7 +25,11 @@ export default {
 	},
 	data() {
 		return {
-			applications: [],
+			applications: [
+				{first_name: 'Justin', last_name: 'Chen', dob_year: 2000, dob_month: 20, dob_day: 20, affiliation: 'MIC', school: 'Boston University', grade: 'Not in school', gender: 'male', ethnicity: 'asian', reason: 'Dope conference bro', travel: 1000000, appleappleappleappleapple: 'appleappleappleappleapple'},
+				{first_name: 'Daelon', last_name: 'Austin', dob_year: 2000, dob_month: 20, dob_day: 20, affiliation: 'MIC', school: 'Boston University', grade: 'Not in school', gender: 'male', ethnicity: 'asian', reason: 'Dope conference bro', travel: 1000000, appleappleappleappleapple: 'appleappleappleappleapple'},
+				{first_name: 'Daelon', last_name: 'Austin', dob_year: 2000, dob_month: 20, dob_day: 20, affiliation: 'MIC', school: 'Boston University', grade: 'Not in school', gender: 'male', ethnicity: 'asian', reason: 'Dope conference bro', travel: 1000000, appleappleappleappleapple: 'appleappleappleappleapple'}
+			],
 			display: '',
 			panels: [
 				{
@@ -75,10 +79,12 @@ export default {
 }
 
 #panel-nav {
+	background-color: black;
 	float: left;
 }
 
 #content {
-	float: left;
+	width: calc(100% - 180px);
+	float: right;
 }
 </style>
