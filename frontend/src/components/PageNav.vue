@@ -13,9 +13,12 @@
 			v-on:keydown.enter.prevent="search()" 
 			v-model="searchInput" autofocus>
 		<nav id=right>
-			<ul>
+			<ul v-if="!isLoggedIn">
 				<li><router-link tag="a" to="/signup">Join</router-link></li>
 				<li><router-link tag="a" to="/login">Login</router-link></li>
+			</ul>
+			<ul v-else>
+				<li><router-link tag="a" to="/logout">Logout</router-link></li>
 			</ul>
 		</nav>
 	</header>
@@ -28,6 +31,12 @@ export default {
 	data () {
 		return {
 			searchInput: '',
+		}
+	},
+
+	computed: {
+		isLoggedIn () {
+			return this.$store.state.isLoggedIn
 		}
 	},
 
