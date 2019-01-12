@@ -30,4 +30,8 @@ router.post('/', function(req, res) {
 	});
 });
 
+router.get('/', function(req, res) {
+	console.log(req.query.url);
+});
+
 module.exports = router;

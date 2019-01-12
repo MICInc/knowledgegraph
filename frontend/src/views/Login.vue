@@ -24,7 +24,7 @@ import LinkedContent from '@/components/LinkedContent.vue'
 export default {
 	name: 'login',
 	components: {
-		PageNav,
+		PageNav
 	},
 
 	data () {

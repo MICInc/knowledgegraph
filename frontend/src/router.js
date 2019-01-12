@@ -49,6 +49,11 @@ export default new Router({
 			component: () => import('./views/Conference.vue')
 		},
 		{
+			path: '/mic/mit',
+			name: 'mic',
+			component: () => import('./views/MIC.vue')
+		},
+		{
 			path: '/login',
 			name: 'login',
 			component: () => import('./views/Login.vue')

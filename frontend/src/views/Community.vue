@@ -4,6 +4,8 @@
 		<div class="container">
 			<h1>Community Page</h1>
 			<a href="/community/start">Start a community</a>
+			<br>
+			<a href="/mic/mit">MIT MIC</a>
 		</div>
 	</div>
 </template>
