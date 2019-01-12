@@ -44,6 +44,11 @@ export default new Router({
 			component: () => import('./views/Conference.vue')
 		},
 		{
+			path: '/archived/conference',
+			name: 'oldConference',
+			component: () => import('./views/OldConference.vue')
+		},
+		{
 			path: '/login',
 			name: 'login',
 			component: () => import('./views/Login.vue')
