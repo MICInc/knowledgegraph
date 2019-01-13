@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -16,7 +17,17 @@ export default new Router({
 		{
 			path: '/about',
 			name: 'about',
-			component: () => import('./views/About.vue')
+			component: () => import('./views/About.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/add',
