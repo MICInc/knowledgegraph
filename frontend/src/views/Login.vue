@@ -3,6 +3,7 @@
 		<PageNav></PageNav>
 		<div class="container">
 			<form v-on:submit.prevent="handleSubmit">
+				<p>{{error}}</p>
 				<input type="email" placeholder="Email" v-model="formData.email" required>
 				<input type="password" placeholder="Password" v-model="formData.password" required>
 				<label>
@@ -20,6 +21,8 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import LinkedContent from '@/components/LinkedContent.vue'
+import AuthService from '@/services/AuthenticationService'
+import router from '@/router'
 
 export default {
 	name: 'login',
@@ -29,14 +32,34 @@ export default {
 
 	data () {
 		return {
-			formData: {}
+			formData: {},
+			error: ''
 		}
 	},
 
 	methods: {
 		handleSubmit() {
-			alert("You've submitted the form!")
-		}
+			this.loginUser().then((response) => {
+				if (response.data.error != undefined && response.status == 200) {
+					this.error = response.data.error
+
+				} else if (response.status == 200) {
+					this.$store.dispatch('login', response.data.token)
+					router.push({ name: 'home' })
+									
+				} else {
+					alert("Something went wrong.")
+					console.log(response)
+				}
+			});
+		},
+
+		async loginUser() {
+			return await AuthService.loginUser({
+				email: this.formData.email, 
+				password: this.formData.password
+			})
+		},
 	}
 }
 </script>

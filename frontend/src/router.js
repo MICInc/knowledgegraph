@@ -54,19 +54,29 @@ export default new Router({
 			component: () => import('./views/MIC.vue')
 		},
 		{
+			path: '/archived/conference',
+			name: 'oldConference',
+			component: () => import('./views/OldConference.vue')
+		},
+		{
 			path: '/login',
 			name: 'login',
 			component: () => import('./views/Login.vue')
+		},
+		{
+			path: '/logout',
+			name: 'logout',
+			component: () => import('./views/Logout.vue')
+		},
+		{
+			path: '/signup',
+			name: 'signup',
+			component: () => import('./views/SignUp.vue')
 		},
 		{
 			path: '/profile/:id',
 			name: 'profile',
 			component: () => import('./views/Profile.vue')
 		},
-		{
-			path: '/signup',
-			name: 'signup',
-			component: () => import('./views/SignUp.vue')
-		}
 	]
 })

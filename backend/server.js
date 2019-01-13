@@ -78,7 +78,7 @@ else
   app.use(morgan('combined'));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-  app.use(cors());
+  app.use(cors({credentials: true, origin: true}));
 
 
   app.use(helmet());
@@ -90,6 +90,18 @@ else
   app.use('/search', search_route);
   app.use('/conference', conf_route);
   app.use('/community', community_route);
+
+  app.all('*', function (req, res, next) {
+    origin = req.get('origin');
+    var whitelist = ['http://localhost:8080', 'http://localhost:8081']; // Development whitelist
+    corsOptions = {
+        origin: function (origin, callback) {
+            var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+            callback(null, originIsWhitelisted);
+        }
+    };
+    next();
+});
 
 
   var server = app.listen(port);

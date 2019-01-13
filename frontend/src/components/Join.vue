@@ -1,6 +1,7 @@
 <template>
 	<div id="join">
 		<form v-on:submit.prevent="handleSubmit">
+			<p>{{error}}</p>
 			<div class="input-row">
 				<input type="text" placeholder="First Name" v-model.trim="profile.first_name.value" required>
 				<input type="text" placeholder="Last Name" v-model.trim="profile.last_name.value" required>
@@ -20,8 +21,9 @@
 </template>
 
 <script>
-import ProfileService from '@/services/ProfileService'
 import DateSelector from '@/components/DateSelector'
+import AuthService from '@/services/AuthenticationService'
+import router from '@/router'
 
 export default {
 	name: 'join',
@@ -30,6 +32,7 @@ export default {
 	},
 	data () {
 		return {
+			error: '',
 			form: {
 				gender: ['Female', 'Male', 'Non-binary']
 			},
@@ -86,12 +89,39 @@ export default {
 		set_date(date) {
 			this.profile.dob.value = date;
 		},
+
 		submit() {
-			ProfileService.createProfile(this.profile)
-			.then(function(data) {
-				alert(data);
+			if (this.profile.password.value != this.profile.confirm_password.value) {
+				this.error = "Passwords don't match"
+				return
+			}
+
+			this.signUpUser().then((response) => {
+				if (response.data.error != undefined && response.status == 200) {
+					this.error = response.data.error
+				} else if (response.status == 200) {
+					// Login newly created l=user
+					this.$store.dispatch('login', response.data.token)
+					router.push({ name: 'home' })
+									
+				} else {
+					alert("Something went wrong.")
+					console.log(response)
+				}
 			});
-		}
+		},
+
+		async signUpUser() {
+			return await AuthService.signUpUser({
+				email: this.profile.email.value, 
+				firstname: this.profile.first_name.value,
+				lastname: this.profile.last_name.value,
+				passwordConf: this.profile.confirm_password.value,
+				password: this.profile.password.value,
+				dob: this.profile.dob.value,
+				gender: this.profile.gender.value,
+			})
+		},
 	}
 }
 </script>
