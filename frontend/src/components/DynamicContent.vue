@@ -13,7 +13,7 @@
 				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
-				<button class="tag_switch" v-on:click.prevent="switch_content('canvas', index)">canvas</button>
+				<!-- <button class="tag_switch" v-on:click.prevent="switch_content('canvas', index)">canvas</button> -->
 			</div>
 			<img class="image-content" v-bind:src="content[index].src" v-bind:id="'content-'+index" v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:click="set_active(index)">
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">

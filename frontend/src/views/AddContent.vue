@@ -5,25 +5,14 @@
 			<button>Publish</button>
 			<span>{{ save_status }}</span>
 			<form>
-				<input class="content" type="text" v-model="bibtex.values.author" v-on:blur="add_bibtex('author')" placeholder="Co-authors"/>
-				<input id="title" class="content" type="text" v-model="bibtex.values.title" v-on:blur="add_bibtex('title')" placeholder="Title"/>
-				<div v-for="(paper, index) in display.papers">
-					{{ paper }}
-				</div>
 				<DynamicContent v-on:edit="update_content($event)"></DynamicContent>
 			</form>
-			<div id="citations">
-				<h3>Additional Info</h3>
-				<div class="upload">
-					Upload content for parsing:<br>
-					<input type="file" name="paper-upload" multiple v-on:change="parse_file($event)"><br>
-				</div>
-				<textarea v-model="data.citations" placeholder="Citations"></textarea><br>
+			<div id="bibtex" class="meta-info">
 				<h4>BibTeX citation</h4>
 				<p>{{ bibtex.to_string }}</p>
 			</div>
 			<div id="tags">
-				<input v-model="tags" placeholder="Tags"></input>
+				<input class="meta-info" v-model="tags" placeholder="Tags"></input>
 			</div>
 			<button>Publish</button>
 		</div>
@@ -274,5 +263,10 @@ ul {
 .upload * {
 	font-size: 0.7em;
 }
+
+.meta-info {
+	font-size: .85em;
+}
+
 
 </style>
