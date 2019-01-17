@@ -131,12 +131,12 @@ export default {
 			}
 		},
 		remove_active() {
-			console.log('removing...');
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
 					el.tag = 'p';
+					this.content.splice(this.active_index, 1);
 				}
 			}
 
@@ -183,7 +183,9 @@ export default {
 		},
 		set_active(index) {
 			if(this.active_index > -1) {
-				this.$refs['content-'+this.active_index][0].style.outline = '';
+				if(this.$refs['content-'+this.active_index][0] != null) {
+					this.$refs['content-'+this.active_index][0].style.outline = '';
+				}
 			}
 			
 			this.active_index = index;
@@ -216,7 +218,7 @@ export default {
 			this.save();
 		},
 		switch_content(tag, index) {
-			this.remove_active();
+			console.log('switch_content index: '+index);
 			this.content[index].tag = tag;
 		},
 		trim(str) {
