@@ -1,4 +1,4 @@
-var User = require('../db/models/user.js');
+var db = require('../db/database');
 var crypto = require('crypto');
 
 function handleError(err) {
@@ -19,8 +19,10 @@ module.exports = {
 				// Hash password
 				crypto.pbkdf2(password, salt, 10000, 64, 'sha512', function(err, key){
 					if (err) handleError(err);
-					console.log(key.toString('hex'))
-					var newUser = new User({
+					
+					// console.log(key.toString('hex'))
+
+					var user = new db.User({
 						first_name: first_name,
 						last_name: last_name,
 						email: email,
@@ -43,7 +45,13 @@ module.exports = {
 						rank: 0
 					});
 
-					newUser.save(function(err, user) {
+					user.collection.dropIndexes(function(err, results) {
+						if(err) {
+							console.log('content.js: '+err);
+						}
+					});
+
+					user.save(function(err, user) {
 						if (err) handleError(err);
 						// Successfully registered user
 						process.nextTick(function() {
@@ -51,7 +59,8 @@ module.exports = {
 						});
 					});
 				});
-			} else {
+			}
+			else {
 				process.nextTick(function() {
 					callback({message: 'Email is in use.'}, null);
 				});
@@ -64,7 +73,7 @@ module.exports = {
 			if (err) handleError(err);
 
 			if (user != null) {
-				console.log(user)
+				// console.log(user)
 				// Salt password to see if hashes will match with the user's salt
 				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key){
 					if (err) handleError(err);
@@ -88,7 +97,7 @@ module.exports = {
 	},
 
 	isEmailTaken: function(email, callback) {
-		User.findOne({email: email}, function(err, user) {
+		db.User.findOne({email: email}, function(err, user) {
 			if (err) handleError(err);
 
 			if (user != null) {
