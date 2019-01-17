@@ -20,17 +20,24 @@
 				</div>
 			</div>
 		</div>
+		<div id="bibtex" class="meta-info">
+			<h4>BibTeX citation</h4>
+			<p>{{ bibtex.to_string }}</p>
+		</div>
+		<Footer></Footer>
 	</div>
 </template>
 
 <script>
 import PageNav from '@/components/PageNav.vue'
 import ContentService from '@/services/ContentService'
+import Footer from '@/components/Footer'
 
 export default {
 	name: 'content',
 	components: {
-		PageNav
+		PageNav,
+		Footer
 	},
 
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
