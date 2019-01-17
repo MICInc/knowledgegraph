@@ -85,14 +85,17 @@ export default {
 			return window.btoa( binary );
 		},
 		hashtags() {
-
+			return
 		},
 		focus(index=this.active_index+1) {
-			this.active_index = index;
-			this.$nextTick(() => {
-				this.$refs['content-'+index][0].focus()
-				this.set_end_contenteditable(this.$refs['content-'+index][0]);
-			});
+			if(index < this.content.length) {
+				console.log('focusing on '+index)
+				this.active_index = index;
+				this.$nextTick(() => {
+					this.$refs['content-'+index][0].focus()
+					this.set_end_contenteditable(this.$refs['content-'+index][0]);
+				});
+			}
 		},
 		import_file(event) {
 			var el = event.target;
@@ -114,6 +117,7 @@ export default {
 			event.preventDefault();
 		},
 		print_tag() {
+			console.log('active_index: '+this.active_index);
 			console.log('==== content ('+this.content.length+') ====');
 			for(var i = 0; i < this.content.length+1; i++) {
 				if(this.content[i] != null) {
@@ -125,13 +129,9 @@ export default {
 					}
 				}
 			}
-
-			console.log('==== saving ====');
-			for(var i = 0; i < this.saved_content.length; i++) {
-				console.log(this.saved_content[i]);
-			}
 		},
 		remove_active() {
+			console.log('removing...');
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
@@ -143,8 +143,6 @@ export default {
 			if(this.content.length == 0) {
 				this.add_content();
 			}
-
-			this.active_index = -1;
 		},
 		remove_content(index) {
 			var el = event.target;
