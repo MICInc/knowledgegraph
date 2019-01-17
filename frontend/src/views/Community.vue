@@ -7,6 +7,7 @@
 			<br>
 			<a href="/mic/mit">MIT MIC</a>
 		</div>
+		<Footer></Footer>
 	</div>
 </template>
 
@@ -14,12 +15,14 @@
 <script>
 import PageNav from '@/components/PageNav'
 import MemberReg from '@/components/MemberReg'
+import Footer from '@/components/Footer'
 
 export default {
 	name: 'community',
 	components: {
 		PageNav,
-		MemberReg
+		MemberReg,
+		Footer
 	},
 
 	data() {

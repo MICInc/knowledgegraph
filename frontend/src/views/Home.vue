@@ -10,6 +10,7 @@
 			<div class="side-menu">
 			</div>
 		</div>
+		<Footer></Footer>
 	</div>
 </template>
 
@@ -17,12 +18,14 @@
 import PageNav from '@/components/PageNav.vue'
 import LinkedContent from '@/components/LinkedContent.vue'
 import ContentService from '@/services/ContentService'
+import Footer from '@/components/Footer'
 
 export default {
 	name: 'home',
 	components: {
 		LinkedContent,
 		PageNav,
+		Footer
 	},
 
 	data () {

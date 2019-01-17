@@ -10,20 +10,23 @@
 				<button v-on:click.prevent="reveal_form">Feedback</button>
 			</div>
 		</div>
+		<Footer></Footer>
 	</div>
 </template>
 
 
 <script>
-import PageNav from '@/components/PageNav.vue'
-import Registration from '@/components/Registration.vue'
+import PageNav from '@/components/PageNav'
+import Registration from '@/components/Registration'
+import Footer from '@/components/Footer'
 
 export default {
 	name: 'conference',
 
 	components: {
 		PageNav,
-		Registration
+		Registration,
+		Footer
 	},
 
 	data() {
