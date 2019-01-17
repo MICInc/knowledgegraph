@@ -88,8 +88,10 @@ export default {
 			return
 		},
 		focus(index=this.active_index+1) {
-			if(index < this.content.length) {
-				console.log('focusing on '+index)
+			console.log('focus: active_index: '+index)
+			console.log('focus: index: '+index)
+			if(index < this.content.length && this.content[index].tag == 'p') {
+				console.log('here');
 				this.active_index = index;
 				this.$nextTick(() => {
 					this.$refs['content-'+index][0].focus()
@@ -135,8 +137,7 @@ export default {
 				var el = this.content[this.active_index];
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
-					el.tag = 'p';
-					this.content.splice(this.active_index, 1);
+					this.remove_content(this.active_index, el.tag);
 				}
 			}
 
@@ -144,10 +145,10 @@ export default {
 				this.add_content();
 			}
 		},
-		remove_content(index) {
+		remove_content(index, tag='p') {
 			var el = event.target;
 
-			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
+			if(this.content.length > 1 && (this.trim(el.innerText).length == 0 || tag != 'p')) {
 				this.content.splice(index, 1);
 
 				var prev = index - 1;
