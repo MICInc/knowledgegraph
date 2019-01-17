@@ -135,7 +135,7 @@ export default {
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
-				if(el.tag == 'img' || el.tag == 'canvas') {
+				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
 					el.tag = 'p';
 				}
 			}
