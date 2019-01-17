@@ -84,12 +84,20 @@ export default {
 
 			return window.btoa( binary );
 		},
+		hashtags() {
+			return
+		},
 		focus(index=this.active_index+1) {
-			this.active_index = index;
-			this.$nextTick(() => {
-				this.$refs['content-'+index][0].focus()
-				this.set_end_contenteditable(this.$refs['content-'+index][0]);
-			});
+			console.log('focus: active_index: '+index)
+			console.log('focus: index: '+index)
+			if(index < this.content.length && this.content[index].tag == 'p') {
+				console.log('here');
+				this.active_index = index;
+				this.$nextTick(() => {
+					this.$refs['content-'+index][0].focus()
+					this.set_end_contenteditable(this.$refs['content-'+index][0]);
+				});
+			}
 		},
 		import_file(event) {
 			var el = event.target;
@@ -111,6 +119,7 @@ export default {
 			event.preventDefault();
 		},
 		print_tag() {
+			console.log('active_index: '+this.active_index);
 			console.log('==== content ('+this.content.length+') ====');
 			for(var i = 0; i < this.content.length+1; i++) {
 				if(this.content[i] != null) {
@@ -122,31 +131,24 @@ export default {
 					}
 				}
 			}
-
-			console.log('==== saving ====');
-			for(var i = 0; i < this.saved_content.length; i++) {
-				console.log(this.saved_content[i]);
-			}
 		},
 		remove_active() {
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
-				if(el.tag == 'img' || el.tag == 'canvas') {
-					el.tag = 'p';
+				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
+					this.remove_content(this.active_index, el.tag);
 				}
 			}
 
 			if(this.content.length == 0) {
 				this.add_content();
 			}
-
-			this.active_index = -1;
 		},
-		remove_content(index) {
+		remove_content(index, tag='p') {
 			var el = event.target;
 
-			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
+			if(this.content.length > 1 && (this.trim(el.innerText).length == 0 || tag != 'p')) {
 				this.content.splice(index, 1);
 
 				var prev = index - 1;
@@ -182,7 +184,9 @@ export default {
 		},
 		set_active(index) {
 			if(this.active_index > -1) {
-				this.$refs['content-'+this.active_index][0].style.outline = '';
+				if(this.$refs['content-'+this.active_index][0] != null) {
+					this.$refs['content-'+this.active_index][0].style.outline = '';
+				}
 			}
 			
 			this.active_index = index;
@@ -209,25 +213,13 @@ export default {
 
 		},
 		stylize(style) {
-
-			if(style == 'createLink') {
-
-			}
-			else if(style == 'insertImage') {
-				
-			}
-
 			document.execCommand(style, false, null);
-
-			for(var i = 0; i < this.content.length; i++) {
-				this.content[i].html = this.$refs['content-'+i][0].innerHTML;
-			}
 
 			this.emit_save.button = true;
 			this.save();
 		},
 		switch_content(tag, index) {
-			this.remove_active();
+			console.log('switch_content index: '+index);
 			this.content[index].tag = tag;
 		},
 		trim(str) {

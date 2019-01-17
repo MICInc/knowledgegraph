@@ -3,21 +3,21 @@ var Schema = mongoose.Schema;
 
 var user_schema = new Schema({
     affiliation: {
-        type: String
+        type: String,
+        sparse: true
     },
     bio: {
         type: String,
-        trim: true
+        trim: true,
+        sparse: true
     },
     date_joined: {
         type: Date,
-        unique: false,
         required: true,
         trim: true
     },
     dob: {
         type: Date,
-        unique: false,
         required: true,
         trim: true
     },
@@ -28,7 +28,8 @@ var user_schema = new Schema({
         trim: true
     },
     ethnicity: {
-        type: String
+        type: String,
+        sparse: true
     },
     first_name: {
         type: String,
@@ -36,55 +37,63 @@ var user_schema = new Schema({
         trim: true
     },
     following: [{
-        type: String
+        type: String,
+        sparse: true
     }],
     grade: {
-        type: String
+        type: String,
+        sparse: true
     },
     gender: {
         type: String,
-        unique: true,
-        required: true,
-        trim: true
+        trim: true,
+        sparse: true
     },
     last_name: {
         type: String,
-        unique: false,
         required: true,
         trim: true
     },
     library: [{
-        type: String // content ids
+        type: String, // content ids
+        sparse: true
     }],
     liked_articles: [{
-        type: String // content ids
+        type: String, // content ids
+        sparse: true
     }],
     liked_papers: [{
-        type: String // content ids
+        type: String, // content ids
+        sparse: true
     }],
     password_hash: {
         type: String,
-        required: true,
+        required: true
     },
     rank: {
         type: Number,
-        required: true
+        required: true,
+        sparse: true
     },
     salt: {
         type: String,
-        required: true,
+        required: true
     },
     school: {
-        type: String
+        type: String,
+        sparse: true
     },
     subjects: [{
-        type: String // entity ids
+        type: String, // entity ids
+        sparse: true
     }],
     search_history: [{ 
-        type: String
+        type: String,
+        sparse: true
     }],
     url: {
-        type: String
+        type: String,
+        sparse: true
     }
 });
 
