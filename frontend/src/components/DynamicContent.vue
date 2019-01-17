@@ -84,6 +84,9 @@ export default {
 
 			return window.btoa( binary );
 		},
+		hashtags() {
+
+		},
 		focus(index=this.active_index+1) {
 			this.active_index = index;
 			this.$nextTick(() => {
@@ -209,19 +212,7 @@ export default {
 
 		},
 		stylize(style) {
-
-			if(style == 'createLink') {
-
-			}
-			else if(style == 'insertImage') {
-				
-			}
-
 			document.execCommand(style, false, null);
-
-			for(var i = 0; i < this.content.length; i++) {
-				this.content[i].html = this.$refs['content-'+i][0].innerHTML;
-			}
 
 			this.emit_save.button = true;
 			this.save();

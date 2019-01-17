@@ -3,10 +3,7 @@
 		<PageNav></PageNav>
 		<div class="container">
 			<button>Publish</button>
-			<span>{{ save_status }}</span>
-			<div id="tags">
-				<input class="meta-info" v-model="tags" placeholder="Tags"></input>
-			</div>
+			<span class="save-status">{{ save_status }}</span>
 			<form>
 				<DynamicContent v-on:edit="update_content($event)"></DynamicContent>
 			</form>
@@ -79,7 +76,7 @@ export default {
 				papers: []
 			},
 			save_status: '',
-			tags: '',
+			tags: [],
 			upload: [],
 			user: {
 				first_name: "Justin",
@@ -261,6 +258,10 @@ ul {
 
 .meta-info {
 	font-size: .85em;
+}
+
+.save-status {
+	font-size: 0.8em;
 }
 
 
