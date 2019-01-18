@@ -27,7 +27,10 @@
 
 <script>
 
-export default { 
+export default {
+	created() {
+		this.focus(0)
+	},
 	data() {
 		return {
 			active_index: -1,

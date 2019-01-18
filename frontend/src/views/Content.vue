@@ -40,7 +40,7 @@ export default {
 		Footer
 	},
 
-	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
+	data () {
 		return {
 			url: this.$route.params.id,
 			user: {
