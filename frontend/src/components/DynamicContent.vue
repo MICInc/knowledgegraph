@@ -37,7 +37,8 @@ export default {
 			content: [{
 				id: Math.random(),
 				tag: 'p',
-				src: ''
+				src: '',
+				name: ''
 			}],
 			emit_save: {
 				button: false,
@@ -165,7 +166,8 @@ export default {
 					date_created: new Date(),
 					last_modified: new Date(),
 					text: this.trim(el.innerText),
-					html: this.content[i].name
+					html: this.trim(el.innerHTML),
+					name: this.content[i].name
 				});
 			}
 

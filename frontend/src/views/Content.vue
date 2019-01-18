@@ -7,16 +7,9 @@
 				<h3>Abstract</h3>
 				<p class='abstract'></p>
 				<h3>Authors</h3>
-				<span class='authors' v-for='author in content.authors'>{{ author }}, </span>
-				<h3>Original</h3>
-				<span class='citation'><a v-bind:href='content.original_url'>Original</a></span>
-				<div id='related-work'>
-					<h3>Related work</h3>
-					<ul>
-						<li v-for='work in content.related'>
-							<router-link v-bind:to="'/article/'+work.url">{{ work.title }}</router-link>
-						</li>
-					</ul>
+				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
+				<div v-for="c in content.content">
+					<p v-html="c.html"></p>
 				</div>
 			</div>
 			<div id="bibtex" class="meta-info">
@@ -59,7 +52,7 @@ export default {
 	beforeMount() {
 		this.getContent().then(data => {
 			this.content = data;
-			console.log(data);
+			console.log(this.content);
 		});
 	}
 }

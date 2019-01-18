@@ -18,7 +18,7 @@ module.exports = function(req)
 
 	return {
 		"_id": id.length > 0 ? id : mongoose.Types.ObjectId(),
-		"authors": user.first_name+','+user.last_name,
+		"authors": user.first_name+' '+user.last_name,
 		"citations": content.citations.split(','),
 		"content": content.content,
 		"date_created": content.date_created,
