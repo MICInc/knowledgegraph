@@ -11,7 +11,7 @@
 		</nav>
 		<input class="search" type="text" placeholder="search" 
 			v-on:keydown.enter.prevent="search()" 
-			v-model="searchInput" autofocus>
+			v-model="searchInput">
 		<nav id=right>
 			<ul v-if="!isLoggedIn">
 				<li><router-link tag="a" to="/signup">Join</router-link></li>

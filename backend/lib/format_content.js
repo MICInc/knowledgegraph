@@ -3,10 +3,11 @@ var utils = require('./utils');
 
 module.exports = function(req)
 {
+	var title = req.body.title;
 	var content = req.body.content;
 	var id = req.body.id;
 	var user = req.body.user;
-	var url = utils.uniqueID();
+	var url = title.length > 0 ? title.toLowerCase().replace(/\s/g, '-') : utils.uniqueID();
 
 	console.log('given id: '+id);
 
@@ -17,7 +18,7 @@ module.exports = function(req)
 
 	return {
 		"_id": id.length > 0 ? id : mongoose.Types.ObjectId(),
-		"authors": user.first_name+','+user.last_name,
+		"authors": user.first_name+' '+user.last_name,
 		"citations": content.citations.split(','),
 		"content": content.content,
 		"date_created": content.date_created,
@@ -31,10 +32,11 @@ module.exports = function(req)
 		"num_saves": 0,
 		"num_shares": 0,
 		"prereqs": [],
+		"published": content.publish,
 		"save_by": [],
 		"subseqs": [],
 		"tags": content.tags.split(','),
-		"title": '',
+		"title": title,
 		"url": url,
 		"year": (new Date()).getFullYear()
 	};

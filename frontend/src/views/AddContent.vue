@@ -2,8 +2,11 @@
 	<div class="add-article main" v-on:keyup="save()" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
 		<div class="container">
-			<button>Publish</button>
+			<button v-on:click.prevent="publish()">Publish</button>
 			<span class="save-status">{{ save_status }}</span>
+			<br>
+			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')">
+			<br>
 			<form>
 				<DynamicContent v-on:edit="update_content($event)" v-on:file="upload_file($event)"></DynamicContent>
 			</form>
@@ -37,7 +40,9 @@ export default {
 				citations: '',
 				content: [],
 				last_modified: undefined,
-				tags: ''
+				tags: '',
+				title: '',
+				publish: false
 			},
 			save_status: '',
 			tags: [],
@@ -55,10 +60,17 @@ export default {
 				this.save();
 			}
 		},
+		publish() {
+			this.data.publish = true;
+			this.save_status = 'publishing...';
+			this.save();
+			this.save_status = 'published';
+		},
 		save() {
 			this.save_status = 'saving...';
+
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, content: this.data }
+			var article = { id: this.content_id, user: this.user, content: this.data, title: this.data.title }
 
 			ContentService.saveContent(article)
 			.then((data) => {
@@ -70,7 +82,7 @@ export default {
 					}
 				}
 			});
-
+			
 			this.save_status = 'saved';
 		},
 		update_content(data) {
@@ -92,6 +104,12 @@ export default {
 			ContentService.uploadFile('/content/parse', form_data, config).then(function(data) {
 				alert(data.json());
 			});
+		},
+		uppercase(e, o, prop) {
+			const start = e.target.selectionStart;
+			e.target.value = e.target.value.toUpperCase();
+			this.$set(o, prop, e.target.value);
+			e.target.setSelectionRange(start, start);
 		}
 	},
 	ready: function() {
@@ -108,25 +126,17 @@ export default {
 }
 
 .container {
-	/*width: 50%;*/
 	flex: 1;
-	float: left;
 }
 
 .preview {
 	width: 50%;
-	float: left;
 }
 
 form {
 	width: 600px;
 	display: flex;
 	flex-direction: column;
-}
-
-textarea {
-  width: calc(600px - 10px);
-  min-height: 75px;
 }
 
 .content {
@@ -170,6 +180,15 @@ ul {
 
 .save-status {
 	font-size: 0.8em;
+}
+
+#title {
+	font-size: 2em;
+	width: 100%;
+	overflow: hidden;
+	padding: 0;
+	outline: none;
+	height: 1em;
 }
 
 

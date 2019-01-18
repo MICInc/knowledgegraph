@@ -5,26 +5,19 @@
 			<h2>{{ content.title }}</h2>
 			<div id="abstract">
 				<h3>Abstract</h3>
-				<p class='abstract'>{{ content.content[0] }}</p>
+				<p class='abstract'></p>
 				<h3>Authors</h3>
-				<span class='authors' v-for='author in content.authors'>{{ author }}, </span>
-				<h3>Original</h3>
-				<span class='citation'><a v-bind:href='content.original_url'>Original</a></span>
-				<div id='related-work'>
-					<h3>Related work</h3>
-					<ul>
-						<li v-for='work in content.related'>
-							<router-link v-bind:to="'/article/'+work.url">{{ work.title }}</router-link>
-						</li>
-					</ul>
+				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
+				<div v-for="c in content.content">
+					<p v-html="c.html"></p>
 				</div>
 			</div>
+			<div id="bibtex" class="meta-info">
+				<h4>BibTeX citation</h4>
+				<p>bibtex</p>
+			</div>
+			<Footer></Footer>
 		</div>
-		<div id="bibtex" class="meta-info">
-			<h4>BibTeX citation</h4>
-			<p>{{ bibtex.to_string }}</p>
-		</div>
-		<Footer></Footer>
 	</div>
 </template>
 
@@ -40,12 +33,9 @@ export default {
 		Footer
 	},
 
-	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
+	data () {
 		return {
 			url: this.$route.params.id,
-			user: {
-				id: 0
-			},
 			content: {}
 		}
 	},
@@ -62,6 +52,7 @@ export default {
 	beforeMount() {
 		this.getContent().then(data => {
 			this.content = data;
+			console.log(this.content);
 		});
 	}
 }
@@ -69,21 +60,5 @@ export default {
 
 <style scoped>
 
-.content {
-	display: flex;
-	flex-direction: column;
-}
-
-.container {
-	flex: 1;
-	border: 1px solid #3c3c3c;
-	border-top: none;
-	padding: 25px;
-}
-
-.input-row {
-	display: flex;
-	align-items: center;
-}
 
 </style>

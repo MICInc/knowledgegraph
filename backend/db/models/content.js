@@ -71,6 +71,10 @@ var content_schema = new mongoose.Schema({
 		type: String, // content-ids
 		required: true
 	}],
+	published: {
+		type: Boolean,
+		required: true
+	},
 	questions: [{
 		type: String,
 		required: true,
