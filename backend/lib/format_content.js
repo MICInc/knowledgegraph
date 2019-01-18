@@ -3,11 +3,10 @@ var utils = require('./utils');
 
 module.exports = function(req)
 {
-	var bibtex = req.body.bibtex.values;
 	var content = req.body.content;
 	var id = req.body.id;
 	var user = req.body.user;
-	var url = bibtex.title.length > 0 ? bibtex.title.toLowerCase().replace(/\s/g, '_') : utils.uniqueID();
+	var url = utils.uniqueID();
 
 	console.log('given id: '+id);
 
@@ -35,8 +34,8 @@ module.exports = function(req)
 		"save_by": [],
 		"subseqs": [],
 		"tags": content.tags.split(','),
-		"title": bibtex.title,
+		"title": '',
 		"url": url,
-		"year": bibtex.year
+		"year": (new Date()).getFullYear()
 	};
 }

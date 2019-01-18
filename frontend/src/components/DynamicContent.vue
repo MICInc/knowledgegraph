@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keyup.up="print_tag()">
+	<div id="container" v-on:keydown="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keyup.up="print_tag()">
 		<!-- <input name="file" type="file" v-on:change="import_file($event)"> -->
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -118,26 +118,12 @@ export default {
 		prevent_nl(event) {
 			event.preventDefault();
 		},
-		print_tag() {
-			console.log('active_index: '+this.active_index);
-			console.log('==== content ('+this.content.length+') ====');
-			for(var i = 0; i < this.content.length+1; i++) {
-				if(this.content[i] != null) {
-				console.log('index: '+i+' content: '+this.content[i].tag+' id: '+this.content[i].id+' ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
-				}
-				else if(this.$refs['content-'+i] != null) {
-					if (this.$refs['content-'+i][0] != null) {
-						console.log('index: '+i+' content: null id: null ref: '+this.$refs['content-'+i][0].nodeName+' id: '+this.$refs['content-'+i][0].id+' html: '+this.$refs['content-'+i][0].innerHTML);
-					}
-				}
-			}
-		},
 		remove_active() {
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
-					this.remove_content(this.active_index, el.tag);
+					this.content.splice(this.active_index, 1);
 				}
 			}
 
@@ -145,10 +131,10 @@ export default {
 				this.add_content();
 			}
 		},
-		remove_content(index, tag='p') {
+		remove_content(index) {
 			var el = event.target;
 
-			if(this.content.length > 1 && (this.trim(el.innerText).length == 0 || tag != 'p')) {
+			if(this.content.length >= 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
 
 				var prev = index - 1;
@@ -210,7 +196,6 @@ export default {
 				range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
 				range.select();
 			}
-
 		},
 		stylize(style) {
 			document.execCommand(style, false, null);
