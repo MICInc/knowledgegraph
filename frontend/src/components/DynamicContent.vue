@@ -137,7 +137,7 @@ export default {
 				var el = this.content[this.active_index];
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
-					this.remove_content(this.active_index, el.tag);
+					this.content.splice(this.active_index, 1);
 				}
 			}
 
@@ -145,10 +145,10 @@ export default {
 				this.add_content();
 			}
 		},
-		remove_content(index, tag='p') {
+		remove_content(index) {
 			var el = event.target;
 
-			if(this.content.length > 1 && (this.trim(el.innerText).length == 0 || tag != 'p')) {
+			if(this.content.length >= 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
 
 				var prev = index - 1;
