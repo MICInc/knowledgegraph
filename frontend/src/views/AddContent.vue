@@ -26,54 +26,15 @@ export default {
 		PageNav,
 		DynamicContent
 	},
-	created() {
-		this.bibtex_to_string();
-	},
 	data() {
 		return {
-			test: '',
 			content_id: '',
-			bibtex: {
-				name: "",
-				properties: ["year"],
-				values: {
-					address: "",
-					annotate: "",
-					author: "",
-					booktitle: "",
-					chapter: "",
-					crossref: "",
-					doi: "",
-					edition: "",
-					editor: "",
-					howpublished: "",
-					institution: "",
-					journal: "",
-					key: "",
-					month: "",
-					note: "",
-					number: "",
-					organization: "",
-					pages: "",
-					publisher: "",
-					school: "",
-					series: "",
-					title: "",
-					type: "@article",
-					volume: "",
-					year: (new Date()).getFullYear()
-				},
-				to_string: "",
-			},
 			data: {
 				date_created: new Date(),
 				citations: '',
 				content: [],
 				last_modified: undefined,
 				tags: ''
-			},
-			display: {
-				papers: []
 			},
 			save_status: '',
 			tags: [],
@@ -85,63 +46,12 @@ export default {
 		}
 	},
 	methods: {
-		add_bibtex(property) {
-			var index = this.bibtex.properties.indexOf(property);
-
-			if(index < 0) {
-				this.bibtex.properties.push(property);
-			}
-			else if(this.bibtex.values[property].length == 0) {
-				this.bibtex.properties.splice(index, 1);
-			}
-
-			this.bibtex_to_string();
-		},
-		adjust_textarea(tag) {
-			tag.style.height = "1px";
-			tag.style.height = (25+tag.scrollHeight)+"px";
-		},
-		bibtex_to_string() {
-			var bib = this.bibtex.values.type+'{';
-			var properties = this.bibtex.properties.sort();
-			var values = this.bibtex.values;
-
-			if(this.bibtex.name.length == 0 && values.author.length > 0 && values.title.length > 0) {
-				var authors = values.author.split(' ');
-				var auth = '';
-
-				if(authors.length > 1) {
-					auth = authors[1];
-				}
-				else {
-					auth = authors[0];
-				}
-
-				this.bibtex.name = (auth + values.year + values.title.split(' ')[0]).toLowerCase();
-			}
-
-			bib += this.bibtex.name+', ';
-
-			for(var i = 0; i < properties.length; i++) {
-				var p = properties[i];
-
-				bib += p + '= {' + this.bibtex.values[p] + '}';
-
-				if(i+1 < properties.length) {
-					bib += ', ';
-				}
-			}
-			
-			bib += '}';
-			this.bibtex.to_string = bib;
-		},
 		parse_file(event) {
 			var data = new FormData();
 
 			for(var i = 0; i < event.target.files.length; i++) {
 				var paper = event.target.files[i];
 				data.append('file-'+i, paper);
-				this.display.papers.push(paper.name);
 			}
 
 			var config = {
@@ -163,7 +73,7 @@ export default {
 		save() {
 			this.save_status = 'saving...';
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, content: this.data, bibtex: this.bibtex }
+			var article = { id: this.content_id, user: this.user, content: this.data }
 
 			ContentService.saveContent(article)
 			.then((data) => {
