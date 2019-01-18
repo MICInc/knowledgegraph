@@ -5,7 +5,7 @@
 			<button>Publish</button>
 			<span class="save-status">{{ save_status }}</span>
 			<form>
-				<DynamicContent v-on:edit="update_content($event)"></DynamicContent>
+				<DynamicContent v-on:edit="update_content($event)" v-on:file="upload_file($event)"></DynamicContent>
 			</form>
 		</div>
 	</div>
@@ -25,6 +25,9 @@ export default {
 	components: {
 		PageNav,
 		DynamicContent
+	},
+	created() {
+		this.save()
 	},
 	data() {
 		return {
@@ -46,24 +49,6 @@ export default {
 		}
 	},
 	methods: {
-		parse_file(event) {
-			var data = new FormData();
-
-			for(var i = 0; i < event.target.files.length; i++) {
-				var paper = event.target.files[i];
-				data.append('file-'+i, paper);
-			}
-
-			var config = {
-				header: {
-					'Content-Type': 'multipart/form-data'
-				}
-			}
-
-			ContentService.uploadFile('/content/parse', data, config).then(function(data) {
-				alert(data.json());
-			});
-		},
 		prevent_default(event) {
 			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
 				event.preventDefault();
@@ -94,6 +79,19 @@ export default {
 			if(data.button) {
 				this.save();
 			}
+		},
+		upload_file(form_data) {
+			form_data.append('content_id', this.content_id);
+
+			var config = {
+				header: {
+					'Content-Type': 'multipart/form-data'
+				}
+			}
+
+			ContentService.uploadFile('/content/parse', form_data, config).then(function(data) {
+				alert(data.json());
+			});
 		}
 	},
 	ready: function() {

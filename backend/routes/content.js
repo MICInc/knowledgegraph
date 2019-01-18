@@ -4,6 +4,10 @@ var format_content = require('../lib/format_content');
 var file_handler = require('../lib/file_handler');
 var utils = require('../lib/utils');
 var db = require('../db/database');
+var path = require('path');
+var fs = require('fs-extra');
+
+const article_storage = './storage/content/article';
 
 router.post('/', function(req, res) {
 
@@ -35,6 +39,7 @@ router.post('/', function(req, res) {
 			article.save()
 			.then(item => {
 				console.log('Saved content');
+				fs.ensureDir(path.join(article_storage, data._id.toString()));
 				res.send({ id: data._id.toString() });
 			})
 			.catch(err => {
@@ -47,7 +52,7 @@ router.post('/', function(req, res) {
 
 router.post('/parse', function(req, res) {
 	console.log('parsing paper');
-	file_handler(req, res, './storage/content/new');
+	file_handler(req, res, article_storage);
 	// call pdf parsing code here
 });
 

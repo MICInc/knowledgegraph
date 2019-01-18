@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keyup.up="print_tag()">
+	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keyup.up="print_tag()">
 		<!-- <input name="file" type="file" v-on:change="import_file($event)"> -->
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -58,6 +58,8 @@ export default {
 			var el = event.target;
 
 			if(el.files && el.files[0]) {
+				this.upload_file(el.files);
+
 				var reader = new FileReader();
 				reader.onload = (e) => {
 					var src = e.target.result;
@@ -65,6 +67,7 @@ export default {
 					if(src.length > 0) {
 						this.content[index].tag = 'img';
 						this.content[index].src = src;
+						this.content[index].name = el.files[0].name;
 						this.$refs['content-'+index][0].innerHTML = '<img class=\"image-content\" src="'+src+'"">';
 					}
 				}
@@ -159,7 +162,7 @@ export default {
 					date_created: new Date(),
 					last_modified: new Date(),
 					text: this.trim(el.innerText),
-					html: el.innerHTML
+					html: this.content[i].name
 				});
 			}
 
@@ -209,6 +212,16 @@ export default {
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
+		},
+		upload_file(files) {
+			var data = new FormData();
+
+			for(var i = 0; i < files.length; i++) {
+				var paper = files[i];
+				data.append('file-'+i, paper, paper.name);
+			}
+
+			this.$emit('file', data);
 		}
 	}
 }
