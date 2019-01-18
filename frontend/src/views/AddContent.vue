@@ -2,10 +2,10 @@
 	<div class="add-article main" v-on:keyup="save()" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
 		<div class="container">
-			<button>Publish</button>
+			<button v-on:click.prevent="publish()">Publish</button>
 			<span class="save-status">{{ save_status }}</span>
 			<br>
-			<textarea type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')"></textarea>
+			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')">
 			<br>
 			<form>
 				<DynamicContent v-on:edit="update_content($event)" v-on:file="upload_file($event)"></DynamicContent>
@@ -41,7 +41,8 @@ export default {
 				content: [],
 				last_modified: undefined,
 				tags: '',
-				title: ''
+				title: '',
+				publish: false
 			},
 			save_status: '',
 			tags: [],
@@ -59,10 +60,17 @@ export default {
 				this.save();
 			}
 		},
+		publish() {
+			this.data.publish = true;
+			this.save_status = 'publishing...';
+			this.save();
+			this.save_status = 'published';
+		},
 		save() {
 			this.save_status = 'saving...';
+
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, content: this.data, title: this.title }
+			var article = { id: this.content_id, user: this.user, content: this.data, title: this.data.title }
 
 			ContentService.saveContent(article)
 			.then((data) => {
@@ -74,7 +82,7 @@ export default {
 					}
 				}
 			});
-
+			
 			this.save_status = 'saved';
 		},
 		update_content(data) {
