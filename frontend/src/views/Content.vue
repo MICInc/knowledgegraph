@@ -18,7 +18,7 @@
 			</div>
 			<Footer></Footer>
 		</div>
-		<NotFound v-else></NotFound>
+		<NotFoundMsg v-else></NotFoundMsg>
 	</div>
 </template>
 
@@ -26,14 +26,14 @@
 import PageNav from '@/components/PageNav.vue'
 import ContentService from '@/services/ContentService'
 import Footer from '@/components/Footer'
-import NotFound from '@/components/NotFound'
+import NotFoundMsg from '@/components/NotFoundMsg'
 
 export default {
 	name: 'content',
 	components: {
 		PageNav,
 		Footer,
-		NotFound
+		NotFoundMsg
 	},
 
 	data () {

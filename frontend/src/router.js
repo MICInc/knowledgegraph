@@ -89,5 +89,10 @@ export default new Router({
 			name: 'profile',
 			component: () => import('./views/Profile.vue')
 		},
+		{
+			path: '*',
+			name: 'notfound',
+			component: () => import('./views/NotFound.vue')
+		}
 	]
 })
