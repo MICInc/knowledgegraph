@@ -1,7 +1,7 @@
 <template>
 	<div class="content main">
 		<PageNav></PageNav>
-		<div class="container">
+		<div v-if="Object.keys(this.content).length > 0 && this.content.constructor === Object" class="container">
 			<h2>{{ content.title }}</h2>
 			<div id="abstract">
 				<h3>Abstract</h3>
@@ -17,6 +17,9 @@
 				<p>bibtex</p>
 			</div>
 			<Footer></Footer>
+		</div>
+		<div v-else id="article-not-found">
+			<h2>404: Article not found</h2>
 		</div>
 	</div>
 </template>
@@ -60,5 +63,14 @@ export default {
 
 <style scoped>
 
-
+#article-not-found {
+	width: 300px;
+	height: 300px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+}
 </style>
