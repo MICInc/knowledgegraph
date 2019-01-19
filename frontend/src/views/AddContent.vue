@@ -61,10 +61,23 @@ export default {
 			}
 		},
 		publish() {
-			this.data.publish = true;
-			this.save_status = 'publishing...';
+			this.data.publish = !this.data.publish;
+
+			if(this.data.publish) {
+				this.save_status = 'publishing...';
+			}
+			else {
+				this.save_status = 'unpublishing...';
+			}
+
 			this.save();
-			this.save_status = 'published';
+			
+			if(this.data.publish) {
+				this.save_status = 'published';
+			}
+			else {
+				this.save_status = 'unpublished';
+			}
 		},
 		save() {
 			this.save_status = 'saving...';
