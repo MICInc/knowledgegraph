@@ -7,7 +7,8 @@ module.exports = function(req)
 	var content = req.body.content;
 	var id = req.body.id;
 	var user = req.body.user;
-	var url = title.length > 0 ? title.toLowerCase().replace(/\s/g, '-') : utils.uniqueID();
+	var url = title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : utils.uniqueID();
+	console.log('url: '+url);
 
 	console.log('given id: '+id);
 
