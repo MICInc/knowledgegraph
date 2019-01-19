@@ -18,9 +18,7 @@
 			</div>
 			<Footer></Footer>
 		</div>
-		<div v-else id="article-not-found">
-			<h2>404: Article not found</h2>
-		</div>
+		<NotFound v-else></NotFound>
 	</div>
 </template>
 
@@ -28,12 +26,14 @@
 import PageNav from '@/components/PageNav.vue'
 import ContentService from '@/services/ContentService'
 import Footer from '@/components/Footer'
+import NotFound from '@/components/NotFound'
 
 export default {
 	name: 'content',
 	components: {
 		PageNav,
-		Footer
+		Footer,
+		NotFound
 	},
 
 	data () {
@@ -62,15 +62,4 @@ export default {
 </script>
 
 <style scoped>
-
-#article-not-found {
-	width: 300px;
-	height: 300px;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	margin: auto;
-}
 </style>
