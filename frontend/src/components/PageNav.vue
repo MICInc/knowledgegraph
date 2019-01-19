@@ -2,23 +2,23 @@
 	<header>
 		<nav id='left'>
 			<ul>
-				<li><router-link tag="a" to="/">Home</router-link></li>
-				<li><router-link tag="a" to="/conference">Conference</router-link></li>
-				<li><router-link tag="a" to="/community">Community</router-link></li>
-				<li><router-link tag="a" to="/add">Add</router-link></li>
+				<li><router-link tag="a" to="/"><b>HOME</b></router-link></li>
+				<li><router-link tag="a" to="/conference"><b>CONFERENCE</b></router-link></li>
+				<li><router-link tag="a" to="/community"><b>COMMUNITY</b></router-link></li>
+				<li><router-link tag="a" to="/add"><b>ADD</b></router-link></li>
 				<router-view/>
 			</ul>
 		</nav>
-		<input class="search" type="text" placeholder="search" 
+		<input class="search" type="text" placeholder="SEARCH" 
 			v-on:keydown.enter.prevent="search()" 
 			v-model="searchInput">
 		<nav id=right>
 			<ul v-if="!isLoggedIn">
-				<li><router-link tag="a" to="/signup">Join</router-link></li>
-				<li><router-link tag="a" to="/login">Login</router-link></li>
+				<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>
+				<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
 			</ul>
 			<ul v-else>
-				<li><router-link tag="a" to="/logout">Logout</router-link></li>
+				<li><router-link tag="a" to="/logout"><b>LOGOUT</b></router-link></li>
 			</ul>
 		</nav>
 	</header>
