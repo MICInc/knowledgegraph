@@ -12,7 +12,7 @@
 			</div>
 			<div id="bibtex" class="meta-info">
 				<h4>BibTeX citation</h4>
-				<p>bibtex</p>
+				<span>bibtex</span>
 			</div>
 			<Footer></Footer>
 		</div>
@@ -69,7 +69,12 @@ export default {
 	font-size: 0.85em;
 }
 
-#bibtex h4 {
+#bibtex {
 	font-size: 0.85em;
 }
+
+#bibtex h4 {
+	margin-bottom: 0px;
+}
+
 </style>

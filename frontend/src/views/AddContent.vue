@@ -138,10 +138,6 @@ export default {
 	flex-direction: column;
 }
 
-.container {
-	flex: 1;
-}
-
 .preview {
 	width: 50%;
 }
