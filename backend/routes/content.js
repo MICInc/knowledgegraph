@@ -64,7 +64,12 @@ router.get('/', function(req, res) {
 
 		db.Content.find(query, function(err, results) {
 			console.log(results);
-			res.send(results);
+			if(results[0].published) {
+				res.send(results);
+			}
+			else {
+				res.status(404).send('Article not found');
+			}
 		});
 	}
 	else if (req.query.id == -1) {
