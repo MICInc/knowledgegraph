@@ -3,10 +3,8 @@
 		<PageNav></PageNav>
 		<div v-if="Object.keys(this.content).length > 0 && this.content.constructor === Object" class="container">
 			<h2>{{ content.title }}</h2>
-			<div id="abstract">
-				<h3>Abstract</h3>
-				<p class='abstract'></p>
-				<h3>Authors</h3>
+			<div id="article-info">
+				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
 				<div v-for="c in content.content">
 					<p v-html="c.html"></p>
@@ -62,4 +60,16 @@ export default {
 </script>
 
 <style scoped>
+#authors {
+	font-size: 0.85em;
+	margin-bottom: 0px;
+}
+
+.authors {
+	font-size: 0.85em;
+}
+
+#bibtex h4 {
+	font-size: 0.85em;
+}
 </style>
