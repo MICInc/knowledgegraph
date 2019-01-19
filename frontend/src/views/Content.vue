@@ -1,13 +1,14 @@
 <template>
 	<div class="content main">
 		<PageNav></PageNav>
-		<div v-if="Object.keys(this.content).length > 0 && this.content.constructor === Object" class="container">
+		<div v-if="this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0" class="container">
 			<h2>{{ content.title }}</h2>
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
 				<div v-for="c in content.content">
-					<p v-html="c.html"></p>
+					<p v-if="c.tag.toLowerCase() == 'p'" v-html="c.html"></p>
+					<img v-if="c.tag.toLowerCase() == 'img'" :src="get_image(c.name)">
 				</div>
 			</div>
 			<div id="bibtex" class="meta-info">
@@ -25,6 +26,7 @@ import PageNav from '@/components/PageNav.vue'
 import ContentService from '@/services/ContentService'
 import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
+import Buffer from 'safe-buffer'
 
 export default {
 	name: 'content',
@@ -37,23 +39,37 @@ export default {
 	data () {
 		return {
 			url: this.$route.params.id,
-			content: {}
+			content: {},
+			img_src: ''
 		}
 	},
 
 	methods: {
-		async getContent() {
+		async get_content() {
 			return await ContentService.getContent({ params: { url: this.url } })
 			.then(function(data) {
 				return data.data[0];
+			})
+			.catch(function(error) {
+				console.log('Page not found');
+			});
+		},
+		async get_image(name) {
+			return await ContentService.getImage({ params: { content_id: this.content._id, name: name }})
+			.then(data => {
+				var image = Buffer.Buffer.from(data.data, 'binary').toString('base64');
+				console.log(`data:${data.headers['content-type'].toLowerCase()};base64,${image}`);
+				return `data:${data.headers['content-type'].toLowerCase()};base64,${image}`;
+			})
+			.catch(function(error) {
+				console.log(error);
 			});
 		}
 	},
 
 	beforeMount() {
-		this.getContent().then(data => {
+		this.get_content().then(data => {
 			this.content = data;
-			console.log(this.content);
 		});
 	}
 }

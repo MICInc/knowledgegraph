@@ -9,8 +9,8 @@ export default {
 		getContent(data) {
 			return Api().get('/content', data)
 		},
-		getImage() {
-			return Api().get('/content/img', {})
+		getImage(data) {
+			return Api().get('/content/img', data)
 		},
 		editContent(data) {
 			return Api().post('/content/edit', data)

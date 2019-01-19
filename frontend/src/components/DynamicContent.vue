@@ -67,6 +67,7 @@ export default {
 				var reader = new FileReader();
 				reader.onload = (e) => {
 					var src = e.target.result;
+					console.log(src);
 
 					if(src.length > 0) {
 						this.content[index].tag = 'img';

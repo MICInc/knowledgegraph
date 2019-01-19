@@ -92,7 +92,7 @@ router.get('/', function(req, res) {
 
 router.get('/img', function(req, res) {
 	console.log('sending image');
-	res.sendFile('./content/new/parkourtheory.png', {root: './storage'})
+	res.sendFile(path.join(__dirname, '../storage/content/article', req.query.content_id, req.query.name));
 });
 
 module.exports = router;
