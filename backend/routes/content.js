@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var format_content = require('../lib/format_content');
+var fc = require('../lib/format_content');
 var fh = require('../lib/file_handler');
 var utils = require('../lib/utils');
 var db = require('../db/database');
@@ -9,9 +9,9 @@ var fs = require('fs-extra');
 
 const article_storage = './storage/content/article';
 
-router.post('/', function(req, res) {
+router.post('/', function(req, res, next) {
 
-	var data = format_content(req);
+	var data = fc.extract(req);
 	var article = new db.Content(data);
 
 	db.Content.countDocuments({_id: data._id}, function (err, count) {
@@ -25,7 +25,8 @@ router.post('/', function(req, res) {
 				}
 				else {
 					console.log('updated: '+article._id);
-					res.send({ id: data._id.toString() });
+					console.log('url: '+data.url);
+					res.send({ id: data._id.toString(), url: data.url });
 				}
 			});
 		}
@@ -39,8 +40,9 @@ router.post('/', function(req, res) {
 			article.save()
 			.then(item => {
 				console.log('Saved content');
-				fs.ensureDir(path.join(article_storage, data._id.toString()));
-				res.send({ id: data._id.toString() });
+				// fs.ensureDir(path.join(article_storage, data._id.toString()));
+				console.log('url: '+data.url);
+				res.send({ id: data._id.toString(), url: data.url });
 			})
 			.catch(err => {
 				console.log(err);
@@ -48,6 +50,7 @@ router.post('/', function(req, res) {
 			});
 		}
 	});
+	// next();
 });
 
 router.post('/parse', function(req, res, next) {
@@ -91,11 +94,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/img', function(req, res) {
-	console.log('sending image');
-	console.log('content_id: '+req.query.content_id+' filename: '+req.query.name);
-	var image_path = path.join(__dirname, '../storage/content/article', req.query.content_id, req.query.name);
-	console.log('image: '+image_path);
-	res.send(fh.encode_base64(image_path));
+	console.log('article: '+req.query.content_id+' retrieve image: '+req.query.name);
 });
 
 module.exports = router;

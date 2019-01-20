@@ -18,6 +18,7 @@
 import PageNav from '@/components/PageNav';
 import ContentService from '../services/ContentService.js';
 import DynamicContent from '@/components/DynamicContent';
+import Path from 'path';
 
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
@@ -47,6 +48,7 @@ export default {
 			save_status: '',
 			tags: [],
 			upload: [],
+			url: '',
 			user: {
 				first_name: "Justin",
 				last_name: "Chen"
@@ -78,6 +80,12 @@ export default {
 			else {
 				this.save_status = 'unpublished';
 			}
+
+			this.redirect();
+		},
+		redirect() {
+			console.log(Path.join('/content', this.url));
+			this.$router.push('/content/'+this.url);
 		},
 		save() {
 			this.save_status = 'saving...';
@@ -87,13 +95,20 @@ export default {
 			
 			ContentService.saveContent(article)
 			.then((data) => {
+				console.log('data:');
+				console.log(data);
 
-				if(data != null) {
+				if(data != undefined) {
 					if(this.content_id.length == 0) {
 						this.content_id = data['data'].id;
-						console.log('content_id: '+this.content_id);
+					}
+					if(this.url != data['data'].url) {
+						this.url = data['data'].url;
 					}
 				}
+			})
+			.catch(error => {
+				console.log(error);
 			});
 			
 			this.save_status = 'saved';

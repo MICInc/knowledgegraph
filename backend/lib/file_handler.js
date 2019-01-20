@@ -28,7 +28,6 @@ module.exports = {
 	},
 
 	encode_base64: function(file) {
-		// return Buffer.from(fs.readFileSync(file)).toString('base64');
-		return Buffer.from(file).toString('base64');
+		return Buffer.from(fs.readFileSync(file)).toString('base64');
 	}
 }
