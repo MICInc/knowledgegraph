@@ -16,6 +16,10 @@ db.once('open', function()
   }
 });
 
+module.exports.save = function() {
+	console.log('db.save()');
+}
+
 module.exports.User = User;
 module.exports.Content = Content.Content;
 module.exports.Community = Community;

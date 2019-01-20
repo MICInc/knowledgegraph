@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var format_content = require('../lib/format_content');
-var file_handler = require('../lib/file_handler');
+var fh = require('../lib/file_handler');
 var utils = require('../lib/utils');
 var db = require('../db/database');
 var path = require('path');
@@ -51,8 +51,10 @@ router.post('/', function(req, res) {
 });
 
 router.post('/parse', function(req, res) {
-	console.log('parsing paper');
-	file_handler(req, res, article_storage);
+	fh.write(req, res, article_storage, function(data) {
+		db.save();
+		console.log(data.content_id);
+	});
 	// call pdf parsing code here
 });
 
@@ -92,7 +94,10 @@ router.get('/', function(req, res) {
 
 router.get('/img', function(req, res) {
 	console.log('sending image');
-	res.sendFile(path.join(__dirname, '../storage/content/article', req.query.content_id, req.query.name));
+	console.log('content_id: '+req.query.content_id+' filename: '+req.query.name);
+	var image_path = path.join(__dirname, '../storage/content/article', req.query.content_id, req.query.name);
+	console.log('image: '+image_path);
+	res.send(fh.encode_base64(image_path));
 });
 
 module.exports = router;

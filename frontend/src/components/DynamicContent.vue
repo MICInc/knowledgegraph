@@ -67,7 +67,6 @@ export default {
 				var reader = new FileReader();
 				reader.onload = (e) => {
 					var src = e.target.result;
-					console.log(src);
 
 					if(src.length > 0) {
 						this.content[index].tag = 'img';
@@ -96,10 +95,7 @@ export default {
 			return
 		},
 		focus(index=this.active_index+1) {
-			console.log('focus: active_index: '+index)
-			console.log('focus: index: '+index)
 			if(index < this.content.length && this.content[index].tag == 'p') {
-				console.log('here');
 				this.active_index = index;
 				this.$nextTick(() => {
 					this.$refs['content-'+index][0].focus()
@@ -185,7 +181,6 @@ export default {
 			}
 			
 			this.active_index = index;
-			console.log('active_index: '+this.active_index);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
@@ -213,7 +208,6 @@ export default {
 			this.save();
 		},
 		switch_content(tag, index) {
-			console.log('switch_content index: '+index);
 			this.content[index].tag = tag;
 		},
 		trim(str) {
