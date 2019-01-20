@@ -137,7 +137,7 @@ export default {
 		remove_content(index) {
 			var el = event.target;
 
-			if(this.content.length >= 1 && this.trim(el.innerText).length == 0) {
+			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
 
 				var prev = index - 1;
@@ -212,6 +212,9 @@ export default {
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
 		}
+	},
+	updated() {
+		console.log('updated?');
 	}
 }
 </script>

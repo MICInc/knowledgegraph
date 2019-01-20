@@ -84,7 +84,6 @@ export default {
 			this.redirect();
 		},
 		redirect() {
-			console.log(Path.join('/content', this.url));
 			this.$router.push('/content/'+this.url);
 		},
 		save() {
@@ -95,8 +94,6 @@ export default {
 			
 			ContentService.saveContent(article)
 			.then((data) => {
-				console.log('data:');
-				console.log(data);
 
 				if(data != undefined) {
 					if(this.content_id.length == 0) {
