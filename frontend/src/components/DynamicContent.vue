@@ -212,6 +212,9 @@ export default {
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
 		}
+	},
+	updated() {
+		console.log('updated?');
 	}
 }
 </script>
