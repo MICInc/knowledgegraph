@@ -63,25 +63,30 @@ export default {
 			}
 		},
 		publish() {
-			this.data.publish = !this.data.publish;
-
-			if(this.data.publish) {
-				this.save_status = 'publishing...';
+			if(this.data.title.length == 0) {
+				alert('Need a title');
 			}
 			else {
-				this.save_status = 'unpublishing...';
-			}
+				this.data.publish = !this.data.publish;
 
-			this.save();
-			
-			if(this.data.publish) {
-				this.save_status = 'published';
-			}
-			else {
-				this.save_status = 'unpublished';
-			}
+				if(this.data.publish) {
+					this.save_status = 'publishing...';
+				}
+				else {
+					this.save_status = 'unpublishing...';
+				}
 
-			this.redirect();
+				this.save();
+				
+				if(this.data.publish) {
+					this.save_status = 'published';
+				}
+				else {
+					this.save_status = 'unpublished';
+				}
+
+				this.redirect();
+			}
 		},
 		redirect() {
 			this.$router.push('/content/'+this.url);

@@ -213,8 +213,8 @@ export default {
 			return str.replace(/\n|\r/g, "");
 		}
 	},
-	updated() {
-		console.log('updated?');
+	beforeUpdate() {
+		this.save();
 	}
 }
 </script>
