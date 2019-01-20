@@ -10,7 +10,7 @@
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
 			<div class='tag_type'>
-				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)">
+				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)" accept="image/*">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
 				<!-- <button class="tag_switch" v-on:click.prevent="switch_content('canvas', index)">canvas</button> -->
@@ -73,7 +73,7 @@ export default {
 						this.$refs['content-'+index][0].innerHTML = '<img class=\"image-content\" src="'+src+'"">';
 
 						this.save();
-						this.upload_file(index, el.files);
+						// this.upload_file(index, el.files);
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
@@ -211,17 +211,6 @@ export default {
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
-		},
-		upload_file(index, files) {
-			var data = new FormData();
-			data.append('index', index);
-
-			for(var i = 0; i < files.length; i++) {
-				var paper = files[i];
-				data.append('file-'+i, paper, paper.name);
-			}
-
-			this.$emit('file', data);
 		}
 	}
 }

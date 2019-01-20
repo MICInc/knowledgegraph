@@ -8,7 +8,7 @@
 			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')">
 			<br>
 			<form>
-				<DynamicContent v-on:edit="update_content($event)" v-on:file="upload_file($event)"></DynamicContent>
+				<DynamicContent v-on:edit="update_content($event)"></DynamicContent>
 			</form>
 		</div>
 	</div>
