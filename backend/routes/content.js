@@ -52,8 +52,11 @@ router.post('/', function(req, res) {
 
 router.post('/parse', function(req, res) {
 	fh.write(req, res, article_storage, function(data) {
-		db.save();
-		console.log(data.content_id);
+		var query = { _id: data.content_id };
+
+		db.Content.find(query, function(err, results) {
+			results[0].content[data.index].html = data.image;
+		});
 	});
 	// call pdf parsing code here
 });
@@ -66,7 +69,7 @@ router.get('/', function(req, res) {
 
 		db.Content.find(query, function(err, results) {
 			console.log(results);
-			if(results[0].published) {
+			if(results.length > 0 && results[0].published) {
 				res.send(results);
 			}
 			else {

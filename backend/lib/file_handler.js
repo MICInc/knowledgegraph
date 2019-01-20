@@ -25,7 +25,7 @@ module.exports = {
 			// return image base64 data for <img> src on GET req
 			if(file.type.split('/')[0] == 'image') {
 				var image = `'data:${file.type};base64,${module.exports.encode_base64(file.path)}'`;
-				callback({content_id: fields['content_id'], image: image});
+				callback({content_id: fields['content_id'], index: fields['index'], image: image});
 			}
 		});
 	},

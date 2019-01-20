@@ -84,7 +84,7 @@ export default {
 
 			this.data.last_modified = new Date();
 			var article = { id: this.content_id, user: this.user, content: this.data, title: this.data.title }
-
+			
 			ContentService.saveContent(article)
 			.then((data) => {
 
@@ -100,10 +100,11 @@ export default {
 		},
 		update_content(data) {
 			this.data.content = data.content;
+			this.save();
 
-			if(data.button) {
-				this.save();
-			}
+			// if(data.button) {
+			// 	this.save();
+			// }
 		},
 		upload_file(form_data) {
 			form_data.append('content_id', this.content_id);

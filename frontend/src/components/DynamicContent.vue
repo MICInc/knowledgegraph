@@ -62,8 +62,6 @@ export default {
 			var el = event.target;
 
 			if(el.files && el.files[0]) {
-				this.upload_file(el.files);
-
 				var reader = new FileReader();
 				reader.onload = (e) => {
 					var src = e.target.result;
@@ -73,12 +71,13 @@ export default {
 						this.content[index].src = src;
 						this.content[index].name = el.files[0].name;
 						this.$refs['content-'+index][0].innerHTML = '<img class=\"image-content\" src="'+src+'"">';
+
+						this.save();
+						this.upload_file(index, el.files);
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
 			}
-
-			this.switch_content('img', index);
 		},
 		arrayBufferToBase64(buffer) {
 			var binary = '';
@@ -213,8 +212,9 @@ export default {
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
 		},
-		upload_file(files) {
+		upload_file(index, files) {
 			var data = new FormData();
+			data.append('index', index);
 
 			for(var i = 0; i < files.length; i++) {
 				var paper = files[i];

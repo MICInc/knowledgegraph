@@ -62,8 +62,8 @@ export default {
 		async get_image(name) {
 			return await ContentService.getImage({ params: { content_id: this.content_id, name: name }})
 			.then(data => {
-				// return `'data:${data.headers['content-type'].toLowerCase()};base64,${data.data}'`;
-				return 'data:image/png;base64,'+data.data;
+				return `'data:${data.headers['content-type'].toLowerCase()};base64,${data.data}'`;
+				// return 'data:image/png;base64,'+data.data;
 			})
 			.catch(function(error) {
 				console.log(error);
