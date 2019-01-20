@@ -73,7 +73,12 @@ else
   var profile_route = require('./routes/profile');
   var conf_route = require('./routes/conference');
   var community_route = require('./routes/community');
+  var size = 10;
+  var unit = 'mb';
+  var upload_limit = size+unit;
 
+  app.use(bodyParser.json({limit: upload_limit, extended: true}))
+  app.use(bodyParser.urlencoded({limit: upload_limit, extended: true}))
   app.use(errors);
   app.use(morgan('combined'));
   app.use(bodyParser.urlencoded({ extended: true }));

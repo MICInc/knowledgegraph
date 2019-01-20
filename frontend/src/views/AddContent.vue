@@ -115,8 +115,12 @@ export default {
 				}
 			}
 
-			ContentService.uploadFile('/content/parse', form_data, config).then(function(data) {
+			ContentService.uploadFile('/content/parse', form_data, config)
+			.then(function(data) {
 				alert(data.json());
+			})
+			.catch(function(err) {
+				console.log(err);
 			});
 		},
 		uppercase(e, o, prop) {
