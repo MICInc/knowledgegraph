@@ -8,7 +8,7 @@
 			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')">
 			<br>
 			<form>
-				<DynamicContent v-on:edit="update_content($event)" v-on:file="upload_file($event)"></DynamicContent>
+				<DynamicContent v-on:edit="update_content($event)"></DynamicContent>
 			</form>
 		</div>
 	</div>
@@ -18,6 +18,7 @@
 import PageNav from '@/components/PageNav';
 import ContentService from '../services/ContentService.js';
 import DynamicContent from '@/components/DynamicContent';
+import Path from 'path';
 
 window.onbeforeunload = function(){
     return "Are you sure you want to close the window?";
@@ -47,6 +48,7 @@ export default {
 			save_status: '',
 			tags: [],
 			upload: [],
+			url: '',
 			user: {
 				first_name: "Justin",
 				last_name: "Chen"
@@ -78,32 +80,46 @@ export default {
 			else {
 				this.save_status = 'unpublished';
 			}
+
+			this.redirect();
+		},
+		redirect() {
+			console.log(Path.join('/content', this.url));
+			this.$router.push('/content/'+this.url);
 		},
 		save() {
 			this.save_status = 'saving...';
 
 			this.data.last_modified = new Date();
 			var article = { id: this.content_id, user: this.user, content: this.data, title: this.data.title }
-
+			
 			ContentService.saveContent(article)
 			.then((data) => {
+				console.log('data:');
+				console.log(data);
 
-				if(data != null) {
+				if(data != undefined) {
 					if(this.content_id.length == 0) {
 						this.content_id = data['data'].id;
-						console.log('content_id: '+this.content_id);
+					}
+					if(this.url != data['data'].url) {
+						this.url = data['data'].url;
 					}
 				}
+			})
+			.catch(error => {
+				console.log(error);
 			});
 			
 			this.save_status = 'saved';
 		},
 		update_content(data) {
 			this.data.content = data.content;
+			this.save();
 
-			if(data.button) {
-				this.save();
-			}
+			// if(data.button) {
+			// 	this.save();
+			// }
 		},
 		upload_file(form_data) {
 			form_data.append('content_id', this.content_id);
@@ -114,8 +130,12 @@ export default {
 				}
 			}
 
-			ContentService.uploadFile('/content/parse', form_data, config).then(function(data) {
+			ContentService.uploadFile('/content/parse', form_data, config)
+			.then(function(data) {
 				alert(data.json());
+			})
+			.catch(function(err) {
+				console.log(err);
 			});
 		},
 		uppercase(e, o, prop) {

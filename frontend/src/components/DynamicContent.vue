@@ -10,7 +10,7 @@
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
 			<div class='tag_type'>
-				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)">
+				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)" accept="image/*">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
 				<!-- <button class="tag_switch" v-on:click.prevent="switch_content('canvas', index)">canvas</button> -->
@@ -62,8 +62,6 @@ export default {
 			var el = event.target;
 
 			if(el.files && el.files[0]) {
-				this.upload_file(el.files);
-
 				var reader = new FileReader();
 				reader.onload = (e) => {
 					var src = e.target.result;
@@ -73,12 +71,13 @@ export default {
 						this.content[index].src = src;
 						this.content[index].name = el.files[0].name;
 						this.$refs['content-'+index][0].innerHTML = '<img class=\"image-content\" src="'+src+'"">';
+
+						this.save();
+						// this.upload_file(index, el.files);
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
 			}
-
-			this.switch_content('img', index);
 		},
 		arrayBufferToBase64(buffer) {
 			var binary = '';
@@ -95,10 +94,7 @@ export default {
 			return
 		},
 		focus(index=this.active_index+1) {
-			console.log('focus: active_index: '+index)
-			console.log('focus: index: '+index)
 			if(index < this.content.length && this.content[index].tag == 'p') {
-				console.log('here');
 				this.active_index = index;
 				this.$nextTick(() => {
 					this.$refs['content-'+index][0].focus()
@@ -184,7 +180,6 @@ export default {
 			}
 			
 			this.active_index = index;
-			console.log('active_index: '+this.active_index);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
@@ -212,21 +207,10 @@ export default {
 			this.save();
 		},
 		switch_content(tag, index) {
-			console.log('switch_content index: '+index);
 			this.content[index].tag = tag;
 		},
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
-		},
-		upload_file(files) {
-			var data = new FormData();
-
-			for(var i = 0; i < files.length; i++) {
-				var paper = files[i];
-				data.append('file-'+i, paper, paper.name);
-			}
-
-			this.$emit('file', data);
 		}
 	}
 }

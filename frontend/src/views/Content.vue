@@ -1,13 +1,14 @@
 <template>
 	<div class="content main">
 		<PageNav></PageNav>
-		<div v-if="Object.keys(this.content).length > 0 && this.content.constructor === Object" class="container">
+		<div v-if="this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0" class="container">
 			<h2>{{ content.title }}</h2>
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
 				<div v-for="c in content.content">
-					<p v-html="c.html"></p>
+					<p v-if="c.tag.toLowerCase() == 'p'" v-html="c.html"></p>
+					<img v-if="c.tag.toLowerCase() == 'img'" :src="c.html">
 				</div>
 			</div>
 			<div id="bibtex" class="meta-info">
@@ -25,36 +26,39 @@ import PageNav from '@/components/PageNav.vue'
 import ContentService from '@/services/ContentService'
 import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
+import Buffer from 'safe-buffer'
+import FS from 'fs'
 
 export default {
 	name: 'content',
+	beforeMount() {
+		this.get_content().then(data => {
+			this.content_id = data._id;
+			this.content = data;
+		});
+	},
 	components: {
 		PageNav,
 		Footer,
 		NotFoundMsg
 	},
-
 	data () {
 		return {
+			content_id: '',
 			url: this.$route.params.id,
-			content: {}
+			content: {},
 		}
 	},
-
 	methods: {
-		async getContent() {
+		async get_content() {
 			return await ContentService.getContent({ params: { url: this.url } })
 			.then(function(data) {
 				return data.data[0];
+			})
+			.catch(function(error) {
+				console.log('Page not found');
 			});
 		}
-	},
-
-	beforeMount() {
-		this.getContent().then(data => {
-			this.content = data;
-			console.log(this.content);
-		});
 	}
 }
 </script>

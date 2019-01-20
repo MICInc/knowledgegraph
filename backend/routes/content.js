@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var format_content = require('../lib/format_content');
-var file_handler = require('../lib/file_handler');
+var fc = require('../lib/format_content');
+var fh = require('../lib/file_handler');
 var utils = require('../lib/utils');
 var db = require('../db/database');
 var path = require('path');
@@ -9,9 +9,9 @@ var fs = require('fs-extra');
 
 const article_storage = './storage/content/article';
 
-router.post('/', function(req, res) {
+router.post('/', function(req, res, next) {
 
-	var data = format_content(req);
+	var data = fc.extract(req);
 	var article = new db.Content(data);
 
 	db.Content.countDocuments({_id: data._id}, function (err, count) {
@@ -25,7 +25,8 @@ router.post('/', function(req, res) {
 				}
 				else {
 					console.log('updated: '+article._id);
-					res.send({ id: data._id.toString() });
+					console.log('url: '+data.url);
+					res.send({ id: data._id.toString(), url: data.url });
 				}
 			});
 		}
@@ -39,8 +40,9 @@ router.post('/', function(req, res) {
 			article.save()
 			.then(item => {
 				console.log('Saved content');
-				fs.ensureDir(path.join(article_storage, data._id.toString()));
-				res.send({ id: data._id.toString() });
+				// fs.ensureDir(path.join(article_storage, data._id.toString()));
+				console.log('url: '+data.url);
+				res.send({ id: data._id.toString(), url: data.url });
 			})
 			.catch(err => {
 				console.log(err);
@@ -48,11 +50,12 @@ router.post('/', function(req, res) {
 			});
 		}
 	});
+	// next();
 });
 
-router.post('/parse', function(req, res) {
-	console.log('parsing paper');
-	file_handler(req, res, article_storage);
+router.post('/parse', function(req, res, next) {
+
+	fh.write(req, res, article_storage);
 	// call pdf parsing code here
 });
 
@@ -64,7 +67,7 @@ router.get('/', function(req, res) {
 
 		db.Content.find(query, function(err, results) {
 			console.log(results);
-			if(results[0].published) {
+			if(results.length > 0 && results[0].published) {
 				res.send(results);
 			}
 			else {
@@ -91,8 +94,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/img', function(req, res) {
-	console.log('sending image');
-	res.sendFile('./content/new/parkourtheory.png', {root: './storage'})
+	console.log('article: '+req.query.content_id+' retrieve image: '+req.query.name);
 });
 
 module.exports = router;

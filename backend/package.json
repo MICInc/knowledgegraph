@@ -15,6 +15,7 @@
     "express-vue": "^5.8.2",
     "finalhandler": "1.1.1",
     "formidable": "^1.2.1",
+    "gzip-size": "^5.0.0",
     "helmet": "^3.15.0",
     "jshint": "2.9.6",
     "jsonwebtoken": "^8.4.0",
