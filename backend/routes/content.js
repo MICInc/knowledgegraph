@@ -50,13 +50,15 @@ router.post('/', function(req, res) {
 	});
 });
 
-router.post('/parse', function(req, res) {
+router.post('/parse', function(req, res, next) {
+
 	fh.write(req, res, article_storage, function(data) {
 		var query = { _id: data.content_id };
 
 		db.Content.find(query, function(err, results) {
 			results[0].content[data.index].html = data.image;
 		});
+		console.log('saved image with '+data.content_id);
 	});
 	// call pdf parsing code here
 });
