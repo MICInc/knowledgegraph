@@ -27,6 +27,9 @@ var content_schema = new mongoose.Schema({
 		required: true,
 		trim: true
 	},
+	hashtags: [{
+		type: String
+	}],
 	hints: [{
 		type: String,
 		trim: true
@@ -97,9 +100,6 @@ var content_schema = new mongoose.Schema({
 		type: String,
 		required: true,
 		trim: true
-	}],
-	tags: [{
-		type: String
 	}],
 	title: {
 		type: String,

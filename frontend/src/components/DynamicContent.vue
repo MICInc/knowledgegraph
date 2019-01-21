@@ -19,7 +19,7 @@
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:click="set_active(index)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:keyup="hashtag(index, $event)" v-on:click="set_active(index)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -42,7 +42,8 @@ export default {
 			}],
 			emit_save: {
 				button: false,
-				content: []
+				content: [],
+				hashtags: []
 			}
 		}
 	},
@@ -90,8 +91,32 @@ export default {
 
 			return window.btoa( binary );
 		},
-		hashtags() {
-			return
+		hashtag(index, event) {
+			
+			// if spacebar was pressed
+			if(event.which == 32) {
+				var el = event.target;
+
+				el.focus();
+				var sel = document.getSelection();
+				
+				sel.modify("extend", "backward", "word");
+				sel.modify("extend", "backward", "character");
+				
+				var target = this.trim(sel.toString(), true);
+				var hashtag = '<b><a style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>';
+				
+				this.emit_save.hashtags.push(target);
+
+				if(sel.toString()[0] == '#') {
+					var range = sel.getRangeAt(0);
+					range.deleteContents();
+					this.replace_html(range, hashtag);
+				}
+				else {
+					sel.removeAllRanges();
+				}
+			}
 		},
 		focus(index=this.active_index+1) {
 			if(index < this.content.length && this.content[index].tag == 'p') {
@@ -101,6 +126,33 @@ export default {
 					this.set_end_contenteditable(this.$refs['content-'+index][0]);
 				});
 			}
+		},
+		getCaretPosition(element) {
+			//https://stackoverflow.com/questions/3972014/get-caret-position-in-contenteditable-div
+			var caretPos = 0,
+			sel, range;
+			if (window.getSelection) {
+				sel = window.getSelection();
+				if (sel.rangeCount) {
+					range = sel.getRangeAt(0);
+					if (range.commonAncestorContainer.parentNode == element) {
+						caretPos = range.endOffset;
+					}
+				}
+			}
+			else if (document.selection && document.selection.createRange) {
+				range = document.selection.createRange();
+				if (range.parentElement() == element) {
+					var tempEl = document.createElement("span");
+					element.insertBefore(tempEl, element.firstChild);
+					var tempRange = range.duplicate();
+					tempRange.moveToElementText(tempEl);
+					tempRange.setEndPoint("EndToEnd", range);
+					caretPos = tempRange.text.length;
+				}
+			}
+			return caretPos > 0 ? caretPos-1 : 0;
+
 		},
 		import_file(event) {
 			var el = event.target;
@@ -120,6 +172,23 @@ export default {
 		},
 		prevent_nl(event) {
 			event.preventDefault();
+		},
+		mark_words() {
+			var html = div.html().replace(/<\/?strong>/gi, ''), 
+			text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '), exp;
+			var words = '#'
+
+			$.each(words, function(i, word) {
+				exp = new RegExp('\\b(' + word + ')\\b', 'gi');
+				html = html.replace(exp, function(m) {
+					console.log('WORD MATCH:', m);
+					return '<strong>' + m + '</strong>';
+				});
+			});
+
+			console.log('HTML:', html);
+			console.log('----');
+			div.html(html);
 		},
 		remove_active() {
 			if(this.active_index > -1) {
@@ -149,6 +218,18 @@ export default {
 					this.focus(prev);
 				}
 			}
+		},
+		replace_html(range, target) {
+			var el = document.createElement("a");
+			el.innerHTML = target;
+			var frag = document.createDocumentFragment(), node;
+
+			while(node = el.firstChild) {
+				frag.appendChild(node);
+			}
+
+			range.insertNode(frag);
+			range.collapse();
 		},
 		save() {
 			var temp = [];
@@ -209,12 +290,9 @@ export default {
 		switch_content(tag, index) {
 			this.content[index].tag = tag;
 		},
-		trim(str) {
-			return str.replace(/\n|\r/g, "");
+		trim(str, all=false) {
+			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
 		}
-	},
-	updated() {
-		console.log('updated?');
 	}
 }
 </script>
