@@ -38,7 +38,8 @@ export default {
 				id: Math.random(),
 				tag: 'p',
 				src: '',
-				name: ''
+				name: '',
+				hashtags: []
 			}],
 			emit_save: {
 				button: false,
@@ -91,17 +92,21 @@ export default {
 			return window.btoa( binary );
 		},
 		hashtag(index, event) {
-			// If spacebar was pressed
+			
+			// if spacebar was pressed
 			if(event.which == 32) {
 				var el = event.target;
 
 				el.focus();
 				var sel = document.getSelection();
+				
 				sel.modify("extend", "backward", "word");
 				sel.modify("extend", "backward", "character");
+				
 				var target = this.trim(sel.toString());
 				var hashtag = '<b><a style=\"color:black;\" href=/search/\"'+target+'\">'+target+'</a></b>';
-				console.log(hashtag);
+				
+				this.hashtags.push(hashtag);
 
 				if(sel.toString()[0] == '#') {
 					var range = sel.getRangeAt(0);
