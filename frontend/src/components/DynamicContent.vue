@@ -19,7 +19,7 @@
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:click="set_active(index)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:keyup="hashtag(index, $event)" v-on:click="set_active(index)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -90,8 +90,15 @@ export default {
 
 			return window.btoa( binary );
 		},
-		hashtags() {
-			return
+		hashtag(index, event) {
+			var el = event.target
+			var text = el.innerText;
+			var last_indx = text.length - 1;
+			var last_char = text[last_indx];
+			
+			if(last_char == '#') {
+				this.$refs['content-'+index][0].innerHTML = text.substring(0, text.length-1)+'<b>#</b>';
+			}
 		},
 		focus(index=this.active_index+1) {
 			if(index < this.content.length && this.content[index].tag == 'p') {
@@ -212,9 +219,6 @@ export default {
 		trim(str) {
 			return str.replace(/\n|\r/g, "");
 		}
-	},
-	beforeUpdate() {
-		this.save();
 	}
 }
 </script>
