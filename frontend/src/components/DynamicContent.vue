@@ -100,7 +100,7 @@ export default {
 				sel.modify("extend", "backward", "word");
 				sel.modify("extend", "backward", "character");
 				var target = this.trim(sel.toString());
-				var hashtag = '<b><a href=/search/\"'+target+'\">'+sel.toString()+'</a></b>';
+				var hashtag = '<b><a style=\"color:black;\" href=/search/\"'+target+'\">'+sel.toString()+'</a></b>';
 
 				if(sel.toString()[0] == '#') {
 					var range = sel.getRangeAt(0);
