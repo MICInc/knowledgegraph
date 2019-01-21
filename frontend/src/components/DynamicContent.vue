@@ -91,7 +91,7 @@ export default {
 			return window.btoa( binary );
 		},
 		hashtag(index, event) {
-			// Need whitepsace next to # to highlight and space after the entire hashtag
+			// If spacebar was pressed
 			if(event.which == 32) {
 				var el = event.target;
 
@@ -100,7 +100,8 @@ export default {
 				sel.modify("extend", "backward", "word");
 				sel.modify("extend", "backward", "character");
 				var target = this.trim(sel.toString());
-				var hashtag = '<b><a style=\"color:black;\" href=/search/\"'+target+'\">'+sel.toString()+'</a></b>';
+				var hashtag = '<b><a style=\"color:black;\" href=/search/\"'+target+'\">'+target+'</a></b>';
+				console.log(hashtag);
 
 				if(sel.toString()[0] == '#') {
 					var range = sel.getRangeAt(0);
@@ -214,7 +215,6 @@ export default {
 			}
 		},
 		replace_html(range, target) {
-			//https://stackoverflow.com/questions/50817526/replace-word-before-cursor-when-multiple-lines-in-contenteditable
 			var el = document.createElement("a");
 			el.innerHTML = target;
 			var frag = document.createDocumentFragment(), node;
@@ -286,7 +286,7 @@ export default {
 			this.content[index].tag = tag;
 		},
 		trim(str) {
-			return str.replace(/\n|\r|&nbsp;/g, "");
+			return str.replace(/\s/g, "");
 		}
 	}
 }
