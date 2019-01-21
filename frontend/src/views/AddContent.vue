@@ -40,8 +40,8 @@ export default {
 				date_created: new Date(),
 				citations: '',
 				content: [],
+				hashtags: [],
 				last_modified: undefined,
-				tags: '',
 				title: '',
 				publish: false
 			},
@@ -95,7 +95,7 @@ export default {
 			this.save_status = 'saving...';
 
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, content: this.data, title: this.data.title }
+			var article = { id: this.content_id, user: this.user, data: this.data }
 			
 			ContentService.saveContent(article)
 			.then((data) => {
@@ -117,6 +117,7 @@ export default {
 		},
 		update_content(data) {
 			this.data.content = data.content;
+			this.data.hashtags = data.hashtags;
 			this.save();
 
 			// if(data.button) {

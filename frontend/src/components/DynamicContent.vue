@@ -38,12 +38,12 @@ export default {
 				id: Math.random(),
 				tag: 'p',
 				src: '',
-				name: '',
-				hashtags: []
+				name: ''
 			}],
 			emit_save: {
 				button: false,
-				content: []
+				content: [],
+				hashtags: []
 			}
 		}
 	},
@@ -103,10 +103,10 @@ export default {
 				sel.modify("extend", "backward", "word");
 				sel.modify("extend", "backward", "character");
 				
-				var target = this.trim(sel.toString());
-				var hashtag = '<b><a style=\"color:black;\" href=/search/\"'+target+'\">'+target+'</a></b>';
+				var target = this.trim(sel.toString(), true);
+				var hashtag = '<b><a style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>';
 				
-				this.hashtags.push(hashtag);
+				this.emit_save.hashtags.push(target);
 
 				if(sel.toString()[0] == '#') {
 					var range = sel.getRangeAt(0);
@@ -290,8 +290,8 @@ export default {
 		switch_content(tag, index) {
 			this.content[index].tag = tag;
 		},
-		trim(str) {
-			return str.replace(/\s/g, "");
+		trim(str, all=false) {
+			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
 		}
 	}
 }
