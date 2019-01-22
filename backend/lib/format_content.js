@@ -28,7 +28,7 @@ module.exports = {
 			"date_created": data.date_created,
 			"description": "",
 			"first_name": user.first_name,
-			"hashtags": data.hashtags,
+			"hashtags": data.hashtag,
 			"last_modified": data.last_modified,
 			"last_name": user.last_name,
 			"num_citations": 0,
@@ -53,8 +53,7 @@ module.exports = {
 			throw "update_cell: Invalid input types. src and target must be Objects."
 		}
 		
-		console.log(src);
-
+		// update content array
 		if(index < src['content'].length) {
 			console.log('assigning');
 			src['content'][index] = target['content'];
@@ -64,8 +63,12 @@ module.exports = {
 			src['content'].push(target['content']);
 		}
 
-		target['content'] = src['content'];
+		// update hashtags
+		if(target['hashtags'].length > 0 && !src['hashtags'].includes(target['hashtags'])) {
+			src['hashtags'].push(target['hashtags']);
+		}
 
+		target = src;
 		return target;
 	}
 }

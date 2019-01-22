@@ -36,7 +36,9 @@ router.post('/', function(req, res, next) {
 		}
 		else {
 			console.log(data['content']);
+			// refactor this into format_content()
 			data['content'] = [data['content']];
+			data['hashtags'] = [data['hashtags']];
 			var article = new db.Content(data);
 
 			article.collection.dropIndexes(function(err, results) {

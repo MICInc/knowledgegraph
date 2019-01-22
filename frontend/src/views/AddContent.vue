@@ -40,7 +40,7 @@ export default {
 				date_created: new Date(),
 				cell: undefined,
 				citations: '',
-				hashtags: [],
+				hashtag: '',
 				last_modified: undefined,
 				publish: false,
 				title: ''
@@ -117,7 +117,7 @@ export default {
 		},
 		update_content(emit_save) {
 			this.data.cell = emit_save.cell;
-			this.data.hashtags = emit_save.hashtags;
+			this.data.hashtag = emit_save.hashtag;
 			this.data.update_cell = emit_save.update_cell;
 			this.save();
 		},

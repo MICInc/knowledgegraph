@@ -44,7 +44,7 @@ export default {
 			emit_save: {
 				button: false,
 				cell: undefined,
-				hashtags: [],
+				hashtag: '',
 				update_cell: -1
 			}
 		}
@@ -148,29 +148,33 @@ export default {
 		},
 		input(index, event) {
 			
-			// if spacebar was pressed
+			// if spacebar was pressed, detect and insert hashtag
 			if(event.which == 32) {
 				var el = event.target;
-
-				el.focus();
 				var sel = document.getSelection();
-				
+				var innerHTML = el.innerHTML;
+				var length = innerHTML.length;
+
+				// extend back and highlight one word and then
+				// extend back one more to find if there's a hashtag
 				sel.modify("extend", "backward", "word");
 				sel.modify("extend", "backward", "character");
-				
-				var target = this.trim(sel.toString(), true);
-				var hashtag = '<b><a style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>';
-				
-				this.emit_save.hashtags.push(target);
+				var has_hash = sel.toString()[0] == '#';
+				var sel_html = sel.anchorNode;
+				var has_bold = sel_html.parentNode.nodeName == 'B';
 
-				if(sel.toString()[0] == '#') {
+
+				if(has_hash && !has_bold) {
+					var target = this.trim(sel.toString(), true);
+					var hashtag = '<b><a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>&nbsp;';
+					this.emit_save.hashtag = target;
+
 					var range = sel.getRangeAt(0);
 					range.deleteContents();
 					this.replace_html(range, hashtag);
 				}
-				else {
-					sel.removeAllRanges();
-				}
+				
+				sel.removeAllRanges();
 			}
 			this.save();
 		},
@@ -242,6 +246,7 @@ export default {
 
 			this.$emit('edit', this.emit_save);
 			this.emit_save.button = false;
+			this.emit_save.hashtag = '';
 		},
 		set_active(index) {
 			if(this.active_index > -1) {
@@ -282,7 +287,7 @@ export default {
 			this.save();
 		},
 		trim(str, all=false) {
-			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
+			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	}
 }
