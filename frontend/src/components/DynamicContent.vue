@@ -20,7 +20,7 @@
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index, $event)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -35,6 +35,7 @@ export default {
 	data() {
 		return {
 			active_index: -1,
+			cursor_pos: -1,
 			content: [{
 				id: Math.random(),
 				tag: 'p',
@@ -103,8 +104,9 @@ export default {
 				});
 			}
 		},
-		getCaretPosition(element) {
+		cursor_position(element) {
 			//https://stackoverflow.com/questions/3972014/get-caret-position-in-contenteditable-div
+			var element = event.target;
 			var caretPos = 0,
 			sel, range;
 			if (window.getSelection) {
@@ -127,7 +129,9 @@ export default {
 					caretPos = tempRange.text.length;
 				}
 			}
-			return caretPos > 0 ? caretPos-1 : 0;
+			var pos = caretPos > 0 ? caretPos-1 : 0;
+
+			return pos;
 
 		},
 		import_file(event) {
@@ -147,13 +151,17 @@ export default {
 			}
 		},
 		input(index, event) {
-			
+			var el = event.target;
+			this.cursor_pos = this.cursor_position(el);
+			console.log(this.cursor_pos);
+			var cursor_node = el.firstChild;
+
 			// if spacebar was pressed, detect and insert hashtag
 			if(event.which == 32) {
-				var el = event.target;
 				var sel = document.getSelection();
 				var innerHTML = el.innerHTML;
 				var length = innerHTML.length;
+				var init_node = sel.anchorNode;
 
 				// extend back and highlight one word and then
 				// extend back one more to find if there's a hashtag
@@ -161,8 +169,11 @@ export default {
 				sel.modify("extend", "backward", "character");
 				var has_hash = sel.toString()[0] == '#';
 				var sel_html = sel.anchorNode;
+				var range = undefined;
+				var has_bold = false;
+
 				if(sel_html != undefined) {
-					var has_bold = sel_html.parentNode.nodeName == 'B';
+					has_bold = sel_html.parentNode.nodeName == 'B';
 
 					if(has_hash && !has_bold) {
 						var target = this.trim(sel.toString(), true);
@@ -176,6 +187,9 @@ export default {
 				}
 				
 				sel.removeAllRanges();
+				if(!has_bold) {
+					this.focus(this.active_index);
+				}
 			}
 			this.save();
 		},
@@ -236,6 +250,7 @@ export default {
 				}
 
 				sel.removeAllRanges();
+				this.set_cursor(sel_html);
 			}
 		},
 		replace_html(range, target, node_type="a") {
@@ -248,6 +263,7 @@ export default {
 			}
 
 			range.insertNode(frag);
+			range.setStart(frag, 0);
 			range.collapse();
 		},
 		save() {
@@ -271,7 +287,7 @@ export default {
 			this.emit_save.button = false;
 			this.emit_save.hashtag = '';
 		},
-		set_active(index) {
+		set_active(index, event) {
 			if(this.active_index > -1) {
 				if(this.$refs['content-'+this.active_index][0] != null) {
 					this.$refs['content-'+this.active_index][0].style.outline = '';
@@ -279,6 +295,16 @@ export default {
 			}
 			
 			this.active_index = index;
+			this.cursor_pos = this.cursor_position(event);
+		},
+		set_cursor(el, pos) {
+			// https://stackoverflow.com/questions/6249095/how-to-set-caretcursor-position-in-contenteditable-element-div
+			var range = document.createRange();
+			var sel = window.getSelection();
+			range.setStart(el, pos);
+			range.collapse(true);
+			sel.removeAllRanges();
+			sel.addRange(range);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
