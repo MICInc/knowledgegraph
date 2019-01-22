@@ -11,7 +11,7 @@ module.exports = {
 		var user = req.body.user;
 		var title = data.title;
 		var url = title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : utils.uniqueID();
-		
+
 		console.log('url: '+url);
 		console.log('given id: '+id);
 
@@ -24,7 +24,7 @@ module.exports = {
 			"_id": id.length > 0 ? id : mongoose.Types.ObjectId(),
 			"authors": user.first_name+' '+user.last_name,
 			"citations": data.citations.split(','),
-			"content": module.exports.compress_html(data.content),
+			"content": module.exports.compress_html(data.cell),
 			"date_created": data.date_created,
 			"description": "",
 			"first_name": user.first_name,
@@ -45,8 +45,27 @@ module.exports = {
 			"year": (new Date()).getFullYear()
 		};
 	},
-
 	compress_html: function(data) {
 		return data;
+	},
+	update_cell: function(index, src, target) {
+		if(!(src instanceof Object) || !(target instanceof Object)) {
+			throw "update_cell: Invalid input types. src and target must be Objects."
+		}
+		
+		console.log(src);
+
+		if(index < src['content'].length) {
+			console.log('assigning');
+			src['content'][index] = target['content'];
+		}
+		else {
+			console.log('pushing');
+			src['content'].push(target['content']);
+		}
+
+		target['content'] = src['content'];
+
+		return target;
 	}
 }

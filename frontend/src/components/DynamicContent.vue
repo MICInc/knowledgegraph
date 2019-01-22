@@ -1,5 +1,6 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keyup.up="print_tag()">
+	<!-- <div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()"> -->
+	<div id="container" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()">
 		<!-- <input name="file" type="file" v-on:change="import_file($event)"> -->
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -19,7 +20,7 @@
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:keyup="hashtag(index, $event)" v-on:click="set_active(index)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:keyup="input(index, $event)" v-on:click="set_active(index)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -42,8 +43,9 @@ export default {
 			}],
 			emit_save: {
 				button: false,
-				content: [],
-				hashtags: []
+				cell: undefined,
+				hashtags: [],
+				update_cell: -1
 			}
 		}
 	},
@@ -62,19 +64,20 @@ export default {
 		add_image(index, event) {
 			var el = event.target;
 
+			// disable previous cell content
+			this.content[index].tag = 'img';
+
 			if(el.files && el.files[0]) {
 				var reader = new FileReader();
 				reader.onload = (e) => {
+					// everything in this scope is async so accessing any of the variables
+					// that are updated in here will not be updated after this scope e.g. this.content
 					var src = e.target.result;
 
 					if(src.length > 0) {
-						this.content[index].tag = 'img';
 						this.content[index].src = src;
 						this.content[index].name = el.files[0].name;
-						this.$refs['content-'+index][0].innerHTML = '<img class=\"image-content\" src="'+src+'"">';
-
 						this.save();
-						// this.upload_file(index, el.files);
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
@@ -90,33 +93,6 @@ export default {
 			}
 
 			return window.btoa( binary );
-		},
-		hashtag(index, event) {
-			
-			// if spacebar was pressed
-			if(event.which == 32) {
-				var el = event.target;
-
-				el.focus();
-				var sel = document.getSelection();
-				
-				sel.modify("extend", "backward", "word");
-				sel.modify("extend", "backward", "character");
-				
-				var target = this.trim(sel.toString(), true);
-				var hashtag = '<b><a style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>';
-				
-				this.emit_save.hashtags.push(target);
-
-				if(sel.toString()[0] == '#') {
-					var range = sel.getRangeAt(0);
-					range.deleteContents();
-					this.replace_html(range, hashtag);
-				}
-				else {
-					sel.removeAllRanges();
-				}
-			}
 		},
 		focus(index=this.active_index+1) {
 			if(index < this.content.length && this.content[index].tag == 'p') {
@@ -170,25 +146,36 @@ export default {
 				reader.readAsText(el.files[0])
 			}
 		},
+		input(index, event) {
+			
+			// if spacebar was pressed
+			if(event.which == 32) {
+				var el = event.target;
+
+				el.focus();
+				var sel = document.getSelection();
+				
+				sel.modify("extend", "backward", "word");
+				sel.modify("extend", "backward", "character");
+				
+				var target = this.trim(sel.toString(), true);
+				var hashtag = '<b><a style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>';
+				
+				this.emit_save.hashtags.push(target);
+
+				if(sel.toString()[0] == '#') {
+					var range = sel.getRangeAt(0);
+					range.deleteContents();
+					this.replace_html(range, hashtag);
+				}
+				else {
+					sel.removeAllRanges();
+				}
+			}
+			this.save();
+		},
 		prevent_nl(event) {
 			event.preventDefault();
-		},
-		mark_words() {
-			var html = div.html().replace(/<\/?strong>/gi, ''), 
-			text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '), exp;
-			var words = '#'
-
-			$.each(words, function(i, word) {
-				exp = new RegExp('\\b(' + word + ')\\b', 'gi');
-				html = html.replace(exp, function(m) {
-					console.log('WORD MATCH:', m);
-					return '<strong>' + m + '</strong>';
-				});
-			});
-
-			console.log('HTML:', html);
-			console.log('----');
-			div.html(html);
 		},
 		remove_active() {
 			if(this.active_index > -1) {
@@ -197,6 +184,8 @@ export default {
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
 					this.content.splice(this.active_index, 1);
 				}
+
+				this.save();
 			}
 
 			if(this.content.length == 0) {
@@ -208,7 +197,10 @@ export default {
 
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
+				this.active_index -= 1;
 
+				this.save();
+				
 				var prev = index - 1;
 
 				if(this.content.length > 0 && prev < 0) {
@@ -232,23 +224,21 @@ export default {
 			range.collapse();
 		},
 		save() {
-			var temp = [];
+			var i = this.active_index;
+			var el = this.$refs['content-'+i][0];
+			var cell = {
+				id: i,
+				tag: el.nodeName.toLowerCase(),
+				date_created: new Date(),
+				last_modified: new Date(),
+				text: this.trim(el.innerText),
+				html: this.trim(el.innerHTML),
+				name: this.content[i].name,
+				src: this.content[i].src
+			};
 
-			for(var i = 0; i < this.content.length; i++) {
-				var el = this.$refs['content-'+i][0];
-
-				temp.push({
-					id: i,
-					tag: el.nodeName,
-					date_created: new Date(),
-					last_modified: new Date(),
-					text: this.trim(el.innerText),
-					html: this.trim(el.innerHTML),
-					name: this.content[i].name
-				});
-			}
-
-			this.emit_save.content = temp;
+			this.emit_save.cell = cell;
+			this.emit_save.update_cell = i;
 
 			this.$emit('edit', this.emit_save);
 			this.emit_save.button = false;
@@ -289,6 +279,7 @@ export default {
 		},
 		switch_content(tag, index) {
 			this.content[index].tag = tag;
+			this.save();
 		},
 		trim(str, all=false) {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
