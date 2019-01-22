@@ -20,7 +20,7 @@
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:keyup="input(index, $event)" v-on:click="set_active(index)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -161,17 +161,18 @@ export default {
 				sel.modify("extend", "backward", "character");
 				var has_hash = sel.toString()[0] == '#';
 				var sel_html = sel.anchorNode;
-				var has_bold = sel_html.parentNode.nodeName == 'B';
+				if(sel_html != undefined) {
+					var has_bold = sel_html.parentNode.nodeName == 'B';
 
+					if(has_hash && !has_bold) {
+						var target = this.trim(sel.toString(), true);
+						var hashtag = '<b><a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>&nbsp;';
+						this.emit_save.hashtag = target;
 
-				if(has_hash && !has_bold) {
-					var target = this.trim(sel.toString(), true);
-					var hashtag = '<b><a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>&nbsp;';
-					this.emit_save.hashtag = target;
-
-					var range = sel.getRangeAt(0);
-					range.deleteContents();
-					this.replace_html(range, hashtag);
+						var range = sel.getRangeAt(0);
+						range.deleteContents();
+						this.replace_html(range, hashtag);
+					}
 				}
 				
 				sel.removeAllRanges();
@@ -196,9 +197,10 @@ export default {
 				this.add_content();
 			}
 		},
-		remove_content(index) {
+		remove_content(index, event) {
 			var el = event.target;
 
+			// remove cell
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
 				this.active_index -= 1;
@@ -214,9 +216,30 @@ export default {
 					this.focus(prev);
 				}
 			}
+			else {
+				var sel = document.getSelection();
+				sel.modify("extend", "forward", "word");
+				var sel_html = sel.anchorNode;
+				
+				if(sel_html != undefined) { 
+					var has_bold = sel_html.parentNode.parentNode.nodeName == 'B';
+					
+					if(has_bold) {
+						var text_node = document.createTextNode(sel.toString());
+						var target = this.trim(sel.toString(), true);
+						this.emit_save.hashtag = target;
+
+						var range = sel.getRangeAt(0);
+						range.deleteContents();
+						sel_html.parentNode.parentNode.parentNode.replaceChild(text_node, sel_html.parentNode.parentNode);					
+					}
+				}
+
+				sel.removeAllRanges();
+			}
 		},
-		replace_html(range, target) {
-			var el = document.createElement("a");
+		replace_html(range, target, node_type="a") {
+			var el = document.createElement(node_type);
 			el.innerHTML = target;
 			var frag = document.createDocumentFragment(), node;
 
