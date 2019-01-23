@@ -1,5 +1,6 @@
 <template>
-	<div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()" v-on:keyup.up="print_tag()">
+	<!-- <div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()"> -->
+	<div id="container" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()">
 		<!-- <input name="file" type="file" v-on:change="import_file($event)"> -->
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
@@ -19,7 +20,7 @@
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index)" v-on:keyup="hashtag(index, $event)" v-on:click="set_active(index)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keydown.delete="check_content(index, $event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index, $event)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -34,6 +35,7 @@ export default {
 	data() {
 		return {
 			active_index: -1,
+			cursor_pos: -1,
 			content: [{
 				id: Math.random(),
 				tag: 'p',
@@ -42,8 +44,9 @@ export default {
 			}],
 			emit_save: {
 				button: false,
-				content: [],
-				hashtags: []
+				cell: undefined,
+				hashtag: '',
+				update_cell: -1
 			}
 		}
 	},
@@ -62,19 +65,20 @@ export default {
 		add_image(index, event) {
 			var el = event.target;
 
+			// disable previous cell content
+			this.content[index].tag = 'img';
+
 			if(el.files && el.files[0]) {
 				var reader = new FileReader();
 				reader.onload = (e) => {
+					// everything in this scope is async so accessing any of the variables
+					// that are updated in here will not be updated after this scope e.g. this.content
 					var src = e.target.result;
 
 					if(src.length > 0) {
-						this.content[index].tag = 'img';
 						this.content[index].src = src;
 						this.content[index].name = el.files[0].name;
-						this.$refs['content-'+index][0].innerHTML = '<img class=\"image-content\" src="'+src+'"">';
-
 						this.save();
-						// this.upload_file(index, el.files);
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
@@ -91,32 +95,40 @@ export default {
 
 			return window.btoa( binary );
 		},
-		hashtag(index, event) {
-			
-			// if spacebar was pressed
-			if(event.which == 32) {
-				var el = event.target;
+		check_content(index, event) {
+			var el = event.target;
+			var innerText = el.innerText;
+			var target = '#';
 
-				el.focus();
-				var sel = document.getSelection();
-				
-				sel.modify("extend", "backward", "word");
-				sel.modify("extend", "backward", "character");
-				
-				var target = this.trim(sel.toString(), true);
-				var hashtag = '<b><a style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>';
-				
-				this.emit_save.hashtags.push(target);
+			for(var i = this.cursor_position(); i < innerText.length; i++) {
+				if(/\s$/.test(innerText[i])) break;
+				target += innerText[i];
+			}
 
-				if(sel.toString()[0] == '#') {
-					var range = sel.getRangeAt(0);
-					range.deleteContents();
-					this.replace_html(range, hashtag);
-				}
-				else {
-					sel.removeAllRanges();
+			target = this.trim(target, true);
+
+			for(var i = 0; i < el.children.length; i++) {
+				var child = el.children.item(i);
+
+				if(child.nodeName == 'B') {
+					var word = this.trim(child.innerText, true);
+
+					if(word == target) {
+						word = this.cursor_position()-1 == 0 ? word.slice(1) : '\u00A0'+word.slice(1);
+						var new_child = document.createTextNode(word);
+						el.replaceChild(new_child, child);
+						break;
+					}
 				}
 			}
+		},
+		cursor_position() {
+			var sel = document.getSelection();
+			sel.modify("extend", "backward", "paragraphboundary");
+			var pos = sel.toString().length;
+			sel.collapseToEnd();
+
+			return pos;
 		},
 		focus(index=this.active_index+1) {
 			if(index < this.content.length && this.content[index].tag == 'p') {
@@ -126,33 +138,6 @@ export default {
 					this.set_end_contenteditable(this.$refs['content-'+index][0]);
 				});
 			}
-		},
-		getCaretPosition(element) {
-			//https://stackoverflow.com/questions/3972014/get-caret-position-in-contenteditable-div
-			var caretPos = 0,
-			sel, range;
-			if (window.getSelection) {
-				sel = window.getSelection();
-				if (sel.rangeCount) {
-					range = sel.getRangeAt(0);
-					if (range.commonAncestorContainer.parentNode == element) {
-						caretPos = range.endOffset;
-					}
-				}
-			}
-			else if (document.selection && document.selection.createRange) {
-				range = document.selection.createRange();
-				if (range.parentElement() == element) {
-					var tempEl = document.createElement("span");
-					element.insertBefore(tempEl, element.firstChild);
-					var tempRange = range.duplicate();
-					tempRange.moveToElementText(tempEl);
-					tempRange.setEndPoint("EndToEnd", range);
-					caretPos = tempRange.text.length;
-				}
-			}
-			return caretPos > 0 ? caretPos-1 : 0;
-
 		},
 		import_file(event) {
 			var el = event.target;
@@ -170,25 +155,49 @@ export default {
 				reader.readAsText(el.files[0])
 			}
 		},
+		input(index, event) {
+			var el = event.target;
+			var cursor_node = el.firstChild;
+
+			// if spacebar was pressed, detect and insert hashtag
+			if(event.which == 32) {
+				var sel = document.getSelection();
+				var innerHTML = el.innerHTML;
+				var length = innerHTML.length;
+				var init_node = sel.anchorNode;
+
+				// extend back and highlight one word and then
+				// extend back one more to find if there's a hashtag
+				sel.modify("extend", "backward", "word");
+				sel.modify("extend", "backward", "character");
+				var has_hash = sel.toString()[0] == '#';
+				var sel_html = sel.anchorNode;
+				var range = undefined;
+				var has_bold = false;
+
+				if(sel_html != undefined) {
+					has_bold = sel_html.parentNode.nodeName == 'B';
+
+					if(has_hash && !has_bold) {
+						var target = this.trim(sel.toString(), true);
+						var hashtag = '<b><a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>&nbsp;';
+						this.emit_save.hashtag = target;
+
+						var range = sel.getRangeAt(0);
+						range.deleteContents();
+						this.replace_html(range, hashtag);
+					}
+				}
+				
+				sel.removeAllRanges();
+				if(!has_bold) {
+					this.focus(this.active_index);
+				}
+			}
+			this.save();
+		},
 		prevent_nl(event) {
 			event.preventDefault();
-		},
-		mark_words() {
-			var html = div.html().replace(/<\/?strong>/gi, ''), 
-			text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '), exp;
-			var words = '#'
-
-			$.each(words, function(i, word) {
-				exp = new RegExp('\\b(' + word + ')\\b', 'gi');
-				html = html.replace(exp, function(m) {
-					console.log('WORD MATCH:', m);
-					return '<strong>' + m + '</strong>';
-				});
-			});
-
-			console.log('HTML:', html);
-			console.log('----');
-			div.html(html);
 		},
 		remove_active() {
 			if(this.active_index > -1) {
@@ -197,18 +206,24 @@ export default {
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
 					this.content.splice(this.active_index, 1);
 				}
+
+				this.save();
 			}
 
 			if(this.content.length == 0) {
 				this.add_content();
 			}
 		},
-		remove_content(index) {
+		remove_content(index, event) {
 			var el = event.target;
 
+			// remove cell
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
+				this.active_index -= 1;
 
+				this.save();
+				
 				var prev = index - 1;
 
 				if(this.content.length > 0 && prev < 0) {
@@ -219,8 +234,8 @@ export default {
 				}
 			}
 		},
-		replace_html(range, target) {
-			var el = document.createElement("a");
+		replace_html(range, target, node_type="a") {
+			var el = document.createElement(node_type);
 			el.innerHTML = target;
 			var frag = document.createDocumentFragment(), node;
 
@@ -229,31 +244,31 @@ export default {
 			}
 
 			range.insertNode(frag);
+			range.setStart(frag, 0);
 			range.collapse();
 		},
 		save() {
-			var temp = [];
+			var i = this.active_index;
+			var el = this.$refs['content-'+i][0];
+			var cell = {
+				id: i,
+				tag: el.nodeName.toLowerCase(),
+				date_created: new Date(),
+				last_modified: new Date(),
+				text: this.trim(el.innerText),
+				html: this.trim(el.innerHTML),
+				name: this.content[i].name,
+				src: this.content[i].src
+			};
 
-			for(var i = 0; i < this.content.length; i++) {
-				var el = this.$refs['content-'+i][0];
-
-				temp.push({
-					id: i,
-					tag: el.nodeName,
-					date_created: new Date(),
-					last_modified: new Date(),
-					text: this.trim(el.innerText),
-					html: this.trim(el.innerHTML),
-					name: this.content[i].name
-				});
-			}
-
-			this.emit_save.content = temp;
+			this.emit_save.cell = cell;
+			this.emit_save.update_cell = i;
 
 			this.$emit('edit', this.emit_save);
 			this.emit_save.button = false;
+			this.emit_save.hashtag = '';
 		},
-		set_active(index) {
+		set_active(index, event) {
 			if(this.active_index > -1) {
 				if(this.$refs['content-'+this.active_index][0] != null) {
 					this.$refs['content-'+this.active_index][0].style.outline = '';
@@ -261,6 +276,16 @@ export default {
 			}
 			
 			this.active_index = index;
+			this.cursor_pos = this.cursor_position();
+		},
+		set_cursor(el, pos) {
+			// https://stackoverflow.com/questions/6249095/how-to-set-caretcursor-position-in-contenteditable-element-div
+			var range = document.createRange();
+			var sel = window.getSelection();
+			range.setStart(el, pos);
+			range.collapse(true);
+			sel.removeAllRanges();
+			sel.addRange(range);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
@@ -289,9 +314,10 @@ export default {
 		},
 		switch_content(tag, index) {
 			this.content[index].tag = tag;
+			this.save();
 		},
 		trim(str, all=false) {
-			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
+			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	}
 }

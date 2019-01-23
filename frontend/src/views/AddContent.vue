@@ -38,12 +38,12 @@ export default {
 			content_id: '',
 			data: {
 				date_created: new Date(),
+				cell: undefined,
 				citations: '',
-				content: [],
-				hashtags: [],
+				hashtag: '',
 				last_modified: undefined,
-				title: '',
-				publish: false
+				publish: false,
+				title: ''
 			},
 			save_status: '',
 			tags: [],
@@ -85,7 +85,7 @@ export default {
 					this.save_status = 'unpublished';
 				}
 
-				this.redirect();
+				// this.redirect();
 			}
 		},
 		redirect() {
@@ -115,14 +115,11 @@ export default {
 			
 			this.save_status = 'saved';
 		},
-		update_content(data) {
-			this.data.content = data.content;
-			this.data.hashtags = data.hashtags;
+		update_content(emit_save) {
+			this.data.cell = emit_save.cell;
+			this.data.hashtag = emit_save.hashtag;
+			this.data.update_cell = emit_save.update_cell;
 			this.save();
-
-			// if(data.button) {
-			// 	this.save();
-			// }
 		},
 		upload_file(form_data) {
 			form_data.append('content_id', this.content_id);

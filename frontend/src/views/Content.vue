@@ -7,8 +7,8 @@
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
 				<div v-for="c in content.content">
-					<p v-if="c.tag.toLowerCase() == 'p'" v-html="c.html"></p>
-					<img v-if="c.tag.toLowerCase() == 'img'" :src="c.html">
+					<p v-if="c.tag == 'p'" v-html="c.html"></p>
+					<img v-if="c.tag == 'img'" :src="c.src">
 				</div>
 			</div>
 			<div id="bibtex" class="meta-info">

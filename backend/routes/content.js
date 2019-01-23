@@ -12,14 +12,18 @@ const article_storage = './storage/content/article';
 router.post('/', function(req, res, next) {
 
 	var data = fc.extract(req);
-	var article = new db.Content(data);
+	var query = {_id: data._id};
 
-	db.Content.countDocuments({_id: data._id}, function (err, count) {
-		if(count > 0) {
+	db.Content.find(query, function (err, results) {
+		if(results.length > 0) {
+
+			data = fc.update_cell(req.body.data.update_cell, results[0], data);
+			var article = new db.Content(data);
 			var updated = article.toObject();
+
 			delete updated._id;
 
-			db.Content.updateOne({_id: data._id}, updated, function(err) {
+			db.Content.updateOne(query, updated, function(err) {
 				if(err) {
 					console.log(err);
 				}
@@ -31,6 +35,12 @@ router.post('/', function(req, res, next) {
 			});
 		}
 		else {
+			console.log(data['content']);
+			// refactor this into format_content()
+			data['content'] = [data['content']];
+			data['hashtags'] = [data['hashtags']];
+			var article = new db.Content(data);
+
 			article.collection.dropIndexes(function(err, results) {
 				if(err) {
 					console.log('content.js: '+err);
@@ -39,9 +49,7 @@ router.post('/', function(req, res, next) {
 
 			article.save()
 			.then(item => {
-				console.log('Saved content');
-				// fs.ensureDir(path.join(article_storage, data._id.toString()));
-				console.log('url: '+data.url);
+				console.log('Saved url: '+data.url);
 				res.send({ id: data._id.toString(), url: data.url });
 			})
 			.catch(err => {
