@@ -20,7 +20,7 @@
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index, $event)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keydown.delete="check_content(index, $event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index, $event)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -95,6 +95,42 @@ export default {
 
 			return window.btoa( binary );
 		},
+		check_content(index, event) {
+			var el = event.target;
+			var innerText = el.innerText;
+			var target = '#';
+
+			for(var i = this.cursor_position(); i < innerText.length; i++) {
+				if(innerText[i] != ' ') {
+					target += innerText[i];
+				}
+			}
+
+			target = this.trim(target, true);
+
+			for(var i = 0; i < el.children.length; i++) {
+				var child = el.children.item(i);
+
+				if(child.nodeName == 'B') {
+					var word = this.trim(child.innerText, true);
+
+					if(word == target) {
+						var new_child = document.createTextNode('\u00A0'+word.slice(1));
+						el.replaceChild(new_child, child);
+						break;
+					}
+				}
+			}
+		},
+		cursor_position() {
+			var sel = document.getSelection();
+			sel.modify("extend", "backward", "paragraphboundary");
+			var pos = sel.toString().length;
+			console.log('line: '+sel.toString().length);
+			sel.collapseToEnd();
+
+			return pos;
+		},
 		focus(index=this.active_index+1) {
 			if(index < this.content.length && this.content[index].tag == 'p') {
 				this.active_index = index;
@@ -103,36 +139,6 @@ export default {
 					this.set_end_contenteditable(this.$refs['content-'+index][0]);
 				});
 			}
-		},
-		cursor_position(element) {
-			//https://stackoverflow.com/questions/3972014/get-caret-position-in-contenteditable-div
-			var element = event.target;
-			var caretPos = 0,
-			sel, range;
-			if (window.getSelection) {
-				sel = window.getSelection();
-				if (sel.rangeCount) {
-					range = sel.getRangeAt(0);
-					if (range.commonAncestorContainer.parentNode == element) {
-						caretPos = range.endOffset;
-					}
-				}
-			}
-			else if (document.selection && document.selection.createRange) {
-				range = document.selection.createRange();
-				if (range.parentElement() == element) {
-					var tempEl = document.createElement("span");
-					element.insertBefore(tempEl, element.firstChild);
-					var tempRange = range.duplicate();
-					tempRange.moveToElementText(tempEl);
-					tempRange.setEndPoint("EndToEnd", range);
-					caretPos = tempRange.text.length;
-				}
-			}
-			var pos = caretPos > 0 ? caretPos-1 : 0;
-
-			return pos;
-
 		},
 		import_file(event) {
 			var el = event.target;
@@ -152,8 +158,6 @@ export default {
 		},
 		input(index, event) {
 			var el = event.target;
-			this.cursor_pos = this.cursor_position(el);
-			console.log(this.cursor_pos);
 			var cursor_node = el.firstChild;
 
 			// if spacebar was pressed, detect and insert hashtag
@@ -230,28 +234,6 @@ export default {
 					this.focus(prev);
 				}
 			}
-			else {
-				var sel = document.getSelection();
-				sel.modify("extend", "forward", "word");
-				var sel_html = sel.anchorNode;
-				
-				if(sel_html != undefined) { 
-					var has_bold = sel_html.parentNode.parentNode.nodeName == 'B';
-					
-					if(has_bold) {
-						var text_node = document.createTextNode(sel.toString());
-						var target = this.trim(sel.toString(), true);
-						this.emit_save.hashtag = target;
-
-						var range = sel.getRangeAt(0);
-						range.deleteContents();
-						sel_html.parentNode.parentNode.parentNode.replaceChild(text_node, sel_html.parentNode.parentNode);					
-					}
-				}
-
-				sel.removeAllRanges();
-				this.set_cursor(sel_html);
-			}
 		},
 		replace_html(range, target, node_type="a") {
 			var el = document.createElement(node_type);
@@ -295,7 +277,7 @@ export default {
 			}
 			
 			this.active_index = index;
-			this.cursor_pos = this.cursor_position(event);
+			this.cursor_pos = this.cursor_position();
 		},
 		set_cursor(el, pos) {
 			// https://stackoverflow.com/questions/6249095/how-to-set-caretcursor-position-in-contenteditable-element-div
