@@ -106,16 +106,12 @@ export default {
 			}
 
 			target = this.trim(target, true);
-			console.log('target_: '+target);
 
 			for(var i = 0; i < el.children.length; i++) {
 				var child = el.children.item(i);
 
 				if(child.nodeName == 'B') {
 					var word = this.trim(child.innerText, true);
-					console.log('word: '+word);
-					console.log('target: '+target);
-					console.log(word == target);
 
 					if(word == target) {
 						word = this.cursor_position()-1 == 0 ? word.slice(1) : '\u00A0'+word.slice(1);
@@ -130,7 +126,6 @@ export default {
 			var sel = document.getSelection();
 			sel.modify("extend", "backward", "paragraphboundary");
 			var pos = sel.toString().length;
-			console.log('line: '+sel.toString().length);
 			sel.collapseToEnd();
 
 			return pos;
