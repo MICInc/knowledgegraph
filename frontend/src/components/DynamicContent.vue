@@ -101,21 +101,25 @@ export default {
 			var target = '#';
 
 			for(var i = this.cursor_position(); i < innerText.length; i++) {
-				if(innerText[i] != ' ') {
-					target += innerText[i];
-				}
+				if(/\s$/.test(innerText[i])) break;
+				target += innerText[i];
 			}
 
 			target = this.trim(target, true);
+			console.log('target_: '+target);
 
 			for(var i = 0; i < el.children.length; i++) {
 				var child = el.children.item(i);
 
 				if(child.nodeName == 'B') {
 					var word = this.trim(child.innerText, true);
+					console.log('word: '+word);
+					console.log('target: '+target);
+					console.log(word == target);
 
 					if(word == target) {
-						var new_child = document.createTextNode('\u00A0'+word.slice(1));
+						word = this.cursor_position()-1 == 0 ? word.slice(1) : '\u00A0'+word.slice(1);
+						var new_child = document.createTextNode(word);
 						el.replaceChild(new_child, child);
 						break;
 					}
