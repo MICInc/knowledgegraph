@@ -10,10 +10,8 @@ module.exports = {
 		var id = req.body.id;
 		var user = req.body.user;
 		var title = data.title;
-		var url = title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : utils.uniqueID();
-
-		console.log('url: '+url);
-		console.log('given id: '+id);
+		var url = module.exports.generate_url(title);
+		console.log(data.hashtags);
 
 		/*
 			authors - string combination of session info and coauthors
@@ -28,7 +26,7 @@ module.exports = {
 			"date_created": data.date_created,
 			"description": "",
 			"first_name": user.first_name,
-			"hashtags": data.hashtag,
+			"hashtags": data.hashtags,
 			"last_modified": data.last_modified,
 			"last_name": user.last_name,
 			"num_citations": 0,
@@ -48,27 +46,7 @@ module.exports = {
 	compress_html: function(data) {
 		return data;
 	},
-	update_cell: function(index, src, target) {
-		if(!(src instanceof Object) || !(target instanceof Object)) {
-			throw "update_cell: Invalid input types. src and target must be Objects."
-		}
-		
-		// update content array
-		if(index < src['content'].length) {
-			console.log('assigning');
-			src['content'][index] = target['content'];
-		}
-		else {
-			console.log('pushing');
-			src['content'].push(target['content']);
-		}
-
-		// update hashtags
-		if(target['hashtags'].length > 0 && !src['hashtags'].includes(target['hashtags'])) {
-			src['hashtags'].push(target['hashtags']);
-		}
-
-		target = src;
-		return target;
+	generate_url: function(title) {
+		return title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : utils.uniqueID();
 	}
 }

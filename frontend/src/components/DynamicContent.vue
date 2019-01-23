@@ -180,11 +180,12 @@ export default {
 
 					if(has_hash && !has_bold) {
 						var target = this.trim(sel.toString(), true);
-						var hashtag = '<b><a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>&nbsp;';
+						var hashtag = '<b><a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>'+'\u00A0';
 						this.emit_save.hashtag = target;
 
 						var range = sel.getRangeAt(0);
 						range.deleteContents();
+
 						this.replace_html(range, hashtag);
 					}
 				}
@@ -250,13 +251,14 @@ export default {
 		save() {
 			var i = this.active_index;
 			var el = this.$refs['content-'+i][0];
+
 			var cell = {
 				id: i,
 				tag: el.nodeName.toLowerCase(),
 				date_created: new Date(),
 				last_modified: new Date(),
 				text: this.trim(el.innerText),
-				html: this.trim(el.innerHTML),
+				html: el.innerHTML,
 				name: this.content[i].name,
 				src: this.content[i].src
 			};
