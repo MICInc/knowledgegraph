@@ -17,7 +17,20 @@ router.post('/', function(req, res, next) {
 	db.Content.find(query, function (err, results) {
 		if(results.length > 0) {
 
-			data = fc.update_cell(req.body.data.update_cell, results[0], data);
+			console.log('hash: '+data.hashtags);
+
+			var index = req.body.data.update_cell;
+			if(index < results[0]['content'].length) {
+				// update existing cell
+				results[0]['content'][index] = data['content'];
+			}
+			else {
+				// add cell
+				results[0]['content'].push(data['content']);
+			}
+			data['content'] = results[0]['content'];
+			console.log(data['hashtags']);
+
 			var article = new db.Content(data);
 			var updated = article.toObject();
 
@@ -28,17 +41,13 @@ router.post('/', function(req, res, next) {
 					console.log(err);
 				}
 				else {
-					console.log('updated: '+article._id);
-					console.log('url: '+data.url);
 					res.send({ id: data._id.toString(), url: data.url });
 				}
 			});
 		}
 		else {
-			console.log(data['content']);
 			// refactor this into format_content()
 			data['content'] = [data['content']];
-			data['hashtags'] = [data['hashtags']];
 			var article = new db.Content(data);
 
 			article.collection.dropIndexes(function(err, results) {

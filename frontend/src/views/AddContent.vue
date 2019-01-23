@@ -40,7 +40,7 @@ export default {
 				date_created: new Date(),
 				cell: undefined,
 				citations: '',
-				hashtag: '',
+				hashtags: [],
 				last_modified: undefined,
 				publish: false,
 				title: ''
@@ -117,8 +117,14 @@ export default {
 		},
 		update_content(emit_save) {
 			this.data.cell = emit_save.cell;
-			this.data.hashtag = emit_save.hashtag;
 			this.data.update_cell = emit_save.update_cell;
+			
+			var hashtag = emit_save.hashtag;
+			console.log('hashtag: '+hashtag);
+			if(hashtag.length > 0 && !this.data.hashtags.includes(hashtag)) {
+				this.data.hashtags.push(hashtag);
+			}
+			
 			this.save();
 		},
 		upload_file(form_data) {
