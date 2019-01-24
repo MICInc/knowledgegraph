@@ -50,20 +50,23 @@ export default {
 	},
 	methods: {
 		add_content(e) {
-			if(e.keyCode === 13 && !e.shiftKey) {
-				e.preventDefault();
-
-				var next = this.active_index + 1;
-
-				this.content.splice(next, 0, {
-					id: Math.random(),
-					tag: 'p',
-					src: '',
-					name: ''
-				});
-
-				this.focus(next);
+			// ignore shift enter and allow other functions to call this
+			if(e.keyCode === 13 && e.shiftKey) {
+				return;
 			}
+
+			e.preventDefault();
+
+			var next = this.active_index + 1;
+
+			this.content.splice(next, 0, {
+				id: Math.random(),
+				tag: 'p',
+				src: '',
+				name: ''
+			});
+
+			this.focus(next);
 		},
 		add_image(index, event) {
 			var el = event.target;
@@ -205,6 +208,9 @@ export default {
 			event.preventDefault();
 		},
 		remove_active(e) {
+			// remove focus from all elements else will also accidentally delete other content
+			document.activeElement.blur();
+
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
@@ -218,6 +224,9 @@ export default {
 			if(this.content.length == 0) {
 				this.add_content(e);
 			}
+
+			this.active_index = this.active_index == 0 ? 0 : this.active_index - 1;
+			this.focus(this.active_index);
 		},
 		remove_content(index, event) {
 			var el = event.target;
@@ -226,9 +235,8 @@ export default {
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
 				this.active_index -= 1;
-
 				this.save();
-				
+
 				var prev = index - 1;
 
 				if(this.content.length > 0 && prev < 0) {
@@ -253,31 +261,30 @@ export default {
 			range.collapse();
 		},
 		save() {
-			if(this.content[this.active_index] != undefined) {
-				var i = this.active_index;
-				var el = this.$refs['content-'+i][0];
+			var i = this.active_index;
+			var cell = {};
 
-				var cell = {
-					id: i,
-					tag: el.nodeName.toLowerCase(),
-					date_created: new Date(),
-					last_modified: new Date(),
-					text: this.trim(el.innerText),
-					html: el.innerHTML,
-					name: this.content[i].name != undefined ? this.content[i].name : '',
-					src: this.content[i].src
-				};
+			var el = this.$refs['content-'+i][0];
+			
+			cell = {
+				id: i,
+				tag: el.nodeName.toLowerCase(),
+				date_created: new Date(),
+				last_modified: new Date(),
+				text: this.trim(el.innerText),
+				html: el.innerHTML,
+				name: this.content[i].name != undefined ? this.content[i].name : '',
+				src: this.content[i].src
+			};
 
-				this.emit_save.cell = cell;
-				this.emit_save.update_cell = i;
+			console.log(Object.keys(cell).length === 0);
 
-				this.$emit('edit', this.emit_save);
-				this.emit_save.button = false;
-				this.emit_save.hashtag = '';
-			}
-			else {
-				// need to handle removing images here!
-			}
+			this.emit_save.cell = cell;
+			this.emit_save.update_cell = i;
+
+			this.$emit('edit', this.emit_save);
+			this.emit_save.button = false;
+			this.emit_save.hashtag = '';
 		},
 		set_active(index, event) {
 			if(this.active_index > -1) {

@@ -16,12 +16,16 @@ router.post('/', function(req, res, next) {
 
 	db.Content.find(query, function (err, results) {
 		if(results.length > 0) {
-
-			console.log('hash: '+data.hashtags);
-
 			var index = req.body.data.update_cell;
+			console.log('thing: '+index);
+			console.log(data['content']);
+
 			if(index < results[0]['content'].length) {
 				// update existing cell
+				if(Object.keys(data['content']).length === 0) {
+					console.log('empty obj');
+					results[0]['content'].splice(index, 1);
+				}
 				results[0]['content'][index] = data['content'];
 			}
 			else {
@@ -29,7 +33,6 @@ router.post('/', function(req, res, next) {
 				results[0]['content'].push(data['content']);
 			}
 			data['content'] = results[0]['content'];
-			console.log(data['hashtags']);
 
 			var article = new db.Content(data);
 			var updated = article.toObject();

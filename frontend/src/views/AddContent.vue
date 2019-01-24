@@ -120,7 +120,6 @@ export default {
 			this.data.update_cell = emit_save.update_cell;
 			
 			var hashtag = emit_save.hashtag;
-			console.log('hashtag: '+hashtag);
 			if(hashtag.length > 0 && !this.data.hashtags.includes(hashtag)) {
 				this.data.hashtags.push(hashtag);
 			}
