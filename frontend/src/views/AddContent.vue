@@ -8,7 +8,7 @@
 			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')">
 			<br>
 			<form>
-				<DynamicContent v-on:edit="update_content($event)"></DynamicContent>
+				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)"></DynamicContent>
 			</form>
 		</div>
 	</div>
@@ -91,6 +91,14 @@ export default {
 		redirect() {
 			this.$router.push('/content/'+this.url);
 		},
+		remove_content(index) {
+			ContentService.removeContent({ id: this.content_id, index: index })
+			.then((data) => {
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		},
 		save() {
 			this.save_status = 'saving...';
 
@@ -120,7 +128,6 @@ export default {
 			this.data.update_cell = emit_save.update_cell;
 			
 			var hashtag = emit_save.hashtag;
-			console.log('hashtag: '+hashtag);
 			if(hashtag.length > 0 && !this.data.hashtags.includes(hashtag)) {
 				this.data.hashtags.push(hashtag);
 			}

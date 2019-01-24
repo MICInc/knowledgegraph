@@ -1,7 +1,5 @@
 <template>
-	<!-- <div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()"> -->
-	<div id="container" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()">
-		<!-- <input name="file" type="file" v-on:change="import_file($event)"> -->
+	<div id="container" v-on:keydown.delete="remove_active($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus()">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -12,15 +10,15 @@
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
 			<div class='tag_type'>
 				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)" accept="image/*">
-				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
-				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
-				<!-- <button class="tag_switch" v-on:click.prevent="switch_content('canvas', index)">canvas</button> -->
+				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index, $event)">hr</button>
+				<button class="tag_switch" v-on:click.prevent="switch_content('p', index, $event)">p</button>
+				<!-- <button class="tag_switch" v-on:click.prevent="switch_content('canvas', index, $event)">canvas</button> -->
 			</div>
 			<img class="image-content" v-bind:src="content[index].src" v-bind:id="'content-'+index" v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:click="set_active(index)">
-			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
+			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content($event)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keydown.delete="check_content(index, $event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index, $event)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.delete="check_content(index, $event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index, $event)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -51,19 +49,29 @@ export default {
 		}
 	},
 	methods: {
-		add_content() {
+		add_content(e) {
+			// ignore shift enter and allow other functions to call this
+			if(e.keyCode === 13 && e.shiftKey) {
+				return;
+			}
+
+			e.preventDefault();
+			if (this.active_index < 0) this.active_index == 0;
+
 			var next = this.active_index + 1;
 
 			this.content.splice(next, 0, {
 				id: Math.random(),
 				tag: 'p',
-				src: ''
+				src: '',
+				name: ''
 			});
 
 			this.focus(next);
 		},
 		add_image(index, event) {
 			var el = event.target;
+			this.active_index = index;
 
 			// disable previous cell content
 			this.content[index].tag = 'img';
@@ -139,7 +147,7 @@ export default {
 				});
 			}
 		},
-		import_file(event) {
+		import_file(e) {
 			var el = event.target;
 			
 			if(el.files && el.files[0]) {
@@ -148,7 +156,7 @@ export default {
 					var content = e.target.result.split('\n\n');
 
 					for(var i = 0; i < content.length; i++) {
-						this.add_content();
+						this.add_content(e);
 						this.content[i].html = content[i];
 					}
 				}
@@ -200,19 +208,25 @@ export default {
 		prevent_nl(event) {
 			event.preventDefault();
 		},
-		remove_active() {
+		remove_active(e) {
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
+					// remove focus from all elements else will also accidentally delete other content
+					document.activeElement.blur();
+
 					this.content.splice(this.active_index, 1);
+					this.$emit('remove', this.active_index);
+					this.active_index -= 1;
 				}
 
 				this.save();
-			}
 
-			if(this.content.length == 0) {
-				this.add_content();
+				if(this.content.length == 0) {
+					this.add_content(e);
+					this.focus(this.active_index);
+				}
 			}
 		},
 		remove_content(index, event) {
@@ -223,8 +237,6 @@ export default {
 				this.content.splice(index, 1);
 				this.active_index -= 1;
 
-				this.save();
-				
 				var prev = index - 1;
 
 				if(this.content.length > 0 && prev < 0) {
@@ -250,25 +262,29 @@ export default {
 		},
 		save() {
 			var i = this.active_index;
-			var el = this.$refs['content-'+i][0];
+			var refs = this.$refs['content-'+i];
 
-			var cell = {
-				id: i,
-				tag: el.nodeName.toLowerCase(),
-				date_created: new Date(),
-				last_modified: new Date(),
-				text: this.trim(el.innerText),
-				html: el.innerHTML,
-				name: this.content[i].name,
-				src: this.content[i].src
-			};
+			if(refs != undefined) {
+				var el = refs[0];
+				
+				var cell = {
+					id: i,
+					tag: this.content[i].tag == 'hr' ? 'hr' : el.nodeName.toLowerCase(),
+					date_created: new Date(),
+					last_modified: new Date(),
+					text: this.content[i].tag == 'hr' ? '' : this.trim(el.innerText),
+					html: this.content[i].tag == 'hr' ? '<hr>' : el.innerHTML,
+					name: this.content[i].name != '' ? this.content[i].name : '',
+					src: this.content[i].src != '' ? this.content[i].src : ''
+				};
 
-			this.emit_save.cell = cell;
-			this.emit_save.update_cell = i;
+				this.emit_save.cell = cell;
+				this.emit_save.update_cell = i;
 
-			this.$emit('edit', this.emit_save);
-			this.emit_save.button = false;
-			this.emit_save.hashtag = '';
+				this.$emit('edit', this.emit_save);
+				this.emit_save.button = false;
+				this.emit_save.hashtag = '';
+			}
 		},
 		set_active(index, event) {
 			if(this.active_index > -1) {
@@ -308,14 +324,20 @@ export default {
 				range.select();
 			}
 		},
+		shift_enter(index, event) {
+			console.log('shift');
+		},
 		stylize(style) {
 			document.execCommand(style, false, null);
 
 			this.emit_save.button = true;
 			this.save();
 		},
-		switch_content(tag, index) {
+		switch_content(tag, index, event) {
+			this.active_index = index;
 			this.content[index].tag = tag;
+			this.content[index].src = '';
+			this.content[index].name = '';
 			this.save();
 		},
 		trim(str, all=false) {

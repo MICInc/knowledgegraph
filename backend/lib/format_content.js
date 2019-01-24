@@ -11,7 +11,6 @@ module.exports = {
 		var user = req.body.user;
 		var title = data.title;
 		var url = module.exports.generate_url(title);
-		console.log(data.hashtags);
 
 		/*
 			authors - string combination of session info and coauthors
