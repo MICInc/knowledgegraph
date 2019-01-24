@@ -216,6 +216,9 @@ export default {
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
 					this.content.splice(this.active_index, 1);
+					this.$emit('remove', this.active_index);
+					this.active_index -= 1;
+					if (this.active_index < 0) this.active_index == 0;
 				}
 
 				this.save();
@@ -235,7 +238,7 @@ export default {
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
 				this.active_index -= 1;
-				this.save();
+				if (this.active_index < 0) this.active_index == 0;
 
 				var prev = index - 1;
 
@@ -262,11 +265,9 @@ export default {
 		},
 		save() {
 			var i = this.active_index;
-			var cell = {};
-
 			var el = this.$refs['content-'+i][0];
 			
-			cell = {
+			var cell = {
 				id: i,
 				tag: el.nodeName.toLowerCase(),
 				date_created: new Date(),
