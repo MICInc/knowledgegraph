@@ -58,7 +58,8 @@ export default {
 				this.content.splice(next, 0, {
 					id: Math.random(),
 					tag: 'p',
-					src: ''
+					src: '',
+					name: ''
 				});
 
 				this.focus(next);
@@ -252,29 +253,31 @@ export default {
 			range.collapse();
 		},
 		save() {
-			var i = this.active_index;
-			var el = this.$refs['content-'+i][0];
-			console.log('i: '+i);
+			if(this.content[this.active_index] != undefined) {
+				var i = this.active_index;
+				var el = this.$refs['content-'+i][0];
 
-			var cell = {
-				id: i,
-				tag: el.nodeName.toLowerCase(),
-				date_created: new Date(),
-				last_modified: new Date(),
-				text: this.trim(el.innerText),
-				html: el.innerHTML,
-				name: this.content[i].name,
-				src: this.content[i].src
-			};
+				var cell = {
+					id: i,
+					tag: el.nodeName.toLowerCase(),
+					date_created: new Date(),
+					last_modified: new Date(),
+					text: this.trim(el.innerText),
+					html: el.innerHTML,
+					name: this.content[i].name != undefined ? this.content[i].name : '',
+					src: this.content[i].src
+				};
 
-			console.log(this.content[i].src);
+				this.emit_save.cell = cell;
+				this.emit_save.update_cell = i;
 
-			this.emit_save.cell = cell;
-			this.emit_save.update_cell = i;
-
-			this.$emit('edit', this.emit_save);
-			this.emit_save.button = false;
-			this.emit_save.hashtag = '';
+				this.$emit('edit', this.emit_save);
+				this.emit_save.button = false;
+				this.emit_save.hashtag = '';
+			}
+			else {
+				// need to handle removing images here!
+			}
 		},
 		set_active(index, event) {
 			if(this.active_index > -1) {
