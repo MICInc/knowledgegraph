@@ -10,9 +10,9 @@
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
 			<div class='tag_type'>
 				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)" accept="image/*">
-				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index)">hr</button>
-				<button class="tag_switch" v-on:click.prevent="switch_content('p', index)">p</button>
-				<!-- <button class="tag_switch" v-on:click.prevent="switch_content('canvas', index)">canvas</button> -->
+				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index, $event)">hr</button>
+				<button class="tag_switch" v-on:click.prevent="switch_content('p', index, $event)">p</button>
+				<!-- <button class="tag_switch" v-on:click.prevent="switch_content('canvas', index, $event)">canvas</button> -->
 			</div>
 			<img class="image-content" v-bind:src="content[index].src" v-bind:id="'content-'+index" v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:click="set_active(index)">
 			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content($event)">
@@ -56,6 +56,7 @@ export default {
 			}
 
 			e.preventDefault();
+			if (this.active_index < 0) this.active_index == 0;
 
 			var next = this.active_index + 1;
 
@@ -208,28 +209,25 @@ export default {
 			event.preventDefault();
 		},
 		remove_active(e) {
-			// remove focus from all elements else will also accidentally delete other content
-			document.activeElement.blur();
-
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
+					// remove focus from all elements else will also accidentally delete other content
+					document.activeElement.blur();
+
 					this.content.splice(this.active_index, 1);
 					this.$emit('remove', this.active_index);
 					this.active_index -= 1;
-					if (this.active_index < 0) this.active_index == 0;
 				}
 
 				this.save();
-			}
 
-			if(this.content.length == 0) {
-				this.add_content(e);
+				if(this.content.length == 0) {
+					this.add_content(e);
+					this.focus(this.active_index);
+				}
 			}
-
-			this.active_index = this.active_index == 0 ? 0 : this.active_index - 1;
-			this.focus(this.active_index);
 		},
 		remove_content(index, event) {
 			var el = event.target;
@@ -238,7 +236,6 @@ export default {
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(index, 1);
 				this.active_index -= 1;
-				if (this.active_index < 0) this.active_index == 0;
 
 				var prev = index - 1;
 
@@ -265,27 +262,29 @@ export default {
 		},
 		save() {
 			var i = this.active_index;
-			var el = this.$refs['content-'+i][0];
-			
-			var cell = {
-				id: i,
-				tag: el.nodeName.toLowerCase(),
-				date_created: new Date(),
-				last_modified: new Date(),
-				text: this.trim(el.innerText),
-				html: el.innerHTML,
-				name: this.content[i].name != undefined ? this.content[i].name : '',
-				src: this.content[i].src
-			};
+			var refs = this.$refs['content-'+i];
 
-			console.log(Object.keys(cell).length === 0);
+			if(refs != undefined) {
+				var el = refs[0];
+				
+				var cell = {
+					id: i,
+					tag: this.content[i].tag == 'hr' ? 'hr' : el.nodeName.toLowerCase(),
+					date_created: new Date(),
+					last_modified: new Date(),
+					text: this.content[i].tag == 'hr' ? '' : this.trim(el.innerText),
+					html: this.content[i].tag == 'hr' ? '<hr>' : el.innerHTML,
+					name: this.content[i].name != '' ? this.content[i].name : '',
+					src: this.content[i].src != '' ? this.content[i].src : ''
+				};
 
-			this.emit_save.cell = cell;
-			this.emit_save.update_cell = i;
+				this.emit_save.cell = cell;
+				this.emit_save.update_cell = i;
 
-			this.$emit('edit', this.emit_save);
-			this.emit_save.button = false;
-			this.emit_save.hashtag = '';
+				this.$emit('edit', this.emit_save);
+				this.emit_save.button = false;
+				this.emit_save.hashtag = '';
+			}
 		},
 		set_active(index, event) {
 			if(this.active_index > -1) {
@@ -334,8 +333,11 @@ export default {
 			this.emit_save.button = true;
 			this.save();
 		},
-		switch_content(tag, index) {
+		switch_content(tag, index, event) {
+			this.active_index = index;
 			this.content[index].tag = tag;
+			this.content[index].src = '';
+			this.content[index].name = '';
 			this.save();
 		},
 		trim(str, all=false) {

@@ -92,10 +92,8 @@ export default {
 			this.$router.push('/content/'+this.url);
 		},
 		remove_content(index) {
-			console.log('removing index '+index);
 			ContentService.removeContent({ id: this.content_id, index: index })
 			.then((data) => {
-				console.log('removed index '+index);
 			})
 			.catch(error => {
 				console.log(error);
