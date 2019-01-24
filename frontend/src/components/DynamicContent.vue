@@ -1,7 +1,5 @@
 <template>
-	<!-- <div id="container" v-on:keyup="save()" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()"> -->
-	<div id="container" v-on:keydown.delete="remove_active()" v-on:keyup.enter="add_content()" v-on:keydown.tab="focus()">
-		<!-- <input name="file" type="file" v-on:change="import_file($event)"> -->
+	<div id="container" v-on:keydown.delete="remove_active($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus()">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -17,10 +15,10 @@
 				<!-- <button class="tag_switch" v-on:click.prevent="switch_content('canvas', index)">canvas</button> -->
 			</div>
 			<img class="image-content" v-bind:src="content[index].src" v-bind:id="'content-'+index" v-if="'img' == content[index].tag" v-bind:ref="'content-'+index" v-on:click="set_active(index)">
-			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content(index)">
+			<div class="content-hr" v-if="'hr' == content[index].tag" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)" v-on:keyup.enter="add_content($event)">
 				<hr>
 			</div>
-			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.enter="prevent_nl($event)" v-on:keydown.delete="check_content(index, $event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index, $event)" contenteditable></p>
+			<p v-if="'p' == content[index].tag" v-bind:id="'content-'+index" class="content" v-bind:ref="'content-'+index" v-on:keydown.delete="check_content(index, $event)" v-on:keyup.delete="remove_content(index, $event)" v-on:keyup="input(index, $event)" v-on:click="set_active(index, $event)" contenteditable></p>
 			<canvas v-if="'canvas' == content[index].tag" class="content" v-bind:id="'content-'+index" v-bind:ref="'content-'+index" v-on:click="set_active(index)"></canvas>
 		</div>
 	</div>
@@ -51,19 +49,24 @@ export default {
 		}
 	},
 	methods: {
-		add_content() {
-			var next = this.active_index + 1;
+		add_content(e) {
+			if(e.keyCode === 13 && !e.shiftKey) {
+				e.preventDefault();
 
-			this.content.splice(next, 0, {
-				id: Math.random(),
-				tag: 'p',
-				src: ''
-			});
+				var next = this.active_index + 1;
 
-			this.focus(next);
+				this.content.splice(next, 0, {
+					id: Math.random(),
+					tag: 'p',
+					src: ''
+				});
+
+				this.focus(next);
+			}
 		},
 		add_image(index, event) {
 			var el = event.target;
+			this.active_index = index;
 
 			// disable previous cell content
 			this.content[index].tag = 'img';
@@ -139,7 +142,7 @@ export default {
 				});
 			}
 		},
-		import_file(event) {
+		import_file(e) {
 			var el = event.target;
 			
 			if(el.files && el.files[0]) {
@@ -148,7 +151,7 @@ export default {
 					var content = e.target.result.split('\n\n');
 
 					for(var i = 0; i < content.length; i++) {
-						this.add_content();
+						this.add_content(e);
 						this.content[i].html = content[i];
 					}
 				}
@@ -200,7 +203,7 @@ export default {
 		prevent_nl(event) {
 			event.preventDefault();
 		},
-		remove_active() {
+		remove_active(e) {
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
@@ -212,7 +215,7 @@ export default {
 			}
 
 			if(this.content.length == 0) {
-				this.add_content();
+				this.add_content(e);
 			}
 		},
 		remove_content(index, event) {
@@ -251,6 +254,7 @@ export default {
 		save() {
 			var i = this.active_index;
 			var el = this.$refs['content-'+i][0];
+			console.log('i: '+i);
 
 			var cell = {
 				id: i,
@@ -262,6 +266,8 @@ export default {
 				name: this.content[i].name,
 				src: this.content[i].src
 			};
+
+			console.log(this.content[i].src);
 
 			this.emit_save.cell = cell;
 			this.emit_save.update_cell = i;
@@ -307,6 +313,9 @@ export default {
 				range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
 				range.select();
 			}
+		},
+		shift_enter(index, event) {
+			console.log('shift');
 		},
 		stylize(style) {
 			document.execCommand(style, false, null);
