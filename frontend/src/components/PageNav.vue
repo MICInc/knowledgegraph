@@ -61,8 +61,16 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	height: 50px;
-	padding: 0 20px;
 	border-bottom: 1px solid #EAEAEA;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	overflow: hidden;
+	background: #fff;
+}
+
+nav {
+	padding: 0 20px;
 }
 
 nav, input {

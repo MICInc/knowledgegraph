@@ -73,6 +73,7 @@ ul {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+  margin-top: 50px; /*Should match navbar height*/
 }
 
 #app main {
