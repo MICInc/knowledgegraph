@@ -296,15 +296,6 @@ export default {
 			this.active_index = index;
 			this.cursor_pos = this.cursor_position();
 		},
-		set_cursor(el, pos) {
-			// https://stackoverflow.com/questions/6249095/how-to-set-caretcursor-position-in-contenteditable-element-div
-			var range = document.createRange();
-			var sel = window.getSelection();
-			range.setStart(el, pos);
-			range.collapse(true);
-			sel.removeAllRanges();
-			sel.addRange(range);
-		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
 			var range, selection;
