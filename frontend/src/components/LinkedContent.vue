@@ -1,8 +1,6 @@
 <template>
 	<div class="linked-content-wrapper">
 		<h2><router-link tag="a" v-bind:to="{path: '/content/' + content.url}">{{content.title}}</router-link></h2>
-		<!--<p>{{content.description}}</p>-->
-		<!--<p>{{content.content}}</p>-->
 		<div class="actions">
 			<div class="liked">{{content.num_likes}} Liked</div>
 			<div class="shared">{{content.num_shares}} shared</div>
@@ -30,7 +28,6 @@ h2 {
 }
 
 h2 a {
-	color: #fff;
 	text-decoration: none;
 }
 	
