@@ -208,13 +208,13 @@ export default {
 			event.preventDefault();
 		},
 		remove_active(e) {
-			// remove focus from all elements else will also accidentally delete other content
-			document.activeElement.blur();
-
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
+					// remove focus from all elements else will also accidentally delete other content
+					document.activeElement.blur();
+					
 					this.content.splice(this.active_index, 1);
 					this.$emit('remove', this.active_index);
 					this.active_index -= 1;
@@ -296,15 +296,6 @@ export default {
 			
 			this.active_index = index;
 			this.cursor_pos = this.cursor_position();
-		},
-		set_cursor(el, pos) {
-			// https://stackoverflow.com/questions/6249095/how-to-set-caretcursor-position-in-contenteditable-element-div
-			var range = document.createRange();
-			var sel = window.getSelection();
-			range.setStart(el, pos);
-			range.collapse(true);
-			sel.removeAllRanges();
-			sel.addRange(range);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
