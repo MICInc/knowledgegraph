@@ -101,7 +101,7 @@ export default {
 					this.error = response.data.error
 				} else if (response.status == 200) {
 					// Login newly created l=user
-					this.$store.dispatch('login', response.data.token)
+					this.$store.dispatch('login', [response.data.token, response.data.userInfo])
 					router.push({ name: 'home' })
 									
 				} else {

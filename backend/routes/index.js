@@ -68,7 +68,11 @@ router.post('/signup', function(req, res) {
 
 			res.json({
 				message: 'User successfully created.',
-				token: token
+				token: token,
+				userInfo: {
+					firstName: user.first_name,
+					lastName: user.last_name
+				}
 			});
 
 		} else {
@@ -91,7 +95,11 @@ router.post('/login', function(req, res, next) {
 
 			res.json({
 				message: 'User successfully authenticated.',
-				token: token
+				token: token,
+				userInfo: {
+					firstName: user.first_name,
+					lastName: user.last_name
+				}
 			});
 
 		} else {

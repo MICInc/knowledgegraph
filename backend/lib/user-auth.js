@@ -69,7 +69,7 @@ module.exports = {
 	},
 
 	loginUser: function(email, password, callback) {
-		User.findOne({email: email}, function(err, user) {
+		db.User.findOne({email: email}, function(err, user) {
 			if (err) handleError(err);
 
 			if (user != null) {
