@@ -112,12 +112,11 @@ export default {
 			if(sel_string[sel_length-1] == '#') {
 				sel.deleteFromDocument();
 				// event.preventDefault();
-
 				this.remove_tag(event);
 			}
-			else {
-				// nothing was highlighted so do this
-				var pos = this.cursor_position(false);
+			else if(sel_length == 0) {
+				//selected nothing, so backspacing one character and check if hashmark
+				var pos = this.cursor_position();
 
 				// if the cursor position is not at the very beginning
 				// and the character you're about to delete is a hashmark
@@ -125,6 +124,7 @@ export default {
 					this.remove_tag(event, true);
 				}
 			}
+			// else selected substring without hashmark at the end so just delete normally
 		},
 		cursor_position(collapse=true) {
 			var sel = document.getSelection();
