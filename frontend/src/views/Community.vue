@@ -1,5 +1,5 @@
 <template>
-	<div class="community main">
+	<div class="community">
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Community Page</h1>
@@ -7,7 +7,6 @@
 			<br>
 			<a href="/mic/mit">MIT MIC</a>
 		</div>
-		<Footer></Footer>
 	</div>
 </template>
 

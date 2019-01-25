@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <router-view/>
+    <main>
+      <router-view/>
+    </main>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
+import Footer from '@/components/Footer'
+
 export default {
-    
+  components: {
+    Footer,
+  }
 }
 </script>
 
@@ -68,7 +75,7 @@ ul {
 	min-height: 100vh;
 }
 
-#app .main {
+#app main {
   flex: 1;
 }
 
