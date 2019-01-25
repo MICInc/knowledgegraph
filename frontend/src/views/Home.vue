@@ -67,7 +67,7 @@ export default {
 .container {
 	flex: 1;
 	display: flex;
-
+	min-width: 1080px;
 }
 	
 .linked-content-list {
