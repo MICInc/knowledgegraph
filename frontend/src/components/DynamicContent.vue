@@ -111,7 +111,6 @@ export default {
 			// user highlighted text and the last char is a hashmark
 			if(sel_string[sel_length-1] == '#') {
 				sel.deleteFromDocument();
-				// event.preventDefault();
 				this.remove_tag(event);
 			}
 			else if(sel_length == 0) {
@@ -193,11 +192,8 @@ export default {
 						this.replace_html(range, hashtag);
 					}
 				}
-				
-				sel.removeAllRanges();
-				if(!has_bold) {
-					this.focus(this.active_index);
-				}
+
+				if(sel.anchorNode != undefined) sel.collapseToEnd();
 			}
 			this.save();
 		},
@@ -261,11 +257,10 @@ export default {
 
 				if(child.nodeName == 'B') {
 					var word = this.trim(child.innerText.replace('#', ''), true);
-					console.log('target: '+target+' word: '+word);
 
 					if(word == target) {
 						event.preventDefault();
-						var new_child = document.createTextNode(word);//del_hashmark ? word : '\u00A0'+word);
+						var new_child = document.createTextNode(word);
 						el.replaceChild(new_child, child);
 
 						break;
