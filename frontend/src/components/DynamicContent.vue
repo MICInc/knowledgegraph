@@ -104,37 +104,33 @@ export default {
 			return window.btoa( binary );
 		},
 		check_content(index, event) {
-			var el = event.target;
-			var innerText = el.innerText;
-			var target = '#';
+			var sel = document.getSelection();
+			var sel_string = sel.toString();
+			var sel_length = sel_string.length;
 
-			for(var i = this.cursor_position(); i < innerText.length; i++) {
-				if(/\s$/.test(innerText[i])) break;
-				target += innerText[i];
+			// user highlighted text and the last char is a hashmark
+			if(sel_string[sel_length-1] == '#') {
+				sel.deleteFromDocument();
+				// event.preventDefault();
+
+				this.remove_tag(event);
 			}
+			else {
+				// nothing was highlighted so do this
+				var pos = this.cursor_position(false);
 
-			target = this.trim(target, true);
-
-			for(var i = 0; i < el.children.length; i++) {
-				var child = el.children.item(i);
-
-				if(child.nodeName == 'B') {
-					var word = this.trim(child.innerText, true);
-
-					if(word == target) {
-						word = this.cursor_position()-1 == 0 ? word.slice(1) : '\u00A0'+word.slice(1);
-						var new_child = document.createTextNode(word);
-						el.replaceChild(new_child, child);
-						break;
-					}
+				// if the cursor position is not at the very beginning
+				// and the character you're about to delete is a hashmark
+				if(pos > 0 && event.target.innerText[pos-1] == '#') {
+					this.remove_tag(event, true);
 				}
 			}
 		},
-		cursor_position() {
+		cursor_position(collapse=true) {
 			var sel = document.getSelection();
 			sel.modify("extend", "backward", "paragraphboundary");
 			var pos = sel.toString().length;
-			sel.collapseToEnd();
+			if(collapse) sel.collapseToEnd();
 
 			return pos;
 		},
@@ -247,6 +243,36 @@ export default {
 				}
 			}
 		},
+		remove_tag(event) {
+			var target = '';
+			var el = event.target;
+			var innerText = el.innerText;
+
+			for(var i = this.cursor_position(); i < innerText.length; i++) {
+				if(/\s$/.test(innerText[i])) break;
+				target += innerText[i];
+			}
+
+			// hashtags can never contain spaces, so trim to remove anomalous whitespaces
+			target = this.trim(target, true);
+
+			for(var i = 0; i < el.children.length; i++) {
+				var child = el.children.item(i);
+
+				if(child.nodeName == 'B') {
+					var word = this.trim(child.innerText.replace('#', ''), true);
+					console.log('target: '+target+' word: '+word);
+
+					if(word == target) {
+						event.preventDefault();
+						var new_child = document.createTextNode(word);//del_hashmark ? word : '\u00A0'+word);
+						el.replaceChild(new_child, child);
+
+						break;
+					}
+				}
+			}
+		},
 		replace_html(range, target, node_type="a") {
 			var el = document.createElement(node_type);
 			el.innerHTML = target;
@@ -294,7 +320,7 @@ export default {
 			}
 			
 			this.active_index = index;
-			this.cursor_pos = this.cursor_position();
+			// this.cursor_pos = this.cursor_position();
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
