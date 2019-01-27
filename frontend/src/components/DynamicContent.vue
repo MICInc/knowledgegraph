@@ -104,37 +104,32 @@ export default {
 			return window.btoa( binary );
 		},
 		check_content(index, event) {
-			var el = event.target;
-			var innerText = el.innerText;
-			var target = '#';
+			var sel = document.getSelection();
+			var sel_string = sel.toString();
+			var sel_length = sel_string.length;
 
-			for(var i = this.cursor_position(); i < innerText.length; i++) {
-				if(/\s$/.test(innerText[i])) break;
-				target += innerText[i];
+			// user highlighted text and the last char is a hashmark
+			if(sel_string[sel_length-1] == '#') {
+				sel.deleteFromDocument();
+				this.remove_tag(event);
 			}
+			else if(sel_length == 0) {
+				//selected nothing, so backspacing one character and check if hashmark
+				var pos = this.cursor_position();
 
-			target = this.trim(target, true);
-
-			for(var i = 0; i < el.children.length; i++) {
-				var child = el.children.item(i);
-
-				if(child.nodeName == 'B') {
-					var word = this.trim(child.innerText, true);
-
-					if(word == target) {
-						word = this.cursor_position()-1 == 0 ? word.slice(1) : '\u00A0'+word.slice(1);
-						var new_child = document.createTextNode(word);
-						el.replaceChild(new_child, child);
-						break;
-					}
+				// if the cursor position is not at the very beginning
+				// and the character you're about to delete is a hashmark
+				if(pos > 0 && event.target.innerText[pos-1] == '#') {
+					this.remove_tag(event, true);
 				}
 			}
+			// else selected substring without hashmark at the end so just delete normally
 		},
-		cursor_position() {
+		cursor_position(collapse=true) {
 			var sel = document.getSelection();
 			sel.modify("extend", "backward", "paragraphboundary");
 			var pos = sel.toString().length;
-			sel.collapseToEnd();
+			if(collapse && sel.anchorNode != undefined) sel.collapseToEnd();
 
 			return pos;
 		},
@@ -197,11 +192,8 @@ export default {
 						this.replace_html(range, hashtag);
 					}
 				}
-				
-				sel.removeAllRanges();
-				if(!has_bold) {
-					this.focus(this.active_index);
-				}
+
+				if(sel.anchorNode != undefined) sel.collapseToEnd();
 			}
 			this.save();
 		},
@@ -247,6 +239,35 @@ export default {
 				}
 			}
 		},
+		remove_tag(event) {
+			var target = '';
+			var el = event.target;
+			var innerText = el.innerText;
+
+			for(var i = this.cursor_position(); i < innerText.length; i++) {
+				if(/\s$/.test(innerText[i])) break;
+				target += innerText[i];
+			}
+
+			// hashtags can never contain spaces, so trim to remove anomalous whitespaces
+			target = this.trim(target, true);
+
+			for(var i = 0; i < el.children.length; i++) {
+				var child = el.children.item(i);
+
+				if(child.nodeName == 'B') {
+					var word = this.trim(child.innerText.replace('#', ''), true);
+
+					if(word == target) {
+						event.preventDefault();
+						var new_child = document.createTextNode(word);
+						el.replaceChild(new_child, child);
+
+						break;
+					}
+				}
+			}
+		},
 		replace_html(range, target, node_type="a") {
 			var el = document.createElement(node_type);
 			el.innerHTML = target;
@@ -257,8 +278,6 @@ export default {
 			}
 
 			range.insertNode(frag);
-			range.setStart(frag, 0);
-			range.collapse();
 		},
 		save() {
 			var i = this.active_index;
@@ -294,16 +313,7 @@ export default {
 			}
 			
 			this.active_index = index;
-			this.cursor_pos = this.cursor_position();
-		},
-		set_cursor(el, pos) {
-			// https://stackoverflow.com/questions/6249095/how-to-set-caretcursor-position-in-contenteditable-element-div
-			var range = document.createRange();
-			var sel = window.getSelection();
-			range.setStart(el, pos);
-			range.collapse(true);
-			sel.removeAllRanges();
-			sel.addRange(range);
+			// this.cursor_pos = this.cursor_position();
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
