@@ -129,7 +129,7 @@ export default {
 			var sel = document.getSelection();
 			sel.modify("extend", "backward", "paragraphboundary");
 			var pos = sel.toString().length;
-			if(collapse) sel.collapseToEnd();
+			if(collapse && sel.anchorNode != undefined) sel.collapseToEnd();
 
 			return pos;
 		},
@@ -278,8 +278,6 @@ export default {
 			}
 
 			range.insertNode(frag);
-			range.setStart(frag, 0);
-			range.collapse();
 		},
 		save() {
 			var i = this.active_index;
