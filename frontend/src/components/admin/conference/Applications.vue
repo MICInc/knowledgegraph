@@ -10,27 +10,24 @@
 </template>
 
 <script>
-import io from 'socket.io-client'
+import Socket from '@/services/Socket';
 
 export default {
 	name: 'Applications',
-
+	created() {
+		Socket.send('');
+	},
 	data() {
 		return {
-			socket: new io('127.0.0.1:7000', {
-				extraHeaders: {
-					'Access-Control-Allow-Credentials': 'omit'
-				}
-			})
+
 		}
 	},
-	props: ['applications'],
-	created() {
-		// this.socket.emit('REGISTRATIONS', {1: 'fuck this shit'});
-		// this.socket.on('MESSAGE', (data) => {
-		// 	// console.log(data);
-		// });
-	}
+	methods: {
+		receive(data) {
+			console.log(data);
+		}
+	},
+	props: ['applications']
 }
 </script>
 

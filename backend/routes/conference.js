@@ -4,6 +4,7 @@ var db = require('../db/database');
 var file_handler = require('../lib/file_handler');
 
 router.post('/register', function(req, res) {
+	let ws = req.ws;
 	console.log('posting conf reg');
 
 	if(Object.keys(req.body).length == 0) {
@@ -25,6 +26,9 @@ router.post('/register', function(req, res) {
 			var msg = 'Saved conf application';
 			console.log(msg);
 			res.send(msg);
+			req.wss.on('application', function(data) {
+				req.wss.send('got a new app');
+			});
 		})
 		.catch(err => {
 			console.log(err);
