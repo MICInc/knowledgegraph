@@ -11,22 +11,21 @@
 
 const socket = new WebSocket('ws://localhost:7000');
 
+//Client needs to implement:
+socket.addEventListener('open', () => {
+	console.log('connected');
+}),
 
-/*
-Client needs to implement:
-	socket.addEventListener('open', () => {
-		console.log('connected');
-	}),
+socket.addEventListener('message', e => {
+	console.log('reply:');
+	console.log(e.data);
+});
 
-	socket.addEventListener('application', e => {
-		console.log(e.data);
-	});
-*/
 export default {
 	socket: socket,
 	send(data) {
-		console.log('socketssss');
 		if(socket.readyState == WebSocket.OPEN) {
+			console.log('sending message');
 			socket.send(data);
 		}
 		else {

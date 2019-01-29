@@ -12,7 +12,7 @@ var MongoStore  = require('connect-mongo')(session);
 var morgan      = require('morgan');
 var cors        = require('cors');
 var port        = process.env.PORT || 7000; //keep this or change as long as greater than 1024
-var ws          = require('ws');
+const ws          = require('ws');
 
 
 // master process
@@ -113,9 +113,14 @@ else
   const wss = new ws.Server({ server });
   app.wss = wss;
 
-  wss.once('connection', function connection(ws) {
+  wss.once('connection', ws => {
     console.log('client socket connected');
-    ws.send('something');
+    ws.send('Hi, from the server');
+
+    ws.on('message', data => {
+      console.log('new msg: '+data);
+      ws.send(data);
+    });
   });
   console.log('Listening on port ' + port);
 }

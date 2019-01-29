@@ -26,9 +26,7 @@ router.post('/register', function(req, res) {
 			var msg = 'Saved conf application';
 			console.log(msg);
 			res.send(msg);
-			req.wss.on('application', function(data) {
-				req.wss.send('got a new app');
-			});
+			// req.app.wss.send('got a new app');
 		})
 		.catch(err => {
 			console.log(err);

@@ -15,7 +15,7 @@ import Socket from '@/services/Socket';
 export default {
 	name: 'Applications',
 	created() {
-		Socket.send('');
+		Socket.send((new Date));
 	},
 	data() {
 		return {
