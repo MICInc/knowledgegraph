@@ -8,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<div class='tag_type'>
+			<div v-if="is_empty" class='tag_type'>
 				<input v-bind:ref="'img-button-'+index" class="tag_switch" type="file" name="image" v-on:change="add_image(index, $event)" accept="image/*">
 				<button class="tag_switch" v-on:click.prevent="switch_content('hr', index, $event)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_content('p', index, $event)">p</button>
@@ -45,7 +45,8 @@ export default {
 				cell: undefined,
 				hashtag: '',
 				update_cell: -1
-			}
+			},
+			is_empty: true
 		}
 	},
 	methods: {
@@ -195,6 +196,8 @@ export default {
 
 				if(sel.anchorNode != undefined) sel.collapseToEnd();
 			}
+			this.is_empty = el.innerText.length == 0;
+
 			this.save();
 		},
 		prevent_nl(event) {
