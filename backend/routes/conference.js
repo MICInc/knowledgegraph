@@ -26,23 +26,20 @@ router.post('/register', function(req, res) {
 			var msg = 'Saved conf application';
 			console.log(msg);
 			res.send(msg);
-			// req.app.wss.send('got a new app');
+			// req.app.wss.once('connection', ws => {
+			// 	console.log('client socket connected');
+			// 	ws.send('Hi, from the server');
+			// 	ws.on('message', data => {
+			// 		console.log('new msg: '+data);
+			// 		ws.send(data);
+			// 	});
+			// });
 		})
 		.catch(err => {
 			console.log(err);
 			res.status(400).send('Failed to register');
 		});
 	}
-});
-
-router.get('/register', function(req, res) {
-	console.log(req.body);
-	// res.send('conf_apples');
-	// req.app.io.on('REGISTRATIONS', function(socket) {
-	// 	socket.emit('hello socket.io');
-	// });
-	// console.log('get register route');
-	// req.app.io.emit('REGISTRATIONS', 'conf_apples2');
 });
 
 module.exports = router;

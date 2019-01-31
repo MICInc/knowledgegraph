@@ -44,24 +44,24 @@ export default {
 		}
 	},
 	methods: {
-		async getApplications() {
-			return await RegistrationService.getRegistrations()
-			.then(function(data) {
-				return data.data;
-			});
-		},
+		// async getApplications() {
+		// 	return await RegistrationService.getRegistrations()
+		// 	.then(function(data) {
+		// 		return data.data;
+		// 	});
+		// },
 		show(view) {
 			this.view = view;
 			this.display = view;
 		}
 	},
 	beforeMount() {
-		this.getApplications().then(data => {
-			console.log(data);
-			for(let k in data) {
-				this.applications.push(data[k]);
-			}
-		});
+		// this.getApplications().then(data => {
+		// 	console.log(data);
+		// 	for(let k in data) {
+		// 		this.applications.push(data[k]);
+		// 	}
+		// });
 	}
 }
 </script>

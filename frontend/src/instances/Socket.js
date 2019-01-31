@@ -8,28 +8,39 @@
 	https://stackoverflow.com/questions/17696801/express-js-app-listen-vs-server-listen
 	https://www.npmjs.com/package/ws
 */
+import Vue from 'vue';
 
-const socket = new WebSocket('ws://localhost:7000');
+const websocket = new WebSocket('ws://localhost:7000');
 
-//Client needs to implement:
-socket.addEventListener('open', () => {
+websocket.addEventListener('open', () => {
 	console.log('connected');
-}),
+});
 
-socket.addEventListener('message', e => {
+websocket.addEventListener('message', e => {
 	console.log('reply:');
 	console.log(e.data);
 });
 
-export default {
-	socket: socket,
-	send(data) {
-		if(socket.readyState == WebSocket.OPEN) {
-			console.log('sending message');
-			socket.send(data);
-		}
-		else {
-			throw 'Not connected';
+websocket.onmessage = function(message) {
+	emitter.$emit('message', message.data);
+}
+
+websocket.onerror = function(error) {
+	emitter.$emit('error', error);
+}
+
+const socket = new Vue({
+	methods: {
+		send(data) {
+			if(websocket.readyState == WebSocket.OPEN) {
+				console.log('sending message');
+				websocket.send(data);
+			}
+			else {
+				throw 'Not connected';
+			}
 		}
 	}
-}
+});
+
+export default socket;

@@ -114,13 +114,11 @@ else
   app.wss = wss;
 
   wss.once('connection', ws => {
-    console.log('client socket connected');
-    ws.send('Hi, from the server');
+        ws.on('message', data => {
+          console.log('new msg: '+data);
+          ws.send(data);
+        });
+      });
 
-    ws.on('message', data => {
-      console.log('new msg: '+data);
-      ws.send(data);
-    });
-  });
   console.log('Listening on port ' + port);
 }

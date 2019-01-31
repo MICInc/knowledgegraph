@@ -10,12 +10,15 @@
 </template>
 
 <script>
-import Socket from '@/services/Socket';
+import Socket from '@/instances/Socket';
 
 export default {
 	name: 'Applications',
+	beforeDestroy() {
+		Socket.$off('message', this.receive);
+	},
 	created() {
-		Socket.send((new Date));
+		Socket.$on('message', this.receive);
 	},
 	data() {
 		return {
