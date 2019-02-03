@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 		accessToken: '',
-		isLoggedIn: false,
+		isLoggedIn: false
   },
 
   mutations: {
@@ -16,7 +16,7 @@ export default new Vuex.Store({
 
 		setIsLoggedIn (state, bool) {
 			Vue.set(state, 'isLoggedIn', bool)
-		},
+		}
   },
 
   actions: {

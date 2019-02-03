@@ -23,6 +23,9 @@ export default {
 		Applications,
 		Overview
 	},
+	created() {
+		this.$store.state.socket.$on('message', this.receive);
+	},
 	data() {
 		return {
 			applications: [
@@ -44,25 +47,15 @@ export default {
 		}
 	},
 	methods: {
-		// async getApplications() {
-		// 	return await RegistrationService.getRegistrations()
-		// 	.then(function(data) {
-		// 		return data.data;
-		// 	});
-		// },
 		show(view) {
 			this.view = view;
 			this.display = view;
+		},
+		receive(data) {
+			// push to this.applications
+			console.log(data);
 		}
 	},
-	beforeMount() {
-		// this.getApplications().then(data => {
-		// 	console.log(data);
-		// 	for(let k in data) {
-		// 		this.applications.push(data[k]);
-		// 	}
-		// });
-	}
 }
 </script>
 

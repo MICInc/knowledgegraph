@@ -10,24 +10,11 @@
 </template>
 
 <script>
-import Socket from '@/instances/Socket';
 
 export default {
 	name: 'Applications',
-	beforeDestroy() {
-		Socket.$off('message', this.receive);
-	},
-	created() {
-		Socket.$on('message', this.receive);
-	},
 	data() {
 		return {
-
-		}
-	},
-	methods: {
-		receive(data) {
-			console.log(data);
 		}
 	},
 	props: ['applications']

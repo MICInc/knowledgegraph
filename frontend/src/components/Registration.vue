@@ -361,6 +361,9 @@ export default {
 			this.reimburse.misc[index].date = date;
 		},
 		submit() {
+			console.log('socket undef? '+(this.$socket==undefined));
+			this.$socket.send('testing');
+			console.log('sent');
 
 			if(!this.vali_date()) {
 				this.profile.dob.err = 'Please enter a valid birthday.';

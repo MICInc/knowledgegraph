@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
 var file_handler = require('../lib/file_handler');
+const ws = require('ws');
 
 router.post('/register', function(req, res) {
 	let ws = req.ws;
@@ -26,14 +27,11 @@ router.post('/register', function(req, res) {
 			var msg = 'Saved conf application';
 			console.log(msg);
 			res.send(msg);
-			// req.app.wss.once('connection', ws => {
-			// 	console.log('client socket connected');
-			// 	ws.send('Hi, from the server');
-			// 	ws.on('message', data => {
-			// 		console.log('new msg: '+data);
-			// 		ws.send(data);
-			// 	});
-			// });
+			var wss = req.app.get('wss');
+			wss.on('message', function incoming(data) {
+				console.log('new app '+data);
+				wss.send('new app');
+			});
 		})
 		.catch(err => {
 			console.log(err);
