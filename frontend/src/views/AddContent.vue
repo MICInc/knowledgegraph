@@ -16,7 +16,8 @@
 
 <script>
 import PageNav from '@/components/PageNav';
-import ContentService from '../services/ContentService.js';
+import Socket from '@/services/Socket'; 
+import ContentService from '@/services/ContentService.js';
 import DynamicContent from '@/components/DynamicContent';
 import Path from 'path';
 
@@ -160,6 +161,9 @@ export default {
 	},
 	ready: function() {
 		Vue.util.on(window, 'beforeunload', this.save, false);
+	},
+	watch: {
+		'update': 
 	}
 }
 </script>

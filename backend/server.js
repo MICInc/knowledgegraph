@@ -102,15 +102,17 @@ else {
 
 	var server = app.listen(port);
 	const wss = new ws.Server({ server });
-	app.set('wss', wss);
 
-	wss.on('connection', ws => {
+	wss.on('connection', function (ws, req) {
 		console.log('on connection');
 		ws.send('server connected');
 		ws.on('message', data => {
 			console.log('received: '+data);
+			wss.clients.forEach(function each(client) {
+				console.log('socketss');
+			});
 		});
 	});
-
+	
 	console.log('Listening on port ' + port);
 }

@@ -31,5 +31,6 @@ export default new Vuex.Store({
 			commit('setIsLoggedIn', false)
 		},
 
-  }
+  }//,
+  // plugins: [socket]
 })

@@ -2,10 +2,8 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
 var file_handler = require('../lib/file_handler');
-const ws = require('ws');
 
 router.post('/register', function(req, res) {
-	let ws = req.ws;
 	console.log('posting conf reg');
 
 	if(Object.keys(req.body).length == 0) {
@@ -27,11 +25,6 @@ router.post('/register', function(req, res) {
 			var msg = 'Saved conf application';
 			console.log(msg);
 			res.send(msg);
-			var wss = req.app.get('wss');
-			wss.on('message', function incoming(data) {
-				console.log('new app '+data);
-				wss.send('new app');
-			});
 		})
 		.catch(err => {
 			console.log(err);
