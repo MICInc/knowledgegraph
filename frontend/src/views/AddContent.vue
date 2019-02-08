@@ -16,12 +16,13 @@
 
 <script>
 import PageNav from '@/components/PageNav';
-import Socket from '@/services/Socket'; 
+import Socket from '@/services/sockets/EditorSocket'; 
 import ContentService from '@/services/ContentService.js';
 import DynamicContent from '@/components/DynamicContent';
 import Path from 'path';
 
-window.onbeforeunload = function(){
+window.onbeforeunload = function() {
+	Socket.close();
     return "Are you sure you want to close the window?";
 }
 
@@ -104,7 +105,8 @@ export default {
 			this.save_status = 'saving...';
 
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, data: this.data }
+			var article = { id: this.content_id, user: this.user, data: this.data };
+			Socket.send(article);
 			
 			ContentService.saveContent(article)
 			.then((data) => {
@@ -121,7 +123,6 @@ export default {
 			.catch(error => {
 				console.log(error);
 			});
-			
 			this.save_status = 'saved';
 		},
 		update_content(emit_save) {
@@ -163,7 +164,7 @@ export default {
 		Vue.util.on(window, 'beforeunload', this.save, false);
 	},
 	watch: {
-		'update': 
+		// 'update': 
 	}
 }
 </script>

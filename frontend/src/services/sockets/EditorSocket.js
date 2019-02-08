@@ -11,6 +11,6 @@ Socket.addEventListener('message', e => {
 
 export default {
 	send(data) {
-		Socket.send(JSON.stringify({route: 'editor', data: data}));
+		if(Socket.readyState == 1) Socket.send(JSON.stringify({route: 'editor', data: data}));
 	}
 }

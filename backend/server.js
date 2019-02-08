@@ -107,7 +107,7 @@ else {
 		console.log('on connection');
 		ws.send('server connected');
 		ws.on('message', data => {
-			console.log('received: '+data);
+			console.log('socket received: '+data);
 			wss.clients.forEach(function each(client) {
 				console.log('socketss');
 			});
