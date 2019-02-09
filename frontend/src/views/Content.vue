@@ -3,6 +3,7 @@
 		<PageNav></PageNav>
 		<div v-if="this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0" class="container">
 			<h2>{{ content.title }}</h2>
+			<a class="edit" v-bind:href="'/content/edit/'+content.title.toLowerCase()">EDIT</a>
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
@@ -47,6 +48,7 @@ export default {
 			content_id: '',
 			url: this.$route.params.id,
 			content: {},
+			edit_url: ''
 		}
 	},
 	methods: {
@@ -71,6 +73,11 @@ export default {
 
 .authors {
 	font-size: 0.85em;
+}
+
+.edit {
+	font-size: 0.85em;
+	font-weight: bold;
 }
 
 #bibtex {

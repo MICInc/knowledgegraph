@@ -45,6 +45,11 @@ export default new Router({
 			component: () => import('./views/Content.vue')
 		},
 		{
+			path: '/content/edit/:id',
+			name: 'edit',
+			component: () => import('./views/AddContent.vue')
+		},
+		{
 			path: '/community',
 			name: 'community',
 			component: () => import('./views/Community.vue')
