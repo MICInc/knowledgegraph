@@ -39,7 +39,7 @@ export default {
 			this.data.title = url[url.length-1].toUpperCase();
 			ContentService.getContent( { params: {url: url}})
 			.then((data) => {
-				console.log(data.data[0]);
+				this.data.content = data.data[0].content;
 			});
 		}
 		else {
@@ -53,6 +53,7 @@ export default {
 				date_created: new Date(),
 				cell: undefined,
 				citations: '',
+				content: [],
 				hashtags: [],
 				last_modified: undefined,
 				publish: false,
@@ -171,11 +172,9 @@ export default {
 			e.target.setSelectionRange(start, start);
 		}
 	},
+	props: ['content'],
 	ready: function() {
 		Vue.util.on(window, 'beforeunload', this.save, false);
-	},
-	watch: {
-		// 'update': 
 	}
 }
 </script>
