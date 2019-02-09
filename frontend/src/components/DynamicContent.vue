@@ -49,9 +49,9 @@ export default {
 		}
 	},
 	methods: {
-		add_content(e) {
+		add_content(e=null) {
 			// ignore shift enter and allow other functions to call this
-			if(e.keyCode === 13 && e.shiftKey) {
+			if(e != null && e.keyCode === 13 && e.shiftKey) {
 				return;
 			}
 
@@ -354,6 +354,27 @@ export default {
 		},
 		trim(str, all=false) {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
+		}
+	},
+	props: {
+		collab: {
+			type: Array,
+			required: true
+		}
+	},
+	watch: {
+		collab: function(current, previous) {
+			// if(this.content.length > current.length) {
+			// 	// Increase number of cells
+			// 	for(var i=0; i < current.length; i++) {
+			// 		this.add_content();
+			// 	}
+
+				
+			// }
+			// else {
+			// 	this.content = current;
+			// }
 		}
 	}
 }

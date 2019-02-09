@@ -8,7 +8,7 @@
 			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')">
 			<br>
 			<form>
-				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)"></DynamicContent>
+				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)" :collab="data.content"></DynamicContent>
 			</form>
 		</div>
 	</div>
@@ -33,10 +33,20 @@ export default {
 		DynamicContent
 	},
 	created() {
+		Socket.open((data) => {
+			console.log(data);
+		});
+
+		Socket.receive((e) => {
+			var data = typeof e.data == 'object' && e.data != null ? JSON.parse(e.data) : e.data;
+			console.log('received: '+data);
+			// return e.data;
+		});
+		
 		var url = window.location.href.split('/');
 		
-		if(url[url.length-2] == 'edit') {
-			this.data.title = url[url.length-1].toUpperCase();
+		if(url[url.length-1] == 'edit') {
+			this.data.title = url[url.length-2].toUpperCase();
 			ContentService.getContent( { params: {url: url}})
 			.then((data) => {
 				this.data.content = data.data[0].content;

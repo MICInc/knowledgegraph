@@ -45,7 +45,7 @@ export default new Router({
 			component: () => import('./views/Content.vue')
 		},
 		{
-			path: '/content/edit/:id',
+			path: '/content/:id/edit',
 			name: 'edit',
 			component: () => import('./views/AddContent.vue')
 		},
