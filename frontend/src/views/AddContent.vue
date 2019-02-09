@@ -33,7 +33,18 @@ export default {
 		DynamicContent
 	},
 	created() {
-		this.save()
+		var url = window.location.href.split('/');
+		
+		if(url[url.length-2] == 'edit') {
+			this.data.title = url[url.length-1].toUpperCase();
+			ContentService.getContent( { params: {url: url}})
+			.then((data) => {
+				console.log(data.data[0]);
+			});
+		}
+		else {
+			this.save()
+		}
 	},
 	data() {
 		return {
