@@ -109,7 +109,9 @@ else {
 		ws.on('message', data => {
 			console.log('socket received: '+data);
 			wss.clients.forEach(function each(client) {
-				console.log('socketss');
+				if(client.readyState == ws.OPEN) {
+					client.send(data);
+				}
 			});
 		});
 	});

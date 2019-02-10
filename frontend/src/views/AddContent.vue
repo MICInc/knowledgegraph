@@ -40,7 +40,6 @@ export default {
 		Socket.receive((e) => {
 			var data = typeof e.data == 'object' && e.data != null ? JSON.parse(e.data) : e.data;
 			console.log('received: '+data);
-			// return e.data;
 		});
 		
 		var url = window.location.href.split('/');
