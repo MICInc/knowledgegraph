@@ -110,6 +110,7 @@ else {
 			console.log('socket received: '+data);
 			wss.clients.forEach(function each(client) {
 				if(client.readyState == ws.OPEN) {
+					console.log('sending..');
 					client.send(data);
 				}
 			});
