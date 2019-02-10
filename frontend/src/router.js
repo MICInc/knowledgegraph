@@ -60,14 +60,14 @@ export default new Router({
 			component: () => import('./views/Conference.vue')
 		},
 		{
+			path: '/old-conference',
+			name: 'old-conference',
+			component: () => import('./views/OldConference.vue')
+		},
+		{
 			path: '/mic/mit',
 			name: 'mic',
 			component: () => import('./views/MIC.vue')
-		},
-		{
-			path: '/archived/conference',
-			name: 'oldConference',
-			component: () => import('./views/OldConference.vue')
 		},
 		{
 			path: '/login',
