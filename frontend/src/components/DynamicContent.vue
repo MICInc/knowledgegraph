@@ -195,7 +195,6 @@ export default {
 
 				if(sel.anchorNode != undefined) sel.collapseToEnd();
 			}
-			// this.content[index].is_empty = el.innerText.length == 0;
 
 			this.save();
 		},

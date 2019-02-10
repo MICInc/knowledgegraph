@@ -1,5 +1,5 @@
 <template>
-	<div class="add-article main" v-on:keyup="save()" v-on:keydown="prevent_default($event)">
+	<div class="add-article main" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
 		<div class="container">
 			<button v-on:click.prevent="publish()">Publish</button>

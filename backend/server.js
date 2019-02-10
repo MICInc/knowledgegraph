@@ -73,7 +73,7 @@ else {
 	app.use(bodyParser.json({limit: upload_limit, extended: true}))
 	app.use(bodyParser.urlencoded({limit: upload_limit, extended: true}))
 	app.use(errors);
-	app.use(morgan('combined'));
+	app.use(morgan('tiny'));
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(bodyParser.json());
 	app.use(cors({credentials: true, origin: true}));
