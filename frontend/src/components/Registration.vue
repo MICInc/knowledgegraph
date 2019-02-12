@@ -55,57 +55,6 @@
 			<input v-model.trim="conf_resp.food_allergens"></input><br>
 			<label>Opt-in to share your resume with sponsors</label><br>
 			<input type="file" name="resume" multiple v-on:change="add_file($event, 0, 'resume')"><br>
-			Do you need travel and lodging assistance? <button v-on:click.prevent="reveal_travel">Show</button><br>
-			<div id="travel-form" v-if="form.travel">
-				<ul id="reimbursement-notice">
-					<li>Completing this form does not guarantee travel or lodging reimbursements.</li>
-					<li>Receipts must be uploaded for this form to be considered complete.</li>
-					<li>Receipts must match the amount requested for reimbursements.</li>
-					<li>Please view your profile for reimbursement status</li>
-				</ul>
-				<label>Travel and Lodging Reimbursement Form</label><br>
-				<label>Address</label><br>
-				<input type="text" v-model.trim="reimburse.address.street" placeholder="Street name">
-				<input type="text" v-model.trim="reimburse.address.apt" placeholder="Apartment number">
-				<input type="text" v-model.trim="reimburse.address.city" placeholder="City">
-				<input type="text" v-model.trim="reimburse.address.state" placeholder="State/Prefecture/Province">
-				<input type="text" v-model.trim="reimburse.address.zip" placeholder="Zip code"><br>
-				<label>Travel</label><br>
-				<span v-for="(value, index) in reimburse.travel">
-					<DateSelector v-on:date="set_travel_date(index, $event)"></DateSelector>
-					<input type="text" v-model.trim="reimburse.travel[index].src" placeholder="Source">
-					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
-					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="travel-receipt" multiple v-on:change="add_file($event, index, 'travel')"><br>
-					<button v-on:click.prevent="delete_item('travel', index)">-</button>
-				</span><br>
-				<button v-on:click.prevent="extend_form('travel')">+</button><br>
-				<label>Hotel</label><br>
-				<span v-for="(value, index) in reimburse.hotel">
-					<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
-					<input type="text" v-model.trim="reimburse.hotel.nights" placeholder="Nights"><br>
-					<span>Check-in</span>
-					<DateSelector v-on:date="set_checkin_date(index, $event)"></DateSelector>
-					<span>Check-out</span>
-					<DateSelector v-on:date="set_checkout_date(index, $event)"></DateSelector>
-					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, index, 'hotel')"><br>
-					<button v-on:click.prevent="delete_item('hotel', index)">-</button>
-				</span><br>
-				<button v-on:click.prevent="extend_form('hotel')">+</button><br>
-				<br>
-				<label>Miscellaneous</label><br>
-				<span v-for="(value, index) in reimburse.misc">
-					<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
-					<DateSelector v-on:date="set_misc_date(index, $event)"></DateSelector>
-					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="misc-receipt" multiple v-on:change="add_file($event, index, 'misc')"><br>
-					<button v-on:click.prevent="delete_item('misc', index)">-</button>
-				</span><br>
-				<button v-on:click.prevent="extend_form('misc')">+</button><br>
-				<label>Total: $ {{ reimburse.total }}</label><br>
-				<button v-on:click.prevent="reveal_travel">Hide</button>
-			</div>
 			<label>What do you want out of this conference and anything else we should know?</label><br>
 			<textarea v-model.trim="conf_resp.message"></textarea><br>
 			<button v-on:click.prevent="reveal_form">Hide form</button><br>
@@ -361,9 +310,6 @@ export default {
 			this.reimburse.misc[index].date = date;
 		},
 		submit() {
-			console.log('socket undef? '+(this.$socket==undefined));
-			this.$socket.send('testing');
-			console.log('sent');
 
 			if(!this.vali_date()) {
 				this.profile.dob.err = 'Please enter a valid birthday.';
