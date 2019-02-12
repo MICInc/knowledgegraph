@@ -5,7 +5,7 @@
 			<button v-on:click.prevent="publish()">Publish</button>
 			<span class="save-status">{{ save_status }}</span>
 			<br>
-			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')">
+			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()">
 			<br>
 			<form>
 				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)" :collab="data.content"></DynamicContent>
@@ -31,6 +31,7 @@ export default {
 		DynamicContent
 	},
 	created() {
+		this.save()
 	},
 	data() {
 		return {
@@ -42,7 +43,9 @@ export default {
 				content: [],
 				hashtags: [],
 				last_modified: undefined,
+				prereq: '',
 				publish: false,
+				subseq: '',
 				title: ''
 			},
 			save_status: '',

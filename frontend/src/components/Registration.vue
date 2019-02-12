@@ -318,16 +318,13 @@ export default {
 			if(this.registration_complete()) {
 				console.log('Submitting completed registration');
 
-				// var config = {
-				// 	header: {
-				// 		'Content-Type' : 'multipart/form-data'
-				// 	}
-				// }
-				// var file = this.form.data;
+				if(this.profile_complete()) {
+					ProfileService.createProfile(this.profile).then(function(data) {
+						console.log(data);
+					});
 
-				// ContentService.uploadFile('/conference/register', file, config).then(function(data) {
-				// 	console.log(data);
-				// });
+					// this.reveal_form();
+				}
 
 				var reg = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
 
@@ -335,15 +332,6 @@ export default {
 					console.log(data);
 				});
 			}		
-
-			// if(this.profile_complete()) {
-			// 	ProfileService.createProfile(this.profile).then(function(data) {
-			// 		console.log(data);
-			// 	});
-
-			// 	this.reveal_form();
-			// }
-
 		},
 		sum(data) {
 			var total = 0;

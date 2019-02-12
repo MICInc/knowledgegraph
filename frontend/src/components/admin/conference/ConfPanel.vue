@@ -24,7 +24,9 @@ export default {
 		Overview
 	},
 	created() {
-		this.$store.state.socket.$on('message', this.receive);
+		this.getRegistrations().then((data) => {
+			console.log(data);
+		});
 	},
 	data() {
 		return {
@@ -47,6 +49,12 @@ export default {
 		}
 	},
 	methods: {
+		async getRegistrations() {
+			return await RegistrationService.getRegistrations()
+			.then(function(data) {
+				console.log(data.data);
+			});
+		},
 		show(view) {
 			this.view = view;
 			this.display = view;

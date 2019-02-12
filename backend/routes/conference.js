@@ -33,4 +33,18 @@ router.post('/register', function(req, res) {
 	}
 });
 
+router.get('/register', function(req, res) {
+	console.log('getting conf apps');
+
+	db.Conference.find({}, function(err, results) {
+		console.log(results);
+		if(results.length > 0 && results[0].published) {
+			res.send(results);
+		}
+		else {
+			res.status(404).send('Article not found');
+		}
+	});
+});
+
 module.exports = router;
