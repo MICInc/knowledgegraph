@@ -171,7 +171,8 @@ export default {
 					item: '',
 				}],
 				total: '0'
-			}
+			},
+			user_id: ''
 		}
 	},
 	methods: {
@@ -318,15 +319,18 @@ export default {
 			if(this.registration_complete()) {
 				console.log('Submitting completed registration');
 
-				if(this.profile_complete()) {
-					ProfileService.createProfile(this.profile).then(function(data) {
-						console.log(data);
-					});
+				// if(this.profile_complete()) {
+					// ProfileService.createProfile(this.profile).then(function(data) {
+					// 	console.log(data);
+					// 	if(this.user_id.length == 0) {
+					// 		// this.user_id = data.
+					// 	}
+					// });
 
 					// this.reveal_form();
-				}
+				// }
 
-				var reg = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
+				var reg = {'profile': this.profile, 'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
 
 				RegistrationService.register(reg).then(function(data) {
 					console.log(data);
