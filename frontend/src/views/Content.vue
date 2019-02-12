@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<div v-if="this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0" class="container">
 			<h2>{{ content.title }}</h2>
-			<a class="edit" v-bind:href="'/content/'+content.title.toLowerCase()+'/edit'">EDIT</a>
+			<!-- <a class="edit" v-bind:href="'/content/'+content.title.toLowerCase()+'/edit'">EDIT</a> -->
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
