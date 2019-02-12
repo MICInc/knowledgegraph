@@ -2,6 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var conference_schema = new Schema({
+    profile: {
+        type: String,
+        trim: true,
+        required: true
+    },
     reimbursements: { 
         address: {
             apt: {

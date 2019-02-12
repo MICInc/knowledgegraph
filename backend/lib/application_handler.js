@@ -1,7 +1,7 @@
 var db = require('../db/database');
 
 module.exports = {
-	save: function(user_id, application, callback) {
+	save: function(application, callback) {
 		var conf = new db.Conference(application);
 
 		conf.collection.dropIndexes(function(err, results) {

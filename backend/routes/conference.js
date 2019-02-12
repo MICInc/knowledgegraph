@@ -15,13 +15,17 @@ router.post('/register', function(req, res) {
 			// Create a user profile before saving the conference application so can associate the 
 			// user id with the application
 			uh.save(req.body.profile, function(user_id) {
-				ah.save(user_id, application, function(status) {
+				application.profile = user_id;
+
+				ah.save(application, function(status) {
 					res.send(status);
 				});
 			});
 		}
 		else if(results.length == 1) {
-			ah.save(results[0]._id, application, function(status) {
+			application.profile = results[0]._id
+
+			ah.save(application, function(status) {
 				res.send(status);
 			});
 		}
@@ -32,16 +36,10 @@ router.post('/register', function(req, res) {
 });
 
 router.get('/register', function(req, res) {
-	console.log('getting conf apps');
 
 	db.Conference.find({}, function(err, results) {
-		console.log(results);
-		if(results.length > 0 && results[0].published) {
-			res.send(results);
-		}
-		else {
-			res.status(404).send('Article not found');
-		}
+		res.send(results);
+		db.User.find();
 	});
 });
 
