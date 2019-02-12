@@ -16,13 +16,11 @@
 
 <script>
 import PageNav from '@/components/PageNav';
-import Socket from '@/services/sockets/EditorSocket'; 
 import ContentService from '@/services/ContentService.js';
 import DynamicContent from '@/components/DynamicContent';
 import Path from 'path';
 
 window.onbeforeunload = function() {
-	Socket.close();
     return "Are you sure you want to close the window?";
 }
 
@@ -33,27 +31,6 @@ export default {
 		DynamicContent
 	},
 	created() {
-		Socket.open((data) => {
-			console.log(data);
-		});
-
-		Socket.receive((e) => {
-			var data = typeof e.data == 'object' && e.data != null ? JSON.parse(e.data) : e.data;
-			console.log('received: '+data);
-		});
-		
-		var url = window.location.href.split('/');
-		
-		if(url[url.length-1] == 'edit') {
-			this.data.title = url[url.length-2].toUpperCase();
-			ContentService.getContent( { params: {url: url}})
-			.then((data) => {
-				this.data.content = data.data[0].content;
-			});
-		}
-		else {
-			this.save()
-		}
 	},
 	data() {
 		return {
@@ -127,7 +104,6 @@ export default {
 
 			this.data.last_modified = new Date();
 			var article = { id: this.content_id, user: this.user, data: this.data };
-			Socket.send(article);
 			
 			ContentService.saveContent(article)
 			.then((data) => {

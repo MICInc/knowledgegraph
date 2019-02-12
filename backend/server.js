@@ -101,21 +101,6 @@ else {
 	});
 
 	var server = app.listen(port);
-	const wss = new ws.Server({ server });
-
-	wss.on('connection', function (ws, req) {
-		console.log('on connection');
-		ws.send('server connected');
-		ws.on('message', data => {
-			console.log('socket received: '+data);
-			wss.clients.forEach(function each(client) {
-				if(client.readyState == ws.OPEN) {
-					console.log('sending..');
-					client.send(data);
-				}
-			});
-		});
-	});
 	
 	console.log('Listening on port ' + port);
 }
