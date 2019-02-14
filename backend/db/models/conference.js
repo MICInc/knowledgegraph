@@ -74,7 +74,7 @@ var conference_schema = new Schema({
             type: Number
         }
     },
-    conf_reg: {
+    conf_resp: {
         food_allergens: {
             type: String,
             trim: true

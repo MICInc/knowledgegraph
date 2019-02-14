@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
@@ -37,9 +38,27 @@ router.post('/register', function(req, res) {
 
 router.get('/register', function(req, res) {
 
-	db.Conference.find({}, function(err, results) {
-		res.send(results);
-		db.User.find();
+	db.Conference.find({}, function(err, apps) {
+		var profiles = [];
+		var applications = []
+		for(var i=0; i < apps.length; i++) profiles.push(mongoose.Types.ObjectId(apps[i].profile));
+
+		db.User.find({'_id': { $in: profiles}}, function(err, users) {
+			var user_dict = {};
+			for(var i=0; i < users.length; i++) user_dict[users[i]._id] = users[i]
+
+			for(var i=0; i < apps.length; i++) {
+				var user_id = apps[i].profile;
+
+				if(user_id in user_dict) {
+					applications.push({profile: user_dict[user_id], 
+									   reimbursements: apps[i].reimbursements, 
+									   conf_resp: apps[i].conf_resp});
+				}
+			}
+
+			res.send(applications);
+		});
 	});
 });
 
