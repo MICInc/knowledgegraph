@@ -18,5 +18,14 @@ module.exports = {
 			console.log(err);
 			callback('Could not save application');
 		});
+	},
+	flatten(app) {
+		var flat = {};
+		for(var key in app.demographic) {
+			
+		}
+		for(var key in app.conf_resp) {
+			
+		}
 	}
 }

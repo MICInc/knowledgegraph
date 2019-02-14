@@ -2,10 +2,47 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var conference_schema = new Schema({
-    profile: {
-        type: String,
-        trim: true,
-        required: true
+    demographic: {
+        dob: {
+            type: Date,
+            required: true,
+            trim: true
+        },
+        email: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        ethnicity: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        first_name: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        gender: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        grade: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        last_name: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        school: {
+            type: String,
+            required: true,
+            trim: true
+        }
     },
     reimbursements: { 
         address: {

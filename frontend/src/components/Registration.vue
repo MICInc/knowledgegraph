@@ -330,7 +330,21 @@ export default {
 					// this.reveal_form();
 				// }
 
-				var reg = {'profile': this.profile, 'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
+				var reg = {
+					demographic: {
+						dob: this.profile.dob.value,
+						email: this.profile.email.value,
+						ethnicity: this.profile.ethnicity.value,
+						first_name: this.profile.first_name.value,
+						gender: this.profile.gender.value,
+						grade: this.profile.grade.value,
+						last_name: this.profile.last_name.value,
+						school: this.profile.school.value
+					}, 
+					profile: this.profile, 
+					reimbursements: this.reimburse, 
+					conf_resp: this.conf_resp
+				};
 
 				RegistrationService.register(reg).then(function(data) {
 					console.log(data);
