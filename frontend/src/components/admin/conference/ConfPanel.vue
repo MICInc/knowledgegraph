@@ -51,6 +51,7 @@ export default {
 		async getRegistrations() {
 			return await RegistrationService.getRegistrations()
 			.then(function(data) {
+				console.log(data.data);
 				return data.data;
 			});
 		},

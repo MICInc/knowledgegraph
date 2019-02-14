@@ -37,8 +37,7 @@ router.post('/register', function(req, res) {
 
 router.get('/register', function(req, res) {
 	db.Conference.find({}, function(err, apps) {
-		
-		res.send(apps);
+		res.send(ah.flatten_demographic_and_resp(apps));
 	}).select('-reimbursements').select('-__v');
 });
 

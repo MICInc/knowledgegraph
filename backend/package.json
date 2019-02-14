@@ -19,7 +19,7 @@
     "jshint": "2.9.6",
     "jsonwebtoken": "^8.4.0",
     "mongodb": "~3.0.8",
-    "mongoose": "^5.3.11",
+    "mongoose": "^5.4.12",
     "morgan": "^1.9.1",
     "ms": "2.1.1",
     "nodeunit": "0.11.3",
