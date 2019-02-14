@@ -25,7 +25,7 @@ export default {
 	},
 	created() {
 		this.getRegistrations().then((data) => {
-			this.application = data;
+			this.applications = data;
 		});
 	},
 	data() {
@@ -51,7 +51,6 @@ export default {
 		async getRegistrations() {
 			return await RegistrationService.getRegistrations()
 			.then(function(data) {
-				console.log(data.data);
 				return data.data;
 			});
 		},

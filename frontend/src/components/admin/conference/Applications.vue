@@ -1,8 +1,8 @@
 <template>
 	<div id="container">
 		<table>
-			<th v-for="(key, i) in Object.keys(applications[0])">{{ key }}</th>
-			<tr v-for="(row, i) in applications">
+			<th class="headers" v-for="(key, i) in Object.keys(applications[0])">{{ key }}</th>
+			<tr class="values" v-for="(row, i) in applications">
 				<td v-for="key in Object.keys(row)">{{ row[key] }}</td>
 			</tr>
 		</table>
