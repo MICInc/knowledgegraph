@@ -5,11 +5,11 @@
 			<button class="tag_switch" v-on:click.prevent="switch_content('hr', $event)">hr</button>
 			<button class="tag_switch" v-on:click.prevent="switch_content('p', $event)">p</button>
 		</div>
-		<img class="image-content" v-bind:src="src" id="content" v-if="'img' == tag" ref="content" v-on:click="set_active()">
-		<div class="content-hr" v-if="'hr' == tag" id="content" ref="content" v-on:click="set_active()" v-on:keyup.enter="add_content($event)">
+		<img class="image-content" v-bind:src="src" id="content" v-if="'img' == tag" ref="img-content" v-on:click="set_active('img-content')">
+		<div class="content-hr" v-if="'hr' == tag" id="content" ref="hr-content" v-on:click="set_active('hr-content')" v-on:keyup.enter="add_content($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == tag" id="content" class="content" ref="content" v-on:keydown.delete="check_content($event)" v-on:keyup.delete="remove_content($event)" v-on:keyup="input($event)" v-on:click="set_active($event)" contenteditable></p>
+		<p v-if="'p' == tag" id="content" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup.delete="remove_content($event)" v-on:keyup="input($event)" v-on:click="set_active('p-content')" contenteditable></p>
 	</div>
 </template>
 
@@ -134,7 +134,7 @@ export default {
 			else {
 				this.is_empty = false;
 			}
-			
+
 			var el = event.target;
 			var cursor_node = el.firstChild;
 
@@ -193,7 +193,7 @@ export default {
 					this.focus(this.index);
 				}
 				else {
-					this.focus(prev);
+					// this.focus(prev);
 				}
 			}
 		},
@@ -237,12 +237,14 @@ export default {
 
 			range.insertNode(frag);
 		},
-		set_active(event) {
+		set_active(ref) {
 			if(this.index > -1) {
-				if(this.$refs['content'][0] != null) {
-					this.$refs['content'][0].style.outline = '';
+				if(this.$refs[ref][0] != null) {
+					this.$refs[ref][0].style.outline = '';
 				}
 			}
+
+			bus.$emit('active_index', this.index);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity

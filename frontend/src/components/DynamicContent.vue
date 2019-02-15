@@ -21,6 +21,11 @@ export default {
 	components: {
 		Cell
 	},
+	created() {
+		bus.$on('active_index', (data) => {
+			this.active_index = data;
+		});
+	},
 	data() {
 		return {
 			active_index: -1,
@@ -60,12 +65,13 @@ export default {
 
 			this.focus();
 		},
-		focus(index=this.active_index+1) {
-			if(index < this.content.length && this.content[index].tag == 'p') {
-				// this.$emit('active_index', index);
+		focus() {
+			if(this.active_index < this.content.length && this.content[this.active_index].tag == 'p') {
 				this.$nextTick(() => {
-					this.$refs['content-'+index][0].focus()
-					this.set_end_contenteditable(this.$refs['content-'+index][0]);
+					var content = this.$refs['content-'+this.active_index][0]
+					var p_tag = content.$refs['p-content']
+					p_tag.focus()
+					content.set_end_contenteditable(p_tag);
 				});
 			}
 		},
@@ -91,15 +97,15 @@ export default {
 			}
 		},
 		save() {
-			var i = this.active_index;
-			var refs = this.$refs['content-'+i];
+			var refs = this.$refs['content-'+this.active_index];
 
 			if(refs != undefined) {
-				var el = refs[0];
+				var i = this.active_index;
+				var el = refs[0].$refs['p-content'];
 				
 				var cell = {
 					id: i,
-					tag: this.content[i].tag == 'hr' ? 'hr' : el.nodeName.toLowerCase(),
+					tag: this.content[i].tag == 'hr' ? 'hr' : this.content[i].tag,
 					date_created: new Date(),
 					last_modified: new Date(),
 					text: this.content[i].tag == 'hr' ? '' : this.trim(el.innerText),
@@ -124,6 +130,9 @@ export default {
 
 			this.emit_save.button = true;
 			this.save();
+		},
+		trim(str, all=false) {
+			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	}
 }
