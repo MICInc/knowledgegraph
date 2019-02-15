@@ -1,53 +1,44 @@
 <template>
 	<div id="signup-form">
 		<div>
-			Please create an account to register for our conference.
+			An account will also be created for you by registering for the conference.
 		</div>
 		<form v-if="form.show" enctype="multipart/form-data">
 			<button v-on:click.prevent="reveal_form">Hide form</button><br>
-			<label>What's your first name?</label><br>
-			<p class="error" v-if="profile.first_name.err.length > 0">{{ profile.first_name.err }}</p>
+			<label>What's your first name?</label><label class="error" v-if="profile.first_name.err.length > 0"> {{ profile.first_name.err }}</label><br>
 			<input type="text" placeholder="First name" v-model.trim="profile.first_name.value" required><br>
-			<label>What's your last name?</label><br>
-			<p class="error" v-if="profile.last_name.err.length > 0">{{ profile.last_name.err }}</p>
+			<label>What's your last name?</label><label class="error" v-if="profile.last_name.err.length > 0"> {{ profile.last_name.err }}</label><br>
 			<input type="text" placeholder="Last name" v-model.trim="profile.last_name.value" required><br>
 			<label v-if="profile.first_name.value.length > 0 && profile.last_name.value.length > 0">Hey {{ profile.first_name.value }} {{ profile.last_name.value }}, nice to meet you.</label>
 			<div class="birthday">
-				<label>Birthday</label><br>
+				<label>Birthday</label><label class="error" v-if="profile.dob.err.length > 0"> {{ profile.dob.err }}</label>
 				<DateSelector v-on:date="set_dob($event)"></DateSelector>
 			</div>
-			<label>Where can we contact you?</label><br>
-			<p class="error" v-if="profile.email.err.length > 0">{{ profile.email.err }}</p>
+			<label>Where can we contact you?</label><label class="error" v-if="profile.email.err.length > 0"> {{ profile.email.err }}</label><br>
 			<input type="text" value="email" placeholder="email" v-model.trim="profile.email.value"><br>
-			<label>Password</label><br>
-			<p class="error" v-if="profile.password.err.length > 0">{{ profile.password.err }}</p>
+			<label>Password</label><label class="error" v-if="profile.password.err.length > 0"> {{ profile.password.err }}</label><br>
 			<input type="password" value="password" placeholder="password" v-model="profile.password.value"><br>
 			<label>Confirm password</label><br>
 			<input type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password.value"><br>
-			<label>Affiliation</label><br>
-			<p class='error' v-if="profile.affiliation.err.length > 0">{{ profile.affiliation.err }}</p>
+			<label>Affiliation</label><label class='error' v-if="profile.affiliation.err.length > 0"> {{ profile.affiliation.err }}</label><br>
 			<ul>
 				<li v-for="affiliation in form.affiliation">
 					<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation.value">{{ affiliation }}
 				</li>
 			</ul>
-			<label>What school do you attend?</label><br>
-			<p class="error" v-if="profile.school.err.length > 0">{{ profile.school.err }}</p>
+			<label>What school do you attend?</label><label class="error" v-if="profile.school.err.length > 0"> {{ profile.school.err }}</label><br>
 			<select name="school" v-model="profile.school.value">
 				<option v-for="school in form.schools">{{ school.name }}</option>
 			</select><br>
-			<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
-			<p class="error" v-if="profile.grade.err.length > 0">{{ profile.grade.err }}</p>
+			<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><label class="error" v-if="profile.grade.err.length > 0"> {{ profile.grade.err }}</label><br>
 			<select name="grade" v-model="profile.grade.value">
 				<option v-for="grade in form.academic_year">{{ grade }}</option>
 			</select><br>
-			<label>Gender</label><br>
-			<p class="error" v-if="profile.gender.err.length > 0">{{ profile.gender.err }}</p>
+			<label>Gender</label><label class="error" v-if="profile.gender.err.length > 0"> {{ profile.gender.err }}</label><br>
 			<select name="gender" v-model="profile.gender.value">
 				<option v-for="gender in form.gender">{{ gender }}</option>
 			</select><br>
-			<label>What is your ethnicity?</label><br>
-			<p class="error" v-if="profile.ethnicity.err.length > 0">{{ profile.ethnicity.err }}</p>
+			<label>What is your ethnicity?</label><label class="error" v-if="profile.ethnicity.err.length > 0"> {{ profile.ethnicity.err }}</label><br>
 			<select name="ethnicity" v-model="profile.ethnicity.value">
 				<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 			</select><br>
@@ -221,6 +212,9 @@ export default {
 
 			this.total();
 		},
+		dob_empty() {
+			return this.profile.dob.value == null;
+		},	
 		extend_form(type) {
 
 			if(type == 'travel') {
@@ -272,7 +266,7 @@ export default {
 					var v = this.profile[k].value;
 
 					if(this.is_empty(v)) {
-						this.profile[k].err = 'Missing '+k;
+						this.profile[k].err = 'Missing '+(k.split('_').join(' '));
 						flag = false;
 					}
 				}
@@ -311,44 +305,35 @@ export default {
 			this.reimburse.misc[index].date = date;
 		},
 		submit() {
-
-			if(!this.vali_date()) {
-				this.profile.dob.err = 'Please enter a valid birthday.';
-			}
-
+			// should also condition on vali_date(), but currently does not
+			// return correct value
+			this.vali_date();
 			if(this.registration_complete()) {
 				console.log('Submitting completed registration');
 
-				// if(this.profile_complete()) {
-					// ProfileService.createProfile(this.profile).then(function(data) {
-					// 	console.log(data);
-					// 	if(this.user_id.length == 0) {
-					// 		// this.user_id = data.
-					// 	}
-					// });
+				if(this.profile_complete()) {
+					var reg = {
+						demographic: {
+							dob: this.profile.dob.value,
+							email: this.profile.email.value,
+							ethnicity: this.profile.ethnicity.value,
+							first_name: this.profile.first_name.value,
+							gender: this.profile.gender.value,
+							grade: this.profile.grade.value,
+							last_name: this.profile.last_name.value,
+							school: this.profile.school.value
+						}, 
+						profile: this.profile, 
+						reimbursements: this.reimburse, 
+						conf_resp: this.conf_resp
+					};
+
+					RegistrationService.register(reg).then(function(data) {
+						console.log(data);
+					});
 
 					// this.reveal_form();
-				// }
-
-				var reg = {
-					demographic: {
-						dob: this.profile.dob.value,
-						email: this.profile.email.value,
-						ethnicity: this.profile.ethnicity.value,
-						first_name: this.profile.first_name.value,
-						gender: this.profile.gender.value,
-						grade: this.profile.grade.value,
-						last_name: this.profile.last_name.value,
-						school: this.profile.school.value
-					}, 
-					profile: this.profile, 
-					reimbursements: this.reimburse, 
-					conf_resp: this.conf_resp
-				};
-
-				RegistrationService.register(reg).then(function(data) {
-					console.log(data);
-				});
+				}
 			}		
 		},
 		sum(data) {
@@ -375,8 +360,11 @@ export default {
 			var year = this.profile.dob.year;
 			var month = this.form.months.indexOf(this.profile.dob.month);
 			var day = this.profile.dob.day;
+			var valid = month >= 0 && month < 12 && day > 0 && day <= this.daysInMonth(month, year);
 
-			return month >= 0 && month < 12 && day > 0 && day <= this.daysInMonth(month, year)
+			if(!valid) this.profile.dob.err = 'Please enter a valid birthday.';
+
+			return valid;
 		}
 	}
 }
