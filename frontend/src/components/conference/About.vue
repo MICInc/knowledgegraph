@@ -1,5 +1,5 @@
 <template>
-	<div class="about">
+	<div id="about">
 		<div class="container">
 			<div class="section-head">
 					<h2>About</h2>
@@ -55,30 +55,30 @@
 	display: inline-block;
 }
 
-.about .container {
+#about .container {
 	background: #545f99;
 	color: #fff;
 	padding-bottom: 50px;
 }
 
-.about .section-head {
+#about .section-head {
 	border-bottom: 1px solid #fff;
 }
 
-.about .section-head h2 {
+#about .section-head h2 {
 	color: #545f99;
 	background: #fff;
 }
 
-.about .about-conference {
+#about .about-conference {
 	margin: 50px 0;
 }
 
-.about .about-conference, .about-mic {
+#about .about-conference, .about-mic {
 	padding: 0 50px;
 }
 
-.about h3 {
+#about h3 {
 	font-size: 1.4em;
 	border-bottom: 1px solid #fff;
 	padding-bottom: 15px;

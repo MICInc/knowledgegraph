@@ -1,5 +1,5 @@
 <template>
-	<div class="location-info">
+	<div id="location-info">
 		<div class="container">
 			<div class="section-head">
 					<h2>Location Info</h2>
@@ -46,16 +46,16 @@
 	border: 1px solid #545f99;
 }
 
-.location-info .section-head  {
+#location-info .section-head  {
 	border-bottom: 1px solid #545f99;
 }
 
-.location-info .section-head h2 {
+#location-info .section-head h2 {
 	color: #fff;
 	background: #545f99;
 }
 
-.location-info .columns {
+#location-info .columns {
 	display: flex;
 	padding: 50px;
 }

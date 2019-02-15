@@ -1,5 +1,5 @@
 <template>
-	<div class="sponsors">
+	<div id="sponsors">
 		<div class="container">
 			<div class="section-head">
 				<h2>Thank You to Our Sponsors</h2>
@@ -49,8 +49,8 @@
 }
 
 .section-head {
-	padding: 40px 0;
-	margin: 0 50px;
+	padding: 40px 0 0 0;
+  margin: 0 50px;
 }
 
 .section-head h2 {
@@ -63,16 +63,16 @@
 	display: inline-block;
 }
 
-.sponsors .section-head  {
+#sponsors .section-head  {
 	text-align: center;
 }
 
-.sponsors .section-head h2 {
+#sponsors .section-head h2 {
 	color: #fff;
 	background: #545f99;
 }
 
-.sponsors .sponsor-grid {
+#sponsors .sponsor-grid {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -81,7 +81,7 @@
 }
 
 .sponsor-grid .sponsor-tile {
-	padding: 20px 50px;
+	padding: 0 50px 20px 50px;
 }
 
 .sponsor-grid .sponsor-tile img.tier-one {

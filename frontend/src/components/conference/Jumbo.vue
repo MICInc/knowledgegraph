@@ -1,5 +1,15 @@
 <template>
 	<div class="jumbo">
+		<vue-particles color="#545f99"
+			:particleOpacity="0.5"
+      :particlesNumber="120"
+      :particleSize="5"
+      linesColor="#545f99"
+      :lineOpacity="0.3"
+      :moveSpeed="2"
+      :hoverEffect="false"
+      :clickEffect="false"
+		 id="particles-js"></vue-particles>
 		<div class="container">
 			<div class="top">
 				<div class="logo"><img src="/img/mic-logo.png"" alt="MIC Conference Logo" /></div>
@@ -51,7 +61,7 @@
 	border: 1px solid #545f99;
 }
 
-	#particles-js canvas {
+	#particles-js {
 	position: absolute;
 	z-index: -1;
 	height: 100vh;

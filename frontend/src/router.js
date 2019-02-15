@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import OldConference from './views/OldConference.vue'
 import store from '@/store'
 
 Vue.use(Router)
@@ -12,7 +12,7 @@ export default new Router({
 		{
 			path: '/',
 			name: 'home',
-			component: Home
+			component: OldConference
 		},
 		{
 			path: '/about',
@@ -58,11 +58,6 @@ export default new Router({
 			path: '/conference',
 			name: 'conference',
 			component: () => import('./views/Conference.vue')
-		},
-		{
-			path: '/old-conference',
-			name: 'old-conference',
-			component: () => import('./views/OldConference.vue')
 		},
 		{
 			path: '/mic/mit',

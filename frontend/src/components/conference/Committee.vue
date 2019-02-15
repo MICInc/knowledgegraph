@@ -1,5 +1,5 @@
 <template>
-	<div class="committee">
+	<div id="committee">
 		<div class="container">
 			<div class="section-head">
 				<h2>Conference Committee</h2>
@@ -76,41 +76,41 @@
 	display: inline-block;
 }
 
-.committee .container {
+#committee .container {
 	background: #545f99;
 	color: #fff;
 	padding-bottom: 30px;
 }
 
-.committee .section-head  {
+#committee .section-head  {
 	border-bottom: 1px solid #fff;
 }
 
-.committee .section-head h2 {
+#committee .section-head h2 {
 	color: #545f99;
 	background: #fff;
 }
 
-.committee .columns {
+#committee .columns {
 	display: flex;
 	padding: 25px 50px 0 50px;
 }
 
-.committee .columns .left, #committee .columns .right {
+#committee .columns .left, #committee .columns .right {
 	width: calc(50% - 20px);
 }
 
-.committee .columns .left {
+#committee .columns .left {
 	margin-right: 40px;
 }
 
-.committee .columns .member, #committee .columns .members {
+#committee .columns .member, #committee .columns .members {
 	display: flex;
 	justify-content: space-between;
 	margin: 10px 0;
 }
 
-.committee .columns .member .title, #committee .columns .members .title {
+#committee .columns .member .title, #committee .columns .members .title {
 	font-weight: 600;
 	font-size: 16px;
 	margin-bottom: 5px;

@@ -1,5 +1,5 @@
 <template>
-	<div class="our-community">
+	<div id="our-community">
 		<div class="container">
 			<div class="section-head">
 					<h2>Our Community</h2>
@@ -68,17 +68,17 @@
 	border: 1px solid #545f99;
 }
 
-.our-community .container {
+#our-community .container {
 	background: #545f99;
 	color: #fff;
 	padding-bottom: 50px;
 }
 
-.our-community .section-head  {
+#our-community .section-head  {
 	border-bottom: 1px solid #fff;
 }
 
-.our-community .section-head h2 {
+#our-community .section-head h2 {
 	color: #545f99;
 	background: #fff;
 }
