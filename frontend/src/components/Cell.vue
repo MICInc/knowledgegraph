@@ -59,6 +59,8 @@ export default {
 						this.cell.tag = 'img';
 						this.cell.last_modified = new Date();
 						this.save();
+
+						this.is_empty = false;
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
@@ -283,6 +285,7 @@ export default {
 			this.cell.text = '';
 			this.cell.last_modified = new Date();
 			this.save();
+			this.is_empty = true;
 		},
 		trim(str, all=false) {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
