@@ -2,8 +2,8 @@
 	<div id="container">
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
-			<button class="tag_switch" v-on:click.prevent="switch_content('hr', $event)">hr</button>
-			<button class="tag_switch" v-on:click.prevent="switch_content('p', $event)">p</button>
+			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
+			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 		</div>
 		<img class="image-content" v-bind:src="cell.src" id="content" v-if="'img' == cell.tag" ref="img-content" v-on:click="set_active('img-content')">
 		<div class="content-hr" v-if="'hr' == cell.tag" id="content" ref="hr-content" v-on:click="set_active('hr-content')" v-on:keyup.enter="add_content($event)">
@@ -41,10 +41,8 @@ export default {
 		},
 		add_image(event) {
 			var el = event.target;
+			this.$emit('tag', {index: this.index, tag: 'img'});
 			this.$emit('active_index', this.index);
-
-			// disable previous cell content
-			this.tag = 'img';
 
 			if(el.files && el.files[0]) {
 				var reader = new FileReader();
@@ -231,6 +229,27 @@ export default {
 				}
 			}
 		},
+		remove_active(e) {
+			if(this.active_index > -1) {
+				var el = this.content[this.active_index];
+
+				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
+					// remove focus from all elements else will also accidentally delete other content
+					document.activeElement.blur();
+
+					this.content.splice(this.active_index, 1);
+					this.$emit('remove', this.active_index);
+					this.active_index -= 1;
+				}
+
+				this.save();
+
+				if(this.content.length == 0) {
+					this.add_content(e);
+					this.focus(this.active_index-1);
+				}
+			}
+		},
 		replace_html(range, target, node_type="a") {
 			var el = document.createElement(node_type);
 			el.innerHTML = target;
@@ -276,7 +295,7 @@ export default {
 		shift_enter(event) {
 			console.log('shift');
 		},
-		switch_content(tag, event) {
+		switch_tag(tag, event) {
 			this.$emit('active_index', this.index);
 			this.cell.html = '';
 			this.cell.name = '';

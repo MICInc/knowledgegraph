@@ -8,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:add="add_content()" v-on:hashtag="hashtag($event)"></Cell>
+			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:add="add_content()" v-on:hashtag="hashtag($event)" v-on:tag="switch_tag($event)"></Cell>
 		</div>
 	</div>
 </template>
@@ -33,7 +33,8 @@ export default {
 	data() {
 		return {
 			active_index: -1,
-			content: [{ id: Math.random() }],
+			cells: [{ id: Math.random(), tag: '' }],
+			content: [{ id: Math.random(), tag: '' }],
 			emit_save: {
 				button: false,
 				cell: undefined,
@@ -51,7 +52,9 @@ export default {
 			if (this.active_index < 0) this.active_index == 0;
 
 			this.active_index += 1;
-			this.content.splice(this.active_index, 0, { id: Math.random() });
+			var cell_id = Math.random();
+			this.content.splice(this.active_index, 0, { id: cell_id });
+			this.cells.splice(this.active_index, 0, { id: cell_id });
 			this.focus(this.active_index);
 		},
 		focus(index=this.active_index) {
@@ -70,7 +73,7 @@ export default {
 		},
 		remove_active(e) {
 			if(this.active_index > -1) {
-				var el = this.content[this.active_index];
+				var el = this.cells[this.active_index];
 
 				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
 					// remove focus from all elements else will also accidentally delete other content
@@ -85,12 +88,13 @@ export default {
 
 				if(this.content.length == 0) {
 					this.add_content(e);
-					this.focus(this.active_index-1);
+					this.focus();
 				}
 			}
 		},
 		save(cell) {
 			if(cell != undefined) {
+				// this.content[cell.id].tag = cell.tag;
 				this.emit_save.cell = cell;
 				this.emit_save.update_cell = this.active_index;
 
@@ -100,6 +104,9 @@ export default {
 		},
 		set_index(new_index) {
 			this.active_index = new_index;
+		},
+		switch_tag(cell) {
+			this.cells[cell.index].tag = cell.tag;
 		},
 		stylize(style) {
 			document.execCommand(style, false, null);
