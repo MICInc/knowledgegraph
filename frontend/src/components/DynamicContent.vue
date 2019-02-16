@@ -22,8 +22,12 @@ export default {
 		Cell
 	},
 	created() {
-		bus.$on('active_index', (data) => {
-			this.active_index = data;
+		bus.$on('active_index', (index) => {
+			this.active_index = index;
+		});
+
+		bus.$on('focus', (index) => {
+			this.focus(index);
 		});
 	},
 	data() {
@@ -63,14 +67,14 @@ export default {
 				name: ''
 			});
 
-			this.focus();
+			this.focus(this.active_index);
 		},
-		focus() {
-			if(this.active_index < this.content.length && this.content[this.active_index].tag == 'p') {
+		focus(index=this.active_index) {
+			if(index < this.content.length && this.content[index].tag == 'p') {
 				this.$nextTick(() => {
-					var content = this.$refs['content-'+this.active_index][0]
-					var p_tag = content.$refs['p-content']
-					p_tag.focus()
+					var content = this.$refs['content-'+index][0]
+					var p_tag = content.$refs['p-content'];
+					p_tag.focus();
 					content.set_end_contenteditable(p_tag);
 				});
 			}
@@ -92,7 +96,7 @@ export default {
 
 				if(this.content.length == 0) {
 					this.add_content(e);
-					this.focus();
+					this.focus(this.active_index-1);
 				}
 			}
 		},

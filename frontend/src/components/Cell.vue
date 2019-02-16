@@ -190,10 +190,12 @@ export default {
 				var prev = this.index - 1;
 
 				if(this.content.length > 0 && prev < 0) {
-					this.focus(this.index);
+					// this.focus(this.index);
+					bus.$emit('focus', this.index);
 				}
 				else {
 					// this.focus(prev);
+					bus.$emit('focus', this.index-1);
 				}
 			}
 		},
