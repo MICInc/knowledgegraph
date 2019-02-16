@@ -8,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:add="add_content()"></Cell>
+			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:add="add_content()" v-on:hashtag="hashtag($event)"></Cell>
 		</div>
 	</div>
 </template>
@@ -64,6 +64,10 @@ export default {
 				});
 			}
 		},
+		hashtag(data) {
+			this.emit_save.hashtag = data;
+			this.save();
+		},
 		remove_active(e) {
 			if(this.active_index > -1) {
 				var el = this.content[this.active_index];
@@ -86,16 +90,12 @@ export default {
 			}
 		},
 		save(cell) {
-			console.log('saving: ');
-			console.log(cell);
-
 			if(cell != undefined) {
 				this.emit_save.cell = cell;
 				this.emit_save.update_cell = this.active_index;
 
 				this.$emit('edit', this.emit_save);
 				this.emit_save.button = false;
-				this.emit_save.hashtag = '';
 			}
 		},
 		set_index(new_index) {

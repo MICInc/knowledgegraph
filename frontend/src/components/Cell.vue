@@ -25,6 +25,7 @@ export default {
 				id: this.index,
 				date_created: new Date(),
 				last_modified: new Date(),
+				hashtags: [],
 				html: '',
 				name: '',
 				src: '',
@@ -164,7 +165,7 @@ export default {
 					if(has_hash && !has_bold) {
 						var target = this.trim(sel.toString(), true);
 						var hashtag = '<b><a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>'+'\u00A0';
-						this.emit_save.hashtag = target;
+						this.$emit('hashtag', target);
 
 						var range = sel.getRangeAt(0);
 						range.deleteContents();

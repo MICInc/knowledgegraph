@@ -133,7 +133,7 @@ export default {
 			if(hashtag.length > 0 && !this.data.hashtags.includes(hashtag)) {
 				this.data.hashtags.push(hashtag);
 			}
-			
+
 			this.save();
 		},
 		upload_file(form_data) {
