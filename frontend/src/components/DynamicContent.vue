@@ -8,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<Cell v-bind:ref="'content-'+index" :cell_id="content[index].id" :content="content" :html="content[index].html" :index="index" :name="content[index].name" :src="content[index].src" :tag="content[index].tag" v-on:save="save($event)" v-on:active_index="set_index($event)"></Cell>
+			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:add="add_content()"></Cell>
 		</div>
 	</div>
 </template>
@@ -33,12 +33,7 @@ export default {
 	data() {
 		return {
 			active_index: -1,
-			content: [{
-				id: Math.random(),
-				tag: 'p',
-				src: '',
-				name: ''
-			}],
+			content: [{ id: Math.random() }],
 			emit_save: {
 				button: false,
 				cell: undefined,
@@ -50,23 +45,13 @@ export default {
 	methods: {
 		add_content(e=null) {
 			// ignore shift enter and allow other functions to call this
-			if(e != null && e.keyCode === 13 && e.shiftKey) {
-				return;
-			}
+			if(e != null && e.keyCode === 13 && e.shiftKey) return;
 
 			e.preventDefault();
 			if (this.active_index < 0) this.active_index == 0;
 
-			// var next = this.active_index + 1;
 			this.active_index += 1;
-
-			this.content.splice(this.active_index, 0, {
-				id: Math.random(),
-				tag: 'p',
-				src: '',
-				name: ''
-			});
-
+			this.content.splice(this.active_index, 0, { id: Math.random() });
 			this.focus(this.active_index);
 		},
 		focus(index=this.active_index) {
@@ -100,26 +85,13 @@ export default {
 				}
 			}
 		},
-		save() {
-			var refs = this.$refs['content-'+this.active_index];
+		save(cell) {
+			console.log('saving: ');
+			console.log(cell);
 
-			if(refs != undefined) {
-				var i = this.active_index;
-				var el = refs[0].$refs['p-content'];
-				
-				var cell = {
-					id: i,
-					tag: this.content[i].tag == 'hr' ? 'hr' : this.content[i].tag,
-					date_created: new Date(),
-					last_modified: new Date(),
-					text: this.content[i].tag == 'hr' ? '' : this.trim(el.innerText),
-					html: this.content[i].tag == 'hr' ? '<hr>' : el.innerHTML,
-					name: this.content[i].name != '' ? this.content[i].name : '',
-					src: this.content[i].src != '' ? this.content[i].src : ''
-				};
-
+			if(cell != undefined) {
 				this.emit_save.cell = cell;
-				this.emit_save.update_cell = i;
+				this.emit_save.update_cell = this.active_index;
 
 				this.$emit('edit', this.emit_save);
 				this.emit_save.button = false;
@@ -134,9 +106,6 @@ export default {
 
 			this.emit_save.button = true;
 			this.save();
-		},
-		trim(str, all=false) {
-			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	}
 }

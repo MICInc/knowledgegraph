@@ -5,11 +5,11 @@
 			<button class="tag_switch" v-on:click.prevent="switch_content('hr', $event)">hr</button>
 			<button class="tag_switch" v-on:click.prevent="switch_content('p', $event)">p</button>
 		</div>
-		<img class="image-content" v-bind:src="src" id="content" v-if="'img' == tag" ref="img-content" v-on:click="set_active('img-content')">
-		<div class="content-hr" v-if="'hr' == tag" id="content" ref="hr-content" v-on:click="set_active('hr-content')" v-on:keyup.enter="add_content($event)">
+		<img class="image-content" v-bind:src="cell.src" id="content" v-if="'img' == cell.tag" ref="img-content" v-on:click="set_active('img-content')">
+		<div class="content-hr" v-if="'hr' == cell.tag" id="content" ref="hr-content" v-on:click="set_active('hr-content')" v-on:keyup.enter="add_content($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == tag" id="content" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup.delete="remove_content($event)" v-on:keyup="input($event)" v-on:click="set_active('p-content')" contenteditable></p>
+		<p v-if="'p' == cell.tag" id="content" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup.delete="remove_content($event)" v-on:keyup="input($event)" v-on:click="set_active('p-content')" contenteditable></p>
 	</div>
 </template>
 
@@ -21,30 +21,22 @@ export default {
 	},
 	data() {
 		return {
-			cursor_pos: -1,
+			cell: {
+				id: this.index,
+				date_created: new Date(),
+				last_modified: new Date(),
+				html: '',
+				name: '',
+				src: '',
+				tag: 'p',
+				text: '',
+			},
 			is_empty: true
 		}
 	},
 	methods: {
-		add_content(e=null) {
-			// ignore shift enter and allow other functions to call this
-			if(e != null && e.keyCode === 13 && e.shiftKey) {
-				return;
-			}
-
-			e.preventDefault();
-			if (this.index < 0) this.index == 0;
-
-			var next = this.index + 1;
-
-			this.content.splice(next, 0, {
-				id: Math.random(),
-				tag: 'p',
-				src: '',
-				name: ''
-			});
-
-			this.focus(next);
+		add_content() {
+			this.$emit('add');
 		},
 		add_image(event) {
 			var el = event.target;
@@ -59,12 +51,13 @@ export default {
 					// everything in this scope is async so accessing any of the variables
 					// that are updated in here will not be updated after this scope e.g. this.content
 					var src = e.target.result;
-
+				
 					if(src.length > 0) {
-						this.src = src;
-						this.name = el.files[0].name;
-						// this.save();
-						this.$emit('save');
+						this.cell.name = el.files[0].name;
+						this.cell.src = src;
+						this.cell.tag = 'img';
+						this.cell.last_modified = new Date();
+						this.save();
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
@@ -128,13 +121,24 @@ export default {
 			}
 		},
 		input(event) {
-			if(event.target.innerText.length == 0) { 
+			var el = event.target;
+
+			if(el.innerText.length == 0) { 
 				this.is_empty = true;
 			}
 			else {
 				this.is_empty = false;
 			}
 
+			this.hashtag(event);
+			
+			this.cell.html = el.innerHTML;
+			this.cell.text = el.innerText;
+			this.cell.last_modified = new Date();
+
+			this.save();
+		},
+		hashtag(event) {
 			var el = event.target;
 			var cursor_node = el.firstChild;
 
@@ -171,9 +175,6 @@ export default {
 
 				if(sel.anchorNode != undefined) sel.collapseToEnd();
 			}
-
-			// this.save();
-			this.$emit('save');
 		},
 		prevent_nl(event) {
 			event.preventDefault();
@@ -184,7 +185,6 @@ export default {
 			// remove cell
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
 				this.content.splice(this.index, 1);
-				// this.active_index -= 1;
 				this.$emit('active_index', this.index-1);
 
 				var prev = this.index - 1;
@@ -239,6 +239,9 @@ export default {
 
 			range.insertNode(frag);
 		},
+		save() {
+			this.$emit('save', this.cell);
+		},
 		set_active(ref) {
 			if(this.index > -1) {
 				if(this.$refs[ref][0] != null) {
@@ -246,7 +249,7 @@ export default {
 				}
 			}
 
-			bus.$emit('active_index', this.index);
+			this.$emit('active_index', this.index);
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
@@ -272,17 +275,19 @@ export default {
 		},
 		switch_content(tag, event) {
 			this.$emit('active_index', this.index);
-			this.tag = tag;
-			this.src = '';
-			this.name = '';
-			// this.save();
-			this.$emit('save');
+			this.cell.html = '';
+			this.cell.name = '';
+			this.cell.src = '';
+			this.cell.tag = tag;
+			this.cell.text = '';
+			this.cell.last_modified = new Date();
+			this.save();
 		},
 		trim(str, all=false) {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	},
-	props: ['cell_id', 'content', 'html', 'index', 'name', 'src', 'tag']
+	props: ['index', 'content', 'index']
 }
 </script>
 
