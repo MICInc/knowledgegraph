@@ -7,7 +7,9 @@
 		</div>
 		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
 			<img class="image-content" v-bind:src="cell.src">
-			<p class="caption" v-on:keyup="caption($event)" contenteditable></p>
+			<figcaption class="caption" v-on:keyup="caption($event)" contenteditable>
+				<span v-show="show_caption" v-on:click="hide_on_click($event)">Caption</span>
+			</figcaption>
 		</figure>
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)" v-on:keyup.enter="add_content($event)">
 			<hr>
@@ -35,6 +37,7 @@ export default {
 				tag: 'p',
 				text: '',
 			},
+			show_caption: true,
 			is_empty: true
 		}
 	},
@@ -81,6 +84,7 @@ export default {
 		caption(event) {
 			var el = event.target;
 			this.cell.caption = el.innerText;
+			console.log(this.cell.caption);
 		},
 		check_content(event) {
 			var sel = document.getSelection();
@@ -111,40 +115,6 @@ export default {
 			if(collapse && sel.anchorNode != undefined) sel.collapseToEnd();
 
 			return pos;
-		},
-		import_file(e) {
-			var el = event.target;
-			
-			if(el.files && el.files[0]) {
-				var reader = new FileReader();
-				reader.onload = (e) => {
-					var content = e.target.result.split('\n\n');
-
-					for(var i = 0; i < content.length; i++) {
-						this.add_content(e);
-						this.html = content[i];
-					}
-				}
-				reader.readAsText(el.files[0])
-			}
-		},
-		input(event) {
-			var el = event.target;
-
-			if(el.innerText.length == 0) { 
-				this.is_empty = true;
-			}
-			else {
-				this.is_empty = false;
-			}
-
-			this.hashtag(event);
-			
-			this.cell.html = el.innerHTML;
-			this.cell.text = el.innerText;
-			this.cell.last_modified = new Date();
-
-			this.save();
 		},
 		hashtag(event) {
 			var el = event.target;
@@ -183,6 +153,43 @@ export default {
 
 				if(sel.anchorNode != undefined) sel.collapseToEnd();
 			}
+		},
+		hide_on_click(event) {
+			if(this.cell.caption.length == 0) this.show_caption = false;
+		},
+		import_file(e) {
+			var el = event.target;
+			
+			if(el.files && el.files[0]) {
+				var reader = new FileReader();
+				reader.onload = (e) => {
+					var content = e.target.result.split('\n\n');
+
+					for(var i = 0; i < content.length; i++) {
+						this.add_content(e);
+						this.html = content[i];
+					}
+				}
+				reader.readAsText(el.files[0])
+			}
+		},
+		input(event) {
+			var el = event.target;
+
+			if(el.innerText.length == 0) { 
+				this.is_empty = true;
+			}
+			else {
+				this.is_empty = false;
+			}
+
+			this.hashtag(event);
+			
+			this.cell.html = el.innerHTML;
+			this.cell.text = el.innerText;
+			this.cell.last_modified = new Date();
+
+			this.save();
 		},
 		prevent_nl(event) {
 			event.preventDefault();
