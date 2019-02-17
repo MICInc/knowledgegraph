@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete="remove_active($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus()">
+	<div id="container" v-on:keydown.delete="remove_active($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus($event)">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -33,8 +33,8 @@ export default {
 	data() {
 		return {
 			active_index: -1,
-			cells: [{ id: Math.random(), tag: '' }],
-			content: [{ id: Math.random(), tag: '' }],
+			cells: [{ id: Math.random(), tag: 'p' }],
+			content: [{ id: Math.random()}],
 			emit_save: {
 				button: false,
 				cell: undefined,
@@ -54,14 +54,18 @@ export default {
 			this.active_index += 1;
 			var cell_id = Math.random();
 			this.content.splice(this.active_index, 0, { id: cell_id });
-			this.cells.splice(this.active_index, 0, { id: cell_id });
+			this.cells.splice(this.active_index, 0, { id: cell_id, tag: 'p' });
 			this.focus(this.active_index);
 		},
-		focus(index=this.active_index) {
-			if(index < this.content.length && this.content[index].tag == 'p') {
+		focus(e=null) {
+			var key = '';
+			if(e != undefined && e.which == 9) this.active_index += 1;
+
+			if(this.active_index < this.content.length && this.cells[this.active_index].tag == 'p') {
 				this.$nextTick(() => {
-					var content = this.$refs['content-'+index][0]
+					var content = this.$refs['content-'+this.active_index][0];
 					var p_tag = content.$refs['p-content'];
+
 					p_tag.focus();
 					content.set_end_contenteditable(p_tag);
 				});
