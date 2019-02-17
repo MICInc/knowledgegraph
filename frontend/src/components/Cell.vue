@@ -5,11 +5,14 @@
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 		</div>
-		<img class="image-content" v-bind:src="cell.src" id="content" v-if="'img' == cell.tag" ref="img-content" v-on:click="set_active('img-content')">
-		<div class="content-hr" v-if="'hr' == cell.tag" id="content" ref="hr-content" v-on:click="set_active('hr-content')" v-on:keyup.enter="add_content($event)">
+		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
+			<img class="image-content" v-bind:src="cell.src">
+			<!-- <input placeholder="Caption" v-on:keyup="caption($event)"> -->
+		</figure>
+		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)" v-on:keyup.enter="add_content($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == cell.tag" id="content" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup.delete="remove_content($event)" v-on:keyup="input($event)" v-on:click="set_active('p-content')" contenteditable></p>
+		<p v-if="'p' == cell.tag" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup.delete="remove_content($event)" v-on:keyup="input($event)" v-on:click="set_active($event)" contenteditable></p>
 	</div>
 </template>
 
@@ -25,6 +28,7 @@ export default {
 				id: this.index,
 				date_created: new Date(),
 				last_modified: new Date(),
+				caption: '',
 				hashtags: [],
 				html: '',
 				name: '',
@@ -74,6 +78,10 @@ export default {
 			}
 
 			return window.btoa( binary );
+		},
+		caption(event) {
+			var el = event.target;
+			this.cell.caption = el.innerText;
 		},
 		check_content(event) {
 			var sel = document.getSelection();
@@ -264,11 +272,12 @@ export default {
 		save() {
 			this.$emit('save', this.cell);
 		},
-		set_active(ref) {
-			if(this.index > -1) {
-				if(this.$refs[ref][0] != null) {
-					this.$refs[ref][0].style.outline = '';
-				}
+		set_active(event) {
+			var el = event.target;
+
+			if(el.tagName == 'IMG') {
+				if(el.style.border == '') el.style.border = "thin solid #460360";
+				else el.style.border = '';
 			}
 
 			this.$emit('active_index', this.index);
@@ -326,7 +335,7 @@ export default {
 	-moz-transition:.5s;
 	-webkit-transition:.5s;
 	transition:.5s;
-	min-height: 5em;
+	min-height: 1em;
 	overflow:hidden;
 	margin: 5 0px;
 }
@@ -345,5 +354,6 @@ export default {
 	max-width: 100%;
 	max-height: 100%;
 	vertical-align: middle; 
+	border-top: 1px solid transparent;
 }
 </style>
