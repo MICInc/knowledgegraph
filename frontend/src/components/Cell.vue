@@ -7,7 +7,7 @@
 		</div>
 		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
 			<img class="image-content" v-bind:src="cell.src">
-			<p v-on:keyup="caption($event)" contenteditable></p>
+			<p class="caption" v-on:keyup="caption($event)" contenteditable></p>
 		</figure>
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)" v-on:keyup.enter="add_content($event)">
 			<hr>
@@ -303,6 +303,12 @@ export default {
 <style>
 *:focus {
     outline: none;
+}
+
+.caption {
+	text-align: center;
+	font-size: 0.8em;
+	color: #606060;
 }
 
 .content {
