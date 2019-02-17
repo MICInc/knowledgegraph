@@ -7,7 +7,7 @@
 		</div>
 		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
 			<img class="image-content" v-bind:src="cell.src">
-			<!-- <input placeholder="Caption" v-on:keyup="caption($event)"> -->
+			<p v-on:keyup="caption($event)" contenteditable></p>
 		</figure>
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)" v-on:keyup.enter="add_content($event)">
 			<hr>
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { bus } from '@/main'
 
 export default {
 	created() {
@@ -193,18 +192,17 @@ export default {
 
 			// remove cell
 			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
+				document.activeElement.blur();
 				this.content.splice(this.index, 1);
 				this.$emit('active_index', this.index-1);
 
 				var prev = this.index - 1;
 
 				if(this.content.length > 0 && prev < 0) {
-					// this.focus(this.index);
-					bus.$emit('focus', this.index);
+					this.$emit('focus', this.index);
 				}
 				else {
-					// this.focus(prev);
-					bus.$emit('focus', this.index-1);
+					this.$emit('focus', this.index-1);
 				}
 			}
 		},
@@ -234,27 +232,6 @@ export default {
 
 						break;
 					}
-				}
-			}
-		},
-		remove_active(e) {
-			if(this.active_index > -1) {
-				var el = this.content[this.active_index];
-
-				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
-					// remove focus from all elements else will also accidentally delete other content
-					document.activeElement.blur();
-
-					this.content.splice(this.active_index, 1);
-					this.$emit('remove', this.active_index);
-					this.active_index -= 1;
-				}
-
-				this.save();
-
-				if(this.content.length == 0) {
-					this.add_content(e);
-					this.focus(this.active_index-1);
 				}
 			}
 		},
