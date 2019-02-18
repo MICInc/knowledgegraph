@@ -9,7 +9,10 @@
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
 				<div v-for="c in content.content">
 					<p v-if="c.tag == 'p'" v-html="c.html"></p>
-					<img v-if="c.tag == 'img'" :src="c.src">
+					<figure v-if="c.tag == 'img'">
+						<img :src="c.src">
+						<figcaption>{{ c.caption }}</figcaption>
+					</figure>
 				</div>
 			</div>
 			<div id="bibtex" class="meta-info">

@@ -5,7 +5,7 @@
 			<button v-on:click.prevent="publish()">Publish</button>
 			<span class="save-status">{{ save_status }}</span>
 			<br>
-			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()">
+			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()">
 			<br>
 			<form>
 				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)" :collab="data.content"></DynamicContent>
