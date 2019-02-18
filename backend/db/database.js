@@ -5,6 +5,7 @@ var User = require('./models/user.js');
 var Content = require('./models/content.js');
 var Community = require('./models/community.js');
 var Conference = require('./models/conference.js');
+var Feedback = require('./models/feedback.js');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -24,3 +25,4 @@ module.exports.User = User;
 module.exports.Content = Content.Content;
 module.exports.Community = Community;
 module.exports.Conference = Conference;
+module.exports.Feedback = Feedback;

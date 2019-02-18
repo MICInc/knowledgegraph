@@ -9,7 +9,7 @@ module.exports = {
 
 		conf.collection.dropIndexes(function(err, results) {
 			if(err) {
-				console.log('conferece.js: '+err);
+				console.log('application_handler.js: '+err);
 			}
 		});
 
