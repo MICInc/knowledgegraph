@@ -6,12 +6,12 @@
 			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 		</div>
 		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
-			<img class="image-content" v-bind:src="cell.src">
-			<figcaption class="caption" v-on:keyup="caption($event)" contenteditable>
-				<span v-show="show_caption" v-on:click="hide_on_click($event)">Caption</span>
+			<img class="image-content" :src="cell.src" v-on:keydown.enter="show_caption($event)">
+			<figcaption class="caption" v-show="has_caption" v-on:keyup="caption($event)" v-on:keydown.delete="remove_caption($event)" contenteditable>
+				<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
 			</figcaption>
 		</figure>
-		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)" v-on:keyup.enter="add_content($event)">
+		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 			<hr>
 		</div>
 		<p v-if="'p' == cell.tag" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup.delete="remove_content($event)" v-on:keyup="input($event)" v-on:click="set_active($event)" contenteditable></p>
@@ -37,16 +37,15 @@ export default {
 				tag: 'p',
 				text: '',
 			},
-			show_caption: true,
+			has_caption: true,
+			has_caption_default: true,
 			is_empty: true
 		}
 	},
 	methods: {
-		add_content() {
-			this.$emit('add');
-		},
 		add_image(event) {
 			var el = event.target;
+			this.cell.tag = 'img';
 			this.$emit('tag', {index: this.index, tag: 'img'});
 			this.$emit('active_index', this.index);
 
@@ -155,7 +154,7 @@ export default {
 			}
 		},
 		hide_on_click(event) {
-			if(this.cell.caption.length == 0) this.show_caption = false;
+			if(this.cell.caption.length == 0) this.has_caption_default = false;
 		},
 		import_file(e) {
 			var el = event.target;
@@ -166,7 +165,7 @@ export default {
 					var content = e.target.result.split('\n\n');
 
 					for(var i = 0; i < content.length; i++) {
-						this.add_content(e);
+						// this.add_content(e);
 						this.html = content[i];
 					}
 				}
@@ -191,8 +190,9 @@ export default {
 
 			this.save();
 		},
-		prevent_nl(event) {
-			event.preventDefault();
+		remove_caption(event) {
+			var el = event.target;
+			if(el.innerText.length == 0) this.has_caption = false;
 		},
 		remove_content(event) {
 			var el = event.target;
@@ -262,6 +262,11 @@ export default {
 			if(el.tagName == 'IMG') {
 				if(el.style.border == '') el.style.border = "thin solid #460360";
 				else el.style.border = '';
+				
+				if(!this.has_caption) {
+					this.has_caption = true;
+					this.has_caption_default = true;
+				}
 			}
 
 			this.$emit('active_index', this.index);
@@ -287,6 +292,9 @@ export default {
 		},
 		shift_enter(event) {
 			console.log('shift');
+		},
+		show_caption(event) {
+			console.log(event)
 		},
 		switch_tag(tag, event) {
 			this.$emit('active_index', this.index);
@@ -344,6 +352,6 @@ export default {
 	max-width: 100%;
 	max-height: 100%;
 	vertical-align: middle; 
-	border-top: 1px solid transparent;
+	border: 1px solid transparent;
 }
 </style>

@@ -38,8 +38,7 @@ export default {
 		add_content(e=null) {
 			// ignore shift enter and allow other functions to call this
 			if(e != null && e.keyCode === 13 && e.shiftKey) return;
-
-			e.preventDefault();
+			if(e != null) e.preventDefault();
 			if (this.active_index < 0) this.active_index == 0;
 
 			this.active_index += 1;
