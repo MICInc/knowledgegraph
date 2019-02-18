@@ -112,11 +112,23 @@ var conference_schema = new Schema({
         }
     },
     conf_resp: {
+        date: {
+            type: Date,
+            required: true
+        },
         food_allergens: {
             type: String,
             trim: true
         }, 
-        message: {
+        q1: {
+            type: String,
+            trim: true
+        },
+        q2: {
+            type: String,
+            trim: true
+        },
+        q3: {
             type: String,
             trim: true
         }

@@ -5,6 +5,7 @@ module.exports = {
 		return value && {}.toString.call(value) === '[object Function]';
 	},
 	save: function(application, callback) {
+		application.conf_resp.date = new Date();
 		var conf = new db.Conference(application);
 
 		conf.collection.dropIndexes(function(err, results) {

@@ -58,8 +58,8 @@
 			</form>
 		</div>
 		<div v-if="form.complete">
-			Thanks for submititng your application for our conference!
-			Stay updated with the Machine Intelligence Community
+			Thanks for submititng your application for our conference!<br>
+			Stay updated with the Machine Intelligence Community<br>
 			<a href="https://www.facebook.com/miconference/">Facebook</a>
 			<a href="https://twitter.com/mic_conf">Twitter</a>
 			<a href="https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg">YouTube</a>
