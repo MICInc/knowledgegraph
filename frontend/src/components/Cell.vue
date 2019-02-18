@@ -135,19 +135,15 @@ export default {
 				var range = undefined;
 				var has_bold = false;
 
-				if(sel_html != undefined) {
-					has_bold = sel_html.parentNode.nodeName == 'B';
+				if(sel_html != undefined && has_hash) {
+					var target = this.trim(sel.toString(), true);
+					var hashtag = '<a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a>'+'\u00A0';
+					this.$emit('hashtag', target);
 
-					if(has_hash && !has_bold) {
-						var target = this.trim(sel.toString(), true);
-						var hashtag = '<b><a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a></b>'+'\u00A0';
-						this.$emit('hashtag', target);
+					var range = sel.getRangeAt(0);
+					range.deleteContents();
 
-						var range = sel.getRangeAt(0);
-						range.deleteContents();
-
-						this.replace_html(range, hashtag);
-					}
+					this.replace_html(range, hashtag);
 				}
 
 				if(sel.anchorNode != undefined) sel.collapseToEnd();
