@@ -3,7 +3,7 @@
 		<div>
 			An account will also be created for you by registering for the conference.
 		</div>
-		<form v-if="form.show" enctype="multipart/form-data">
+		<form v-show="form.show" enctype="multipart/form-data">
 			<button v-on:click.prevent="reveal_form">Hide form</button><br>
 			<label>What's your first name?</label><label class="error" v-if="profile.first_name.err.length > 0"> {{ profile.first_name.err }}</label><br>
 			<input type="text" placeholder="First name" v-model.trim="profile.first_name.value" required><br>
@@ -46,8 +46,10 @@
 			<input v-model.trim="conf_resp.food_allergens"></input><br>
 			<label>Opt-in to share your resume with sponsors</label><br>
 			<input type="file" name="resume" multiple v-on:change="add_file($event, 0, 'resume')"><br>
-			<label>What do you want out of this conference and anything else we should know?</label><br>
-			<textarea v-model.trim="conf_resp.message"></textarea><br>
+			<label>What future do you see for machine intelligence that others don't? (max 200 characters)</label><br>
+			<textarea v-model.trim="conf_resp.message1" maxlength="200"></textarea><br>
+			<label>What do you want out of this conference and anything else we should know? (max. 200 characters)</label><br>
+			<textarea v-model.trim="conf_resp.message" maxlength="200"></textarea><br>
 			<button v-on:click.prevent="reveal_form">Hide form</button><br>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
@@ -281,7 +283,7 @@ export default {
 			this.is_list_complete(this.reimburse.misc);
 		},
 		reveal_form() {
-			this.form.show = !this.form.show;
+			this.$emit('reveal');
 		},
 		reveal_travel() {
 			this.form.travel = !this.form.travel;
