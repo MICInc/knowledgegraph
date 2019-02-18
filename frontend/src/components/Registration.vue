@@ -1,58 +1,69 @@
 <template>
 	<div id="signup-form">
-		<div>
-			An account will also be created for you by registering for the conference.
-		</div>
-		<form v-show="form.show" enctype="multipart/form-data">
-			<button v-on:click.prevent="reveal_form">Hide form</button><br>
-			<label>What's your first name?</label><label class="error" v-if="profile.first_name.err.length > 0"> {{ profile.first_name.err }}</label><br>
-			<input type="text" placeholder="First name" v-model.trim="profile.first_name.value" required><br>
-			<label>What's your last name?</label><label class="error" v-if="profile.last_name.err.length > 0"> {{ profile.last_name.err }}</label><br>
-			<input type="text" placeholder="Last name" v-model.trim="profile.last_name.value" required><br>
-			<label v-if="profile.first_name.value.length > 0 && profile.last_name.value.length > 0">Hey {{ profile.first_name.value }} {{ profile.last_name.value }}, nice to meet you.</label>
-			<div class="birthday">
-				<label>Birthday</label><label class="error" v-if="profile.dob.err.length > 0"> {{ profile.dob.err }}</label>
-				<DateSelector v-on:date="set_dob($event)"></DateSelector>
+		<div v-if="!form.complete">
+			<div>
+				An account will also be created for you by registering for the conference.
 			</div>
-			<label>Where can we contact you?</label><label class="error" v-if="profile.email.err.length > 0"> {{ profile.email.err }}</label><br>
-			<input type="text" value="email" placeholder="email" v-model.trim="profile.email.value"><br>
-			<label>Password</label><label class="error" v-if="profile.password.err.length > 0"> {{ profile.password.err }}</label><br>
-			<input type="password" value="password" placeholder="password" v-model="profile.password.value"><br>
-			<label>Confirm password</label><br>
-			<input type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password.value"><br>
-			<label>Affiliation</label><label class='error' v-if="profile.affiliation.err.length > 0"> {{ profile.affiliation.err }}</label><br>
-			<ul>
-				<li v-for="affiliation in form.affiliation">
-					<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation.value">{{ affiliation }}
-				</li>
-			</ul>
-			<label>What school do you attend?</label><label class="error" v-if="profile.school.err.length > 0"> {{ profile.school.err }}</label><br>
-			<select name="school" v-model="profile.school.value">
-				<option v-for="school in form.schools">{{ school.name }}</option>
-			</select><br>
-			<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><label class="error" v-if="profile.grade.err.length > 0"> {{ profile.grade.err }}</label><br>
-			<select name="grade" v-model="profile.grade.value">
-				<option v-for="grade in form.academic_year">{{ grade }}</option>
-			</select><br>
-			<label>Gender</label><label class="error" v-if="profile.gender.err.length > 0"> {{ profile.gender.err }}</label><br>
-			<select name="gender" v-model="profile.gender.value">
-				<option v-for="gender in form.gender">{{ gender }}</option>
-			</select><br>
-			<label>What is your ethnicity?</label><label class="error" v-if="profile.ethnicity.err.length > 0"> {{ profile.ethnicity.err }}</label><br>
-			<select name="ethnicity" v-model="profile.ethnicity.value">
-				<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
-			</select><br>
-			<label>Please list any food you're allergic to:</label><br>
-			<input v-model.trim="conf_resp.food_allergens"></input><br>
-			<label>Opt-in to share your resume with sponsors</label><br>
-			<input type="file" name="resume" multiple v-on:change="add_file($event, 0, 'resume')"><br>
-			<label>What future do you see for machine intelligence that others don't? (max 200 characters)</label><br>
-			<textarea v-model.trim="conf_resp.message1" maxlength="200"></textarea><br>
-			<label>What do you want out of this conference and anything else we should know? (max. 200 characters)</label><br>
-			<textarea v-model.trim="conf_resp.message" maxlength="200"></textarea><br>
-			<button v-on:click.prevent="reveal_form">Hide form</button><br>
-			<button v-on:click.prevent="submit">Submit</button>
-		</form>
+			<form v-show="form.show" enctype="multipart/form-data">
+				<button v-on:click.prevent="reveal_form">Hide form</button><br>
+				<label>What's your first name?</label><label class="error" v-if="profile.first_name.err.length > 0"> {{ profile.first_name.err }}</label><br>
+				<input type="text" placeholder="First name" v-model.trim="profile.first_name.value" required><br>
+				<label>What's your last name?</label><label class="error" v-if="profile.last_name.err.length > 0"> {{ profile.last_name.err }}</label><br>
+				<input type="text" placeholder="Last name" v-model.trim="profile.last_name.value" required><br>
+				<label v-if="profile.first_name.value.length > 0 && profile.last_name.value.length > 0">Hey {{ profile.first_name.value }} {{ profile.last_name.value }}, nice to meet you.</label>
+				<div class="birthday">
+					<label>Birthday</label><label class="error" v-if="profile.dob.err.length > 0"> {{ profile.dob.err }}</label>
+					<DateSelector v-on:date="set_dob($event)"></DateSelector>
+				</div>
+				<label>Where can we contact you?</label><label class="error" v-if="profile.email.err.length > 0"> {{ profile.email.err }}</label><br>
+				<input type="text" value="email" placeholder="email" v-model.trim="profile.email.value"><br>
+				<label>Password</label><label class="error" v-if="profile.password.err.length > 0"> {{ profile.password.err }}</label><br>
+				<input type="password" value="password" placeholder="password" v-model="profile.password.value"><br>
+				<label>Confirm password</label><br>
+				<input type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password.value"><br>
+				<label>Affiliation</label><label class='error' v-if="profile.affiliation.err.length > 0"> {{ profile.affiliation.err }}</label><br>
+				<ul>
+					<li v-for="affiliation in form.affiliation">
+						<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation.value">{{ affiliation }}
+					</li>
+				</ul>
+				<label>What school do you attend?</label><label class="error" v-if="profile.school.err.length > 0"> {{ profile.school.err }}</label><br>
+				<select name="school" v-model="profile.school.value">
+					<option v-for="school in form.schools">{{ school.name }}</option>
+				</select><br>
+				<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><label class="error" v-if="profile.grade.err.length > 0"> {{ profile.grade.err }}</label><br>
+				<select name="grade" v-model="profile.grade.value">
+					<option v-for="grade in form.academic_year">{{ grade }}</option>
+				</select><br>
+				<label>Gender</label><label class="error" v-if="profile.gender.err.length > 0"> {{ profile.gender.err }}</label><br>
+				<select name="gender" v-model="profile.gender.value">
+					<option v-for="gender in form.gender">{{ gender }}</option>
+				</select><br>
+				<label>What is your ethnicity?</label><label class="error" v-if="profile.ethnicity.err.length > 0"> {{ profile.ethnicity.err }}</label><br>
+				<select name="ethnicity" v-model="profile.ethnicity.value">
+					<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
+				</select><br>
+				<label>Please list any food you're allergic to:</label><br>
+				<input v-model.trim="conf_resp.food_allergens"></input><br>
+				<label>Opt-in to share your resume with sponsors</label><br>
+				<input type="file" name="resume" multiple v-on:change="add_file($event, 0, 'resume')"><br>
+				<label>How did you hear about our conference?</label><br>
+				<textarea v-model.trim="conf_resp.q1"></textarea><br>
+				<label>What future do you see for machine intelligence that others don't? (max 200 characters)</label><br>
+				<textarea v-model.trim="conf_resp.q2" maxlength="200"></textarea><br>
+				<label>What do you want out of this conference and anything else we should know? (max. 200 characters)</label><br>
+				<textarea v-model.trim="conf_resp.q3" maxlength="200"></textarea><br>
+				<button v-on:click.prevent="reveal_form">Hide form</button><br>
+				<button v-on:click.prevent="submit">Submit</button>
+			</form>
+		</div>
+		<div v-if="form.complete">
+			Thanks for submititng your application for our conference!
+			Stay updated with the Machine Intelligence Community
+			<a href="https://www.facebook.com/miconference/">Facebook</a>
+			<a href="https://twitter.com/mic_conf">Twitter</a>
+			<a href="https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg">YouTube</a>
+		</div>
 	</div>
 </template>
 
@@ -77,12 +88,15 @@ export default {
 		return {
 			conf_resp: {
 				food_allergens: '',
-				message: '',
+				q1: '',
+				q2: '',
+				q3: ''
 			},
 			form: {
 				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
+				complete: false,
 				data: new FormData(),
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
@@ -334,7 +348,7 @@ export default {
 						console.log(data);
 					});
 
-					// this.reveal_form();
+					this.form.complete = true;
 				}
 			}		
 		},

@@ -3,11 +3,12 @@
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Machine Intelligence Conference 2019</h1>
-			<Registration v-if="form.show" v-on:reveal="reveal()"></Registration>
-			<div v-if="!form.show" class="action-buttons">
+			<Registration v-if="form.registration" v-on:reveal="show_registration()"></Registration>
+			<Feedback v-if="form.feedback" v-on:reveal="show_feedback()"></Feedback>
+			<div v-if="!form.registration && !form.feedback" class="action-buttons">
 				<router-link to="/login" tag="button">Login</router-link>
-				<button v-on:click.prevent="reveal">Register</button>
-				<button v-on:click.prevent="reveal">Feedback</button>
+				<button v-on:click.prevent="show_registration">Register</button>
+				<button v-on:click.prevent="show_feedback">Feedback</button>
 			</div>
 		</div>
 		<Footer></Footer>
@@ -18,6 +19,7 @@
 <script>
 import PageNav from '@/components/PageNav'
 import Registration from '@/components/Registration'
+import Feedback from '@/components/Feedback'
 import Footer from '@/components/Footer'
 
 export default {
@@ -26,20 +28,25 @@ export default {
 	components: {
 		PageNav,
 		Registration,
+		Feedback,
 		Footer
 	},
 
 	data() {
 		return {
 			form: {
-				show: false
+				feedback: false,
+				registration: false
 			}
 		}
 	},
 	methods: {
-		reveal() {
-			this.form.show = !this.form.show;
+		show_feedback() {
+			this.form.feedback = !this.form.feedback
 		},
+		show_registration() {
+			this.form.registration = !this.form.registration;
+		}
 	}
 }
 </script>
