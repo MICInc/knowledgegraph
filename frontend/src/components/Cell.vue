@@ -1,5 +1,5 @@
 <template>
-	<div id="container">
+	<div id="container" v-on:keyup.delete="remove_content($event)">
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
@@ -14,7 +14,7 @@
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == cell.tag" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup.delete="remove_content($event)" v-on:keyup="input($event)" v-on:click="set_active($event)" contenteditable></p>
+		<p v-if="'p' == cell.tag" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup="input($event)" v-on:click="set_active($event)" contenteditable></p>
 	</div>
 </template>
 
@@ -46,7 +46,7 @@ export default {
 		add_image(event) {
 			var el = event.target;
 			this.cell.tag = 'img';
-			this.$emit('tag', {index: this.index, tag: 'img'});
+			this.$emit('tag', {index: this.index, tag: 'img', 'focus': false});
 			this.$emit('active_index', this.index);
 
 			if(el.files && el.files[0]) {
@@ -260,6 +260,7 @@ export default {
 			var el = event.target;
 
 			if(el.tagName == 'IMG') {
+				this.$emit('focus');
 				if(el.style.border == '') el.style.border = "thin solid #460360";
 				else el.style.border = '';
 				
@@ -298,6 +299,8 @@ export default {
 		},
 		switch_tag(tag, event) {
 			this.$emit('active_index', this.index);
+			this.$emit('tag', {index: this.index, tag: tag});
+
 			this.cell.html = '';
 			this.cell.name = '';
 			this.cell.src = '';

@@ -1,6 +1,5 @@
 <template>
-	<!-- <div id="container" v-on:keydown.delete="remove_active($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus($event)"> -->
-	<div id="container" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus($event)">
+	<div id="container" v-on:keydown.delete="remove_cell($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus($event)">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -9,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:add="add_content()" v-on:hashtag="hashtag($event)" v-on:tag="switch_tag($event)" v-on:remove_cell="remove_cell($event)" v-on:focus="focus($event)"></Cell>
+			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:add="add_content()" v-on:hashtag="hashtag($event)" v-on:tag="switch_tag($event)" v-on:remove_cell="remove_cell($event)" v-on:focus="focus()"></Cell>
 		</div>
 	</div>
 </template>
@@ -35,17 +34,14 @@ export default {
 		}
 	},
 	methods: {
-		add_content(e=null) {
-			// ignore shift enter and allow other functions to call this
-			if(e != null && e.keyCode === 13 && e.shiftKey) return;
-			if(e != null) e.preventDefault();
+		add_content() {
 			if (this.active_index < 0) this.active_index == 0;
 
 			this.active_index += 1;
 			var cell_id = Math.random();
 			this.content.splice(this.active_index, 0, { id: cell_id });
 			this.cells.splice(this.active_index, 0, { id: cell_id, tag: 'p' });
-			this.focus(this.active_index);
+			this.focus();
 		},
 		focus(e=null) {
 			var key = '';
@@ -65,27 +61,27 @@ export default {
 			this.emit_save.hashtag = data;
 			this.save();
 		},
-		remove_cell(event) {
+		remove_cell() {
 			console.log('remove_cell()');
-			// if(this.active_index > -1) {
-			// 	var el = this.cells[this.active_index];
+			if(this.active_index > -1) {
+				var el = this.cells[this.active_index];
 
-			// 	if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
-			// 		// remove focus from all elements else will also accidentally delete other content
-			// 		document.activeElement.blur();
+				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
+					// remove focus from all elements else will also accidentally delete other content
+					document.activeElement.blur();
 
-			// 		this.content.splice(this.active_index, 1);
-			// 		this.$emit('remove', this.active_index);
-			// 		this.active_index -= 1;
-			// 	}
+					this.content.splice(this.active_index, 1);
+					this.$emit('remove', this.active_index);
+					this.active_index -= 1;
+				}
 
-			// 	this.save();
+				this.save();
 
-			// 	if(this.content.length == 0) {
-			// 		this.add_content(e);
-			// 		this.focus();
-			// 	}
-			// }
+				if(this.content.length == 0) {
+					this.add_content();
+					this.focus();
+				}
+			}
 		},
 		save(cell) {
 			if(cell != undefined) {
