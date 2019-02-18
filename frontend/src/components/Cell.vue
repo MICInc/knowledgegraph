@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup.delete="remove_content($event)">
+	<div id="container" v-on:keyup.delete="remove_cell()">
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
@@ -7,7 +7,7 @@
 		</div>
 		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
 			<img class="image-content" :src="cell.src" v-on:keydown.enter="show_caption($event)">
-			<figcaption class="caption" v-show="has_caption" v-on:keyup="caption($event)" v-on:keydown.delete="remove_caption($event)" contenteditable>
+			<figcaption class="caption" v-show="has_caption" v-on:keyup="caption($event)" v-on:keydown.delete.stop="remove_caption($event)" contenteditable>
 				<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
 			</figcaption>
 		</figure>
@@ -194,22 +194,18 @@ export default {
 			var el = event.target;
 			if(el.innerText.length == 0) this.has_caption = false;
 		},
-		remove_content(event) {
-			var el = event.target;
+		remove_cell() {
+			if(this.cell.id > -1) {
+				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
+				var remove_img = this.cell.tag == 'img' && this.trim(this.cell.caption).length == 0;
+				var remove_hr = this.cell.tag == 'hr';
 
-			// remove cell
-			if(this.content.length > 1 && this.trim(el.innerText).length == 0) {
-				document.activeElement.blur();
-				this.content.splice(this.index, 1);
-				this.$emit('active_index', this.index-1);
+				if(remove_p || remove_img || remove_hr) {
+					// remove focus from all elements else will also accidentally delete other content
+					document.activeElement.blur();
 
-				var prev = this.index - 1;
-
-				if(this.content.length > 0 && prev < 0) {
-					this.$emit('focus', this.index);
-				}
-				else {
-					this.$emit('focus', this.index-1);
+					this.save();
+					this.$emit('remove', this.cell.id);
 				}
 			}
 		},

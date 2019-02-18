@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete="remove_cell($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus($event)">
+	<div id="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus($event)">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -8,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:add="add_content()" v-on:hashtag="hashtag($event)" v-on:tag="switch_tag($event)" v-on:remove_cell="remove_cell($event)" v-on:focus="focus()"></Cell>
+			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:hashtag="hashtag($event)" v-on:tag="switch_tag($event)" v-on:remove="remove_cell($event)" v-on:focus="focus()"></Cell>
 		</div>
 	</div>
 </template>
@@ -34,8 +34,8 @@ export default {
 		}
 	},
 	methods: {
-		add_content() {
-			if (this.active_index < 0) this.active_index == 0;
+		add_content(e=null) {
+			if(e != undefined) e.preventDefault();
 
 			this.active_index += 1;
 			var cell_id = Math.random();
@@ -46,13 +46,15 @@ export default {
 		focus(e=null) {
 			var key = '';
 			if(e != undefined && e.which == 9) this.active_index += 1;
+			console.log(this.active_index);
+			console.log(this.cells[this.active_index]);
 
 			if(this.active_index < this.content.length && this.cells[this.active_index].tag == 'p') {
 				this.$nextTick(() => {
 					var content = this.$refs['content-'+this.active_index][0];
 					var p_tag = content.$refs['p-content'];
 
-					p_tag.focus();
+					// p_tag.focus();
 					content.set_end_contenteditable(p_tag);
 				});
 			}
@@ -61,24 +63,19 @@ export default {
 			this.emit_save.hashtag = data;
 			this.save();
 		},
-		remove_cell() {
-			console.log('remove_cell()');
-			if(this.active_index > -1) {
-				var el = this.cells[this.active_index];
-
-				if(el.tag == 'img' || el.tag == 'canvas' || el.tag == 'hr') {
-					// remove focus from all elements else will also accidentally delete other content
-					document.activeElement.blur();
-
-					this.content.splice(this.active_index, 1);
-					this.$emit('remove', this.active_index);
-					this.active_index -= 1;
-				}
-
-				this.save();
+		remove(event) {
+			this.$refs['content-'+this.active_index][0].remove_cell();
+		},
+		remove_cell(index) {
+			if(index >= 0) {
+				this.content.splice(index, 1);
+				var prev = index - 1;
+				if(prev >= 0) this.active_index = prev;
 
 				if(this.content.length == 0) {
 					this.add_content();
+				}
+				else {
 					this.focus();
 				}
 			}
