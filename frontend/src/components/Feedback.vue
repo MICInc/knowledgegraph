@@ -1,34 +1,22 @@
 <template>
 	<div id="feedback-form">
-		<h2>Feedback Form</h2>
 		<div v-if="!form.complete">
-			<span>
+			<div id="top-message">
 				Thanks for attending our 2019 Machine Intelligence Conference! Your feedback will help further our mission to democratize machine intelligence.
-			</span>
+			</div>
 			<form v-show="form.show">
 				<button v-on:click.prevent="reveal_form()">Hide form</button><br>
-				<label>How satisfied were you with the event?</label><br>
-				<!-- <textarea v-model=""></textarea><br>
-				<label>What were your key take aways from this event?</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>How satisfied were you with the logistics?</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>Additional feedback on logistics</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>Which sessions did you find most interesting?</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>How satisfied were you with the Women in Machine Intelligence (WiMI) panel?</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>How satisfied were you with the Alumni panel?</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>How satisfied were you with the Industry panel?</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>Any overall feedback for the event?</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>What would you like to see next year?</label><br>
-				<textarea v-model=""></textarea><br>
-				<label>Name (optional)</label><br>
-				<textarea v-model=""></textarea><br> -->
+				<label>Overall how was the event?</label><br>
+				<span v-for="(value, index) in form.overall">
+					<input class="overall_button" v-model="feedback.overall" type="radio" name="overall" :value="value"/>
+					<span class="overall_value">{{value}}</span>
+				</span><br>
+				<label>What did you like about the conference?</label><br>
+				<textarea v-model="feedback.liked"></textarea><br>
+				<label>Which panels did you attend?</label><br>
+				<span id="panels" v-for="(value, index) in form.panels">
+					<input v-model="feedback.panels" type="checkbox" :name="value" :value="value"/> {{value}}
+				</span><br>
 				<button v-on:click.prevent="reveal_form()">Hide form</button><br>
 				<button v-on:click.prevent="submit">Submit</button>
 			</form>
@@ -47,10 +35,14 @@ export default {
 		return {
 			form: {
 				complete: false,
+				overall: ['0', 'Fair', 'Good', 'Excellent', '100'],
+				panels: ['Alumni', 'Gender Variance', 'Ethnic variance'],
 				show: true
 			},
 			feedback: {
-
+				liked: '',
+				overall: '',
+				panels: []
 			}
 		}
 	},
@@ -70,4 +62,19 @@ export default {
 </script>
 
 <style>
+.overall_button {
+	margin-right: 5px;
+}
+
+.overall_value {
+	margin-right: 1em;
+}
+
+#panels {
+	diplay: block;
+}
+
+#top-message {
+	margin-bottom: 1em;
+}
 </style>
