@@ -6,6 +6,10 @@ var feedback_schema = new Schema({
 		type: Date,
 		required: true
 	},
+	changes: {
+		type: String,
+		trim: true
+	},
 	liked: {
 		type: String,
 		trim: true

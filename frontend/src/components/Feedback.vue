@@ -11,14 +11,15 @@
 					<input class="overall_button" v-model="feedback.overall" type="radio" name="overall" :value="value"/>
 					<span class="overall_value">{{value}}</span>
 				</span><br>
-				<label>What did you like about the conference?</label><br>
-				<textarea v-model="feedback.liked"></textarea><br>
 				<label>Which panels did you attend?</label><br>
 				<span id="panels" v-for="(value, index) in form.panels">
 					<input v-model="feedback.panels" type="checkbox" :name="value" :value="value"/> {{value}}
 				</span><br>
-				<button v-on:click.prevent="reveal_form()">Hide form</button><br>
-				<button v-on:click.prevent="submit">Submit</button>
+				<label>What did you like about the conference?</label><br>
+				<textarea v-model="feedback.liked"></textarea><br>
+				<label>What changes could MIConf make to further democratize machine intelligence?</label><br>
+				<textarea v-model="feedback.changes"></textarea><br>
+				<button v-on:click.prevent="submit">Submit</button><button v-on:click.prevent="reveal_form()">Hide form</button>
 			</form>
 		</div>
 		<div v-if="form.complete">
@@ -40,6 +41,7 @@ export default {
 				show: true
 			},
 			feedback: {
+				changes: '',
 				liked: '',
 				overall: '',
 				panels: []

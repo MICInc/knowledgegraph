@@ -95,15 +95,7 @@ export default {
 		},
 
 		async signUpUser() {
-			return await AuthService.signUpUser({
-				email: this.profile.email.value, 
-				firstname: this.profile.first_name.value,
-				lastname: this.profile.last_name.value,
-				passwordConf: this.profile.confirm_password.value,
-				password: this.profile.password.value,
-				dob: this.profile.dob.value,
-				gender: this.profile.gender.value,
-			})
+			return await AuthService.signUpUser(this.profile);
 		},
 	}
 }

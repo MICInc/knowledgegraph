@@ -53,8 +53,7 @@
 				<textarea v-model.trim="conf_resp.q2" maxlength="200"></textarea><br>
 				<label>What do you want out of this conference and anything else we should know? (max. 200 characters)</label><br>
 				<textarea v-model.trim="conf_resp.q3" maxlength="200"></textarea><br>
-				<button v-on:click.prevent="reveal_form">Hide form</button><br>
-				<button v-on:click.prevent="submit">Submit</button>
+				<button v-on:click.prevent="submit">Submit</button><button v-on:click.prevent="reveal_form">Hide form</button>
 			</form>
 		</div>
 		<div v-if="form.complete">

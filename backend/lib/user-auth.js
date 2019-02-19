@@ -1,70 +1,68 @@
 var db = require('../db/database');
 var crypto = require('crypto');
-var fu = require('./format_user');
+var mongoose = require('mongoose');
 
 function handleError(err) {
 	console.log(err);
 }
 
 module.exports = {
-	// TODO: Update this to match model - replace defaults
+	filter: function(data) {
+		// TODO: Extend to filter for real names and profanity
+		return data == null ? '' : data.value;
+	},
+	format: function(profile) {
+		return {
+			id: mongoose.Types.ObjectId(),
+			affiliation: module.exports.filter(profile.affiliation),
+			bio: "",
+			date_joined: new Date(),
+			dob: profile.dob.value,
+			email: profile.email.value,
+			ethnicity: module.exports.filter(profile.ethnicity),
+			first_name: module.exports.filter(profile.first_name),
+			following: [],
+			grade: module.exports.filter(profile.grade),
+			gender: module.exports.filter(profile.gender),
+			last_name: module.exports.filter(profile.last_name),
+			library: [],
+			liked_articles: [],
+			liked_papers: [],
+			password_hash: '',
+			rank: 0,
+			salt: '',
+			school: module.exports.filter(profile.school),
+			search_history: [],
+			subjects: [],
+			url: (profile.first_name.value+'-'+profile.last_name.value).toLowerCase()
+		}
+	},
+	// TODO: Update module.exports to match model - replace defaults
 	registerUser: function(profile, callback) {
-		var self = this;
-				
-		self.isEmailTaken(email, function(isEmailTaken) {
-			if(!isEmailTaken) {
-				// Username and Email are unique
-				var salt = crypto.randomBytes(64).toString('base64');
+		// Username and Email are unique
+		var salt = crypto.randomBytes(64).toString('base64');
 
-				// Hash password
-				crypto.pbkdf2(password, salt, 10000, 64, 'sha512', function(err, key){
-					if (err) handleError(err);
-					
-					var prof = fu
+		// Hash password
+		crypto.pbkdf2(profile.password.value, salt, 10000, 64, 'sha512', function(err, key) {
+			if (err) handleError(err);
 
-					var user = new db.User({
-						first_name: first_name,
-						last_name: last_name,
-						email: email,
-						password_hash: key.toString('hex'),
-						salt: salt,
-						dob: dob,
-						gender: gender,
-						grade: 'default',
-						affiliation: 'default',
-						ethnicity: 'default',
-						date_joined: new Date().toString(),
-						date_last_updated: new Date().toString(),
-						bio: '',
-						liked_articles: [],
-						liked_papers: [],
-						subjects: [],
-						library: [],
-						search_history: [],
-						following: [],
-						rank: 0
-					});
+			var user = new db.User(module.exports.format(profile));
+			user.salt = salt;
+			user.password_hash = key.toString('hex');
 
-					user.collection.dropIndexes(function(err, results) {
-						if(err) {
-							console.log('content.js: '+err);
-						}
-					});
+			user.collection.dropIndexes(function(err, results) {
+				if(err) {
+					console.log('content.js: '+err);
+				}
+			});
 
-					user.save(function(err, user) {
-						if (err) handleError(err);
-						// Successfully registered user
-						process.nextTick(function() {
-							callback(null, user);
-						});
-					});
-				});
-			}
-			else {
+			user.save(function(err, user) {
+				if (err) handleError(err);
+				// Successfully registered user
 				process.nextTick(function() {
-					callback({message: 'Email is in use.'}, null);
+					callback(null, user);
 				});
-			}
+			});
 		});
 	},
 

@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../db/database');
-var uh = require('../lib/user_handler');
+var ua = require('../lib/user-auth');
 
 router.post('/', function(req, res) {
 	// TODO: should validate email address before querying
-	uh.find_by_email(req.body.email.value, function(results) {
+	ua.isEmailTaken(req.body.email.value, function(results) {
 		if(results.length == 0) {
-			uh.save(req.body, function(user_id) {
+			ua.registerUser(req.body, function(user_id) {
 				res.send(user_id);
 			});
 		}

@@ -45,13 +45,13 @@ router.get('/robots.txt', function(req, res, next)
 // https://stackoverflow.com/questions/14709802/exit-after-res-send-in-express-js
 // TODO: update error handling as res.send does not exit method
 router.post('/signup', function(req, res) {
-	var first_name = req.body.firstname;
-	var last_name = req.body.lastname;
-	var email = req.body.email;
-	var password = req.body.password;
-	var passwordConf = req.body.passwordConf;
-	var dob = req.body.dob;
-	var gender = req.body.gender;
+	console.log(req.body);
+	var profile = req.body;
+	var first_name = profile.first_name.value;
+	var last_name = profile.last_name.value;
+	var email = profile.email.value;
+	var password = profile.password.value;
+	var passwordConf = profile.confirm_password.value;
 
 	if(password != passwordConf) {
 		res.send({error: 'Passwords did not match'});
@@ -61,7 +61,7 @@ router.post('/signup', function(req, res) {
 		res.send({error: 'Please provide your first name, last name, email, and password'});
 	}
 
-	UserAuth.registerUser(first_name, last_name, email, password, dob, gender, function(err, user) {
+	UserAuth.registerUser(req.body, function(err, user) {
 		if (!err) {
 			let token = jwt.sign({email: email}, config.secret, {expiresIn: '24h'});
 
