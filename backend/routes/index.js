@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
 var UserAuth = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
 const config = require('../config.js');

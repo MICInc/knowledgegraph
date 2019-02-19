@@ -1,14 +1,14 @@
 var db = require('../db/database');
 var crypto = require('crypto');
+var fu = require('./format_user');
 
 function handleError(err) {
 	console.log(err);
 }
 
 module.exports = {
-	
 	// TODO: Update this to match model - replace defaults
-	registerUser: function(first_name, last_name, email, password, dob, gender, callback) {
+	registerUser: function(profile, callback) {
 		var self = this;
 				
 		self.isEmailTaken(email, function(isEmailTaken) {
@@ -20,7 +20,7 @@ module.exports = {
 				crypto.pbkdf2(password, salt, 10000, 64, 'sha512', function(err, key){
 					if (err) handleError(err);
 					
-					// console.log(key.toString('hex'))
+					var prof = fu
 
 					var user = new db.User({
 						first_name: first_name,

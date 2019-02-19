@@ -69,7 +69,6 @@
 
 <script>
 import axios from 'axios'
-import ProfileService from '../services/ProfileService.js'
 import RegistrationService from '../services/RegistrationService.js'
 import ContentService from '@/services/ContentService.js'
 import institutions from '@/data/schools.json'

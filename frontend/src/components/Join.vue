@@ -7,6 +7,7 @@
 				<input type="text" placeholder="Last Name" v-model.trim="profile.last_name.value" required>
 			</div>
 			<input type="email" placeholder="Email" v-model.trim="profile.email.value" required>
+			<label>Gender:</label>
 			<select name="gender" placeholder="Gender" v-model="profile.gender.value">
 				<option value="" disabled selected>Select your gender</option>
 				<option v-for="gender in form.gender">{{ gender }}</option>
@@ -37,10 +38,6 @@ export default {
 				gender: ['Female', 'Male', 'Non-binary']
 			},
 			profile: {
-				affiliation: {
-					err: '',
-					value: ''
-				},
 				confirm_password: {
 					err: '',
 					value: ''
@@ -53,10 +50,6 @@ export default {
 					err: '',
 					value: ''
 				},
-				ethnicity: {
-					err: '',
-					value: ''
-				},
 				first_name: {
 					err: '',
 					value: ''
@@ -65,20 +58,10 @@ export default {
 					err: '',
 					value: ''
 				},
-				grade: {
-					err: '',
-					value: ''
-				},
 				last_name: {
-					err: '',
 					value: ''
 				},
 				password: {
-					err: '',
-					value: ''
-				},
-				school: {
-					err: '',
 					value: ''
 				}
 			}
