@@ -1,21 +1,20 @@
 <template>
 	<div id="join">
 		<form v-on:submit.prevent="handleSubmit">
-			<p>{{error}}</p>
 			<div class="input-row">
-				<input type="text" placeholder="First Name" v-model.trim="profile.first_name.value" required>
-				<input type="text" placeholder="Last Name" v-model.trim="profile.last_name.value" required>
+				<input :class="{error: form.error.first_name }" type="text" placeholder="First Name" v-model.trim="profile.first_name.value" required>
+				<input :class="{error: form.error.last_name }" type="text" placeholder="Last Name" v-model.trim="profile.last_name.value" required><br>
 			</div>
-			<input type="email" placeholder="Email" v-model.trim="profile.email.value" required>
+			<input :class="{error: form.error.email }" type="email" placeholder="Email" v-model.trim="profile.email.value" required>
 			<label>Gender:</label>
-			<select name="gender" placeholder="Gender" v-model="profile.gender.value">
+			<select :class="{error: form.error.gender }" name="gender" placeholder="Gender" v-model="profile.gender.value">
 				<option value="" disabled selected>Select your gender</option>
 				<option v-for="gender in form.gender">{{ gender }}</option>
 			</select>
 			<label>Birthday</label><br>
-			<DateSelector v-on:date="set_date($event)"></DateSelector>
-			<input type="password" placeholder="Password" v-model="profile.password.value" required>
-			<input type="password" placeholder="Confirm Password" v-model="profile.confirm_password.value" required>
+			<DateSelector :class="{error: form.error.dob }"  v-on:date="set_date($event)"></DateSelector>
+			<input :class="{error: form.error.password }" type="password" placeholder="Password" v-model="profile.password.value" required>
+			<input :class="{error: form.error.confirm_pw }" type="password" placeholder="Confirm Password" v-model="profile.confirm_password.value" required>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
 	</div>
@@ -33,37 +32,26 @@ export default {
 	},
 	data () {
 		return {
-			error: '',
 			form: {
+				error: {
+					first_name: false,
+					last_name: false,
+					email: false,
+					gender: false,
+					dob: false,
+					password: false,
+					confirm_pw: false
+				},
 				gender: ['Female', 'Male', 'Non-binary']
 			},
 			profile: {
-				confirm_password: {
-					err: '',
-					value: ''
-				},
-				dob: {
-					err: '',
-					value: undefined
-				},
-				email: {
-					err: '',
-					value: ''
-				},
-				first_name: {
-					err: '',
-					value: ''
-				},
-				gender: {
-					err: '',
-					value: ''
-				},
-				last_name: {
-					value: ''
-				},
-				password: {
-					value: ''
-				}
+				confirm_password: { value: ''},
+				dob: { value: undefined },
+				email: { value: '' },
+				first_name: { value: '' },
+				gender: { value: '' },
+				last_name: { value: '' },
+				password: { value: '' }
 			}
 		}
 	},
@@ -74,22 +62,15 @@ export default {
 		},
 
 		submit() {
-			if (this.profile.password.value != this.profile.confirm_password.value) {
-				this.error = "Passwords don't match"
-				return
-			}
-
 			this.signUpUser().then((response) => {
-				if (response.data.error != undefined && response.status == 200) {
-					this.error = response.data.error
+				var err = response.data.error;
+
+				if(err != undefined && response.status == 200) {
+					this.form.error = err;
 				} else if (response.status == 200) {
 					// Login newly created l=user
 					this.$store.dispatch('login', response.data.token)
-					router.push({ name: 'home' })
-									
-				} else {
-					alert("Something went wrong.")
-					console.log(response)
+					router.push({ name: 'home' })	
 				}
 			});
 		},
@@ -103,6 +84,9 @@ export default {
 
 
 <style scoped>
+.error {
+	border-color: red;
+}
 
 .input-row {
 	display: flex;
@@ -132,8 +116,7 @@ form {
 input {
 	margin: 5px 0;
 	padding: 5px;
-	border: none;
-	background: #535353;
+	border-style: solid;
 }
 
 label, a {

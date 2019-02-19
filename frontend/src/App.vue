@@ -43,7 +43,8 @@ button:hover {
 }
 
 textarea, input {
-	border: 0px;
+	border: 0.5px;
+	border-color: #a0a0a0;
 	outline: 0px;
 	background: transparent;
 	padding: 5px;
