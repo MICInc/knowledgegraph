@@ -97,6 +97,7 @@ nav ul li a {
 }
 
 input.search {
+	border: transparent;
 	height: auto;
 	width: 300px;
 	border-radius: 3px;

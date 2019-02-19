@@ -64,6 +64,12 @@ export default {
 </script>
 
 <style>
+textarea {
+	width: calc(600px - 10px);
+	min-height: 75px;
+	border: transparent;
+}
+
 .overall_button {
 	margin-right: 5px;
 }

@@ -4,11 +4,11 @@
 		<select name="year" v-model.number="year" v-bind:input="emit()">
 			<option v-for="year in form.years">{{ year }}</option>
 		</select>
-		<label>Month: </label>
+		<label>  Month: </label>
 		<select name="month" v-model.number="month" v-bind:input="emit()">
 			<option v-for="(value, index) in 12">{{ value }}</option>
 		</select>
-		<label>Day: </label>
+		<label>  Day: </label>
 		<select name="day" v-model.number="day" v-bind:input="emit()">
 			<option v-for="(value, index) in 31">{{ value }}</option>
 		</select>
@@ -43,4 +43,7 @@ export default {
 </script>
 
 <style>
+label {
+	color: #606060;
+}
 </style>

@@ -223,6 +223,7 @@ label {
 }
 
 input {
+	border: transparent;
 	width: 600px;
 }
 
@@ -248,8 +249,9 @@ button {
 }
 
 textarea {
-  width: calc(600px - 10px);
-  min-height: 75px;
+	width: calc(600px - 10px);
+	min-height: 75px;
+	border: transparent;
 }
 
 .birthday select {
@@ -257,6 +259,7 @@ textarea {
 }
 
 .error {
+	border: solid;
 	border-color: red;
 }
 

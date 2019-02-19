@@ -2,18 +2,20 @@
 	<div id="join">
 		<form v-on:submit.prevent="handleSubmit">
 			<div class="input-row">
-				<input :class="{error: form.error.first_name }" type="text" placeholder="First Name" v-model.trim="profile.first_name" required>
-				<input :class="{error: form.error.last_name }" type="text" placeholder="Last Name" v-model.trim="profile.last_name" required><br>
+				<input :class="{error: form.error.first_name }" type="text" placeholder="First name" v-model.trim="profile.first_name" required>
+				<input :class="{error: form.error.last_name }" type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
 			</div>
-			<input :class="{error: form.error.email }" type="email" placeholder="Email" v-model.trim="profile.email" required>
-			<label>Gender:</label>
+			<label>Gender</label>
 			<select :class="{error: form.error.gender }" name="gender" placeholder="Gender" v-model="profile.gender">
 				<option v-for="gender in form.gender">{{ gender }}</option>
-			</select>
-			<label>Birthday</label><br>
+			</select><br>
+			<label>Birthday</label>
 			<DateSelector :class="{error: form.error.dob }"  v-on:date="set_date($event)"></DateSelector>
-			<input :class="{error: form.error.password }" type="password" placeholder="Password" v-model="profile.password" required>
-			<input :class="{error: form.error.confirm_password }" type="password" placeholder="Confirm Password" v-model="profile.confirm_password" required>
+			<input :class="{error: form.error.email }" type="email" placeholder="Email" v-model.trim="profile.email" required>
+			<div class="input-row">
+				<input :class="{error: form.error.password }" type="password" placeholder="Password" v-model="profile.password" required>
+				<input :class="{error: form.error.confirm_password }" type="password" placeholder="Confirm password" v-model="profile.confirm_password" required>
+			</div>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
 	</div>
@@ -81,6 +83,8 @@ export default {
 
 <style scoped>
 .error {
+	border: solid;
+	border-width: 0.5px;
 	border-color: red;
 }
 
@@ -101,6 +105,10 @@ export default {
 	margin-left: 4px;
 }
 
+label {
+	color: #606060;
+}
+
 form {
 	display: flex;
 	flex-direction: column;
@@ -112,7 +120,7 @@ form {
 input {
 	margin: 5px 0;
 	padding: 5px;
-	border-style: solid;
+	border: transparent;
 }
 
 label, a {
