@@ -2,19 +2,18 @@
 	<div id="join">
 		<form v-on:submit.prevent="handleSubmit">
 			<div class="input-row">
-				<input :class="{error: form.error.first_name }" type="text" placeholder="First Name" v-model.trim="profile.first_name.value" required>
-				<input :class="{error: form.error.last_name }" type="text" placeholder="Last Name" v-model.trim="profile.last_name.value" required><br>
+				<input :class="{error: form.error.first_name }" type="text" placeholder="First Name" v-model.trim="profile.first_name" required>
+				<input :class="{error: form.error.last_name }" type="text" placeholder="Last Name" v-model.trim="profile.last_name" required><br>
 			</div>
-			<input :class="{error: form.error.email }" type="email" placeholder="Email" v-model.trim="profile.email.value" required>
+			<input :class="{error: form.error.email }" type="email" placeholder="Email" v-model.trim="profile.email" required>
 			<label>Gender:</label>
-			<select :class="{error: form.error.gender }" name="gender" placeholder="Gender" v-model="profile.gender.value">
-				<option value="" disabled selected>Select your gender</option>
+			<select :class="{error: form.error.gender }" name="gender" placeholder="Gender" v-model="profile.gender">
 				<option v-for="gender in form.gender">{{ gender }}</option>
 			</select>
 			<label>Birthday</label><br>
 			<DateSelector :class="{error: form.error.dob }"  v-on:date="set_date($event)"></DateSelector>
-			<input :class="{error: form.error.password }" type="password" placeholder="Password" v-model="profile.password.value" required>
-			<input :class="{error: form.error.confirm_pw }" type="password" placeholder="Confirm Password" v-model="profile.confirm_password.value" required>
+			<input :class="{error: form.error.password }" type="password" placeholder="Password" v-model="profile.password" required>
+			<input :class="{error: form.error.confirm_password }" type="password" placeholder="Confirm Password" v-model="profile.confirm_password" required>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
 	</div>
@@ -40,29 +39,27 @@ export default {
 					gender: false,
 					dob: false,
 					password: false,
-					confirm_pw: false
+					confirm_password: false
 				},
 				gender: ['Female', 'Male', 'Non-binary']
 			},
 			profile: {
-				confirm_password: { value: ''},
-				dob: { value: undefined },
-				email: { value: '' },
-				first_name: { value: '' },
-				gender: { value: '' },
-				last_name: { value: '' },
-				password: { value: '' }
+				confirm_password: '',
+				dob: undefined,
+				email: '',
+				first_name: '',
+				gender: '',
+				last_name: '',
+				password: ''
 			}
 		}
 	},
-
 	methods: {
 		set_date(date) {
-			this.profile.dob.value = date;
+			this.profile.dob = date;
 		},
-
 		submit() {
-			this.signUpUser().then((response) => {
+			this.signup().then((response) => {
 				var err = response.data.error;
 
 				if(err != undefined && response.status == 200) {
@@ -74,8 +71,7 @@ export default {
 				}
 			});
 		},
-
-		async signUpUser() {
+		async signup() {
 			return await AuthService.signUpUser(this.profile);
 		},
 	}

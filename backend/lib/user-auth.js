@@ -9,7 +9,7 @@ function handleError(err) {
 module.exports = {
 	filter: function(data) {
 		// TODO: Extend to filter for real names and profanity
-		return data == null ? '' : data.value;
+		return data == null ? '' : data;
 	},
 	format: function(profile) {
 		return {
@@ -17,8 +17,8 @@ module.exports = {
 			affiliation: module.exports.filter(profile.affiliation),
 			bio: "",
 			date_joined: new Date(),
-			dob: profile.dob.value,
-			email: profile.email.value,
+			dob: profile.dob,
+			email: profile.email,
 			ethnicity: module.exports.filter(profile.ethnicity),
 			first_name: module.exports.filter(profile.first_name),
 			following: [],
@@ -34,7 +34,7 @@ module.exports = {
 			school: module.exports.filter(profile.school),
 			search_history: [],
 			subjects: [],
-			url: (profile.first_name.value+'-'+profile.last_name.value).toLowerCase()
+			url: (profile.first_name+'-'+profile.last_name).toLowerCase()
 		}
 	},
 	// TODO: Update module.exports to match model - replace defaults
@@ -43,7 +43,7 @@ module.exports = {
 		var salt = crypto.randomBytes(64).toString('base64');
 
 		// Hash password
-		crypto.pbkdf2(profile.password.value, salt, 10000, 64, 'sha512', function(err, key) {
+		crypto.pbkdf2(profile.password, salt, 10000, 64, 'sha512', function(err, key) {
 			if (err) handleError(err);
 
 			var user = new db.User(module.exports.format(profile));

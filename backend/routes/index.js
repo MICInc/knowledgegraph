@@ -46,27 +46,25 @@ router.get('/robots.txt', function(req, res, next)
 // TODO: update error handling as res.send does not exit method
 router.post('/signup', function(req, res) {
 	var profile = req.body;
-	var first_name = profile.first_name.value;
-	var last_name = profile.last_name.value;
-	var dob = profile.dob.value;
-	var email = profile.email.value;
-	var gender = profile.gender.value;
-	var password = profile.password.value;
-	var passwordConf = profile.confirm_password.value;
+	var first_name = profile.first_name;
+	var last_name = profile.last_name;
+	var dob = profile.dob;
+	var email = profile.email;
+	var gender = profile.gender;
+	var password = profile.password;
+	var passwordConf = profile.confirm_password;
 
-	var errors = {
-		first_name: !first_name,
-		last_name: !last_name,
-		email: !email,
-		gender: !gender,
-		dob: !dob,
-		password: !password,
-		confirm_pw: !password || password != passwordConf
-	};
+	var errors = {};
+	var keys = Object.keys(profile);
+	console.log(keys);
+
+	for(var i in keys) errors[keys[i]] = !profile[keys[i]];
+	console.log(errors);
 
 	for(var i in errors) {
 		if(errors[i]) {
 			res.send({ error: errors });
+			console.log('sending err');
 			return;
 		}
 	}
