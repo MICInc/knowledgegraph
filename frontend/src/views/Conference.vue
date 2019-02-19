@@ -6,9 +6,9 @@
 			<Registration v-if="form.registration" v-on:reveal="show_registration()"></Registration>
 			<Feedback v-if="form.feedback" v-on:reveal="show_feedback()"></Feedback>
 			<div v-if="!form.registration && !form.feedback" class="action-buttons">
-				<router-link to="/login" tag="button">Login</router-link>
-				<button v-on:click.prevent="show_registration">Register</button>
-				<button v-on:click.prevent="show_feedback">Feedback</button>
+				<router-link class="menu-opt" to="/login" tag="button">LOGIN</router-link>
+				<button class="menu-opt" v-on:click.prevent="show_registration">REGISTER</button>
+				<button class="menu-opt" v-on:click.prevent="show_feedback">FEEDBACK</button>
 			</div>
 		</div>
 		<Footer></Footer>
@@ -61,6 +61,17 @@ export default {
 .container {
 	flex: 1;
 	width: 1080px;
+}
+
+.menu-opt {
+	display: flex;
+	align-items: center;
+	width: 30%;
+	vertical-align: middle;
+	height: 50px;
+	display: inline-block;
+	font-size: 1em;
+	font-weight: bold;
 }
 
 </style>
