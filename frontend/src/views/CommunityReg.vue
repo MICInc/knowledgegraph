@@ -202,6 +202,7 @@ label {
 
 input {
 	margin-right: 10px;
+	border: none;
 }
 
 .name div {

@@ -63,15 +63,4 @@ export default {
 	width: 1080px;
 }
 
-.menu-opt {
-	display: flex;
-	align-items: center;
-	width: 30%;
-	vertical-align: middle;
-	height: 50px;
-	display: inline-block;
-	font-size: 1em;
-	font-weight: bold;
-}
-
 </style>

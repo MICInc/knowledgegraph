@@ -35,6 +35,14 @@ button {
 	outline: none;
 	padding: 5px 10px;
 	color: #000;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	display: inline-block;
+	width: 30%;
+	height: 50px;
+	font-size: 1em;
+	font-weight: bold;
 }
 
 button:hover {
