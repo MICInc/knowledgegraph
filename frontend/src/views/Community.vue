@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Community Page</h1>
-			<a href="/community/start">Start a community</a>
+			<router-link to="/community/start" tag="button">Start a community</router-link>
 			<br>
 			<a href="/mic/mit">MIT MIC</a>
 		</div>
