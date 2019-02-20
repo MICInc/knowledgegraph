@@ -187,8 +187,8 @@ export default {
 		},
 		submit() {
 			CommunityService.submitCommunity(this.org)
-			.then((data) => {
-				this.form.server_resp = data['data'];
+			.then((resp) => {
+				console.log(resp.data);
 			});
 		}
 	}
