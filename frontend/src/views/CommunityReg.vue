@@ -12,30 +12,30 @@
 			</div>
 			<form id="community-reg-form">
 	 			<label class="expand-section" v-on:click="show_schools()">I.  Where will MIC's next community be?</label>
-				<select v-model.trim="org.school">
+				<select id="schools" v-if="form.has_schools" v-model.trim="org.school">
 					<option v-for="school in form.schools">{{ school.name }}</option>
 				</select>
 				<label class="expand-section" v-on:click="show_established_form()">II. Does your community already exist?</label>
 				<div v-if="form.exists">
-					<label>What's the name of your organizaion?</label><br>
-					<input type="text" class="mar-left" v-model.trim="org.name"><br>
-					<label>When was your organization established?</label><br>
-					<input type="text" class="mar-left" v-model.number="org.established"><br>
+					<label class="field-header">What's the name of your organization?</label><br>
+					<input class="full-width" type="text" v-model.trim="org.name"><br>
+					<label class="field-header">When was your organization established?</label><br>
+					<input type="text" class="full-width" v-model.number="org.established"><br>
 					<span>
-						<label v-if="org.name.length == 0">Is your organization affiliated with an institution?</label>
-						<label v-else>Is {{ org.name }} affiliated with an institution? </label>
+						<label class="field-header" v-if="org.name.length == 0">Is your organization affiliated with an institution?</label>
+						<label class="field-header" v-else>Is {{ org.name }} affiliated with an institution? </label>
 					</span><br>
 					<input type="radio" value="yes" v-model="org.aff_exists"> Yes
 					<input type="radio" value="no" v-model="org.aff_exists"> No
 					<br>
 					<span v-if="org.aff_exists == 'yes'">
-						<label>What's the name of the institution:</label>
+						<label class="field-header">What's the name of the institution:</label>
 						<br>
-						<input type="text" class="mar-left" v-model.trim="org.affiliation.name"><br>
-						<label>Who can we contact at your institution?</label>
+						<input type="text" class="full-width" v-model.trim="org.affiliation.name"><br>
+						<label class="field-header">Who can we contact at your institution?</label>
 						<br>
-						Name: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.name"><br>
-						Email: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.email"><br>
+						Name: <input type="text" class="full-width" v-model.trim="org.affiliation.contact.name"><br>
+						Email: <input type="text" class="full-width" v-model.trim="org.affiliation.contact.email"><br>
 					</span>
 					<label class="expand-section" v-on:click="show_core()">Who will be {{ org.name }}'s executives upon joining MIC?</label>
 				</div>
@@ -47,8 +47,8 @@
 				</div>
 				<div v-if="form.has_core" v-for="(value, index) in org.execs.core">
 					<div class="name">
-						<label>{{ value.position }}:</label>
 						<div>
+							<input class="core-exec" :placeholder="value.position" disabled>
 							<input :ref="'exec_first_name'+index" type="text" placeholder="First name" v-model.trim="org.execs.core[index].first_name">
 							<input :ref="'exec_last_name'+index" type="text" placeholder="Last name" v-model.trim="org.execs.core[index].last_name">
 							<input :ref="'exec_email'+index" type="text" placeholder="Email" v-model.trim="org.execs.core[index].email">
@@ -56,19 +56,19 @@
 					</div>
 				</div>
 				<label class="expand-section" v-on:click="extend_board()">IV. Who else is on your executive board?</label>
-				<div v-if="form.more_board">
+				<span v-if="form.more_board">
 					<div v-for="(value, index) in org.execs.misc">
-						<input :ref="'exec'+index" type="text" placeholder="First name" v-model.trim="org.execs.misc[index].first_name">
-						<input :ref="'exec'+index" type="text" placeholder="Last name" v-model.trim="org.execs.misc[index].last_name">
-						<input :ref="'exec'+index" type="text" placeholder="Position/Role" v-model.trim="org.execs.misc[index].position">
-						<input :ref="'exec'+index" type="text" placeholder="Email" v-model.trim="org.execs.misc[index].email" v-on:keyup.enter="add_exec(index)">
+						<input class="more-execs" :ref="'exec'+index" type="text" placeholder="Position/Role" v-model.trim="org.execs.misc[index].position">
+						<input class="more-execs" :ref="'exec'+index" type="text" placeholder="First name" v-model.trim="org.execs.misc[index].first_name">
+						<input class="more-execs" :ref="'exec'+index" type="text" placeholder="Last name" v-model.trim="org.execs.misc[index].last_name">
+						<input class="more-execs" :ref="'exec'+index" type="text" placeholder="Email" v-model.trim="org.execs.misc[index].email" v-on:keyup.enter="add_exec(index)">
 					</div>
-				</div>
+				</span>
 				<label class="expand-section" v-on:click="extend_advisors()">V. Does your organaization have advisors?</label>
 				<div v-if="form.more_advisors" v-for="(value, index) in org.advisors">
-					<input :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
-					<input :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name">
-					<input :ref="'advisors_email'+index" type="text" placeholder="Email" v-model.trim="org.advisors[index].email" v-on:keyup.enter="add_advisor(index)">
+					<input class="advisor-field" :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
+					<input class="advisor-field" :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name">
+					<input class="advisor-field" :ref="'advisors_email'+index" type="text" placeholder="Email" v-model.trim="org.advisors[index].email" v-on:keyup.enter="add_advisor(index)">
 				</div>
 				<button v-on:click.prevent="submit">Submit</button>
 				<span v-if="form.server_resp.length > 0">{{ form.server_resp }}</span>
@@ -241,8 +241,9 @@ form {
 	flex-direction: column;
 }
 
-.mar-left {
+.full-width {
 	margin-left: 10px;
+	width: 100%;
 }
 
 label {
@@ -253,18 +254,53 @@ label {
 input {
 	margin-right: 10px;
 	border: none;
+	max-width: 100%;
 }
 
 .name div {
 	display: flex;
 }
 
+.core-exec {
+	margin-right: 0px;
+	width: 110px;
+}
+
+.core-exec::placeholder {
+	color: black;
+}
+
+.more-execs-sect {
+	background: black
+}
+
+.more-execs {
+	width: 23%;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.advisor-field {
+	margin-right: 0px;
+	margin-left: 0px;
+	width: 31%;
+}
+
 .expand-section {
+	font-size: 1.5em;
 	cursor: pointer;
 }
 
 .expand-section:hover {
 	color: #593c75;
+}
+
+.field-header {
+	font-size: 1em;
+}
+
+#schools {
+	font-size: 1em;
 }
 
 </style>
