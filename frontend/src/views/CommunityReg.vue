@@ -1,77 +1,79 @@
 <template>
-	<div id="community-reg" class="community main">
+	<div id="community-reg">
 		<PageNav></PageNav>
-		<div>
-			<h2>READ.ME</h2>
-			<p>
-				Before you start a community checkout our Machine Intelligence Community agreement, general code of conduct, and media kit!
-				Mention something about why a community should join and mission statement...
-			</p>
-		</div>
-		<form id="community-reg-form">
- 			<label class="expand-section" v-on:click="show_schools()">Where will MIC's next community be?</label>
-			<select v-if="form.has_schools" v-model.trim="org.school">
-				<option v-for="school in form.schools">{{ school.name }}</option>
-			</select>
-			<label class="expand-section" v-on:click="show_established_form()">Does your community already exist?</label>
-			<div v-if="form.exists">
-				<label>What's the name of your organizaion?</label><br>
-				<input type="text" class="mar-left" v-model.trim="org.name"><br>
-				<label>When was your organization established?</label><br>
-				<input type="text" class="mar-left" v-model.number="org.established"><br>
-				<span>
-					<label v-if="org.name.length == 0">Is your organization affiliated with an institution?</label>
-					<label v-else>Is {{ org.name }} affiliated with an institution? </label>
-				</span><br>
-				<input type="radio" value="yes" v-model="org.aff_exists"> Yes
-				<input type="radio" value="no" v-model="org.aff_exists"> No
-				<br>
-				<span v-if="org.aff_exists == 'yes'">
-					<label>What's the name of the institution:</label>
-					<br>
-					<input type="text" class="mar-left" v-model.trim="org.affiliation.name"><br>
-					<label>Who can we contact at your institution?</label>
-					<br>
-					Name: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.name"><br>
-					Email: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.email"><br>
-				</span>
-				<label class="expand-section" v-on:click="show_core()">Who will be {{ org.name }}'s executives upon joining MIC?</label>
+		<div id="body">
+			<div>
+				<h2>Join the Machine Intelligence Community</h2>
+				<p>
+					Extend your community's network!
+					Before you start a community checkout our Machine Intelligence Community agreement, general code of conduct, and media kit!
+					Mention something about why a community should join and mission statement...
+				</p>
 			</div>
-			<div v-else>
-				<span v-on:click="show_core()">
-					<label class="expand-section" v-if="org.school.length > 0">Who will be {{ org.school }} MIC's executives?</label>
-					<label class="expand-section" v-else>Who will are your executives?</label>
-				</span>
-			</div>
-			<div v-if="form.has_core" v-for="(value, index) in org.execs.core">
-				<div class="name">
-					<label>{{ value.position }}:</label>
-					<div>
-						<input :ref="'exec_first_name'+index" type="text" placeholder="First name" v-model.trim="org.execs.core[index].first_name">
-						<input :ref="'exec_last_name'+index" type="text" placeholder="Last name" v-model.trim="org.execs.core[index].last_name">
-						<input :ref="'exec_email'+index" type="text" placeholder="Email" v-model.trim="org.execs.core[index].email">
+			<form id="community-reg-form">
+	 			<label class="expand-section" v-on:click="show_schools()">I.  Where will MIC's next community be?</label>
+				<select v-model.trim="org.school">
+					<option v-for="school in form.schools">{{ school.name }}</option>
+				</select>
+				<label class="expand-section" v-on:click="show_established_form()">II. Does your community already exist?</label>
+				<div v-if="form.exists">
+					<label>What's the name of your organizaion?</label><br>
+					<input type="text" class="mar-left" v-model.trim="org.name"><br>
+					<label>When was your organization established?</label><br>
+					<input type="text" class="mar-left" v-model.number="org.established"><br>
+					<span>
+						<label v-if="org.name.length == 0">Is your organization affiliated with an institution?</label>
+						<label v-else>Is {{ org.name }} affiliated with an institution? </label>
+					</span><br>
+					<input type="radio" value="yes" v-model="org.aff_exists"> Yes
+					<input type="radio" value="no" v-model="org.aff_exists"> No
+					<br>
+					<span v-if="org.aff_exists == 'yes'">
+						<label>What's the name of the institution:</label>
+						<br>
+						<input type="text" class="mar-left" v-model.trim="org.affiliation.name"><br>
+						<label>Who can we contact at your institution?</label>
+						<br>
+						Name: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.name"><br>
+						Email: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.email"><br>
+					</span>
+					<label class="expand-section" v-on:click="show_core()">Who will be {{ org.name }}'s executives upon joining MIC?</label>
+				</div>
+				<div v-else>
+					<span v-on:click="show_core()">
+						<label class="expand-section" v-if="org.school.length > 0">Who will be {{ org.school }} MIC's executives?</label>
+						<label class="expand-section" v-else>III. Who are your executives?</label>
+					</span>
+				</div>
+				<div v-if="form.has_core" v-for="(value, index) in org.execs.core">
+					<div class="name">
+						<label>{{ value.position }}:</label>
+						<div>
+							<input :ref="'exec_first_name'+index" type="text" placeholder="First name" v-model.trim="org.execs.core[index].first_name">
+							<input :ref="'exec_last_name'+index" type="text" placeholder="Last name" v-model.trim="org.execs.core[index].last_name">
+							<input :ref="'exec_email'+index" type="text" placeholder="Email" v-model.trim="org.execs.core[index].email">
+						</div>
 					</div>
 				</div>
-			</div>
-			<label class="expand-section" v-on:click="extend_board()">Who else is on your executive board?</label>
-			<div v-if="form.more_board">
-				<div v-for="(value, index) in org.execs.misc">
-					<input :ref="'exec'+index" type="text" placeholder="First name" v-model.trim="org.execs.misc[index].first_name">
-					<input :ref="'exec'+index" type="text" placeholder="Last name" v-model.trim="org.execs.misc[index].last_name">
-					<input :ref="'exec'+index" type="text" placeholder="Position/Role" v-model.trim="org.execs.misc[index].position">
-					<input :ref="'exec'+index" type="text" placeholder="Email" v-model.trim="org.execs.misc[index].email" v-on:keyup.enter="add_exec(index)">
+				<label class="expand-section" v-on:click="extend_board()">IV. Who else is on your executive board?</label>
+				<div v-if="form.more_board">
+					<div v-for="(value, index) in org.execs.misc">
+						<input :ref="'exec'+index" type="text" placeholder="First name" v-model.trim="org.execs.misc[index].first_name">
+						<input :ref="'exec'+index" type="text" placeholder="Last name" v-model.trim="org.execs.misc[index].last_name">
+						<input :ref="'exec'+index" type="text" placeholder="Position/Role" v-model.trim="org.execs.misc[index].position">
+						<input :ref="'exec'+index" type="text" placeholder="Email" v-model.trim="org.execs.misc[index].email" v-on:keyup.enter="add_exec(index)">
+					</div>
 				</div>
-			</div>
-			<label class="expand-section" v-if="form.exists" v-on:click="extend_advisors()">Does {{ org.name }} have advisors?</label>
-			<label class="expand-section" v-else v-on:click="extend_advisors()">Does {{ org.school }} MIC have advisors?</label>
-			<div v-if="form.more_advisors" v-for="(value, index) in org.advisors">
-				<input :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
-				<input :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name">
-				<input :ref="'advisors_email'+index" type="text" placeholder="Email" v-model.trim="org.advisors[index].email" v-on:keyup.enter="add_advisor(index)">
-			</div>
-			<button v-on:click.prevent="submit">Submit</button>
-			<span v-if="form.server_resp.length > 0">{{ form.server_resp }}</span>
-		</form>
+				<label class="expand-section" v-on:click="extend_advisors()">V. Does your organaization have advisors?</label>
+				<div v-if="form.more_advisors" v-for="(value, index) in org.advisors">
+					<input :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
+					<input :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name">
+					<input :ref="'advisors_email'+index" type="text" placeholder="Email" v-model.trim="org.advisors[index].email" v-on:keyup.enter="add_advisor(index)">
+				</div>
+				<button v-on:click.prevent="submit">Submit</button>
+				<span v-if="form.server_resp.length > 0">{{ form.server_resp }}</span>
+			</form>
+		</div>
 	</div>
 </template>
 
@@ -193,6 +195,10 @@ export default {
 </script>
 <style scoped>
 
+#body {
+	margin: 0px 30%; 
+}
+
 button {
 	background: #502984;
 	color: #FFF;
@@ -200,7 +206,7 @@ button {
 	align-items: center;
 	vertical-align: middle;
 	display: inline-block;
-	width: 30%;
+	width: 100%;
 	height: 40px;
 	font-size: 1em;
 }
