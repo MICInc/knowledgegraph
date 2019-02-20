@@ -33,20 +33,9 @@ button {
 	border: none;
 	box-shadow: none;
 	outline: none;
-	padding: 5px 10px;
-	color: #000;
-	display: flex;
-	align-items: center;
-	vertical-align: middle;
-	display: inline-block;
-	width: 30%;
-	height: 50px;
-	font-size: 1em;
-	font-weight: bold;
 }
 
 button:hover {
-	background: #f7f7f7;
 	cursor: pointer;
 }
 
@@ -56,7 +45,7 @@ textarea, input {
 	padding: 5px;
 	margin: 10px 0;
 	resize: none;
-	font-size: 1.5em;
+	font-size: 1em;
 }
 
 textarea:focus, input:focus {

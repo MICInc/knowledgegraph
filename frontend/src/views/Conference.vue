@@ -51,7 +51,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 	
 .main {
 	display: flex;
@@ -61,6 +61,23 @@ export default {
 .container {
 	flex: 1;
 	width: 1080px;
+}
+
+button {
+	background: #502984;
+	color: #FFF;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	display: inline-block;
+	width: 30%;
+	height: 40px;
+	font-size: 1em;
+}
+
+button:hover {
+	background: #331a54;
+	color: #FFF;
 }
 
 </style>

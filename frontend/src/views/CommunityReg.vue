@@ -5,6 +5,7 @@
 			<h2>READ.ME</h2>
 			<p>
 				Before you start a community checkout our Machine Intelligence Community agreement, general code of conduct, and media kit!
+				Mention something about why a community should join and mission statement...
 			</p>
 		</div>
 		<form id="community-reg-form">
@@ -34,7 +35,7 @@
 					Name: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.name"><br>
 					Email: <input type="text" class="mar-left" v-model.trim="org.affiliation.contact.email"><br>
 				</span>
-				<label>Who will be {{ org.name }}'s executives upon joining MIC?</label>
+				<label class="expand-section" v-on:click="show_core()">Who will be {{ org.name }}'s executives upon joining MIC?</label>
 			</div>
 			<div v-else>
 				<span v-on:click="show_core()">
@@ -68,14 +69,6 @@
 				<input :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name">
 				<input :ref="'advisors_email'+index" type="text" placeholder="Email" v-model.trim="org.advisors[index].email" v-on:keyup.enter="add_advisor(index)">
 			</div>
-			<label class="expand-section" v-on:click="show_funds()">What are your current sources of funding?</label>
-			<div v-if="form.has_funds"  v-for="(value, index) in org.funding">
-				<input type="text" placeholder="Source" v-model.trim="org.funding[index].src">
-				<input type="text" placeholder="$ (USD)" v-model.number="org.funding[index].amount" v-on:keyup.enter="add_funding(index)">
-				<select v-model.trim="org.funding[index].frequency">
-					<option v-for="freq in form.funding_freq">{{ freq }}</option>
-				</select>
-			</div>
 			<button v-on:click.prevent="submit">Submit</button>
 			<span v-if="form.server_resp.length > 0">{{ form.server_resp }}</span>
 		</form>
@@ -102,7 +95,6 @@ export default {
 				server_resp: '',
 				more_board: false,
 				more_advisors: false,
-				has_funds: false,
 				has_core: false,
 				has_schools: false
 			},
@@ -144,7 +136,6 @@ export default {
 					}],
 					misc: [{}]
 				},
-				funding: [{}],
 				members: [],
 				name: '',
 				school: ''
@@ -201,6 +192,23 @@ export default {
 }
 </script>
 <style scoped>
+
+button {
+	background: #502984;
+	color: #FFF;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	display: inline-block;
+	width: 30%;
+	height: 40px;
+	font-size: 1em;
+}
+
+button:hover {
+	background: #331a54;
+	color: #FFF;
+}
 
 .main {
 	display: flex;

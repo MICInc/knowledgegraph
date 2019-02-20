@@ -199,6 +199,7 @@ form {
 }
 
 input {
+	border: none;
 	max-width: calc(600px - 10px);
 }
 

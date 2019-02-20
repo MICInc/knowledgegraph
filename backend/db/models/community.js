@@ -34,7 +34,7 @@ var community_schema = new Schema({
     },
     established: {
         type: Number
-    }
+    },
 	execs: {
 		core: [{
 			position: {
