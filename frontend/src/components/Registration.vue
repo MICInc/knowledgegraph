@@ -273,6 +273,7 @@ textarea {
 
 .error {
 	border: solid;
+	border-width: 0.5px;
 	border-color: red;
 }
 
