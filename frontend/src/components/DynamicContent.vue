@@ -8,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:hashtag="hashtag($event)" v-on:tag="switch_tag($event)" v-on:remove="remove_cell($event)" v-on:focus="focus()"></Cell>
+			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:tag="switch_tag($event)" v-on:remove="remove_cell($event)" v-on:focus="focus()"></Cell>
 		</div>
 	</div>
 </template>
@@ -59,17 +59,13 @@ export default {
 				});
 			}
 		},
-		hashtag(data) {
-			this.emit_save.hashtag = data;
-			this.save();
-		},
 		remove(event) {
 			this.$refs['content-'+this.active_index][0].remove_cell();
 		},
-		remove_cell(index) {
-			if(index >= 0) {
-				this.content.splice(index, 1);
-				var prev = index - 1;
+		remove_cell(cell) {
+			if(cell.id >= 0) {
+				this.content.splice(cell.id, 1);
+				var prev = cell.id - 1;
 				if(prev >= 0) this.active_index = prev;
 
 				if(this.content.length == 0) {
@@ -78,6 +74,8 @@ export default {
 				else {
 					this.focus();
 				}
+				console.log('removed: '+cell.id);
+				this.save(cell);
 			}
 		},
 		save(cell) {

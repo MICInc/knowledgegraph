@@ -6,7 +6,7 @@
 			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 		</div>
 		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
-			<img class="image-content" :src="cell.src" v-on:keydown.enter="show_caption($event)">
+			<img class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
 			<figcaption class="caption" v-show="has_caption" v-on:keyup="caption($event)" v-on:keydown.delete.stop="remove_caption($event)" contenteditable>
 				<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
 			</figcaption>
@@ -138,7 +138,7 @@ export default {
 				if(sel_html != undefined && has_hash) {
 					var target = this.trim(sel.toString(), true);
 					var hashtag = '<a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a>'+'\u00A0';
-					this.$emit('hashtag', target);
+					this.cell.hashtags.push(target);
 
 					var range = sel.getRangeAt(0);
 					range.deleteContents();
@@ -200,8 +200,7 @@ export default {
 					// remove focus from all elements else will also accidentally delete other content
 					document.activeElement.blur();
 
-					this.save();
-					this.$emit('remove', this.cell.id);
+					this.$emit('remove', this.cell);
 				}
 			}
 		},

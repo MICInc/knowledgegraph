@@ -16,21 +16,23 @@ router.post('/', function(req, res, next) {
 
 	db.Content.find(query, function (err, results) {
 		if(results.length > 0) {
+			var article = results[0];
 			var index = req.body.data.update_cell;
 
+			// update cell content
 			if(data['content'] != undefined) {
-				if(index < results[0]['content'].length) {
+				if(index < article['content'].length) {
 					// update existing cell
-					results[0]['content'][index] = data['content'];
+					article['content'][index] = data['content'];
 				}
 				else {
 					// add cell
-					results[0]['content'].push(data['content']);
+					article['content'].push(data['content']);
 				}
-				data['content'] = results[0]['content'];
+				data['content'] = article['content'];
 			}
 
-			var article = new db.Content(data);
+			article = new db.Content(data);
 			var updated = article.toObject();
 
 			delete updated._id;
