@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var ch = require('../lib/community_handler');
+var form = require('../lib/form');
 
 function handleError(err) {
 	console.log(err);
@@ -8,7 +9,9 @@ function handleError(err) {
 
 router.post('/', function(req, res) {
 	var community = req.body.school;
-	console.log(req.body);
+
+	var result = form.is_complete(req.body);
+	if(!result.ok) return;
 
 	ch.exists(community, function(err, exists) {
 		if(exists) res.send({ error: community+' already exists!' });

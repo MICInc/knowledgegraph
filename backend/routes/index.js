@@ -3,6 +3,7 @@ var router = express.Router();
 var UserAuth = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
 const config = require('../config.js');
+var form = require('../lib/form');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -54,19 +55,10 @@ router.post('/signup', function(req, res) {
 	var password = profile.password;
 	var passwordConf = profile.confirm_password;
 
-	var errors = {};
-	var keys = Object.keys(profile);
-	console.log(keys);
-
-	for(var i in keys) errors[keys[i]] = !profile[keys[i]];
-	console.log(errors);
-
-	for(var i in errors) {
-		if(errors[i]) {
-			res.send({ error: errors });
-			console.log('sending err');
-			return;
-		}
+	var result = form.is_complete(profile);
+	if(!result.ok) {
+		res.send({ error: result.errors });
+		return;
 	}
 
 	UserAuth.registerUser(req.body, function(err, user) {

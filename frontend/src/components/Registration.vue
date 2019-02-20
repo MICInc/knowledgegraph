@@ -245,11 +245,24 @@ ul {
 }
 
 button {
-	margin: 10px 0;
+	background: #502984;
+	color: #FFF;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	display: inline-block;
+	width: 50%;
+	height: 40px;
+	font-size: 1em;
+}
+
+button:hover {
+	background: #331a54;
+	color: #FFF;
 }
 
 textarea {
-	width: calc(600px - 10px);
+	width: calc(100% - 10px);
 	min-height: 75px;
 	border: transparent;
 }
