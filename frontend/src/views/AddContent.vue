@@ -94,8 +94,8 @@ export default {
 		redirect() {
 			this.$router.push('/content/'+this.url);
 		},
-		remove_content(index) {
-			ContentService.removeContent({ id: this.content_id, index: index })
+		remove_content(cell) {
+			ContentService.removeContent({ id: this.content_id, index: cell.id })
 			.then((data) => {
 			})
 			.catch(error => {

@@ -23,8 +23,9 @@ export default {
 	data() {
 		return {
 			active_index: -1,
-			cells: [{ id: Math.random(), tag: 'p' }],
-			content: [{ id: Math.random()}],
+			cells: [{ id: this.init_id, tag: 'p' }],
+			content: [{ id: this.init_id}],
+			init_id: Math.random(),
 			emit_save: {
 				button: false,
 				cell: undefined,
@@ -46,26 +47,28 @@ export default {
 		focus(e=null) {
 			var key = '';
 			if(e != undefined && e.which == 9) this.active_index += 1;
-			console.log(this.active_index);
-			console.log(this.cells[this.active_index]);
 
 			if(this.active_index < this.content.length && this.cells[this.active_index].tag == 'p') {
 				this.$nextTick(() => {
 					var content = this.$refs['content-'+this.active_index][0];
 					var p_tag = content.$refs['p-content'];
 
-					// p_tag.focus();
 					content.set_end_contenteditable(p_tag);
 				});
 			}
 		},
 		remove(event) {
-			this.$refs['content-'+this.active_index][0].remove_cell();
+			// call remove_cell() in child component
+			var cell = this.$refs['content-'+this.active_index];
+			if(cell != null) cell[0].remove_cell();
 		},
 		remove_cell(cell) {
-			if(cell.id >= 0) {
-				this.content.splice(cell.id, 1);
-				var prev = cell.id - 1;
+			if(cell.index >= 0) {
+				console.log('removing: '+cell.index);
+				this.cells.splice(cell.index, 1);
+				this.content.splice(cell.index, 1);
+
+				var prev = cell.index - 1;
 				if(prev >= 0) this.active_index = prev;
 
 				if(this.content.length == 0) {
@@ -74,13 +77,11 @@ export default {
 				else {
 					this.focus();
 				}
-				console.log('removed: '+cell.id);
-				this.save(cell);
+				this.$emit('remove', cell);
 			}
 		},
 		save(cell) {
 			if(cell != undefined) {
-				// this.content[cell.id].tag = cell.tag;
 				this.emit_save.cell = cell;
 				this.emit_save.update_cell = this.active_index;
 

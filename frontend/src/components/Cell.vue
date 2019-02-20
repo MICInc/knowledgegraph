@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keyup.delete="remove_cell()">
+	<div id="container" v-on:keydown.delete="remove_cell()">
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
@@ -14,7 +14,7 @@
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == cell.tag" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup="input($event)" v-on:click="set_active($event)" contenteditable></p>
+		<p v-if="'p' == cell.tag" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup="input($event)" v-on:click.capture="set_active($event)" contenteditable></p>
 	</div>
 </template>
 
@@ -22,11 +22,13 @@
 
 export default {
 	created() {
+		Events.on("mousedown", this.check_click());
 	},
 	data() {
 		return {
 			cell: {
-				id: this.index,
+				id: Math.random(),
+				index: this.index,
 				date_created: new Date(),
 				last_modified: new Date(),
 				caption: '',
@@ -83,7 +85,9 @@ export default {
 		caption(event) {
 			var el = event.target;
 			this.cell.caption = el.innerText;
-			console.log(this.cell.caption);
+		},
+		check_click() {
+			console.log(document.selection.createRange().text);
 		},
 		check_content(event) {
 			var sel = document.getSelection();
@@ -191,7 +195,8 @@ export default {
 			if(el.innerText.length == 0) this.has_caption = false;
 		},
 		remove_cell() {
-			if(this.cell.id > -1) {
+			if(this.cell.index > -1) {
+				console.log('cell.remove_cell(): '+this.cell.index);
 				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
 				var remove_img = this.cell.tag == 'img' && this.trim(this.cell.caption).length == 0;
 				var remove_hr = this.cell.tag == 'hr';
@@ -248,6 +253,7 @@ export default {
 			this.$emit('save', this.cell);
 		},
 		set_active(event) {
+			console.log('active_index: '+this.active_index);
 			var el = event.target;
 
 			if(el.tagName == 'IMG') {
@@ -305,7 +311,7 @@ export default {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	},
-	props: ['index', 'content', 'index']
+	props: ['index', 'content']
 }
 </script>
 
