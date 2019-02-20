@@ -18,7 +18,7 @@
 				<label>What's the name of your organizaion?</label><br>
 				<input type="text" class="mar-left" v-model.trim="org.name"><br>
 				<label>When was your organization established?</label><br>
-				<input type="text" class="mar-left" v-model.trim="org.established"><br>
+				<input type="text" class="mar-left" v-model.number="org.established"><br>
 				<span>
 					<label v-if="org.name.length == 0">Is your organization affiliated with an institution?</label>
 					<label v-else>Is {{ org.name }} affiliated with an institution? </label>
@@ -58,7 +58,7 @@
 				<div v-for="(value, index) in org.execs.misc">
 					<input :ref="'exec'+index" type="text" placeholder="First name" v-model.trim="org.execs.misc[index].first_name">
 					<input :ref="'exec'+index" type="text" placeholder="Last name" v-model.trim="org.execs.misc[index].last_name">
-					<input :ref="'exec'+index" type="text" placeholder="Position/Role" v-model.trim="org.execs.misc[index].role">
+					<input :ref="'exec'+index" type="text" placeholder="Position/Role" v-model.trim="org.execs.misc[index].position">
 					<input :ref="'exec'+index" type="text" placeholder="Email" v-model.trim="org.execs.misc[index].email" v-on:keyup.enter="add_exec(index)">
 				</div>
 			</div>

@@ -8,6 +8,7 @@ function handleError(err) {
 
 router.post('/', function(req, res) {
 	var community = req.body.school;
+	console.log(req.body);
 
 	ch.exists(community, function(err, exists) {
 		if(exists) res.send({ error: community+' already exists!' });
