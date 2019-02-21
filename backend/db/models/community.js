@@ -100,7 +100,11 @@ var community_schema = new Schema({
     school: {
     	type: String,
     	required: true
-    } 
+    },
+    url: {
+        type: String,
+        required: true
+    }
 });
 
 var conn = mongoose.createConnection('mongodb://localhost:27017/profile', { useNewUrlParser: true });

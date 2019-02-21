@@ -20,7 +20,11 @@ router.post('/', function(req, res) {
 });
 
 router.get('/', function(req, res) {
-	console.log(req.query.url);
+	if(Object.keys(req.body).length === 0 && req.body.constructor === Object) {
+		ch.get_all({}, function(communities) {
+			res.send(communities);
+		});
+	}
 });
 
 module.exports = router;

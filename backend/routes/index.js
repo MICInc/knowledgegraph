@@ -9,30 +9,7 @@ router.get('/', function(req, res, next) {
 	var subjectId = 'all';
 	var pageNum = req.query.page;
 
-	res.send(
-		{
-			user: {
-				id: 0,
-				communities: [
-					{name: 'MIT MIC', channels: ['conference', 'conference_cr', 'general', 'random']},
-					{name: 'McGill AI Society', channels: ['workshops', 'memes 1', 'memes 2']}
-				]
-
-			},
-			feed: [
-				{
-					title: 'article 1', 
-					content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nec varius magna. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec nec suscipit neque, et mollis nunc. Sed feugiat imperdiet mauris, et sagittis orci venenatis ut. Fusce nec tempor massa, quis blandit velit. Donec vel purus id quam commodo cursus quis in massa. Mauris tincidunt vestibulum egestas. Aliquam molestie neque id purus lacinia, vehicula condimentum nisl dictum. Etiam sodales leo volutpat dolor pellentesque, non feugiat quam vestibulum.',
-					meta: ['neural networks', 'meta-learning']
-				},
-				{
-					title: 'article 2', 
-					content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nec varius magna. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec nec suscipit neque, et mollis nunc. Sed feugiat imperdiet mauris, et sagittis orci venenatis ut. Fusce nec tempor massa, quis blandit velit. Donec vel purus id quam commodo cursus quis in massa. Mauris tincidunt vestibulum egestas. Aliquam molestie neque id purus lacinia, vehicula condimentum nisl dictum. Etiam sodales leo volutpat dolor pellentesque, non feugiat quam vestibulum.',
-					meta: ['neural networks', 'active learning']
-				}
-			]
-		}
-	);
+	res.send({});
 });
 
 router.get('/category/*', function(req, res, next) 

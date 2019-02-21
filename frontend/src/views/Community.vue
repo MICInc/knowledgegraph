@@ -5,7 +5,9 @@
 			<h1>Community Page</h1>
 			<router-link to="/community/start" tag="button">Start a community</router-link>
 			<br>
-			<a href="/mic/mit">MIT MIC</a>
+			<div v-for="(community, index) in communities">
+				<a :href="community.url">{{ community.name }}</a>
+			</div>
 		</div>
 		<Footer></Footer>
 	</div>
@@ -14,25 +16,34 @@
 
 <script>
 import PageNav from '@/components/PageNav'
-import MemberReg from '@/components/MemberReg'
+import CommunityService from '@/services/CommunityService'
 import Footer from '@/components/Footer'
 
 export default {
 	name: 'community',
 	components: {
 		PageNav,
-		MemberReg,
 		Footer
 	},
-
+	created() {
+		this.get_all().then((data) => {
+			this.communities = data.data;
+			console.log('communities: ');
+			console.log(this.communities);
+		});
+	},
 	data() {
 		return {
+			communities: [],
 			form: {
 				reveal: ''
 			}
 		}
 	},
 	methods: {
+		async get_all() {
+			return await CommunityService.getAll();
+		}
 	}
 }
 </script>
