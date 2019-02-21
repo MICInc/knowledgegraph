@@ -98,16 +98,9 @@ module.exports = {
 		db.User.findOne({email: email}, function(err, user) {
 			if (err) handleError(err);
 
-			if (user != null) {
-				process.nextTick(function() {
-					callback(true);
-				});
-			
-			} else {
-				process.nextTick(function() {
-					callback(false);
-				});
-			}
+			process.nextTick(function() {
+				callback(user != null);
+			});
 		});
 	},
 };

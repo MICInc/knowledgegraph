@@ -8,28 +8,10 @@ var ah = require('../lib/application_handler');
 var fh = require('../lib/feedback_handler');
 
 router.post('/register', function(req, res) {
-	var application = req.body;
-	var email = req.body.demographic.email.value;
-
-	ua.isEmailTaken(email, function(exists) {
-		if(!exists) {
-
-			// Create a user profile before saving the conference application so can associate the 
-			// user id with the application
-			ua.registerUser(req.body.profile, function(user_id) {
-
-				ah.save(application, function(status) {
-					res.send(status);
-				});
-			});
-		}
-		else {
-			application.profile = results[0]._id
-
-			ah.save(application, function(status) {
-				res.send(status);
-			});
-		}
+	ua.isEmailTaken(req.body.email, function(user) {
+		ah.save(req.body, function(status) {
+			res.send(status);
+		});
 	});
 });
 

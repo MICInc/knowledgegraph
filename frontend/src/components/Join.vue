@@ -68,7 +68,6 @@ export default {
 
 				if(err != undefined && response.status == 200) {
 					this.form.error = err;
-					console.log(this.form.error);
 				} else if (response.status == 200) {
 					// Login newly created l=user
 					this.$store.dispatch('login', response.data.token)

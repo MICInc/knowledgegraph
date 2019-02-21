@@ -178,6 +178,13 @@ export default {
 		reveal_travel() {
 			this.form.travel = !this.form.travel;
 		},
+		register() {
+			var reg = { email: this.profile.email, reimbursements: this.reimburse, conf_resp: this.conf_resp };
+			
+			RegistrationService.register(reg).then((data) => {
+				this.form.complete = data.data;
+			});
+		},
 		round(amount) {
 			return parseFloat(Math.round(amount * 100) / 100);
 		},
@@ -190,20 +197,19 @@ export default {
 		submit() {
 			this.signup().then((response) => {
 				var err = response.data.error;
-				console.log(err != undefined);
-				console.log(response.status == 200);
-				console.log(err);
-
+				
 				if(err != undefined && response.status == 200) {
 					this.form.error = err;
 				} 
 				else if(response.status == 200) {
-					var reg = { reimbursements: this.reimburse, conf_resp: this.conf_resp };
+					// var reg = { email: this.profile.email, reimbursements: this.reimburse, conf_resp: this.conf_resp };
 					
-					RegistrationService.register(reg).then(function(data) {
-						console.log(data);
-						this.form.complete = true;
-					});
+					// RegistrationService.register(reg).then(function(data) {
+					// 	console.log(data);
+					// 	// can't access this here!
+					// 	this.form.complete = data.data;
+					// });
+					this.register();
 				}
 			});
 		}

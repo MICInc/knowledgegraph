@@ -16,11 +16,11 @@ module.exports = {
 
 		conf.save()
 		.then(item => {
-			callback('Saved conf application');
+			callback(true);
 		})
 		.catch(err => {
 			console.log(err);
-			callback('Could not save application');
+			callback(false);
 		});
 	},
 	flatten_demographic_and_resp: function(applications) {
