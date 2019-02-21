@@ -8,7 +8,7 @@
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
 		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<Cell :ref="'content-'+index" :content="content" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:tag="switch_tag($event)" v-on:remove="remove_cell($event)" v-on:focus="focus()"></Cell>
+			<Cell :ref="'content-'+index" :content="content" :active_index="active_index" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:tag="switch_tag($event)" v-on:remove="remove_cell($event)" v-on:focus="focus()"></Cell>
 		</div>
 	</div>
 </template>

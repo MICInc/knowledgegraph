@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete="remove_cell()">
+	<div id="container" v-on:keydown.delete.stop="remove_cell()" >
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
@@ -14,16 +14,13 @@
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == cell.tag" class="content" ref="p-content" v-on:keydown.delete="check_content($event)" v-on:keyup="input($event)" v-on:click.capture="set_active($event)" contenteditable></p>
+		<p v-if="'p' == cell.tag" class="content" ref="p-content" @select.native="check_click()" v-on:keydown.delete="check_content($event)" v-on:keyup="input($event)" @mousedown="set_active($event)" contenteditable></p>
 	</div>
 </template>
 
 <script>
 
 export default {
-	created() {
-		Events.on("mousedown", this.check_click());
-	},
 	data() {
 		return {
 			cell: {
@@ -87,7 +84,8 @@ export default {
 			this.cell.caption = el.innerText;
 		},
 		check_click() {
-			console.log(document.selection.createRange().text);
+			// if(document.selection) console.log(document.selection.createRange().text);
+			console.log('selected');
 		},
 		check_content(event) {
 			var sel = document.getSelection();
@@ -253,11 +251,11 @@ export default {
 			this.$emit('save', this.cell);
 		},
 		set_active(event) {
-			console.log('active_index: '+this.active_index);
 			var el = event.target;
+			console.log(this.index);
 
 			if(el.tagName == 'IMG') {
-				this.$emit('focus');
+				// this.$emit('focus');
 				if(el.style.border == '') el.style.border = "thin solid #460360";
 				else el.style.border = '';
 				
@@ -311,7 +309,7 @@ export default {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	},
-	props: ['index', 'content']
+	props: ['active_index', 'index', 'content']
 }
 </script>
 
