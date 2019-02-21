@@ -10,7 +10,9 @@
 				<option v-for="gender in form.gender">{{ gender }}</option>
 			</select><br>
 			<label>Birthday</label>
-			<DateSelector :class="{error: form.error.dob }"  v-on:date="set_date($event)"></DateSelector>
+			<span :class="{error: form.error.dob }">
+				<DateSelector v-on:date="set_date($event)"></DateSelector>
+			</span>
 			<input :class="{error: form.error.email }" type="email" placeholder="Email" v-model.trim="profile.email" required>
 			<div class="input-row">
 				<input :class="{error: form.error.password }" type="password" placeholder="Password" v-model="profile.password" required>
@@ -47,7 +49,7 @@ export default {
 			},
 			profile: {
 				confirm_password: '',
-				dob: undefined,
+				dob: '',
 				email: '',
 				first_name: '',
 				gender: '',
@@ -66,6 +68,7 @@ export default {
 
 				if(err != undefined && response.status == 200) {
 					this.form.error = err;
+					console.log(this.form.error);
 				} else if (response.status == 200) {
 					// Login newly created l=user
 					this.$store.dispatch('login', response.data.token)
