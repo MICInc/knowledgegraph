@@ -7,9 +7,19 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<div id="content-container" v-for="(value, index) in content" v-bind:tabindex="active_index" v-bind:key="JSON.stringify(value)">
-			<Cell :ref="'content-'+index" :content="content" :active_index="active_index" :index="index" v-on:active_index="set_index($event)" v-on:save="save($event)" v-on:tag="switch_tag($event)" v-on:remove="remove_cell($event)" v-on:focus="focus()"></Cell>
-		</div>
+		<Cell id="content-container" 
+			  v-for="(value, index) in content" 
+			  :tabindex="active_index" 
+			  :key="JSON.stringify(value.id)" 
+			  :ref="'content-'+index" 
+			  :content="content" 
+			  :index="index"
+			   v-on:active_index="set_index($event)" 
+			   v-on:save="save($event)" 
+			   v-on:tag="switch_tag($event)" 
+			   v-on:remove="remove_cell($event)" 
+			   v-on:focus="focus()">
+		</Cell>
 	</div>
 </template>
 
@@ -62,13 +72,12 @@ export default {
 			var cell = this.$refs['content-'+this.active_index];
 			if(cell != null) cell[0].remove_cell();
 		},
-		remove_cell(cell) {
-			if(cell.index >= 0) {
-				console.log('removing: '+cell.index);
-				this.cells.splice(cell.index, 1);
-				this.content.splice(cell.index, 1);
+		remove_cell(index) {
+			if(index >= 0) {
+				this.cells.splice(index, 1);
+				this.content.splice(index, 1);
 
-				var prev = cell.index - 1;
+				var prev = index - 1;
 				if(prev >= 0) this.active_index = prev;
 
 				if(this.content.length == 0) {
@@ -77,7 +86,7 @@ export default {
 				else {
 					this.focus();
 				}
-				this.$emit('remove', cell);
+				this.$emit('remove', index);
 			}
 		},
 		save(cell) {

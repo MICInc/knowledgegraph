@@ -7,14 +7,25 @@
 		</div>
 		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
 			<img class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
-			<figcaption class="caption" v-show="has_caption" v-on:keyup="caption($event)" v-on:keydown.delete.stop="remove_caption($event)" contenteditable>
+			<figcaption class="caption" 
+						v-show="has_caption" 
+						v-on:keyup="caption($event)" 
+						v-on:keydown.delete.stop="remove_caption($event)" 
+						contenteditable>
 				<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
 			</figcaption>
 		</figure>
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == cell.tag" class="content" ref="p-content" @select.native="check_click()" v-on:keydown.delete="check_content($event)" v-on:keyup="input($event)" @mousedown="set_active($event)" contenteditable></p>
+		<p v-if="'p' == cell.tag" 
+		   class="content" 
+		   ref="p-content" 
+		   v-on:keydown.delete="check_content($event)"
+		   v-on:keyup="input($event)" 
+		   @mousedown="set_active($event)" 
+		   contenteditable>
+		</p>
 	</div>
 </template>
 
@@ -82,10 +93,6 @@ export default {
 		caption(event) {
 			var el = event.target;
 			this.cell.caption = el.innerText;
-		},
-		check_click() {
-			// if(document.selection) console.log(document.selection.createRange().text);
-			console.log('selected');
 		},
 		check_content(event) {
 			var sel = document.getSelection();
@@ -193,8 +200,7 @@ export default {
 			if(el.innerText.length == 0) this.has_caption = false;
 		},
 		remove_cell() {
-			if(this.cell.index > -1) {
-				console.log('cell.remove_cell(): '+this.cell.index);
+			if(this.index > -1) {
 				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
 				var remove_img = this.cell.tag == 'img' && this.trim(this.cell.caption).length == 0;
 				var remove_hr = this.cell.tag == 'hr';
@@ -203,7 +209,7 @@ export default {
 					// remove focus from all elements else will also accidentally delete other content
 					document.activeElement.blur();
 
-					this.$emit('remove', this.cell);
+					this.$emit('remove', this.index);
 				}
 			}
 		},
@@ -252,7 +258,6 @@ export default {
 		},
 		set_active(event) {
 			var el = event.target;
-			console.log(this.index);
 
 			if(el.tagName == 'IMG') {
 				// this.$emit('focus');
@@ -309,7 +314,7 @@ export default {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	},
-	props: ['active_index', 'index', 'content']
+	props: ['index', 'content']
 }
 </script>
 
