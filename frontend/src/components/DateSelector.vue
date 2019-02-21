@@ -37,7 +37,7 @@ export default {
 		emit() {
 			const date = new Date(`${this.year}-${this.month}-${this.day}`);
 			if(this.year > 0 && this.month > 0 && this.day > 0) {
-				if(date.getDate() == this.day) this.$emit('date', date);
+				if(Boolean(+date) && date.getDate() == this.day) this.$emit('date', date);
 				else this.error = true;
 			}
 		}
