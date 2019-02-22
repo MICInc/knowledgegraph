@@ -28,6 +28,7 @@
     "path": "0.12.7",
     "pug": "^2.0.3",
     "serve-favicon": "2.5.0",
+    "snappy": "^6.1.2",
     "socket.io": "^2.2.0",
     "utils-merge": "1.0.1",
     "ws": "^6.1.3"

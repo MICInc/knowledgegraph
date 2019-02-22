@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 		accessToken: '',
-		isLoggedIn: false
+		isLoggedIn: false,
+		userInfo: {}
   },
 
   mutations: {
@@ -16,18 +17,24 @@ export default new Vuex.Store({
 
 		setIsLoggedIn (state, bool) {
 			Vue.set(state, 'isLoggedIn', bool)
-		}
+		},
+
+		setUserInfo (state, obj) {
+			Vue.set(state, 'userInfo', obj)
+		},
   },
 
   actions: {
 		
-		login ({commit, state}, access_token) {
+		login ({commit, state}, [access_token, userInfo]) {
 			commit('setAccessToken', access_token)
+			commit('setUserInfo', userInfo)
 			commit('setIsLoggedIn', true)
 		},
 		
 		logout ({commit, state}) {
 			commit('setAccessToken', '')
+			commit('setUserInfo', {})
 			commit('setIsLoggedIn', false)
 		},
 

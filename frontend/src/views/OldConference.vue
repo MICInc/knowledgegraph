@@ -200,10 +200,32 @@
 </template>
 
 <script>
-	created: () => {
-		console.log(document.head)
-		console.log('Neww')
-		console.log(document.head)
+	export default {
+		mounted () {
+			
+			let animations = document.createElement('script')
+			animations.setAttribute('src', '../js/handle-animation.js')
+	    document.head.appendChild(animations)
+
+			let particles = document.createElement('script')
+			particles.setAttribute('src', '../js/particles/particles.min.js')
+	    document.head.appendChild(particles)
+
+			let appjs = document.createElement('script')
+			appjs.setAttribute('src', '../js/particles/app.js')
+	    document.head.appendChild(appjs)
+
+	    let canvas = document.getElementById('particles-js')
+	    console.log(canvas)
+	    console.log(canvas.children[0])/*.css({
+	    	'position': 'absolute',
+				'z-index': '-1',
+				'height': '100vh',
+				'width': '100%',
+				'top': '0',
+				'left': '0',
+	    });*/
+		}
 	}
 </script>
 

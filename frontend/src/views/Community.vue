@@ -1,5 +1,5 @@
 <template>
-	<div class="community main">
+	<div class="community">
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Community Page</h1>
@@ -9,7 +9,6 @@
 				<a :href="community.url">{{ community.name }}</a>
 			</div>
 		</div>
-		<Footer></Footer>
 	</div>
 </template>
 

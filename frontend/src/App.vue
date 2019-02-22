@@ -25,7 +25,7 @@ body {
 }
 
 .container {
-	max-width: 1080px;
+	min-width: 1080px;
 	margin: 0 auto;
 }
 
@@ -62,10 +62,16 @@ ul {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+  margin-top: 50px; /*Should match navbar height*/
 }
 
+<<<<<<< HEAD
 #app .main {
 	flex: 1;
+=======
+#app main {
+  flex: 1;
+>>>>>>> master
 }
 
 </style>

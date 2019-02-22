@@ -1,5 +1,5 @@
 <template>
-	<div class="home main">
+	<div class="home">
 		<PageNav></PageNav>
 		<div class="container">
 			<div class="linked-content-list">
@@ -10,7 +10,6 @@
 			<div class="side-menu">
 			</div>
 		</div>
-		<Footer></Footer>
 	</div>
 </template>
 
@@ -67,7 +66,7 @@ export default {
 .container {
 	flex: 1;
 	display: flex;
-
+	min-width: 1080px;
 }
 	
 .linked-content-list {
@@ -75,7 +74,6 @@ export default {
 	padding: 15px;
 	display: flex;
 	flex-direction: column;
-	border: 1px solid #3c3c3c;
 	border-top: none;
 }
 

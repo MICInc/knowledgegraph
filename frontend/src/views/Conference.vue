@@ -1,5 +1,5 @@
 <template>
-	<div class="conference main">
+	<div class="conference">
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Machine Intelligence Conference 2019</h1>
@@ -11,7 +11,6 @@
 				<button v-on:click.prevent="show_feedback">FEEDBACK</button>
 			</div>
 		</div>
-		<Footer></Footer>
 	</div>
 </template>
 
