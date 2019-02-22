@@ -12,7 +12,7 @@ export default new Router({
 		{
 			path: '/',
 			name: 'home',
-			component: OldConference
+			component: OldConference,
 		},
 		{
 			path: '/about',
@@ -32,17 +32,47 @@ export default new Router({
 		{
 			path: '/add',
 			name: 'add-content',
-			component: () => import('./views/AddContent.vue')
+			component: () => import('./views/AddContent.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/admin',
 			name: 'admin-console',
-			component: () => import('./views/AdminConsole.vue')
+			component: () => import('./views/AdminConsole.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/content/:id',
 			name: 'content',
-			component: () => import('./views/Content.vue')
+			component: () => import('./views/Content.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		// {
 		// 	path: '/content/:id/edit',
@@ -52,17 +82,47 @@ export default new Router({
 		{
 			path: '/community',
 			name: 'community',
-			component: () => import('./views/Community.vue')
+			component: () => import('./views/Community.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/community/start',
 			name: 'community-reg',
-			component: () => import('./views/CommunityReg.vue')
+			component: () => import('./views/CommunityReg.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/conference',
 			name: 'conference',
-			component: () => import('./views/Conference.vue')
+			component: () => import('./views/Conference.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/archived/conference',
@@ -82,17 +142,47 @@ export default new Router({
 		{
 			path: '/search',
 			name: 'search',
-			component: () => import('./views/Search.vue')
+			component: () => import('./views/Search.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/signup',
 			name: 'signup',
-			component: () => import('./views/SignUp.vue')
+			component: () => import('./views/SignUp.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/profile/:id',
 			name: 'profile',
-			component: () => import('./views/Profile.vue')
+			component: () => import('./views/Profile.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '*',

@@ -1,6 +1,5 @@
 <template>
 	<div class="login main">
-		<PageNav></PageNav>
 		<div class="container">
 			<form v-on:submit.prevent="handleSubmit">
 				<p>{{error}}</p>
