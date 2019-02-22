@@ -4,7 +4,7 @@
 		<h3>Results</h3>
 		<ul>
 			<li v-for='item in results'>
-				<router-link v-bind:to="'/kg/'+item.url">{{ item.title }}</router-link>
+				<router-link v-bind:to="'/content/'+item.url">{{ item.title }}</router-link>
 			</li>
 		</ul>
 	</div>
@@ -23,6 +23,7 @@ export default {
 		this.query.term = this.$route.query.term;
 		this.search().then(data => {
 			console.log(data);
+			this.results = data;
 		});
 	},
 	data () {
