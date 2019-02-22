@@ -23,13 +23,14 @@ export default {
 		Applications,
 		Overview
 	},
+	created() {
+		this.getRegistrations().then((data) => {
+			this.applications = data;
+		});
+	},
 	data() {
 		return {
-			applications: [
-				{first_name: 'Justin', last_name: 'Chen', dob_year: 2000, dob_month: 20, dob_day: 20, affiliation: 'MIC', school: 'Boston University', grade: 'Not in school', gender: 'male', ethnicity: 'asian', reason: 'Dope conference bro', travel: 1000000, appleappleappleappleapple: 'appleappleappleappleapple'},
-				{first_name: 'Daelon', last_name: 'Austin', dob_year: 2000, dob_month: 20, dob_day: 20, affiliation: 'MIC', school: 'Boston University', grade: 'Not in school', gender: 'male', ethnicity: 'asian', reason: 'Dope conference bro', travel: 1000000, appleappleappleappleapple: 'appleappleappleappleapple'},
-				{first_name: 'Daelon', last_name: 'Austin', dob_year: 2000, dob_month: 20, dob_day: 20, affiliation: 'MIC', school: 'Boston University', grade: 'Not in school', gender: 'male', ethnicity: 'asian', reason: 'Dope conference bro', travel: 1000000, appleappleappleappleapple: 'appleappleappleappleapple'}
-			],
+			applications: [],
 			display: '',
 			panels: [
 				{
@@ -37,6 +38,9 @@ export default {
 				},
 				{
 					name: 'applications'
+				},
+				{
+					name: 'reimbursements'
 				}
 			],
 			selected: false,
@@ -44,7 +48,7 @@ export default {
 		}
 	},
 	methods: {
-		async getApplications() {
+		async getRegistrations() {
 			return await RegistrationService.getRegistrations()
 			.then(function(data) {
 				return data.data;
@@ -55,14 +59,6 @@ export default {
 			this.display = view;
 		}
 	},
-	beforeMount() {
-		this.getApplications().then(data => {
-			console.log(data);
-			for(let k in data) {
-				this.applications.push(data[k]);
-			}
-		});
-	}
 }
 </script>
 

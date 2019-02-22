@@ -3,12 +3,16 @@
 		<PageNav></PageNav>
 		<div v-if="this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0" class="container">
 			<h2>{{ content.title }}</h2>
+			<!-- <a class="edit" v-bind:href="'/content/'+content.title.toLowerCase()+'/edit'">EDIT</a> -->
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
 				<div v-for="c in content.content">
 					<p v-if="c.tag == 'p'" v-html="c.html"></p>
-					<img v-if="c.tag == 'img'" :src="c.src">
+					<figure v-if="c.tag == 'img'">
+						<img :src="c.src">
+						<figcaption>{{ c.caption }}</figcaption>
+					</figure>
 				</div>
 			</div>
 			<div id="bibtex" class="meta-info">
@@ -47,6 +51,7 @@ export default {
 			content_id: '',
 			url: this.$route.params.id,
 			content: {},
+			edit_url: ''
 		}
 	},
 	methods: {
@@ -71,6 +76,11 @@ export default {
 
 .authors {
 	font-size: 0.85em;
+}
+
+.edit {
+	font-size: 0.85em;
+	font-weight: bold;
 }
 
 #bibtex {

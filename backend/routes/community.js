@@ -1,37 +1,30 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../db/database');
+var ch = require('../lib/community_handler');
+var form = require('../lib/form');
+
+function handleError(err) {
+	console.log(err);
+}
 
 router.post('/', function(req, res) {
-	console.log(req.body);
-	var community = new db.Community(req.body);
+	var community = req.body.school;
 
-	db.Community.countDocuments({name: req.body.name}, function(err, count) {
-		if(count > 0) {
-			res.send(req.body.name+' already exists!');
-		}
-		else {
-			community.collection.dropIndexes(function(err, results) {
-				if(err) {
-					console.log('community.js: '+err);
-				}
-			});
-
-			community.save()
-			.then(item => {
-				console.log('Saved community');
-				res.send('Community');
-			})
-			.catch(err => {
-				console.log(err);
-				res.status(400).send('Save error');
-			});
-		}
+	ch.exists(community, function(err, exists) {
+		if(exists) res.send({ error: community+' already exists!' });
+		else ch.create(req.body, function(resp) {
+			if(resp == 200) res.status(200);
+			else res.status(400).send('Please try again.');
+		});
 	});
 });
 
 router.get('/', function(req, res) {
-	console.log(req.query.url);
+	if(Object.keys(req.body).length === 0 && req.body.constructor === Object) {
+		ch.get_all({}, function(communities) {
+			res.send(communities);
+		});
+	}
 });
 
 module.exports = router;

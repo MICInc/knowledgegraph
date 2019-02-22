@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
+var sh = require('../lib/search_handler');
 
 router.get('/', function(req, res, next){
-	console.log(req.query.q_);
-	
-	if(query_move != null && query_move.length > 1)
-	{
-		query_move = '%'+query_move+'%';
-	}
+	// Need user id to save search history
+	// var date = new Date();
 
+	db.Content.find(sh.format(req.query.term.toUpperCase()), function (err, results) {
+		res.send(sh.filter_results(results));
+	});
 });
 
 module.exports = router;

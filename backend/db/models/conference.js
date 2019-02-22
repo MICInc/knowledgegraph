@@ -2,6 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var conference_schema = new Schema({
+    email: {
+        type: String,
+        trim: true,
+        required: true
+    },
     reimbursements: { 
         address: {
             apt: {
@@ -69,12 +74,24 @@ var conference_schema = new Schema({
             type: Number
         }
     },
-    conf_reg: {
+    conf_resp: {
+        date: {
+            type: Date,
+            required: true
+        },
         food_allergens: {
             type: String,
             trim: true
         }, 
-        message: {
+        q1: {
+            type: String,
+            trim: true
+        },
+        q2: {
+            type: String,
+            trim: true
+        },
+        q3: {
             type: String,
             trim: true
         }

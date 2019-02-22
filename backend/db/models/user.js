@@ -93,7 +93,7 @@ var user_schema = new Schema({
     }],
     url: {
         type: String,
-        sparse: true
+        required: true
     }
 });
 

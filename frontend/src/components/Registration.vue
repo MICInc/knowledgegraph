@@ -1,123 +1,75 @@
 <template>
 	<div id="signup-form">
-		<div>
-			Please create an account to register for our conference.
-		</div>
-		<form v-if="form.show" enctype="multipart/form-data">
-			<button v-on:click.prevent="reveal_form">Hide form</button><br>
-			<label>What's your first name?</label><br>
-			<p class="error" v-if="profile.first_name.err.length > 0">{{ profile.first_name.err }}</p>
-			<input type="text" placeholder="First name" v-model.trim="profile.first_name.value" required><br>
-			<label>What's your last name?</label><br>
-			<p class="error" v-if="profile.last_name.err.length > 0">{{ profile.last_name.err }}</p>
-			<input type="text" placeholder="Last name" v-model.trim="profile.last_name.value" required><br>
-			<label v-if="profile.first_name.value.length > 0 && profile.last_name.value.length > 0">Hey {{ profile.first_name.value }} {{ profile.last_name.value }}, nice to meet you.</label>
-			<div class="birthday">
-				<label>Birthday</label><br>
-				<DateSelector v-on:date="set_dob($event)"></DateSelector>
+		<div v-if="!form.complete">
+			<div>
+				An account will also be created for you by registering for the conference.
 			</div>
-			<label>Where can we contact you?</label><br>
-			<p class="error" v-if="profile.email.err.length > 0">{{ profile.email.err }}</p>
-			<input type="text" value="email" placeholder="email" v-model.trim="profile.email.value"><br>
-			<label>Password</label><br>
-			<p class="error" v-if="profile.password.err.length > 0">{{ profile.password.err }}</p>
-			<input type="password" value="password" placeholder="password" v-model="profile.password.value"><br>
-			<label>Confirm password</label><br>
-			<input type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password.value"><br>
-			<label>Affiliation</label><br>
-			<p class='error' v-if="profile.affiliation.err.length > 0">{{ profile.affiliation.err }}</p>
-			<ul>
-				<li v-for="affiliation in form.affiliation">
-					<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation.value">{{ affiliation }}
-				</li>
-			</ul>
-			<label>What school do you attend?</label><br>
-			<p class="error" v-if="profile.school.err.length > 0">{{ profile.school.err }}</p>
-			<select name="school" v-model="profile.school.value">
-				<option v-for="school in form.schools">{{ school.name }}</option>
-			</select><br>
-			<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
-			<p class="error" v-if="profile.grade.err.length > 0">{{ profile.grade.err }}</p>
-			<select name="grade" v-model="profile.grade.value">
-				<option v-for="grade in form.academic_year">{{ grade }}</option>
-			</select><br>
-			<label>Gender</label><br>
-			<p class="error" v-if="profile.gender.err.length > 0">{{ profile.gender.err }}</p>
-			<select name="gender" v-model="profile.gender.value">
-				<option v-for="gender in form.gender">{{ gender }}</option>
-			</select><br>
-			<label>What is your ethnicity?</label><br>
-			<p class="error" v-if="profile.ethnicity.err.length > 0">{{ profile.ethnicity.err }}</p>
-			<select name="ethnicity" v-model="profile.ethnicity.value">
-				<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
-			</select><br>
-			<label>Please list any food you're allergic to:</label><br>
-			<input v-model.trim="conf_resp.food_allergens"></input><br>
-			<label>Opt-in to share your resume with sponsors</label><br>
-			<input type="file" name="resume" multiple v-on:change="add_file($event, 0, 'resume')"><br>
-			Do you need travel and lodging assistance? <button v-on:click.prevent="reveal_travel">Show</button><br>
-			<div id="travel-form" v-if="form.travel">
-				<ul id="reimbursement-notice">
-					<li>Completing this form does not guarantee travel or lodging reimbursements.</li>
-					<li>Receipts must be uploaded for this form to be considered complete.</li>
-					<li>Receipts must match the amount requested for reimbursements.</li>
-					<li>Please view your profile for reimbursement status</li>
+			<form v-show="form.show" enctype="multipart/form-data">
+				<button v-on:click.prevent="reveal_form">Hide form</button><br>
+				<label>What's your first name?</label><br>
+				<input :class="{ error: form.error.first_name }" type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
+				<label>What's your last name?</label><br>
+				<input :class="{ error: form.error.last_name }" type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
+				<label v-if="profile.first_name.length > 0 && profile.last_name.length > 0">Hey {{ profile.first_name }} {{ profile.last_name }}, nice to meet you.</label>
+				<div class="birthday">
+					<label :class="{ error_font: form.error.dob }">Birthday</label>
+					<DateSelector v-on:date="set_dob($event)"></DateSelector>
+				</div>
+				<label>Where can we contact you?</label><br>
+				<input :class="{ error: form.error.email }" type="text" value="email" placeholder="email" v-model.trim="profile.email"><br>
+				<label>Password</label><br>
+				<input :class="{ error: form.error.password }" type="password" value="password" placeholder="password" v-model="profile.password"><br>
+				<label>Confirm password</label><br>
+				<input :class="{ error: form.error.confirm_pw }" type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password"><br>
+				<label :class="{ error_font: form.error.affiliation }">Affiliation</label><br>
+				<ul >
+					<li v-for="affiliation in form.affiliation">
+						<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation">{{ affiliation }}
+					</li>
 				</ul>
-				<label>Travel and Lodging Reimbursement Form</label><br>
-				<label>Address</label><br>
-				<input type="text" v-model.trim="reimburse.address.street" placeholder="Street name">
-				<input type="text" v-model.trim="reimburse.address.apt" placeholder="Apartment number">
-				<input type="text" v-model.trim="reimburse.address.city" placeholder="City">
-				<input type="text" v-model.trim="reimburse.address.state" placeholder="State/Prefecture/Province">
-				<input type="text" v-model.trim="reimburse.address.zip" placeholder="Zip code"><br>
-				<label>Travel</label><br>
-				<span v-for="(value, index) in reimburse.travel">
-					<DateSelector v-on:date="set_travel_date(index, $event)"></DateSelector>
-					<input type="text" v-model.trim="reimburse.travel[index].src" placeholder="Source">
-					<input type="text" v-model.trim="reimburse.travel[index].dest" placeholder="Destination">
-					<input type="text" v-model.number="reimburse.travel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="travel-receipt" multiple v-on:change="add_file($event, index, 'travel')"><br>
-					<button v-on:click.prevent="delete_item('travel', index)">-</button>
-				</span><br>
-				<button v-on:click.prevent="extend_form('travel')">+</button><br>
-				<label>Hotel</label><br>
-				<span v-for="(value, index) in reimburse.hotel">
-					<input type="text" v-model.trim="reimburse.hotel.name" placeholder="Hotel"><br>
-					<input type="text" v-model.trim="reimburse.hotel.nights" placeholder="Nights"><br>
-					<span>Check-in</span>
-					<DateSelector v-on:date="set_checkin_date(index, $event)"></DateSelector>
-					<span>Check-out</span>
-					<DateSelector v-on:date="set_checkout_date(index, $event)"></DateSelector>
-					<input type="text" v-model.number="reimburse.hotel[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="hotel-receipt" multiple v-on:change="add_file($event, index, 'hotel')"><br>
-					<button v-on:click.prevent="delete_item('hotel', index)">-</button>
-				</span><br>
-				<button v-on:click.prevent="extend_form('hotel')">+</button><br>
-				<br>
-				<label>Miscellaneous</label><br>
-				<span v-for="(value, index) in reimburse.misc">
-					<input type="text" v-model.trim="reimburse.misc.name" placeholder="Item"><br>
-					<DateSelector v-on:date="set_misc_date(index, $event)"></DateSelector>
-					<input type="text" v-model.number="reimburse.misc[index].amount" v-on:keyup="total" placeholder="Amount ($ USD)">
-					<input type="file" name="misc-receipt" multiple v-on:change="add_file($event, index, 'misc')"><br>
-					<button v-on:click.prevent="delete_item('misc', index)">-</button>
-				</span><br>
-				<button v-on:click.prevent="extend_form('misc')">+</button><br>
-				<label>Total: $ {{ reimburse.total }}</label><br>
-				<button v-on:click.prevent="reveal_travel">Hide</button>
-			</div>
-			<label>What do you want out of this conference and anything else we should know?</label><br>
-			<textarea v-model.trim="conf_resp.message"></textarea><br>
-			<button v-on:click.prevent="reveal_form">Hide form</button><br>
-			<button v-on:click.prevent="submit">Submit</button>
-		</form>
+				<label>What school do you attend?</label><br>
+				<select :class="{ error: form.error.school }" name="school" v-model="profile.school">
+					<option v-for="school in form.schools">{{ school.name }}</option>
+				</select><br>
+				<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
+				<select :class="{ error: form.error.grade }" name="grade" v-model="profile.grade">
+					<option v-for="grade in form.academic_year">{{ grade }}</option>
+				</select><br>
+				<label>Gender</label><br>
+				<select :class="{ error: form.error.gender }" name="gender" v-model="profile.gender">
+					<option v-for="gender in form.gender">{{ gender }}</option>
+				</select><br>
+				<label>What is your ethnicity?</label><br>
+				<select :class="{ error: form.error.ethnicity }" name="ethnicity" v-model="profile.ethnicity">
+					<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
+				</select><br>
+				<label>Please list any food you're allergic to:</label><br>
+				<input v-model.trim="conf_resp.food_allergens"></input><br>
+				<label>Opt-in to share your resume with sponsors</label><br>
+				<input type="file" name="resume" multiple v-on:change="add_file($event, 0)"><br>
+				<label>How did you hear about our conference?</label><br>
+				<textarea v-model.trim="conf_resp.q1"></textarea><br>
+				<label>What future do you see for machine intelligence that others don't? (max 200 characters)</label><br>
+				<textarea v-model.trim="conf_resp.q2" maxlength="200"></textarea><br>
+				<label>What do you want out of this conference and anything else we should know? (max. 200 characters)</label><br>
+				<textarea v-model.trim="conf_resp.q3" maxlength="200"></textarea><br>
+				<button v-on:click.prevent="submit">Submit</button><button v-on:click.prevent="reveal_form">Hide form</button>
+			</form>
+		</div>
+		<div v-if="form.complete">
+			Thanks for submititng your application for our conference!<br>
+			Stay updated with the Machine Intelligence Community<br>
+			<a href="https://www.facebook.com/miconference/">Facebook</a>
+			<a href="https://twitter.com/mic_conf">Twitter</a>
+			<a href="https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg">YouTube</a>
+		</div>
 	</div>
 </template>
 
 <script>
 import axios from 'axios'
-import ProfileService from '../services/ProfileService.js'
-import RegistrationService from '../services/RegistrationService.js'
+import AuthService from '@/services/AuthenticationService'
+import RegistrationService from '@/services/RegistrationService.js'
 import ContentService from '@/services/ContentService.js'
 import institutions from '@/data/schools.json'
 import DateSelector from '@/components/DateSelector'
@@ -131,17 +83,36 @@ export default {
 	components: {
 		DateSelector
 	},
+	created() {
+		// this.$store.state.userInfo.id
+	},
 	data() {
 		return {
 			conf_resp: {
 				food_allergens: '',
-				message: '',
+				q1: '',
+				q2: '',
+				q3: ''
 			},
 			form: {
 				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
+				complete: false,
 				data: new FormData(),
+				error: {
+					affiliation: false,
+					confirm_pw: false,
+					dob: false,
+					email: false,
+					ethnicity: false,
+					first_name: false,
+					gender: false,
+					grade: false,
+					last_name: false,
+					password: false,
+					school: false
+				},
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
 				months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -151,50 +122,17 @@ export default {
 				years: years(100, (new Date()).getFullYear())
 			},
 			profile: {
-				affiliation: {
-					err: '',
-					value: ''
-				},
-				confirm_password: {
-					err: '',
-					value: ''
-				},
-				dob: {
-					err: '',
-					value: undefined
-				},
-				email: {
-					err: '',
-					value: ''
-				},
-				ethnicity: {
-					err: '',
-					value: ''
-				},
-				first_name: {
-					err: '',
-					value: ''
-				},
-				gender: {
-					err: '',
-					value: ''
-				},
-				grade: {
-					err: '',
-					value: ''
-				},
-				last_name: {
-					err: '',
-					value: ''
-				},
-				password: {
-					err: '',
-					value: ''
-				},
-				school: {
-					err: '',
-					value: ''
-				}
+				affiliation: '',
+				confirm_password: '',
+				dob: undefined,
+				email: '',
+				ethnicity: '',
+				first_name: '',
+				gender: '',
+				grade: '',
+				last_name: '',
+				password: '',
+				school: ''
 			},
 			reimburse: {
 				address: {
@@ -222,206 +160,61 @@ export default {
 					item: '',
 				}],
 				total: '0'
-			}
+			},
+			user_id: ''
 		}
 	},
 	methods: {
-		add_file(event, index, type) {
+		add_file(event, index) {
 			var file = event.target.files[0];
 			var filename = file.name;
 
-			if(type == 'resume') {
-				this.conf_resp.resume = filename;
-				this.form.data.append('resume', file, filename);
-			}
-			else if(type == 'travel') {
-				this.reimburse.travel.receipt = filename;
-				this.form.data.append('travel_'+index, file, filename);
-			}
-			else if(type == 'hotel') {
-				this.reimburse.hotel.receipt = filename;
-				this.form.data.append('hotel_'+index, file, filename);
-			}
-			else if(type == 'misc') {
-				this.reimburse.misc.receipt = filename;
-				this.form.data.append('misc_'+index, file, filename);
-			}
-		},
-		daysInMonth(month, year) {
-			// original: https://stackoverflow.com/questions/1433030/validate-number-of-days-in-a-given-month/1433119#1433119
-			switch (month) {
-				case 1 :
-					return (year % 4 == 0 && year % 100) || year % 400 == 0 ? 29 : 28;
-				case 8 : case 3 : case 5 : case 10 :
-					return 30;
-				default :
-					return 31
-			}
-		},
-		delete_item(type, index) {
-			if(type == 'travel') {
-				this.reimburse.travel.splice(index, 1);
-			}
-			else if(type == 'hotel') {
-				this.reimburse.hotel.splice(index, 1);
-			}
-			else if(type == 'misc') {
-				this.reimburse.misc.splice(index, 1);
-			}
-
-			this.total();
-		},
-		extend_form(type) {
-
-			if(type == 'travel') {
-				this.reimburse.travel.push({});
-			}
-			else if(type == 'hotel'){
-				this.reimburse.hotel.push({});
-			}
-			else {
-				this.reimburse.misc.push({});
-			}
-		},
-		is_complete(data) {
-			var keys = Object.keys(data);
-
-			if(data.amount > 0) {
-				for(var i = 0; i < keys.length; i++) {
-					if(this.is_empty(data[keys[i]])) {
-						return false;
-					}
-				}
-			}
-
-			return true;
-		},
-		is_empty(data) {
-			return ((typeof data == 'string' || data instanceof String) && data.length == 0) || data == 0;
-		},
-		is_list_complete(data) {
-			var complete = true;
-
-			for(var i = 0; i < data.length; i++) {
-				complete = complete && this.is_complete(data[i]);
-			}
-
-			return complete;
+			this.conf_resp.resume = filename;
+			this.form.data.append('resume', file, filename);
 		},
 		is_string(data) {
 			return (typeof data === 'string' || data instanceof String);
 		},
-		profile_complete() {
-			console.log('checking profile');
-			var keys = Object.keys(this.profile);
-			var flag = true;
-
-			for(var i = 0; i < keys.length; i++) {
-				var k = keys[i];
-				if(k != 'dob') {
-					var v = this.profile[k].value;
-
-					if(this.is_empty(v)) {
-						this.profile[k].err = 'Missing '+k;
-						flag = false;
-					}
-				}
-			}
-
-			return flag;
-		},
-		registration_complete() {
-			return this.is_complete(this.reimburse.address) &&
-			this.is_list_complete(this.reimburse.travel) &&
-			this.is_list_complete(this.reimburse.hotel) &&
-			this.is_list_complete(this.reimburse.misc);
-		},
 		reveal_form() {
-			this.form.show = !this.form.show;
+			this.$emit('reveal');
 		},
 		reveal_travel() {
 			this.form.travel = !this.form.travel;
+		},
+		register() {
+			var reg = { email: this.profile.email, reimbursements: this.reimburse, conf_resp: this.conf_resp };
+			
+			RegistrationService.register(reg).then((data) => {
+				this.form.complete = data.data;
+			});
 		},
 		round(amount) {
 			return parseFloat(Math.round(amount * 100) / 100);
 		},
 		set_dob(date) {
-			this.profile.dob.value = date;
+			this.profile.dob = date;
 		},
-		set_travel_date(index, date) {
-			this.reimburse.travel[index].date = date;
-		},
-		set_checkin_date(index, date) {
-			this.reimburse.hotel[index].check_in = date;
-		},
-		set_checkout_date(index, date) {
-			this.reimburse.hotel[index].check_out = date;
-		},
-		set_misc_date(index, date) {
-			this.reimburse.misc[index].date = date;
+		async signup() {
+			return await AuthService.signUpUser(this.profile);
 		},
 		submit() {
-
-			if(!this.vali_date()) {
-				this.profile.dob.err = 'Please enter a valid birthday.';
-			}
-
-			if(this.registration_complete()) {
-				console.log('Submitting completed registration');
-
-				// var config = {
-				// 	header: {
-				// 		'Content-Type' : 'multipart/form-data'
-				// 	}
-				// }
-				// var file = this.form.data;
-
-				// ContentService.uploadFile('/conference/register', file, config).then(function(data) {
-				// 	console.log(data);
-				// });
-
-				var reg = {'reimbursements': this.reimburse, 'conf_resp': this.conf_resp};
-
-				RegistrationService.register(reg).then(function(data) {
-					console.log(data);
-				});
-			}		
-
-			// if(this.profile_complete()) {
-			// 	ProfileService.createProfile(this.profile).then(function(data) {
-			// 		console.log(data);
-			// 	});
-
-			// 	this.reveal_form();
-			// }
-
-		},
-		sum(data) {
-			var total = 0;
-
-			for (var i = 0; i < data.length; i++) {
-				total += this.round(data[i].amount);
-			}
-
-			if (this.is_string(total)) {
-				total = 0;
-			}
-
-			return total;
-		},
-		total() {
-			var travel = this.sum(this.reimburse.travel);
-			var hotel = this.sum(this.reimburse.hotel);
-			var misc = this.sum(this.reimburse.misc);
-
-			this.reimburse.total = (travel + hotel + misc).toFixed(2);;
-		},
-		vali_date() {
-			var year = this.profile.dob.year;
-			var month = this.form.months.indexOf(this.profile.dob.month);
-			var day = this.profile.dob.day;
-
-			return month >= 0 && month < 12 && day > 0 && day <= this.daysInMonth(month, year)
+			this.signup().then((response) => {
+				var err = response.data.error;
+				
+				if(err != undefined && response.status == 200) {
+					this.form.error = err;
+				} 
+				else if(response.status == 200) {
+					// var reg = { email: this.profile.email, reimbursements: this.reimburse, conf_resp: this.conf_resp };
+					
+					// RegistrationService.register(reg).then(function(data) {
+					// 	console.log(data);
+					// 	// can't access this here!
+					// 	this.form.complete = data.data;
+					// });
+					this.register();
+				}
+			});
 		}
 	}
 }
@@ -439,6 +232,7 @@ label {
 }
 
 input {
+	border: transparent;
 	width: 600px;
 }
 
@@ -460,26 +254,36 @@ ul {
 }
 
 button {
-	margin: 10px 0;
+	background: #502984;
+	color: #FFF;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	display: inline-block;
+	width: 50%;
+	height: 40px;
+	font-size: 1em;
+}
+
+button:hover {
+	background: #331a54;
+	color: #FFF;
 }
 
 textarea {
-  width: calc(600px - 10px);
-  min-height: 75px;
+	width: calc(100% - 10px);
+	min-height: 75px;
+	border: transparent;
 }
 
 .birthday select {
 	margin-right: 10px;
 }
 
-#reimbursement-notice {
-	list-style-type: circle;
-	font-size: .9em;
-	margin: 10px 15px;
-}
-
 .error {
-	color: red;
+	border: solid;
+	border-width: 0.5px;
+	border-color: red;
 }
 
 </style>

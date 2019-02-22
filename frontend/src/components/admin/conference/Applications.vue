@@ -1,8 +1,8 @@
 <template>
 	<div id="container">
 		<table>
-			<th v-for="(key, i) in Object.keys(applications[0])">{{ key }}</th>
-			<tr v-for="(row, i) in applications">
+			<th class="headers" v-for="(key, i) in Object.keys(applications[0])">{{ key }}</th>
+			<tr class="values" v-for="(row, i) in applications">
 				<td v-for="key in Object.keys(row)">{{ row[key] }}</td>
 			</tr>
 		</table>
@@ -10,27 +10,14 @@
 </template>
 
 <script>
-import io from 'socket.io-client'
 
 export default {
 	name: 'Applications',
-
 	data() {
 		return {
-			socket: new io('127.0.0.1:7000', {
-				extraHeaders: {
-					'Access-Control-Allow-Credentials': 'omit'
-				}
-			})
 		}
 	},
-	props: ['applications'],
-	created() {
-		// this.socket.emit('REGISTRATIONS', {1: 'fuck this shit'});
-		// this.socket.on('MESSAGE', (data) => {
-		// 	// console.log(data);
-		// });
-	}
+	props: ['applications']
 }
 </script>
 

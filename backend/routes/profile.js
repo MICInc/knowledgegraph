@@ -2,27 +2,19 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../db/database');
-var format_user = require('../lib/format_user');
+var ua = require('../lib/user-auth');
 
 router.post('/', function(req, res) {
-	console.log('creating profile');
-	var user = new db.User(format_user(req));
-	console.log('formatted user: '+JSON.stringify(user));
-
-	user.collection.dropIndexes(function(err, results) {
-		if(err) {
-			console.log('profile.js: '+err);
+	// TODO: should validate email address before querying
+	ua.isEmailTaken(req.body.email.value, function(results) {
+		if(results.length == 0) {
+			ua.registerUser(req.body, function(user_id) {
+				res.send(user_id);
+			});
 		}
-	});
-
-	user.save()
-	.then(item => {
-		console.log('Saved profile');
-		res.send('User saved to db');
-	})
-	.catch(err => {
-		console.log(err);
-		res.status(400).send('Save error');
+		else {
+			res.status(400).send('Email already in use.');
+		}
 	});
 });
 

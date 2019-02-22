@@ -1,46 +1,30 @@
+var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
 var file_handler = require('../lib/file_handler');
+var ua = require('../lib/user-auth');
+var ah = require('../lib/application_handler');
+var fh = require('../lib/feedback_handler');
 
 router.post('/register', function(req, res) {
-	console.log('posting conf reg');
-
-	if(Object.keys(req.body).length == 0) {
-		console.log('uploading files');
-		file_handler(req, res, './storage/conference/resumes');
-	}
-	else {
-		var conf = new db.Conference(req.body);
-		console.log(req.body);
-		
-		conf.collection.dropIndexes(function(err, results) {
-			if(err) {
-				console.log('conferece.js: '+err);
-			}
+	ua.isEmailTaken(req.body.email, function(user) {
+		ah.save(req.body, function(status) {
+			res.send(status);
 		});
-
-		conf.save()
-		.then(item => {
-			var msg = 'Saved conf application';
-			console.log(msg);
-			res.send(msg);
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(400).send('Failed to register');
-		});
-	}
+	});
 });
 
 router.get('/register', function(req, res) {
-	console.log(req.body);
-	// res.send('conf_apples');
-	// req.app.io.on('REGISTRATIONS', function(socket) {
-	// 	socket.emit('hello socket.io');
-	// });
-	// console.log('get register route');
-	// req.app.io.emit('REGISTRATIONS', 'conf_apples2');
+	db.Conference.find({}, function(err, apps) {
+		res.send(ah.flatten_demographic_and_resp(apps));
+	}).select('-reimbursements').select('-__v');
+});
+
+router.post('/feedback', function(req, res) {
+	fh.save(fh.format(req.body), function(resp) {
+		console.log(resp);
+	})
 });
 
 module.exports = router;

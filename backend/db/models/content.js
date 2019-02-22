@@ -27,9 +27,6 @@ var content_schema = new mongoose.Schema({
 		required: true,
 		trim: true
 	},
-	hashtags: [{
-		type: String
-	}],
 	hints: [{
 		type: String,
 		trim: true

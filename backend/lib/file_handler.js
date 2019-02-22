@@ -1,7 +1,6 @@
 var formidable = require('formidable');
 var fs = require('fs');
 var path = require('path');
-const snappy = require('snappy');
 
 module.exports = {
 	write: function(req, res, dir, keep_ext=true) {

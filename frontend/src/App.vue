@@ -1,34 +1,27 @@
 <template>
-  <div id="app">
-    <main>
-      <router-view/>
-    </main>
-    <Footer></Footer>
-  </div>
+	<div id="app">
+		<router-view/>
+	</div>
 </template>
 
 <script>
-import Footer from '@/components/Footer'
 
 export default {
-  components: {
-    Footer,
-  }
 }
 </script>
 
 <style>
 
 a {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Avenir', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale
+	margin: 0;
+	padding: 0;
+	font-family: 'Avenir', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -37,36 +30,32 @@ body {
 }
 
 button {
-  border: none;
-  box-shadow: none;
-  outline: none;
-  padding: 5px 10px;
-  color: #000;
+	border: none;
+	box-shadow: none;
+	outline: none;
 }
 
 button:hover {
-  background: #f7f7f7;
-  cursor: pointer;
+	cursor: pointer;
 }
 
 textarea, input {
-  border: 0px;
-  outline: 0px;
-  background: transparent;
-  padding: 5px;
-  margin: 10px 0;
-  resize: none;
-  font-size: 1.5em;
+	outline: 0px;
+	background: transparent;
+	padding: 5px;
+	margin: 10px 0;
+	resize: none;
+	font-size: 1em;
 }
 
 textarea:focus, input:focus {
-  outline: none;
+	outline: none;
 }
 
 ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 #app {
@@ -76,8 +65,13 @@ ul {
   margin-top: 50px; /*Should match navbar height*/
 }
 
+<<<<<<< HEAD
+#app .main {
+	flex: 1;
+=======
 #app main {
   flex: 1;
+>>>>>>> master
 }
 
 </style>

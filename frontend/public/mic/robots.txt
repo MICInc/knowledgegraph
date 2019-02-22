@@ -1,4 +1,4 @@
-#robots.txt for Parkour Theory
-#"The goal of Parkour is to create expression, so that things can flourish in openness." - David Belle
+#robots.txt for Machine Intelligence Community
+# 
 
 User-agent: *

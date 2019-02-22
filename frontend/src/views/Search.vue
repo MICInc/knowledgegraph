@@ -1,47 +1,54 @@
 <template>
-	<div class="search">
+	<div id="search">
 		<PageNav></PageNav>
-		<h3>Results</h3>
-		<ul>
-			<li v-for='item in results'>
-				<router-link v-bind:to="'/kg/'+item.url">{{ item.title }}</router-link>
-			</li>
-		</ul>
+		<div id="search-body">
+			<span id="result-count">results ({{results.length}})</span><br>
+			<ul>
+				<li v-for='item in results'>
+					<div class="result">
+						<router-link class="result-header" v-bind:to="'/content/'+item.url">{{ item.title }}</router-link>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
 <script>
 import PageNav from '@/components/PageNav.vue'
+import SearchService from '@/services/SearchService'
 
 export default {
 	name: 'search',
 	components: {
 		PageNav,
 	},
-
+	created() {
+		this.query.term = this.$route.query.term;
+		this.search().then(data => {
+			console.log(data);
+			this.results = data;
+		});
+	},
 	data () {
 		return {
 			id: this.$route.params.id,
-			results: []
+			results: [],
+			query: {
+				term: ''
+			}
 		}
 	},
-
-	created() {
-		this.$http.get('127.0.0.1:7000/search/'+this.id).then(function(data){
-			return data.json();
-		}).then(function (data){
-			var searchResults = [];
-			for(let key in data) {
-				data[key].id = key;
-				searchResults.push(data[key]);
-			}
-			this.results = searchResults;
-		});
-	},
-
 	methods: {
 		handleSubmit() {
 			alert("You've submitted the form!")
+		},
+		async search() {
+			console.log(this.query.term);
+			return await SearchService.search({params: this.query})
+			.then(function(data) {
+				return data.data;
+			});
 		}
 	}
 }
@@ -49,9 +56,32 @@ export default {
 
 <style scoped>
 
+#search-body{
+	margin: 0px 10%;
+}
+
 .input-row {
 	display: flex;
 	align-items: center;
+}
+
+.result {
+	border-bottom: solid;
+	border-width: thin;
+	border-color: #e5e5e5;
+	width: 50%;
+	height: 80px;
+	margin: 10px 0px;
+}
+
+.result-header {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+#result-count {
+	margin: 20px 0px;
+	font-size: 0.8em;
 }
 
 </style>

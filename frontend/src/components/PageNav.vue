@@ -9,9 +9,13 @@
 				<router-view/>
 			</ul>
 		</nav>
-		<input class="search" type="text" placeholder="SEARCH" 
-			v-on:keydown.enter.prevent="search()" 
-			v-model="searchInput">
+		<input 
+			class="search" 
+			type="search"
+			name="q"
+			placeholder="SEARCH" 
+			v-on:keydown.enter.prevent="search()"
+			v-model="query">
 		<nav id=right>
 			<ul v-if="!isLoggedIn">
 				<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>
@@ -25,12 +29,14 @@
 </template>
 
 <script>
+import router from '@/router'
+
 export default {
 	name: 'PageNav',
 
 	data () {
 		return {
-			searchInput: '',
+			query: ''
 		}
 	},
 
@@ -42,8 +48,7 @@ export default {
 
 	methods: {
 		search() {
-			alert("You searched for " + this.searchInput)
-			this.searchInput = ''
+			router.push({path: 'search', query: {term: this.query} })
 		}
 	},
 
@@ -105,6 +110,7 @@ nav ul li a {
 }
 
 input.search {
+	border: transparent;
 	height: auto;
 	width: 300px;
 	border-radius: 3px;

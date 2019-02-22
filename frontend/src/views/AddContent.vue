@@ -1,14 +1,14 @@
 <template>
-	<div class="add-article main" v-on:keyup="save()" v-on:keydown="prevent_default($event)">
+	<div class="add-article main" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
 		<div class="container">
 			<button v-on:click.prevent="publish()">Publish</button>
 			<span class="save-status">{{ save_status }}</span>
 			<br>
-			<input type="text" id="title" placeholder="UNTITLED" v-model.trim="data.title" @input="uppercase($event, data, 'title')">
+			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()">
 			<br>
 			<form>
-				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)"></DynamicContent>
+				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)" :collab="data.content"></DynamicContent>
 			</form>
 		</div>
 	</div>
@@ -16,11 +16,11 @@
 
 <script>
 import PageNav from '@/components/PageNav';
-import ContentService from '../services/ContentService.js';
+import ContentService from '@/services/ContentService.js';
 import DynamicContent from '@/components/DynamicContent';
 import Path from 'path';
 
-window.onbeforeunload = function(){
+window.onbeforeunload = function() {
     return "Are you sure you want to close the window?";
 }
 
@@ -42,9 +42,12 @@ export default {
 				date_created: new Date(),
 				cell: undefined,
 				citations: '',
+				content: [],
 				hashtags: [],
 				last_modified: undefined,
+				prereq: '',
 				publish: false,
+				subseq: '',
 				title: ''
 			},
 			save_status: '',
@@ -118,7 +121,7 @@ export default {
 			this.save_status = 'saving...';
 
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, data: this.data }
+			var article = { id: this.content_id, user: this.user, data: this.data };
 			
 			ContentService.saveContent(article)
 			.then((data) => {
@@ -135,7 +138,6 @@ export default {
 			.catch(error => {
 				console.log(error);
 			});
-			
 			this.save_status = 'saved';
 		},
 		update_content(emit_save) {
@@ -146,7 +148,7 @@ export default {
 			if(hashtag.length > 0 && !this.data.hashtags.includes(hashtag)) {
 				this.data.hashtags.push(hashtag);
 			}
-			
+
 			this.save();
 		},
 		upload_file(form_data) {
@@ -173,6 +175,7 @@ export default {
 			e.target.setSelectionRange(start, start);
 		}
 	},
+	props: ['content'],
 	ready: function() {
 		Vue.util.on(window, 'beforeunload', this.save, false);
 	}
@@ -211,6 +214,7 @@ form {
 }
 
 input {
+	border: none;
 	max-width: calc(600px - 10px);
 }
 

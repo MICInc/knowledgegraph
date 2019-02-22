@@ -3,9 +3,11 @@
 		<PageNav></PageNav>
 		<div class="container">
 			<h1>Community Page</h1>
-			<a href="/community/start">Start a community</a>
+			<router-link to="/community/start" tag="button">Start a community</router-link>
 			<br>
-			<a href="/mic/mit">MIT MIC</a>
+			<div v-for="(community, index) in communities">
+				<a :href="community.url">{{ community.name }}</a>
+			</div>
 		</div>
 	</div>
 </template>
@@ -13,25 +15,34 @@
 
 <script>
 import PageNav from '@/components/PageNav'
-import MemberReg from '@/components/MemberReg'
+import CommunityService from '@/services/CommunityService'
 import Footer from '@/components/Footer'
 
 export default {
 	name: 'community',
 	components: {
 		PageNav,
-		MemberReg,
 		Footer
 	},
-
+	beforeMount() {
+		this.get_all().then((data) => {
+			this.communities = data.data;
+			console.log('communities: ');
+			console.log(this.communities);
+		});
+	},
 	data() {
 		return {
+			communities: [],
 			form: {
 				reveal: ''
 			}
 		}
 	},
 	methods: {
+		async get_all() {
+			return await CommunityService.getAll();
+		}
 	}
 }
 </script>
@@ -46,6 +57,23 @@ export default {
 .container {
 	flex: 1;
 	width: 1080px;
+}
+
+button {
+	background: #502984;
+	color: #FFF;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	display: inline-block;
+	width: 30%;
+	height: 40px;
+	font-size: 1em;
+}
+
+button:hover {
+	background: #331a54;
+	color: #FFF;
 }
 
 </style>

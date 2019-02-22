@@ -89,7 +89,6 @@ input {
 	margin: 5px 0;
 	padding: 5px;
 	border: none;
-	background: #535353;
 }
 
 label, a {
@@ -99,6 +98,23 @@ label, a {
 .input-row {
 	display: flex;
 	align-items: center;
+}
+
+button {
+	background: #502984;
+	color: #FFF;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	display: inline-block;
+	width: 100%;
+	height: 40px;
+	font-size: 1em;
+}
+
+button:hover {
+	background: #331a54;
+	color: #FFF;
 }
 
 </style>

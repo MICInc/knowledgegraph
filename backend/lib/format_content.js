@@ -25,7 +25,6 @@ module.exports = {
 			"date_created": data.date_created,
 			"description": "",
 			"first_name": user.first_name,
-			"hashtags": data.hashtags,
 			"last_modified": data.last_modified,
 			"last_name": user.last_name,
 			"num_citations": 0,
