@@ -65,13 +65,8 @@ ul {
   margin-top: 50px; /*Should match navbar height*/
 }
 
-<<<<<<< HEAD
 #app .main {
 	flex: 1;
-=======
-#app main {
-  flex: 1;
->>>>>>> master
 }
 
 </style>
