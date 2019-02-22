@@ -83,6 +83,9 @@ export default {
 	components: {
 		DateSelector
 	},
+	created() {
+		// this.$store.state.userInfo.id
+	},
 	data() {
 		return {
 			conf_resp: {

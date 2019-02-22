@@ -2,7 +2,7 @@
 	<div id="search">
 		<PageNav></PageNav>
 		<div id="search-body">
-			<h3>Results</h3>
+			<span id="result-count">results ({{results.length}})</span><br>
 			<ul>
 				<li v-for='item in results'>
 					<div class="result">
@@ -77,6 +77,11 @@ export default {
 .result-header {
 	font-size: 1.2em;
 	font-weight: bold;
+}
+
+#result-count {
+	margin: 20px 0px;
+	font-size: 0.8em;
 }
 
 </style>

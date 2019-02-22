@@ -49,6 +49,7 @@ export default {
 			},
 			has_caption: true,
 			has_caption_default: true,
+			image_active: false,
 			is_empty: true
 		}
 	},
@@ -197,12 +198,15 @@ export default {
 		},
 		remove_caption(event) {
 			var el = event.target;
-			if(el.innerText.length == 0) this.has_caption = false;
+			if(el.innerText.length == 0) {
+				this.has_caption = false;
+				// this.set_active_border(document.getElementsByClassName('image-content')[0]);
+			}
 		},
 		remove_cell() {
 			if(this.index > -1) {
 				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
-				var remove_img = this.cell.tag == 'img' && this.trim(this.cell.caption).length == 0;
+				var remove_img = this.cell.tag == 'img' && (this.trim(this.cell.caption).length == 0 || this.image_active);
 				var remove_hr = this.cell.tag == 'hr';
 
 				if(remove_p || remove_img || remove_hr) {
@@ -260,9 +264,13 @@ export default {
 			var el = event.target;
 
 			if(el.tagName == 'IMG') {
-				// this.$emit('focus');
-				if(el.style.border == '') el.style.border = "thin solid #460360";
-				else el.style.border = '';
+				if(el.style.border == '') {
+					this.set_active_border(el);
+				}
+				else {
+					el.style.border = '';
+					this.image_active = false;
+				}
 				
 				if(!this.has_caption) {
 					this.has_caption = true;
@@ -271,6 +279,10 @@ export default {
 			}
 
 			this.$emit('active_index', this.index);
+		},
+		set_active_border(el) {
+			el.style.border = "thin solid #460360";
+			this.image_active = true;
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
