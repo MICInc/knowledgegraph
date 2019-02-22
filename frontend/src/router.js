@@ -127,7 +127,17 @@ export default new Router({
 		{
 			path: '/archived/conference',
 			name: 'oldConference',
-			component: () => import('./views/OldConference.vue')
+			component: () => import('./views/OldConference.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		},
 		{
 			path: '/login',
@@ -187,7 +197,17 @@ export default new Router({
 		{
 			path: '*',
 			name: 'notfound',
-			component: () => import('./views/NotFound.vue')
+			component: () => import('./views/NotFound.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
 		}
 	]
 })
