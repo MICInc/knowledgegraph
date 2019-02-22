@@ -48,8 +48,9 @@ router.post('/signup', function(req, res) {
 				message: 'User successfully created.',
 				token: token,
 				userInfo: {
+					id: user._id,
 					firstName: user.first_name,
-					lastName: user.last_name
+					lastName: user.last_name,
 				}
 			});
 
@@ -75,6 +76,7 @@ router.post('/login', function(req, res, next) {
 				message: 'User successfully authenticated.',
 				token: token,
 				userInfo: {
+					id: user._id,
 					firstName: user.first_name,
 					lastName: user.last_name
 				}
