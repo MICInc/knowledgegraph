@@ -1,12 +1,16 @@
 <template>
-	<div class="search">
+	<div id="search">
 		<PageNav></PageNav>
-		<h3>Results</h3>
-		<ul>
-			<li v-for='item in results'>
-				<router-link v-bind:to="'/content/'+item.url">{{ item.title }}</router-link>
-			</li>
-		</ul>
+		<div id="search-body">
+			<h3>Results</h3>
+			<ul>
+				<li v-for='item in results'>
+					<div class="result">
+						<router-link class="result-header" v-bind:to="'/content/'+item.url">{{ item.title }}</router-link>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
@@ -52,9 +56,27 @@ export default {
 
 <style scoped>
 
+#search-body{
+	margin: 0px 10%;
+}
+
 .input-row {
 	display: flex;
 	align-items: center;
+}
+
+.result {
+	border-bottom: solid;
+	border-width: thin;
+	border-color: #e5e5e5;
+	width: 50%;
+	height: 80px;
+	margin: 10px 0px;
+}
+
+.result-header {
+	font-size: 1.2em;
+	font-weight: bold;
 }
 
 </style>
