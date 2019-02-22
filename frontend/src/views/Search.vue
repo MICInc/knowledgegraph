@@ -12,36 +12,38 @@
 
 <script>
 import PageNav from '@/components/PageNav.vue'
+import SearchService from '@/services/SearchService'
 
 export default {
 	name: 'search',
 	components: {
 		PageNav,
 	},
-
+	created() {
+		this.query.term = this.$route.query.term;
+		this.search().then(data => {
+			console.log(data);
+		});
+	},
 	data () {
 		return {
 			id: this.$route.params.id,
-			results: []
+			results: [],
+			query: {
+				term: ''
+			}
 		}
 	},
-
-	created() {
-		this.$http.get('127.0.0.1:7000/search/'+this.id).then(function(data){
-			return data.json();
-		}).then(function (data){
-			var searchResults = [];
-			for(let key in data) {
-				data[key].id = key;
-				searchResults.push(data[key]);
-			}
-			this.results = searchResults;
-		});
-	},
-
 	methods: {
 		handleSubmit() {
 			alert("You've submitted the form!")
+		},
+		async search() {
+			console.log(this.query.term);
+			return await SearchService.search({params: this.query})
+			.then(function(data) {
+				return data.data;
+			});
 		}
 	}
 }

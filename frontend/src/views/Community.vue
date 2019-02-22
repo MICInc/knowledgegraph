@@ -25,7 +25,7 @@ export default {
 		PageNav,
 		Footer
 	},
-	created() {
+	beforeMount() {
 		this.get_all().then((data) => {
 			this.communities = data.data;
 			console.log('communities: ');

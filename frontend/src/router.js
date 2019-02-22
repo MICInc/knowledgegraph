@@ -65,11 +65,6 @@ export default new Router({
 			component: () => import('./views/Conference.vue')
 		},
 		{
-			path: '/mic/mit',
-			name: 'mic',
-			component: () => import('./views/MIC.vue')
-		},
-		{
 			path: '/archived/conference',
 			name: 'oldConference',
 			component: () => import('./views/OldConference.vue')
@@ -83,6 +78,11 @@ export default new Router({
 			path: '/logout',
 			name: 'logout',
 			component: () => import('./views/Logout.vue')
+		},
+		{
+			path: '/search',
+			name: 'search',
+			component: () => import('./views/Search.vue')
 		},
 		{
 			path: '/signup',
