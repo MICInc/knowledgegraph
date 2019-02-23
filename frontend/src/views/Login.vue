@@ -18,24 +18,17 @@
 </template>
 
 <script>
-import PageNav from '@/components/PageNav.vue'
-import LinkedContent from '@/components/LinkedContent.vue'
 import AuthService from '@/services/AuthenticationService'
 import router from '@/router'
 
 export default {
 	name: 'login',
-	components: {
-		PageNav
-	},
-
 	data () {
 		return {
 			formData: {},
 			error: ''
 		}
 	},
-
 	methods: {
 		handleSubmit() {
 			this.loginUser().then((response) => {
@@ -52,13 +45,12 @@ export default {
 				}
 			});
 		},
-
 		async loginUser() {
 			return await AuthService.loginUser({
 				email: this.formData.email, 
 				password: this.formData.password
 			})
-		},
+		}
 	}
 }
 </script>
