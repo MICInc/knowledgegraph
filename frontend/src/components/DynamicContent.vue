@@ -44,8 +44,8 @@ export default {
 		}
 	},
 	methods: {
-		add_content(e=null) {
-			if(e != undefined) e.preventDefault();
+		add_content(event=null) {
+			if(event != undefined) event.preventDefault();
 
 			this.active_index += 1;
 			var cell_id = Math.random();
@@ -53,8 +53,8 @@ export default {
 			this.cells.splice(this.active_index, 0, { id: cell_id, tag: 'p' });
 			this.focus();
 		},
-		focus(e=null) {
-			if(e != undefined && e.which == 9) this.active_index += 1;
+		focus(event=null) {
+			if(event != undefined && event.which == 9) this.active_index += 1;
 
 			if(this.active_index >= 0 && this.active_index < this.content.length) {
 				this.$nextTick(() => {
@@ -69,6 +69,7 @@ export default {
 			if(cell != null) cell[0].remove_cell();
 		},
 		remove_cell(index) {
+			console.log('DC.remove_cell');
 			if(index >= 0) {
 				if(this.cells[index].tag == 'p' && this.active_index == 0) return;
 

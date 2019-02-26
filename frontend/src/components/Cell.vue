@@ -168,10 +168,7 @@ export default {
 		},
 		remove_caption(event) {
 			var el = event.target;
-			if(el.innerText.length == 0) {
-				this.has_caption = false;
-				// this.set_active_border(document.getElementsByClassName('image-content')[0]);
-			}
+			if(el.innerText.length == 0) this.has_caption = false;
 		},
 		remove_cell(event) {
 
@@ -292,7 +289,7 @@ export default {
 			this.cell.text = '';
 			this.cell.last_modified = new Date();
 			this.save();
-			this.is_empty = true;
+			this.is_empty = tag != 'hr';
 		},
 		trim(str, all=false) {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
