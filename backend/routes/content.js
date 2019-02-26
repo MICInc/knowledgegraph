@@ -78,8 +78,6 @@ router.post('/parse', function(req, res, next) {
 });
 
 router.get('/', function(req, res) {
-	console.log('getting content:');
-	console.log(req.query.url);
 	if (req.query.url) {
 		var query = { url: req.query.url };
 
