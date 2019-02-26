@@ -7,8 +7,8 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<Cell id="content-container" 
-			  v-for="(value, index) in content" 
+		<Cell v-for="(value, index) in content" 
+			  :id="'content-container-'+index" 
 			  :tabindex="active_index" 
 			  :key="JSON.stringify(value.id)" 
 			  :ref="'content-'+index" 
@@ -54,15 +54,15 @@ export default {
 			this.focus();
 		},
 		focus(e=null) {
-			var key = '';
 			if(e != undefined && e.which == 9) this.active_index += 1;
 
-			if(this.active_index < this.content.length && this.cells[this.active_index].tag == 'p') {
+			if(this.active_index >= 0 && this.active_index < this.content.length) {
 				this.$nextTick(() => {
+					console.log('here3');
 					var content = this.$refs['content-'+this.active_index][0];
-					var p_tag = content.$refs['p-content'];
+					if(this.cells[this.active_index].tag == 'p') content.set_end_contenteditable(content.$refs['p-content']);
 
-					content.set_end_contenteditable(p_tag);
+					console.log('here4');
 				});
 			}
 		},
@@ -73,6 +73,8 @@ export default {
 		},
 		remove_cell(index) {
 			if(index >= 0) {
+				if(this.cells[index].tag == 'p' && this.active_index == 0) return;
+				
 				this.cells.splice(index, 1);
 				this.content.splice(index, 1);
 

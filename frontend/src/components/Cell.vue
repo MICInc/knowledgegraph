@@ -176,7 +176,7 @@ export default {
 
 				if(remove_p || remove_img || remove_hr) {
 					// remove focus from all elements else will also accidentally delete other content
-					document.activeElement.blur();
+					// document.activeElement.blur();
 
 					this.$emit('remove', this.index);
 				}
