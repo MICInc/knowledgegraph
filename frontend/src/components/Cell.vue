@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete.stop="remove_cell()" >
+	<div id="container" v-on:keydown.delete.stop="remove_cell($event)" >
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
@@ -168,7 +168,8 @@ export default {
 				// this.set_active_border(document.getElementsByClassName('image-content')[0]);
 			}
 		},
-		remove_cell() {
+		remove_cell(event) {
+
 			if(this.index > -1) {
 				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
 				var remove_img = this.cell.tag == 'img' && (this.trim(this.cell.caption).length == 0 || this.image_active);
@@ -177,6 +178,7 @@ export default {
 				if(remove_p || remove_img || remove_hr) {
 					// remove focus from all elements else will also accidentally delete other content
 					// document.activeElement.blur();
+					event.preventDefault();
 
 					this.$emit('remove', this.index);
 				}

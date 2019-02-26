@@ -63,10 +63,12 @@ export default {
 					if(this.cells[this.active_index].tag == 'p') content.set_end_contenteditable(content.$refs['p-content']);
 
 					console.log('here4');
+					// stopPropagation()
 				});
 			}
 		},
 		remove(event) {
+			console.log('here0');
 			// call remove_cell() in child component
 			var cell = this.$refs['content-'+this.active_index];
 			if(cell != null) cell[0].remove_cell();
@@ -74,7 +76,7 @@ export default {
 		remove_cell(index) {
 			if(index >= 0) {
 				if(this.cells[index].tag == 'p' && this.active_index == 0) return;
-				
+
 				this.cells.splice(index, 1);
 				this.content.splice(index, 1);
 
@@ -85,6 +87,7 @@ export default {
 					this.add_content();
 				}
 				else {
+					console.log('here2');
 					this.focus();
 				}
 				this.$emit('remove', index);
