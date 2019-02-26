@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete.stop="remove_cell($event)" >
+	<div id="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
@@ -125,6 +125,11 @@ export default {
 			if(collapse && sel.anchorNode != undefined) sel.collapseToEnd();
 
 			return pos;
+		},
+		focus_next(event) {
+			event.preventDefault();
+			this.$emit('active_index', this.index+1);
+			this.$emit('focus');
 		},
 		hide_on_click(event) {
 			if(this.cell.caption.length == 0) this.has_caption_default = false;

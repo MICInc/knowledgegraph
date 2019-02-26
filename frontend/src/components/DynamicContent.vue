@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus($event)">
+	<div id="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -58,17 +58,12 @@ export default {
 
 			if(this.active_index >= 0 && this.active_index < this.content.length) {
 				this.$nextTick(() => {
-					console.log('here3');
 					var content = this.$refs['content-'+this.active_index][0];
 					if(this.cells[this.active_index].tag == 'p') content.set_end_contenteditable(content.$refs['p-content']);
-
-					console.log('here4');
-					// stopPropagation()
 				});
 			}
 		},
 		remove(event) {
-			console.log('here0');
 			// call remove_cell() in child component
 			var cell = this.$refs['content-'+this.active_index];
 			if(cell != null) cell[0].remove_cell();
@@ -87,7 +82,6 @@ export default {
 					this.add_content();
 				}
 				else {
-					console.log('here2');
 					this.focus();
 				}
 				this.$emit('remove', index);
