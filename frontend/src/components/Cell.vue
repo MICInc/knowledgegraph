@@ -142,10 +142,7 @@ export default {
 				reader.onload = (e) => {
 					var content = e.target.result.split('\n\n');
 
-					for(var i = 0; i < content.length; i++) {
-						// this.add_content(e);
-						this.html = content[i];
-					}
+					for(var i = 0; i < content.length; i++) this.html = content[i];
 				}
 				reader.readAsText(el.files[0])
 			}
@@ -171,7 +168,7 @@ export default {
 			if(el.innerText.length == 0) this.has_caption = false;
 		},
 		remove_cell(event) {
-
+			console.log('remove_cell');
 			if(this.index > -1) {
 				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
 				var remove_img = this.cell.tag == 'img' && (this.trim(this.cell.caption).length == 0 || this.image_active);
