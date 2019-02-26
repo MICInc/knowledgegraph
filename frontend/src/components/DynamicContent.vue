@@ -39,7 +39,6 @@ export default {
 			emit_save: {
 				button: false,
 				cell: undefined,
-				hashtag: '',
 				update_cell: -1
 			}
 		}

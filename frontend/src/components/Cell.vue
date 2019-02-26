@@ -18,7 +18,8 @@
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == cell.tag" 
+		<p id="p-content"
+		   v-if="'p' == cell.tag" 
 		   class="content" 
 		   ref="p-content" 
 		   v-on:keydown.delete="check_content($event)"
@@ -125,40 +126,6 @@ export default {
 
 			return pos;
 		},
-		hashtag(event) {
-			var el = event.target;
-			var cursor_node = el.firstChild;
-
-			// if spacebar was pressed, detect and insert hashtag
-			if(event.which == 32) {
-				var sel = document.getSelection();
-				var innerHTML = el.innerHTML;
-				var length = innerHTML.length;
-				var init_node = sel.anchorNode;
-
-				// extend back and highlight one word and then
-				// extend back one more to find if there's a hashtag
-				sel.modify("extend", "backward", "word");
-				sel.modify("extend", "backward", "character");
-				var has_hash = sel.toString()[0] == '#';
-				var sel_html = sel.anchorNode;
-				var range = undefined;
-				var has_bold = false;
-
-				if(sel_html != undefined && has_hash) {
-					var target = this.trim(sel.toString(), true);
-					var hashtag = '<a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a>'+'\u00A0';
-					this.cell.hashtags.push(target);
-
-					var range = sel.getRangeAt(0);
-					range.deleteContents();
-
-					this.replace_html(range, hashtag);
-				}
-
-				if(sel.anchorNode != undefined) sel.collapseToEnd();
-			}
-		},
 		hide_on_click(event) {
 			if(this.cell.caption.length == 0) this.has_caption_default = false;
 		},
@@ -187,8 +154,6 @@ export default {
 			else {
 				this.is_empty = false;
 			}
-
-			this.hashtag(event);
 			
 			this.cell.html = el.innerHTML;
 			this.cell.text = el.innerText;

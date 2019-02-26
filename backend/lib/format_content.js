@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var utils = require('./utils');
-var snappy = require('snappy');
 var path = require('path');
 
 module.exports = {
@@ -10,7 +9,9 @@ module.exports = {
 		var id = req.body.id;
 		var user = req.body.user;
 		var title = data.title;
-		var url = module.exports.generate_url(title);
+		// only optimize and create hashtags if published
+		// data.cell = data.publish ? module.exports.compress_html(data.cell) : data.cell;
+		data.cell = data.cell != undefined ? module.exports.compress_html(data.cell) : {}
 
 		/*
 			authors - string combination of session info and coauthors
@@ -21,7 +22,7 @@ module.exports = {
 			"_id": id.length > 0 ? id : mongoose.Types.ObjectId(),
 			"authors": user.first_name+' '+user.last_name,
 			"citations": data.citations.split(','),
-			"content": module.exports.compress_html(data.cell),
+			"content": data.cell,
 			"date_created": data.date_created,
 			"description": "",
 			"first_name": user.first_name,
@@ -37,12 +38,29 @@ module.exports = {
 			"save_by": [],
 			"subseqs": [],
 			"title": title,
-			"url": url,
+			"url": module.exports.generate_url(title),
 			"year": (new Date()).getFullYear()
 		};
 	},
-	compress_html: function(data) {
-		return data;
+	compress_html: function(cell) {
+		return module.exports.extract_hashtags(cell);
+	},
+	escape(str) {
+		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+	},
+	extract_hashtags: function(cell) {
+
+		if(cell['html'] != undefined) {
+			var hashtag = cell['html'].match(/(?:^|[ ])#([a-zA-Z]+)/gm);
+
+			for(var i in hashtag) {
+				var tag = module.exports.escape(hashtag[i].trim());
+				var atag = '<a class=\"hashtag\" style=\"color:black;\" href=/search/'+tag+'>'+tag+'</a>';
+				cell['html'] = cell['html'].replace((new RegExp(tag, 'g')), atag);
+			}
+		}
+	
+		return cell
 	},
 	generate_url: function(title) {
 		return title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : utils.uniqueID();
