@@ -201,7 +201,6 @@ export default {
 }
 
 form {
-	width: 600px;
 	display: flex;
 	flex-direction: column;
 }
