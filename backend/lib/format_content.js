@@ -9,6 +9,7 @@ module.exports = {
 		var id = req.body.id;
 		var user = req.body.user;
 		var title = data.title;
+		console.log(user)
 		// only optimize and create hashtags if published
 		data.cell = data.publish && data.cell != undefined ? module.exports.format_hashtags(data.cell) : {};
 

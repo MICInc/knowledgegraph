@@ -42,6 +42,7 @@ export default {
 		this.get_content().then(data => {
 			this.content_id = data._id;
 			this.content = data;
+			console.log(data);
 		});
 	},
 	components: {

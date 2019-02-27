@@ -33,9 +33,8 @@ export default {
 	},
 
 	created() {
-		this.save()
+		this.save();
 	},
-
 	data() {
 		return {
 			content_id: '',
@@ -54,25 +53,9 @@ export default {
 			tags: [],
 			upload: [],
 			url: '',
+			user: this.$store.state.userInfo
 		}
 	},
-
-	computed: {
-		user() {
-			if (this.$store.state.isLoggedIn) {
-				return {
-					first_name: this.$store.state.userInfo.firstName,
-					last_name: this.$store.state.userInfo.lastName,
-				}
-			} else {
-				return {
-					first_name: "Justin",
-					last_name: "Chen"
-				}
-			}
-		}
-	},
-
 	methods: {
 		prevent_default(event) {
 			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
