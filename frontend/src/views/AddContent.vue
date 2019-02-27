@@ -142,13 +142,7 @@ export default {
 		},
 		update_content(emit_save) {
 			this.data.cell = emit_save.cell;
-			this.data.update_cell = emit_save.update_cell;
-			
-			var hashtag = emit_save.hashtag;
-			if(hashtag.length > 0 && !this.data.hashtags.includes(hashtag)) {
-				this.data.hashtags.push(hashtag);
-			}
-
+			this.data.update_cell = emit_save.update_cell;	
 			this.save();
 		},
 		upload_file(form_data) {

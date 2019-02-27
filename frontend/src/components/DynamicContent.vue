@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)" v-on:keydown.tab="focus($event)">
+	<div id="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -7,9 +7,9 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<Cell id="content-container" 
-			  v-for="(value, index) in content" 
-			  :tabindex="active_index" 
+		<Cell v-for="(value, index) in content" 
+			  :id="'content-container-'+index" 
+			  :tabindex="index" 
 			  :key="JSON.stringify(value.id)" 
 			  :ref="'content-'+index" 
 			  :content="content" 
@@ -17,7 +17,7 @@
 			   v-on:active_index="set_index($event)" 
 			   v-on:save="save($event)" 
 			   v-on:tag="switch_tag($event)" 
-			   v-on:remove="remove_cell($event)" 
+			   v-on:remove="remove_cell($event)"
 			   v-on:focus="focus()">
 		</Cell>
 	</div>
@@ -39,7 +39,6 @@ export default {
 			emit_save: {
 				button: false,
 				cell: undefined,
-				hashtag: '',
 				update_cell: -1
 			}
 		}
@@ -48,32 +47,43 @@ export default {
 		add_content(e=null) {
 			if(e != undefined) e.preventDefault();
 
+			var comp = this.$refs['content-'+this.active_index];
+			if(comp != undefined) comp[0].deactivate_border();
+
 			this.active_index += 1;
 			var cell_id = Math.random();
 			this.content.splice(this.active_index, 0, { id: cell_id });
 			this.cells.splice(this.active_index, 0, { id: cell_id, tag: 'p' });
-			this.focus();
+			this.focus_eol();
 		},
-		focus(e=null) {
-			var key = '';
+		focus() {
+			var comp = this.$refs['content-'+this.active_index];
+			if(comp != undefined) comp[0].$el.focus();
+
+			var tag = this.cells[this.active_index].tag;
+			if(tag == 'p') this.focus_eol();
+			if(tag == 'img' && comp != undefined) comp[0].activate_border();
+		},
+		focus_eol(e=null) {
 			if(e != undefined && e.which == 9) this.active_index += 1;
 
-			if(this.active_index < this.content.length && this.cells[this.active_index].tag == 'p') {
+			if(this.active_index >= 0 && this.active_index < this.content.length) {
 				this.$nextTick(() => {
 					var content = this.$refs['content-'+this.active_index][0];
-					var p_tag = content.$refs['p-content'];
-
-					content.set_end_contenteditable(p_tag);
+					if(this.cells[this.active_index].tag == 'p') content.set_end_contenteditable(content.$refs['p-content']);
 				});
 			}
 		},
 		remove(event) {
 			// call remove_cell() in child component
 			var cell = this.$refs['content-'+this.active_index];
+			console.log(content);
 			if(cell != null) cell[0].remove_cell();
 		},
 		remove_cell(index) {
 			if(index >= 0) {
+				if(this.cells[index].tag == 'p' && this.active_index == 0) return;
+
 				this.cells.splice(index, 1);
 				this.content.splice(index, 1);
 
@@ -99,7 +109,7 @@ export default {
 			}
 		},
 		set_index(new_index) {
-			this.active_index = new_index;
+			this.active_index = (new_index < this.cells.length) ? new_index : this.active_index;
 		},
 		switch_tag(cell) {
 			this.cells[cell.index].tag = cell.tag;

@@ -1,12 +1,12 @@
 <template>
-	<div id="container" v-on:keydown.delete.stop="remove_cell()" >
+	<div id="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 		</div>
-		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
-			<img class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
+		<figure id="figure-content" v-if="'img' == cell.tag" v-on:click="set_active($event)">
+			<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
 			<figcaption class="caption" 
 						v-show="has_caption" 
 						v-on:keyup="caption($event)" 
@@ -18,7 +18,8 @@
 		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 			<hr>
 		</div>
-		<p v-if="'p' == cell.tag" 
+		<p id="p-content"
+		   v-if="'p' == cell.tag" 
 		   class="content" 
 		   ref="p-content" 
 		   v-on:keydown.delete="check_content($event)"
@@ -54,11 +55,19 @@ export default {
 		}
 	},
 	methods: {
+		activate_border() {
+			var fig_ref = this.$refs['image-content'];
+			if(fig_ref != undefined) {
+				fig_ref.style.border = "thin solid #460360";
+				this.image_active = true;
+			}
+		},
 		add_image(event) {
 			var el = event.target;
 			this.cell.tag = 'img';
 			this.$emit('tag', {index: this.index, tag: 'img', 'focus': false});
 			this.$emit('active_index', this.index);
+			this.$emit('focus');
 
 			if(el.files && el.files[0]) {
 				var reader = new FileReader();
@@ -125,39 +134,17 @@ export default {
 
 			return pos;
 		},
-		hashtag(event) {
-			var el = event.target;
-			var cursor_node = el.firstChild;
-
-			// if spacebar was pressed, detect and insert hashtag
-			if(event.which == 32) {
-				var sel = document.getSelection();
-				var innerHTML = el.innerHTML;
-				var length = innerHTML.length;
-				var init_node = sel.anchorNode;
-
-				// extend back and highlight one word and then
-				// extend back one more to find if there's a hashtag
-				sel.modify("extend", "backward", "word");
-				sel.modify("extend", "backward", "character");
-				var has_hash = sel.toString()[0] == '#';
-				var sel_html = sel.anchorNode;
-				var range = undefined;
-				var has_bold = false;
-
-				if(sel_html != undefined && has_hash) {
-					var target = this.trim(sel.toString(), true);
-					var hashtag = '<a class=\"hashtag\" style=\"color:black;\" href=/search/'+target+'>'+target+'</a>'+'\u00A0';
-					this.cell.hashtags.push(target);
-
-					var range = sel.getRangeAt(0);
-					range.deleteContents();
-
-					this.replace_html(range, hashtag);
-				}
-
-				if(sel.anchorNode != undefined) sel.collapseToEnd();
+		deactivate_border() {
+			var fig_ref = this.$refs['image-content'];
+			if(fig_ref != undefined) {
+				fig_ref.style.border = '';
+				this.image_active = false;
 			}
+		},
+		focus_next(event) {
+			event.preventDefault();
+			this.$emit('active_index', this.index+1);
+			this.$emit('focus');
 		},
 		hide_on_click(event) {
 			if(this.cell.caption.length == 0) this.has_caption_default = false;
@@ -170,10 +157,7 @@ export default {
 				reader.onload = (e) => {
 					var content = e.target.result.split('\n\n');
 
-					for(var i = 0; i < content.length; i++) {
-						// this.add_content(e);
-						this.html = content[i];
-					}
+					for(var i = 0; i < content.length; i++) this.html = content[i];
 				}
 				reader.readAsText(el.files[0])
 			}
@@ -187,8 +171,6 @@ export default {
 			else {
 				this.is_empty = false;
 			}
-
-			this.hashtag(event);
 			
 			this.cell.html = el.innerHTML;
 			this.cell.text = el.innerText;
@@ -198,12 +180,10 @@ export default {
 		},
 		remove_caption(event) {
 			var el = event.target;
-			if(el.innerText.length == 0) {
-				this.has_caption = false;
-				// this.set_active_border(document.getElementsByClassName('image-content')[0]);
-			}
+			if(el.innerText.length == 0) this.has_caption = false;
 		},
-		remove_cell() {
+		remove_cell(event) {
+			console.log('remove_cell');
 			if(this.index > -1) {
 				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
 				var remove_img = this.cell.tag == 'img' && (this.trim(this.cell.caption).length == 0 || this.image_active);
@@ -211,7 +191,8 @@ export default {
 
 				if(remove_p || remove_img || remove_hr) {
 					// remove focus from all elements else will also accidentally delete other content
-					document.activeElement.blur();
+					// document.activeElement.blur();
+					event.preventDefault();
 
 					this.$emit('remove', this.index);
 				}
@@ -264,13 +245,8 @@ export default {
 			var el = event.target;
 
 			if(el.tagName == 'IMG') {
-				if(el.style.border == '') {
-					this.set_active_border(el);
-				}
-				else {
-					el.style.border = '';
-					this.image_active = false;
-				}
+				if(el.style.border == '') this.activate_border();
+				else this.deactivate_border();
 				
 				if(!this.has_caption) {
 					this.has_caption = true;
@@ -279,10 +255,6 @@ export default {
 			}
 
 			this.$emit('active_index', this.index);
-		},
-		set_active_border(el) {
-			el.style.border = "thin solid #460360";
-			this.image_active = true;
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
@@ -312,6 +284,7 @@ export default {
 		switch_tag(tag, event) {
 			this.$emit('active_index', this.index);
 			this.$emit('tag', {index: this.index, tag: tag});
+			this.$emit('focus');
 
 			this.cell.html = '';
 			this.cell.name = '';
@@ -320,7 +293,7 @@ export default {
 			this.cell.text = '';
 			this.cell.last_modified = new Date();
 			this.save();
-			this.is_empty = true;
+			this.is_empty = tag != 'hr';
 		},
 		trim(str, all=false) {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");

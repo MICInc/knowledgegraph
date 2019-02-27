@@ -8,6 +8,7 @@
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
 				<div v-for="c in content.content">
+					<hr v-if="c.tag == 'hr'">
 					<p v-if="c.tag == 'p'" v-html="c.html"></p>
 					<figure v-if="c.tag == 'img'">
 						<img :src="c.src">
