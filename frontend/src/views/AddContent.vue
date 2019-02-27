@@ -1,10 +1,11 @@
 <template>
-	<div class="add-article main" v-on:keydown="prevent_default($event)">
+	<div class="main" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
 		<div class="container">
-			<button v-on:click.prevent="publish()">Publish</button>
-			<span class="save-status">{{ save_status }}</span>
-			<br>
+			<div id="publish">
+				<button v-on:click.prevent="publish()">Publish</button>
+				<span id="status" class="save-status">{{ save_status }}</span>
+			</div>
 			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()">
 			<br>
 			<form>
@@ -182,8 +183,21 @@ export default {
 	flex-direction: column;
 }
 
-.preview {
-	width: 50%;
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#publish {
+	width: 600px;
+	display: inline-block;
+	flex-direction: column;
+}
+
+#publish button {
+	width: 10%;
+	height: 20px;
 }
 
 form {
@@ -211,27 +225,6 @@ input {
 	max-width: calc(600px - 10px);
 }
 
-ul {
-  list-style-type: none;
-}
-
-#tags {
-	display: flex;
-	flex-direction: column;
-}
-
-#title {
-	font-size: 2em;
-}
-
-.upload * {
-	font-size: 0.7em;
-}
-
-.meta-info {
-	font-size: .85em;
-}
-
 .save-status {
 	font-size: 0.8em;
 }
@@ -244,6 +237,5 @@ ul {
 	outline: none;
 	height: 1em;
 }
-
 
 </style>
