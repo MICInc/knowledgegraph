@@ -20,19 +20,13 @@ router.post('/', function(req, res, next) {
 			var index = req.body.data.update_cell;
 
 			if(data.publish) article['hashtag'] = fc.update_hashtags(article['hashtag'], data['hashtag']);
-			console.log('hashtag');
-			console.log(article['hashtag']);
 
 			// update cell content
 			if(data['content'] != undefined) {
-				if(index < article['content'].length) {
-					// update existing cell
-					article['content'][index] = data['content'];
-				}
-				else {
-					// add cell
-					article['content'].push(data['content']);
-				}
+				// update existing cell else add cell
+				if(index < article['content'].length) article['content'][index] = data['content'];
+				else article['content'].push(data['content']);
+
 				data['content'] = article['content'];
 			}
 
@@ -42,12 +36,8 @@ router.post('/', function(req, res, next) {
 			delete updated._id;
 
 			db.Content.updateOne(query, updated, function(err) {
-				if(err) {
-					console.log(err);
-				}
-				else {
-					res.send({ id: data._id.toString(), url: data.url });
-				}
+				if(err) console.log(err);
+				else res.send({ id: data._id.toString(), url: data.url });
 			});
 		}
 		else {
@@ -56,9 +46,7 @@ router.post('/', function(req, res, next) {
 			var article = new db.Content(data);
 
 			article.collection.dropIndexes(function(err, results) {
-				if(err) {
-					console.log('content.js: '+err);
-				}
+				if(err) console.log('content.js: '+err);
 			});
 
 			article.save()
@@ -86,25 +74,17 @@ router.get('/', function(req, res) {
 		var query = { url: req.query.url };
 
 		db.Content.find(query, function(err, results) {
-			console.log(results);
-			if(results.length > 0 && results[0].published) {
-				res.send(results);
-			}
-			else {
-				res.status(404).send('Article not found');
-			}
+			if(results.length > 0 && results[0].published) res.send(results);
+			else res.status(404).send('Article not found');
 		});
 	}
 	else if (req.query.id == -1) {
 		var query = {};
 
 		db.Content.find(query, function(err, results) {
-			if(err) {
-				console.log(err);
-			}
+			if(err) console.log(err);
 
 			var shuff = utils.shuffle(results);
-			console.log(shuff);
 			res.send(shuff);
 		});
 	} 
@@ -124,9 +104,7 @@ router.post('/remove', function(req, res) {
 	db.Content.find(query, function (err, results) {
 		var content = results[0]['content'];
 		
-		if(data.index < content.length) {
-			content.splice(data.index, 1);
-		}
+		if(data.index < content.length) content.splice(data.index, 1);
 
 		results[0]['content'] = content;
 		
@@ -136,12 +114,8 @@ router.post('/remove', function(req, res) {
 		delete updated._id;
 
 		db.Content.updateOne(query, updated, function(err) {
-			if(err) {
-				console.log(err);
-			}
-			else {
-				res.status(200).send('removed cell '+data.index);
-			}
+			if(err) console.log(err);
+			else res.status(200).send('removed cell '+data.index);
 		});
 	});
 });

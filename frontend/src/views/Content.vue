@@ -29,10 +29,12 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import ContentService from '@/services/ContentService'
+import SearchService from '@/services/SearchService'
 import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
 import Buffer from 'safe-buffer'
 import FS from 'fs'
+import router from '@/router'
 
 export default {
 	name: 'content',
@@ -67,6 +69,9 @@ export default {
 		},
 		check_content() {
 			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
+		},
+		search(term) {
+			router.push({path: 'search', query: {term: term} })
 		}
 	}
 }
