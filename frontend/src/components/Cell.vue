@@ -5,8 +5,8 @@
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 		</div>
-		<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
-			<img class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
+		<figure id="figure-content" v-if="'img' == cell.tag" v-on:click="set_active($event)">
+			<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
 			<figcaption class="caption" 
 						v-show="has_caption" 
 						v-on:keyup="caption($event)" 
@@ -55,6 +55,13 @@ export default {
 		}
 	},
 	methods: {
+		activate_border() {
+			var fig_ref = this.$refs['image-content'];
+			if(fig_ref != undefined) {
+				fig_ref.style.border = "thin solid #460360";
+				this.image_active = true;
+			}
+		},
 		add_image(event) {
 			var el = event.target;
 			this.cell.tag = 'img';
@@ -126,6 +133,13 @@ export default {
 			if(collapse && sel.anchorNode != undefined) sel.collapseToEnd();
 
 			return pos;
+		},
+		deactivate_border() {
+			var fig_ref = this.$refs['image-content'];
+			if(fig_ref != undefined) {
+				fig_ref.style.border = '';
+				this.image_active = false;
+			}
 		},
 		focus_next(event) {
 			event.preventDefault();
@@ -231,13 +245,8 @@ export default {
 			var el = event.target;
 
 			if(el.tagName == 'IMG') {
-				if(el.style.border == '') {
-					this.set_active_border(el);
-				}
-				else {
-					el.style.border = '';
-					this.image_active = false;
-				}
+				if(el.style.border == '') this.activate_border();
+				else this.deactivate_border();
 				
 				if(!this.has_caption) {
 					this.has_caption = true;
@@ -246,10 +255,6 @@ export default {
 			}
 
 			this.$emit('active_index', this.index);
-		},
-		set_active_border(el) {
-			el.style.border = "thin solid #460360";
-			this.image_active = true;
 		},
 		set_end_contenteditable(element) {
 			// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity

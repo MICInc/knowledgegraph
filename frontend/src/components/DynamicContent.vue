@@ -45,8 +45,10 @@ export default {
 	},
 	methods: {
 		add_content(e=null) {
-			console.log('add_content');
 			if(e != undefined) e.preventDefault();
+
+			var comp = this.$refs['content-'+this.active_index];
+			if(comp != undefined) comp[0].deactivate_border();
 
 			this.active_index += 1;
 			var cell_id = Math.random();
@@ -60,8 +62,7 @@ export default {
 
 			var tag = this.cells[this.active_index].tag;
 			if(tag == 'p') this.focus_eol();
-			if(tag == 'img' && comp != undefined) comp[0].set_active_border(comp[0].$el.children[1]);
-			// console.log(comp[0].$el.children[1])
+			if(tag == 'img' && comp != undefined) comp[0].activate_border();
 		},
 		focus_eol(e=null) {
 			if(e != undefined && e.which == 9) this.active_index += 1;
