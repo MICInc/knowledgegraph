@@ -21,9 +21,13 @@ router.post('/', function(req, res, next) {
 
 			if(data.publish) article['hashtag'] = fc.update_hashtags(article['hashtag'], data['hashtag']);
 
+			var is_null = data['content'] == null;
+			var is_obj = data['content'].constructor === Object;
+			var has_obj = Object.keys(data['content']).length > 0;
+
 			// update cell content
-			if(data['content'] != undefined) {
-				// update existing cell else add cell
+			if(!is_null && is_obj && has_obj) {
+				// update existing cell else add new cell
 				if(index < article['content'].length) article['content'][index] = data['content'];
 				else article['content'].push(data['content']);
 

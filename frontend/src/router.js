@@ -208,6 +208,11 @@ export default new Router({
 					})
 				}
 			}
+		},
+		{
+			path: '/test',
+			name: 'test',
+			component: () => import('./views/Test.vue')
 		}
 	]
 })

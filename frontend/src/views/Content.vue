@@ -1,9 +1,8 @@
 <template>
 	<div class="main">
 		<PageNav></PageNav>
-		<div class="container" v-if="check_content()">
+<!-- 		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
-			<!-- <a class="edit" v-bind:href="'/content/'+content.title.toLowerCase()+'/edit'">EDIT</a> -->
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
@@ -22,59 +21,50 @@
 			</div>
 			<Footer></Footer>
 		</div>
-		<NotFoundMsg v-else></NotFoundMsg>
+		<NotFoundMsg v-else></NotFoundMsg> -->
 	</div>
 </template>
 
 <script>
-import PageNav from '@/components/PageNav.vue'
-import ContentService from '@/services/ContentService'
-import SearchService from '@/services/SearchService'
-import Footer from '@/components/Footer'
-import NotFoundMsg from '@/components/NotFoundMsg'
-import Buffer from 'safe-buffer'
-import FS from 'fs'
-import router from '@/router'
+import PageNav from '@/components/PageNav'
+// import ContentService from '@/services/ContentService'
+// import Footer from '@/components/Footer'
+// import NotFoundMsg from '@/components/NotFoundMsg'
 
 export default {
 	name: 'content',
-	beforeMount() {
-		this.get_content().then(data => {
-			this.content_id = data._id;
-			this.content = data;
-			console.log(data);
-		});
-	},
+	// beforeMount() {
+	// 	this.get_content().then(data => {
+	// 		this.content_id = data._id;
+	// 		this.content = data;
+	// 	});
+	// },
 	components: {
 		PageNav,
-		Footer,
-		NotFoundMsg
+		// Footer,
+		// NotFoundMsg
 	},
 	data () {
 		return {
 			content_id: '',
-			url: this.$route.params.id,
-			content: {},
-			edit_url: ''
+			// url: this.$route.params.id,
+			content: {}
 		}
 	},
-	methods: {
-		async get_content() {
-			return await ContentService.getContent({ params: { url: this.url } })
-			.then(function(data) {
-				return data.data[0];
-			})
-			.catch(function(error) {
-				console.log('Page not found');
-			});
-		},
-		check_content() {
-			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
-		},
-		search(term) {
-			router.push({path: 'search', query: {term: term} })
-		}
-	}
+	// methods: {
+	// 	async get_content() {
+	// 		return await ContentService.getContent({ params: { url: this.url } })
+	// 		.then(function(data) {
+	// 			return data.data[0];
+	// 		})
+	// 		.catch(function(error) {
+	// 			console.log('Page not found');
+	// 		});
+	// 	},
+	// 	check_content() {
+	// 		return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
+	// 	}
+	// }
 }
 </script>
 
