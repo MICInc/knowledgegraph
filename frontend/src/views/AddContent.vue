@@ -197,7 +197,6 @@ export default {
 }
 
 #publish button {
-	width: 10%;
 	height: 20px;
 }
 
