@@ -77,7 +77,6 @@ export default {
 		remove(event) {
 			// call remove_cell() in child component
 			var cell = this.$refs['content-'+this.active_index];
-			console.log(content);
 			if(cell != null) cell[0].remove_cell();
 		},
 		remove_cell(index) {

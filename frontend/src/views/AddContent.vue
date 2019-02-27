@@ -43,7 +43,6 @@ export default {
 				cell: undefined,
 				citations: '',
 				content: [],
-				hashtags: [],
 				last_modified: undefined,
 				prereq: '',
 				publish: false,

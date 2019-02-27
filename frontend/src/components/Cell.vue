@@ -21,8 +21,7 @@
 		<p id="p-content"
 		   v-if="'p' == cell.tag" 
 		   class="content" 
-		   ref="p-content" 
-		   v-on:keydown.delete="check_content($event)"
+		   ref="p-content"
 		   v-on:keyup="input($event)" 
 		   @mousedown="set_active($event)" 
 		   contenteditable>
@@ -41,7 +40,6 @@ export default {
 				date_created: new Date(),
 				last_modified: new Date(),
 				caption: '',
-				hashtags: [],
 				html: '',
 				name: '',
 				src: '',
@@ -104,28 +102,6 @@ export default {
 			var el = event.target;
 			this.cell.caption = el.innerText;
 		},
-		check_content(event) {
-			var sel = document.getSelection();
-			var sel_string = sel.toString();
-			var sel_length = sel_string.length;
-
-			// user highlighted text and the last char is a hashmark
-			if(sel_string[sel_length-1] == '#') {
-				sel.deleteFromDocument();
-				this.remove_tag(event);
-			}
-			else if(sel_length == 0) {
-				//selected nothing, so backspacing one character and check if hashmark
-				var pos = this.cursor_position();
-
-				// if the cursor position is not at the very beginning
-				// and the character you're about to delete is a hashmark
-				if(pos > 0 && event.target.innerText[pos-1] == '#') {
-					this.remove_tag(event, true);
-				}
-			}
-			// else selected substring without hashmark at the end so just delete normally
-		},
 		cursor_position(collapse=true) {
 			var sel = document.getSelection();
 			sel.modify("extend", "backward", "paragraphboundary");
@@ -183,7 +159,6 @@ export default {
 			if(el.innerText.length == 0) this.has_caption = false;
 		},
 		remove_cell(event) {
-			console.log('remove_cell');
 			if(this.index > -1) {
 				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
 				var remove_img = this.cell.tag == 'img' && (this.trim(this.cell.caption).length == 0 || this.image_active);
@@ -195,35 +170,6 @@ export default {
 					event.preventDefault();
 
 					this.$emit('remove', this.index);
-				}
-			}
-		},
-		remove_tag(event) {
-			var target = '';
-			var el = event.target;
-			var innerText = el.innerText;
-
-			for(var i = this.cursor_position(); i < innerText.length; i++) {
-				if(/\s$/.test(innerText[i])) break;
-				target += innerText[i];
-			}
-
-			// hashtags can never contain spaces, so trim to remove anomalous whitespaces
-			target = this.trim(target, true);
-
-			for(var i = 0; i < el.children.length; i++) {
-				var child = el.children.item(i);
-
-				if(child.nodeName == 'B') {
-					var word = this.trim(child.innerText.replace('#', ''), true);
-
-					if(word == target) {
-						event.preventDefault();
-						var new_child = document.createTextNode(word);
-						el.replaceChild(new_child, child);
-
-						break;
-					}
 				}
 			}
 		},
@@ -276,10 +222,10 @@ export default {
 			}
 		},
 		shift_enter(event) {
-			console.log('shift');
+			// console.log('shift');
 		},
 		show_caption(event) {
-			console.log(event)
+			// console.log(event)
 		},
 		switch_tag(tag, event) {
 			this.$emit('active_index', this.index);

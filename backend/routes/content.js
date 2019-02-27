@@ -19,6 +19,10 @@ router.post('/', function(req, res, next) {
 			var article = results[0];
 			var index = req.body.data.update_cell;
 
+			if(data.publish) article['hashtag'] = fc.update_hashtags(article['hashtag'], data['hashtag']);
+			console.log('hashtag');
+			console.log(article['hashtag']);
+
 			// update cell content
 			if(data['content'] != undefined) {
 				if(index < article['content'].length) {

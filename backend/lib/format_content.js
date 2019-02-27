@@ -10,8 +10,7 @@ module.exports = {
 		var user = req.body.user;
 		var title = data.title;
 		// only optimize and create hashtags if published
-		// data.cell = data.publish ? module.exports.compress_html(data.cell) : data.cell;
-		data.cell = data.cell != undefined ? module.exports.compress_html(data.cell) : {}
+		data.cell = data.publish && data.cell != undefined ? module.exports.format_hashtags(data.cell) : {};
 
 		/*
 			authors - string combination of session info and coauthors
@@ -26,6 +25,7 @@ module.exports = {
 			"date_created": data.date_created,
 			"description": "",
 			"first_name": user.first_name,
+			"hashtag": data.cell.hashtag,
 			"last_modified": data.last_modified,
 			"last_name": user.last_name,
 			"num_citations": 0,
@@ -43,26 +43,33 @@ module.exports = {
 		};
 	},
 	compress_html: function(cell) {
-		return module.exports.extract_hashtags(cell);
+		return cell;
 	},
 	escape(str) {
 		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 	},
-	extract_hashtags: function(cell) {
+	update_hashtags: function(src, target) {
+		for(var i = 0; i < target.length; i++) src.push(target[i]);
+		return  module.exports.unique(src);
+	},
+	format_hashtags: function(cell) {
 
 		if(cell['html'] != undefined) {
-			var hashtag = cell['html'].match(/(?:^|[ ])#([a-zA-Z]+)/gm);
+			cell['hashtag'] = module.exports.unique(cell['html'].match(/(?:^|[ ])#([a-zA-Z]+)/gm));
 
-			for(var i in hashtag) {
-				var tag = module.exports.escape(hashtag[i].trim());
+			for(var i in cell['hashtag']) {
+				var tag = module.exports.escape(cell['hashtag'][i].trim());
 				var atag = '<a class=\"hashtag\" style=\"color:black;\" href=/search/'+tag+'>'+tag+'</a>';
 				cell['html'] = cell['html'].replace((new RegExp(tag, 'g')), atag);
 			}
 		}
 	
-		return cell
+		return cell;
 	},
 	generate_url: function(title) {
 		return title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : utils.uniqueID();
+	},
+	unique(array) {
+		return [...new Set(array)];
 	}
 }
