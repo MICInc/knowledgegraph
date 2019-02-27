@@ -9,7 +9,7 @@
 		</div>
 		<Cell v-for="(value, index) in content" 
 			  :id="'content-container-'+index" 
-			  :tabindex="active_index" 
+			  :tabindex="index" 
 			  :key="JSON.stringify(value.id)" 
 			  :ref="'content-'+index" 
 			  :content="content" 
@@ -17,7 +17,7 @@
 			   v-on:active_index="set_index($event)" 
 			   v-on:save="save($event)" 
 			   v-on:tag="switch_tag($event)" 
-			   v-on:remove="remove_cell($event)" 
+			   v-on:remove="remove_cell($event)"
 			   v-on:focus="focus()">
 		</Cell>
 	</div>
@@ -45,15 +45,21 @@ export default {
 	},
 	methods: {
 		add_content(e=null) {
+			console.log('add_content');
 			if(e != undefined) e.preventDefault();
 
 			this.active_index += 1;
 			var cell_id = Math.random();
 			this.content.splice(this.active_index, 0, { id: cell_id });
 			this.cells.splice(this.active_index, 0, { id: cell_id, tag: 'p' });
-			this.focus();
+			this.focus_eol();
 		},
-		focus(e=null) {
+		focus() {
+			var comp = this.$refs['content-'+this.active_index];
+			if(comp != undefined) comp[0].$el.focus();
+			if(this.cells[this.active_index].tag == 'p') this.focus_eol();
+		},
+		focus_eol(e=null) {
 			if(e != undefined && e.which == 9) this.active_index += 1;
 
 			if(this.active_index >= 0 && this.active_index < this.content.length) {
@@ -66,6 +72,7 @@ export default {
 		remove(event) {
 			// call remove_cell() in child component
 			var cell = this.$refs['content-'+this.active_index];
+			console.log(content);
 			if(cell != null) cell[0].remove_cell();
 		},
 		remove_cell(index) {
@@ -97,9 +104,7 @@ export default {
 			}
 		},
 		set_index(new_index) {
-			this.active_index = new_index;
-			console.log(this.active_index);
-			console.log(document.activeElement);
+			this.active_index = (new_index < this.cells.length) ? new_index : this.active_index;
 		},
 		switch_tag(cell) {
 			this.cells[cell.index].tag = cell.tag;

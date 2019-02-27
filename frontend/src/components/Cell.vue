@@ -60,6 +60,7 @@ export default {
 			this.cell.tag = 'img';
 			this.$emit('tag', {index: this.index, tag: 'img', 'focus': false});
 			this.$emit('active_index', this.index);
+			this.$emit('focus');
 
 			if(el.files && el.files[0]) {
 				var reader = new FileReader();
@@ -278,6 +279,7 @@ export default {
 		switch_tag(tag, event) {
 			this.$emit('active_index', this.index);
 			this.$emit('tag', {index: this.index, tag: tag});
+			this.$emit('focus');
 
 			this.cell.html = '';
 			this.cell.name = '';
