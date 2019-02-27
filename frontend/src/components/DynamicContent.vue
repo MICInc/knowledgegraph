@@ -57,7 +57,11 @@ export default {
 		focus() {
 			var comp = this.$refs['content-'+this.active_index];
 			if(comp != undefined) comp[0].$el.focus();
-			if(this.cells[this.active_index].tag == 'p') this.focus_eol();
+
+			var tag = this.cells[this.active_index].tag;
+			if(tag == 'p') this.focus_eol();
+			if(tag == 'img' && comp != undefined) comp[0].set_active_border(comp[0].$el.children[1]);
+			// console.log(comp[0].$el.children[1])
 		},
 		focus_eol(e=null) {
 			if(e != undefined && e.which == 9) this.active_index += 1;
