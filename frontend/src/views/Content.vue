@@ -1,7 +1,7 @@
 <template>
-	<div class="content main">
+	<div class="main">
 		<PageNav></PageNav>
-		<div v-if="this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0" class="container">
+		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
 			<!-- <a class="edit" v-bind:href="'/content/'+content.title.toLowerCase()+'/edit'">EDIT</a> -->
 			<div id="article-info">
@@ -64,12 +64,27 @@ export default {
 			.catch(function(error) {
 				console.log('Page not found');
 			});
+		},
+		check_content() {
+			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
 		}
 	}
 }
 </script>
 
 <style scoped>
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	width: 600px;
+	display: inline-block;
+	flex-direction: column;
+	align-items: center;
+}
+
 #authors {
 	font-size: 0.85em;
 	margin-bottom: 0px;

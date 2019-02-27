@@ -184,13 +184,14 @@ export default {
 }
 
 .container {
-	display: flex;
+	width: 600px;
+	display: inline-block;
 	flex-direction: column;
 	align-items: center;
 }
 
 #publish {
-	width: 600px;
+	width: 100%;
 	display: inline-block;
 	flex-direction: column;
 }

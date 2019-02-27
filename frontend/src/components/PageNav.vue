@@ -33,28 +33,25 @@ import router from '@/router'
 
 export default {
 	name: 'PageNav',
-
-	data () {
-		return {
-			query: ''
-		}
-	},
-
-	computed: {
+	created: function() {  
+ 		document.title = 'Machine Intelligence Community'
+ 	},
+ 	computed: {
 		isLoggedIn () {
 			return this.$store.state.isLoggedIn
 		}
 	},
-
+	data () {
+		return {
+			minimal: true,
+			query: ''
+		}
+	},
 	methods: {
 		search() {
 			router.push({path: 'search', query: {term: this.query} })
 		}
-	},
-
-	created: function() {  
- 		document.title = 'Machine Intelligence Community'
- 	}
+	}
 }
 </script>
 
