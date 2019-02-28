@@ -3,12 +3,12 @@ module.exports = {
 		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 	},
 	filter_query: function(query) {
-		return query;
+		return module.exports.escape(query);
 	},
 	filter_results: function(results) {
-		return module.exports.escape(results);
+		return results;
 	},
-	format: function(query) {
+	format_query: function(query) {
 		var query = module.exports.filter_query(query);
 		query = { $regex: new RegExp("^" + query.toLowerCase(), "i") };
 

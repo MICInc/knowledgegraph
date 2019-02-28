@@ -7,8 +7,9 @@ router.get('/', function(req, res, next){
 	// Need user id to save search history
 	// var date = new Date();
 	var term = req.query.term;
+
 	if(term != undefined) {
-		db.Content.find(sh.format(req.query.term), function (err, results) {
+		db.Content.find(sh.format_query(req.query.term), function (err, results) {
 			res.send(sh.filter_results(results));
 		});
 	}

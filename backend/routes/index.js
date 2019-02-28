@@ -49,8 +49,8 @@ router.post('/signup', function(req, res) {
 				token: token,
 				userInfo: {
 					id: user._id,
-					firstName: user.first_name,
-					lastName: user.last_name,
+					first_name: user.first_name,
+					last_name: user.last_name,
 				}
 			});
 
@@ -77,8 +77,8 @@ router.post('/login', function(req, res, next) {
 				token: token,
 				userInfo: {
 					id: user._id,
-					firstName: user.first_name,
-					lastName: user.last_name
+					first_name: user.first_name,
+					last_name: user.last_name
 				}
 			});
 

@@ -10,8 +10,8 @@
 					<hr v-if="c.tag == 'hr'">
 					<p v-if="c.tag == 'p'" v-html="c.html"></p>
 					<figure v-if="c.tag == 'img'">
-						<img class="image-content" :src="c.src">
-						<figcaption class="caption">{{ c.caption }}</figcaption>
+						<img :src="c.src">
+						<figcaption>{{ c.caption }}</figcaption>
 					</figure>
 				</div>
 			</div>
@@ -32,12 +32,11 @@ import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
 
 export default {
-	name: 'Content',
+	name: 'Test',
 	beforeMount() {
 		this.get_content().then(data => {
 			this.content_id = data._id;
 			this.content = data;
-			console.log(this.content);
 		});
 	},
 	components: {
@@ -80,21 +79,6 @@ export default {
 	display: inline-block;
 	flex-direction: column;
 	align-items: center;
-}
-
-.caption {
-	text-align: center;
-	font-size: 0.8em;
-	color: #606060;
-}
-
-.image-content {
-	display: block;
-	margin: auto;
-	max-width: 100%;
-	max-height: 100%;
-	vertical-align: middle; 
-	border: 1px solid transparent;
 }
 
 #authors {

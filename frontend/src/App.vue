@@ -33,10 +33,12 @@ button {
 	border: none;
 	box-shadow: none;
 	outline: none;
+	background-color: transparent;
 }
 
 button:hover {
 	cursor: pointer;
+	color: #56277a;
 }
 
 textarea, input {

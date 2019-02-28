@@ -1,11 +1,12 @@
 <template>
-	<div class="add-article main" v-on:keydown="prevent_default($event)">
+	<div class="main" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
 		<div class="container">
-			<button v-on:click.prevent="publish()">Publish</button>
-			<span class="save-status">{{ save_status }}</span>
-			<br>
-			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()">
+			<div id="publish">
+				<button v-on:click.prevent="publish()">Publish</button>
+				<span id="status" class="save-status">{{ save_status }}</span>
+			</div>
+			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()" autofocus>
 			<br>
 			<form>
 				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)" :collab="data.content"></DynamicContent>
@@ -32,9 +33,8 @@ export default {
 	},
 
 	created() {
-		this.save()
+		this.save();
 	},
-
 	data() {
 		return {
 			content_id: '',
@@ -43,7 +43,6 @@ export default {
 				cell: undefined,
 				citations: '',
 				content: [],
-				hashtags: [],
 				last_modified: undefined,
 				prereq: '',
 				publish: false,
@@ -54,25 +53,9 @@ export default {
 			tags: [],
 			upload: [],
 			url: '',
+			user: this.$store.state.userInfo
 		}
 	},
-
-	computed: {
-		user() {
-			if (this.$store.state.isLoggedIn) {
-				return {
-					first_name: this.$store.state.userInfo.firstName,
-					last_name: this.$store.state.userInfo.lastName,
-				}
-			} else {
-				return {
-					first_name: "Justin",
-					last_name: "Chen"
-				}
-			}
-		}
-	},
-
 	methods: {
 		prevent_default(event) {
 			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
@@ -183,12 +166,24 @@ export default {
 	flex-direction: column;
 }
 
-.preview {
-	width: 50%;
+.container {
+	width: 600px;
+	display: inline-block;
+	flex-direction: column;
+	align-items: center;
+}
+
+#publish {
+	width: 100%;
+	display: inline-block;
+	flex-direction: column;
+}
+
+#publish button {
+	height: 20px;
 }
 
 form {
-	width: 600px;
 	display: flex;
 	flex-direction: column;
 }
@@ -212,27 +207,6 @@ input {
 	max-width: calc(600px - 10px);
 }
 
-ul {
-  list-style-type: none;
-}
-
-#tags {
-	display: flex;
-	flex-direction: column;
-}
-
-#title {
-	font-size: 2em;
-}
-
-.upload * {
-	font-size: 0.7em;
-}
-
-.meta-info {
-	font-size: .85em;
-}
-
 .save-status {
 	font-size: 0.8em;
 }
@@ -245,6 +219,5 @@ ul {
 	outline: none;
 	height: 1em;
 }
-
 
 </style>

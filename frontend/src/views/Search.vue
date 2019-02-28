@@ -25,6 +25,7 @@ export default {
 	},
 	created() {
 		this.query.term = this.$route.query.term;
+		console.log(this.query.term);
 		this.search().then(data => {
 			console.log(data);
 			this.results = data;
