@@ -64,6 +64,8 @@ export default new Router({
 			name: 'content',
 			component: () => import('./views/Content.vue'),
 			beforeEnter: (to, from, next) => {
+				console.log(to);
+				console.log(from);
 				if (store.state.isLoggedIn) {
 					next()
 				} else {
@@ -72,6 +74,10 @@ export default new Router({
 						params: { error: 'You need to log in to access this route.' },
 					})
 				}
+			},
+			beforeRouteUpdate: (to, from, next) => {
+				console.log(to);
+				console.log(from);
 			}
 		},
 		// {
@@ -208,11 +214,6 @@ export default new Router({
 					})
 				}
 			}
-		},
-		{
-			path: '/test',
-			name: 'test',
-			component: () => import('./views/Test.vue')
 		}
 	]
 })

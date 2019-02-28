@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
 		<PageNav></PageNav>
-<!-- 		<div class="container" v-if="check_content()">
+		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
@@ -21,50 +21,50 @@
 			</div>
 			<Footer></Footer>
 		</div>
-		<NotFoundMsg v-else></NotFoundMsg> -->
+		<NotFoundMsg v-else></NotFoundMsg>
 	</div>
 </template>
 
 <script>
 import PageNav from '@/components/PageNav'
-// import ContentService from '@/services/ContentService'
-// import Footer from '@/components/Footer'
-// import NotFoundMsg from '@/components/NotFoundMsg'
+import ContentService from '@/services/ContentService'
+import Footer from '@/components/Footer'
+import NotFoundMsg from '@/components/NotFoundMsg'
 
 export default {
-	name: 'content',
-	// beforeMount() {
-	// 	this.get_content().then(data => {
-	// 		this.content_id = data._id;
-	// 		this.content = data;
-	// 	});
-	// },
+	name: 'Content',
+	beforeMount() {
+		this.get_content().then(data => {
+			this.content_id = data._id;
+			this.content = data;
+		});
+	},
 	components: {
 		PageNav,
-		// Footer,
-		// NotFoundMsg
+		Footer,
+		NotFoundMsg
 	},
 	data () {
 		return {
 			content_id: '',
-			// url: this.$route.params.id,
+			url: this.$route.params.id,
 			content: {}
 		}
 	},
-	// methods: {
-	// 	async get_content() {
-	// 		return await ContentService.getContent({ params: { url: this.url } })
-	// 		.then(function(data) {
-	// 			return data.data[0];
-	// 		})
-	// 		.catch(function(error) {
-	// 			console.log('Page not found');
-	// 		});
-	// 	},
-	// 	check_content() {
-	// 		return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
-	// 	}
-	// }
+	methods: {
+		async get_content() {
+			return await ContentService.getContent({ params: { url: this.url } })
+			.then(function(data) {
+				return data.data[0];
+			})
+			.catch(function(error) {
+				console.log('Page not found');
+			});
+		},
+		check_content() {
+			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
+		}
+	}
 }
 </script>
 

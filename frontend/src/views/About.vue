@@ -34,7 +34,7 @@ export default {
 				},
 				{
 					name: 'Ajay Jain',
-					position: 'Founder and Director',
+					position: 'Director',
 					background: 'Ajay obtained a bachelor’s in science degree from MIT in two and a half years. During his time at MIT, he did research computer vision research at Facebook and Uber ATG in Toronto, and was president of the MIT Machine Intelligence Community.'
 				},
 				{
