@@ -3,6 +3,7 @@
 		<PageNav></PageNav>
 		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
+			<Vote :content_id="content_id" :user_id="user_id"></Vote>
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
@@ -30,6 +31,7 @@ import PageNav from '@/components/PageNav'
 import ContentService from '@/services/ContentService'
 import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
+import Vote from '@/components/Vote'
 
 export default {
 	name: 'Content',
@@ -37,13 +39,15 @@ export default {
 		this.get_content().then(data => {
 			this.content_id = data._id;
 			this.content = data;
-			console.log(this.content);
 		});
+		
+		this.user_id = this.$store.state.userInfo.id;
 	},
 	components: {
 		PageNav,
 		Footer,
-		NotFoundMsg
+		NotFoundMsg,
+		Vote
 	},
 	data () {
 		return {

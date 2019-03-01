@@ -30,6 +30,7 @@ module.exports = {
 			"last_name": user.last_name,
 			"num_citations": 0,
 			"num_comments": 0,
+			"num_dislikes": 0,
 			"num_likes": 0,
 			"num_saves": 0,
 			"num_shares": 0,
@@ -71,5 +72,8 @@ module.exports = {
 	},
 	unique(array) {
 		return [...new Set(array)];
+	},
+	verify_vote(vote) {
+		return vote;
 	}
 }

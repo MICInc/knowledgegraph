@@ -53,6 +53,10 @@ var content_schema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
+	num_dislikes: {
+		type: Number,
+		required: true
+	},
 	num_likes: {
 		type: Number,
 		required: true

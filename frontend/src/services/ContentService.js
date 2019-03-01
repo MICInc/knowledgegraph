@@ -17,5 +17,11 @@ export default {
 		},
 		removeContent(index) {
 			return Api().post('/content/remove', index);
+		},
+		upvote(data) {
+			return Api().post('/content/upvote', data);
+		},
+		downvote(data) {
+			return Api().post('/content/downvote', data);
 		}
 }

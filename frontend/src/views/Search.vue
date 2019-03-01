@@ -5,9 +5,7 @@
 			<span id="result-count">results ({{results.length}})</span><br>
 			<ul>
 				<li v-for='item in results'>
-					<div class="result">
-						<router-link class="result-header" v-bind:to="'/content/'+item.url">{{ item.title }}</router-link>
-					</div>
+					<ArticleCell :item="item"></ArticleCell>
 				</li>
 			</ul>
 		</div>
@@ -17,11 +15,13 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import SearchService from '@/services/SearchService'
+import ArticleCell from '@/components/ArticleCell'
 
 export default {
 	name: 'search',
 	components: {
 		PageNav,
+		ArticleCell
 	},
 	created() {
 		this.query.term = this.$route.query.term;
@@ -73,11 +73,6 @@ export default {
 	width: 50%;
 	height: 80px;
 	margin: 10px 0px;
-}
-
-.result-header {
-	font-size: 1.2em;
-	font-weight: bold;
 }
 
 #result-count {

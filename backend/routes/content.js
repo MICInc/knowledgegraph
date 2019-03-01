@@ -40,7 +40,7 @@ router.post('/', function(req, res, next) {
 			delete updated._id;
 
 			db.Content.updateOne(query, updated, function(err) {
-				if(err) console.log(err);
+				if(err) console.error(err);
 				else res.send({ id: data._id.toString(), url: data.url });
 			});
 		}
@@ -59,7 +59,7 @@ router.post('/', function(req, res, next) {
 				res.send({ id: data._id.toString(), url: data.url });
 			})
 			.catch(err => {
-				console.log(err);
+				console.error(err);
 				res.status(400).send('Save error');
 			});
 		}
@@ -86,7 +86,7 @@ router.get('/', function(req, res) {
 		var query = {};
 
 		db.Content.find(query, function(err, results) {
-			if(err) console.log(err);
+			if(err) console.error(err);
 
 			var shuff = utils.shuffle(results);
 			res.send(shuff);
@@ -118,10 +118,41 @@ router.post('/remove', function(req, res) {
 		delete updated._id;
 
 		db.Content.updateOne(query, updated, function(err) {
-			if(err) console.log(err);
+			if(err) console.error(err);
 			else res.status(200).send('removed cell '+data.index);
 		});
 	});
 });
+
+router.post('/upvote', function(req, res) {
+	var vote = fc.verify_vote(req.body);
+	var article = { _id: vote.content_id };
+
+	db.Content.findOne(article, function(err, results) {
+		results.num_likes += 1;
+		var updated = (new db.Content(results)).toObject();
+
+		db.Content.updateOne(article, updated, function(err) {
+			if(err) console.error(err);
+			else res.status(200).send({ total: results.num_likes - results.num_dislikes });
+		});
+	});
+});
+
+router.post('/downvote', function(req, res) {
+	var vote = fc.verify_vote(req.body);
+	var article = { _id: vote.content_id };
+
+	db.Content.findOne(article, function(err, results) {
+		results.num_dislikes += 1;
+		var updated = (new db.Content(results)).toObject();
+
+		db.Content.updateOne(article, updated, function(err) {
+			if(err) console.error(err);
+			else res.status(200).send({ total: results.num_likes - results.num_dislikes });
+		});
+	});
+});
+
 
 module.exports = router;
