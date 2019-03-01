@@ -54,22 +54,15 @@ var user_schema = new Schema({
         required: true,
         trim: true
     },
-    library: [{
-        type: String, // content ids
-        sparse: true
-    }],
-    liked_articles: [{
-        type: String, // content ids
-        sparse: true
-    }],
-    liked_papers: [{
-        type: String, // content ids
-        sparse: true
-    }],
+    library: [{}],
     password_hash: {
         type: String,
         required: true
     },
+    publications: [{
+        type: String,
+        sparse: true
+    }],
     rank: {
         type: Number,
         required: true,

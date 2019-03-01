@@ -28,5 +28,18 @@ router.get('/', function(req, res) {
 	});
 });
 
+router.post('/library/clear', function(req, res) {
+	var user_id = { _id: req.body.user_id };
+
+	db.User.findOne(user_id, function(err, profile) {
+		profile.library = [];
+
+		db.User.updateOne(user_id, profile, function(err) {
+			if(err) console.error(err);
+			else res.status(200).send('cleared');
+		});
+	});
+});
+
 
 module.exports = router;

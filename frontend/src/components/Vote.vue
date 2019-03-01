@@ -21,7 +21,7 @@ export default {
 		async upvote() {
 			ContentService.upvote({ content_id: this.content_id, profile_id: this.user_id })
 			.then((data) => {
-				this.total = data.data.total;
+				this.total = data.data.total != undefined ? data.data.total : this.total;
 			})
 			.catch(function(err) {
 				console.log(err);
@@ -30,7 +30,7 @@ export default {
 		async downvote() {
 			ContentService.downvote({ content_id: this.content_id, profile_id: this.user_id })
 			.then((data) => {
-				this.total = data.data.total;
+				this.total = data.data.total != undefined ? data.data.total : this.total;
 			})
 			.catch(function(err) {
 				console.log(err);

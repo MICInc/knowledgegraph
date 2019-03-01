@@ -126,31 +126,45 @@ router.post('/remove', function(req, res) {
 
 router.post('/upvote', function(req, res) {
 	var vote = fc.verify_vote(req.body);
-	var content = { _id: vote.content_id };
-	var profile = { _id: vote.profile_id };
-	console.log(vote);
+	var user = { _id: vote.profile_id };
+	var content = { _id: vote.content_id, liked: true };
 
-	db.Content.findOne(content, function(err, result) {
-		result.num_likes += 1;
-		var updated = (new db.Content(result)).toObject();
+	db.User.findOne(user, function(err, profile) {
 
-		db.Content.updateOne(content, updated, function(err) {
+		var library = profile.library;
+		var index = library.indexOf(content);
+		var content_id = { _id: vote.content_id };
+
+		console.log(index);
+
+		if(index == -1) library.push(content);
+		else library[index] = content;
+
+		db.User.updateOne(user, profile, function(err) {
 			if(err) console.error(err);
-			else res.status(200).send({ total: result.num_likes - result.num_dislikes });
 		});
-	});
 
-	db.User.findOne(profile, function(err, result) {
-		console.log(vote);
-		console.log(result);
-		result.liked_articles.push(content);
+		if(index == -1) {
+			// If user liked this for the first time
+			db.Content.findOne(content_id, function(err, result) {
+				result.num_likes += 1;
+
+				db.Content.updateOne(content_id, (new db.Content(result)).toObject(), function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ total: result.num_likes - result.num_dislikes });
+				});
+			});
+		}
+		else {
+			// Only allowed to like an article once
+			res.status(200).send({ total: undefined });
+		}
 	});
 });
 
 router.post('/downvote', function(req, res) {
 	var vote = fc.verify_vote(req.body);
 	var content = { _id: vote.content_id };
-	var profile = { _id: vote.profile_id };
 
 	db.Content.findOne(content, function(err, result) {
 		result.num_dislikes += 1;
@@ -162,8 +176,7 @@ router.post('/downvote', function(req, res) {
 		});
 	});
 
-	db.User.findOne(profile, function(err, result) {
-		console.log(result);
+	db.User.findOne({ _id: vote.profile_id }, function(err, result) {
 		result.liked_articles.push(content);
 	});
 });

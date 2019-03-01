@@ -12,8 +12,7 @@ var content_schema = new mongoose.Schema({
 	citations: [{
 		type: String
 	}],
-	content:  [{
-	}],
+	content:  [{}],
 	date_created: {
 		type: Date,
 		required: true

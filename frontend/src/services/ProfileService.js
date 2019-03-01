@@ -6,6 +6,9 @@ export default {
 		getProfile(data) {
 			return Api().get('/profile', data)
 		},
+		clearLibrary(data) {
+			return Api().post('/profile/library/clear', data)
+		},
 		createProfile(data) {
 			return Api().post('/profile', data)
 		}
