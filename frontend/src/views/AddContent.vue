@@ -102,7 +102,7 @@ export default {
 		},
 		save() {
 			this.save_status = 'saving...';
-
+			
 			this.data.last_modified = new Date();
 			var article = { id: this.content_id, user: this.user, data: this.data };
 			
