@@ -25,9 +25,8 @@ export default {
 	},
 	created() {
 		this.query.term = this.$route.query.term;
-		console.log(this.query.term);
+
 		this.search().then(data => {
-			console.log(data);
 			this.results = data;
 		});
 	},
@@ -45,7 +44,6 @@ export default {
 			alert("You've submitted the form!")
 		},
 		async search() {
-			console.log(this.query.term);
 			return await SearchService.search({params: this.query})
 			.then(function(data) {
 				return data.data;

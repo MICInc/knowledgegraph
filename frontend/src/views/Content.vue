@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
-			<Vote :content_id="content_id" :user_id="user_id"></Vote>
+			<Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id"></Vote>
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
@@ -40,8 +40,6 @@ export default {
 			this.content_id = data._id;
 			this.content = data;
 		});
-		
-		this.user_id = this.$store.state.userInfo.id;
 	},
 	components: {
 		PageNav,

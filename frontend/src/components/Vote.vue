@@ -13,14 +13,14 @@ import ContentService from '@/services/ContentService'
 export default {
 	data() {
 		return {
-			total: 0
+			total: this.likes - this.dislikes,
+			user_id: this.$store.state.userInfo.id
 		}
 	},
 	methods: {
 		async upvote() {
 			ContentService.upvote({ content_id: this.content_id, profile_id: this.user_id })
 			.then((data) => {
-				console.log(data);
 				this.total = data.data.total;
 			})
 			.catch(function(err) {
@@ -37,7 +37,7 @@ export default {
 			});
 		}
 	},
-	props: ['content_id', 'user_id']
+	props: ['content_id', 'likes', 'dislikes']
 }
 </script>
 

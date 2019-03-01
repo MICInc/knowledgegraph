@@ -128,18 +128,20 @@ router.post('/upvote', function(req, res) {
 	var vote = fc.verify_vote(req.body);
 	var content = { _id: vote.content_id };
 	var profile = { _id: vote.profile_id };
+	console.log(vote);
 
 	db.Content.findOne(content, function(err, result) {
-		results.num_likes += 1;
-		var updated = (new db.Content(results)).toObject();
+		result.num_likes += 1;
+		var updated = (new db.Content(result)).toObject();
 
 		db.Content.updateOne(content, updated, function(err) {
 			if(err) console.error(err);
-			else res.status(200).send({ total: results.num_likes - results.num_dislikes });
+			else res.status(200).send({ total: result.num_likes - result.num_dislikes });
 		});
 	});
 
 	db.User.findOne(profile, function(err, result) {
+		console.log(vote);
 		console.log(result);
 		result.liked_articles.push(content);
 	});
@@ -151,12 +153,12 @@ router.post('/downvote', function(req, res) {
 	var profile = { _id: vote.profile_id };
 
 	db.Content.findOne(content, function(err, result) {
-		results.num_dislikes += 1;
-		var updated = (new db.Content(results)).toObject();
+		result.num_dislikes += 1;
+		var updated = (new db.Content(result)).toObject();
 
 		db.Content.updateOne(content, updated, function(err) {
 			if(err) console.error(err);
-			else res.status(200).send({ total: results.num_likes - results.num_dislikes });
+			else res.status(200).send({ total: result.num_likes - result.num_dislikes });
 		});
 	});
 

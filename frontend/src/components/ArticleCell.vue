@@ -2,7 +2,7 @@
 	<div class='container'>
 		<div class="result">
 			<div class="vote">
-				<Vote :content_id="content_id"></Vote>
+				<Vote :likes="item.num_likes" :dislikes="item.num_dislikes" :content_id="item._id"></Vote>
 			</div>
 			<div class="vote">
 				<router-link class="result-header" v-bind:to="'/content/'+item.url">{{ item.title }}</router-link>
@@ -20,7 +20,6 @@ export default {
 	},
 	data() {
 		return {
-			// content_id
 		}
 	},
 	props: ['item']
