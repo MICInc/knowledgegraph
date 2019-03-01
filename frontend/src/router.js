@@ -168,16 +168,16 @@ export default new Router({
 			path: '/signup',
 			name: 'signup',
 			component: () => import('./views/SignUp.vue'),
-			beforeEnter: (to, from, next) => {
-				if (store.state.isLoggedIn) {
-					next()
-				} else {
-					next({
-						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
-					})
-				}
-			}
+			// beforeEnter: (to, from, next) => {
+			// 	if (store.state.isLoggedIn) {
+			// 		next()
+			// 	} else {
+			// 		next({
+			// 			name: 'login',
+			// 			params: { error: 'You need to log in to access this route.' },
+			// 		})
+			// 	}
+			// }
 		},
 		{
 			path: '/profile/:id',

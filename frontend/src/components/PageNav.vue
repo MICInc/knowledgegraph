@@ -5,7 +5,6 @@
 				<li><router-link tag="a" to="/"><b>HOME</b></router-link></li>
 				<li><router-link tag="a" to="/conference"><b>CONFERENCE</b></router-link></li>
 				<li><router-link tag="a" to="/community"><b>COMMUNITY</b></router-link></li>
-				<li><router-link tag="a" to="/add"><b>ADD</b></router-link></li>
 				<router-view/>
 			</ul>
 		</nav>

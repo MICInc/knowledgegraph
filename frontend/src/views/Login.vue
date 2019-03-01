@@ -1,5 +1,6 @@
 <template>
 	<div class="login main">
+		<PageNav></PageNav>
 		<div class="container">
 			<form v-on:submit.prevent="handleSubmit">
 				<p>{{error}}</p>
@@ -18,11 +19,15 @@
 </template>
 
 <script>
+import PageNav from '@/components/PageNav'
 import AuthService from '@/services/AuthenticationService'
 import router from '@/router'
 
 export default {
 	name: 'login',
+	components: {
+		PageNav
+	},
 	data () {
 		return {
 			formData: {},

@@ -18,7 +18,7 @@ export default {
 	},
 	methods: {
 		async upvote() {
-			ContentService.upvote({ content_id: this.content_id, user_id: this.user_id })
+			ContentService.upvote({ content_id: this.content_id, profile_id: this.user_id })
 			.then((data) => {
 				console.log(data);
 				this.total = data.data.total;
@@ -28,7 +28,7 @@ export default {
 			});
 		},
 		async downvote() {
-			ContentService.downvote({ content_id: this.content_id, user_id: this.user_id })
+			ContentService.downvote({ content_id: this.content_id, profile_id: this.user_id })
 			.then((data) => {
 				this.total = data.data.total;
 			})
