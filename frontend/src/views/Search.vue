@@ -57,22 +57,8 @@ export default {
 
 <style scoped>
 
-#search-body{
+#search-body {
 	margin: 0px 10%;
-}
-
-.input-row {
-	display: flex;
-	align-items: center;
-}
-
-.result {
-	border-bottom: solid;
-	border-width: thin;
-	border-color: #e5e5e5;
-	width: 50%;
-	height: 80px;
-	margin: 10px 0px;
 }
 
 #result-count {

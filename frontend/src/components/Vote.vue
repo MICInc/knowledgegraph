@@ -42,7 +42,13 @@ export default {
 </script>
 
 <style>
+.container {
+	/*background-color: purple;*/
+}
+
 #votes {
+	width: 50px;
+	height: 50px;
 }
 
 #votes span {
