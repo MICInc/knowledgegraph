@@ -128,15 +128,15 @@ router.post('/remove', function(req, res) {
 router.post('/upvote', function(req, res) {
 	var ballot = fc.verify_vote(req.body);
 	var user = { _id: ballot.profile_id };
-	var content = { _id: ballot.content_id, liked: true, date: new Date() };
-	vote.vote(user, content, 1, res);
+	var content = { _id: ballot.content_id, liked: 1, date: new Date() };
+	vote.vote(user, content, res);
 });
 
 router.post('/downvote', function(req, res) {
 	var ballot = fc.verify_vote(req.body);
 	var user = { _id: ballot.profile_id };
-	var content = { _id: ballot.content_id, liked: false, date: new Date() };;
-	vote.vote(user, content, -1, res);
+	var content = { _id: ballot.content_id, liked: -1, date: new Date() };;
+	vote.vote(user, content, res);
 });
 
 

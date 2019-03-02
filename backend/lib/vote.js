@@ -1,48 +1,50 @@
 var db = require('../db/database');
 
 module.exports = {
-	vote: function(user, content, value, res) {
+	vote: function(user, content, res) {
 		db.User.findOne(user, function(err, profile) {
-			var voted = module.exports.is_valid(user, profile, content);
-			console.log(voted)
+			var library = profile.library;
+			var index = module.exports.indexOf(library, content._id);
+			var value = 0;
 
-			if(voted) {
-				var content_id = { _id: content._id };
+			// user already voted and now wants to change their vote
+			if(index > -1 && library[index].liked != 0) {
+				// undo vote else 
+				if(library[index].liked == content.liked) {
+					value = content.liked == 1 ? -1 : 1;
+					content.liked = 0;
+				}
+				else value = content.liked == 1 ? 2 : -2;
+			}
+			else value = content.liked;
 
-				// If user liked this for the first time
-				db.Content.findOne(content_id, function(err, result) {
-					result.num_likes += value;
+			// update user's library
+			if(index == -1) profile.library.push(content);
+			else profile.library[index] = content;
 
-					db.Content.updateOne(content_id, (new db.Content(result)).toObject(), function(err) {
-						if(err) console.error(err);
-						else res.status(200).send({ total: result.num_likes - result.num_dislikes });
-					});
+			db.User.updateOne(user, profile, function(err) {
+				if(err) console.error(err);
+			});
+
+			var content_id = { _id: content._id };
+
+			// If user liked this for the first time
+			db.Content.findOne(content_id, function(err, result) {
+				result.num_likes += value;
+
+				db.Content.updateOne(content_id, (new db.Content(result)).toObject(), function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ total: result.num_likes - result.num_dislikes });
 				});
-			}
-			else {
-				// Only allowed to like an article once
-				res.status(200).send({ total: undefined });
-			}
+			});
+
 		});
 	},
-	is_valid: function(user, profile, content) {
-		var library = profile.library;
+	indexOf: function(array, target) {
 		var index = -1;
 
-		for(var i = 0; i < library.length; i++) {
-			if (library[i]._id == content._id) index = i;
-		}
+		for(var i = 0; i < array.length; i++) if (array[i]._id == target) index = i;
 
-		var change_vote = (index > -1 && library[index].liked != content.liked);
-		var hasnt_voted = index == -1;
-	
-		if(index == -1) profile.library.push(content);
-		else profile.library[index] = content;
-
-		db.User.updateOne(user, profile, function(err) {
-			if(err) console.error(err);
-		});
-
-		return change_vote || hasnt_voted;
+		return index;
 	}
 }
