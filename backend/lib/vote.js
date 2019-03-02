@@ -1,10 +1,11 @@
 var db = require('../db/database');
+var utils = require('./utils')
 
 module.exports = {
 	vote: function(user, content, res) {
 		db.User.findOne(user, function(err, profile) {
 			var library = profile.library;
-			var index = module.exports.indexOf(library, content._id);
+			var index = utils.indexOf(library, '_id', content._id);
 			var value = 0;
 
 			// user already voted and now wants to change their vote
@@ -39,12 +40,5 @@ module.exports = {
 			});
 
 		});
-	},
-	indexOf: function(array, target) {
-		var index = -1;
-
-		for(var i = 0; i < array.length; i++) if (array[i]._id == target) index = i;
-
-		return index;
 	}
 }

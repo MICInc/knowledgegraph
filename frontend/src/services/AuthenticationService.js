@@ -10,7 +10,7 @@ export default {
 			return Api().post('/signup', data)
 		},
 
-		logoutUser () {
-			return Api().post('/logout')
+		logoutUser(data) {
+			return Api().post('/logout', data)
 		},
 }

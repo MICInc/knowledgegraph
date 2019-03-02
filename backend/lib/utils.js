@@ -1,4 +1,12 @@
 module.exports = {
+  indexOf: function(array, key, target) {
+    // target (String) object id
+    var index = -1;
+
+    for(var i = 0; i < array.length; i++) if (array[i][key] == target) index = i;
+
+    return index;
+  },
   shuffle: function(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -17,11 +25,11 @@ module.exports = {
 
     return array;
   },
-  uniqueID: function() {
+  uniqueID: function(length=8) {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < length; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;

@@ -51,6 +51,7 @@ router.post('/signup', function(req, res) {
 					id: user._id,
 					first_name: user.first_name,
 					last_name: user.last_name,
+					sess_id: UserAuth.startSession(user)
 				}
 			});
 
@@ -78,7 +79,8 @@ router.post('/login', function(req, res, next) {
 				userInfo: {
 					id: user._id,
 					first_name: user.first_name,
-					last_name: user.last_name
+					last_name: user.last_name,
+					sess_id: UserAuth.startSession(user)
 				}
 			});
 
@@ -87,6 +89,10 @@ router.post('/login', function(req, res, next) {
 			res.send({error: err.message})
 		}
 	});
+});
+
+router.post('/logout', function(req, res, next) {
+	UserAuth.endSession(req.body);
 });
 
 module.exports = router;

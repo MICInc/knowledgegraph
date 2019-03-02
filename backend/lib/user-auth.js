@@ -1,10 +1,7 @@
 var db = require('../db/database');
 var crypto = require('crypto');
 var mongoose = require('mongoose');
-
-function handleError(err) {
-	console.log(err);
-}
+var utils = require('./utils');
 
 module.exports = {
 	filter: function(data) {
@@ -44,7 +41,7 @@ module.exports = {
 
 		// Hash password
 		crypto.pbkdf2(profile.password, salt, 10000, 64, 'sha512', function(err, key) {
-			if (err) handleError(err);
+			if (err) console.error(err);
 
 			var user = new db.User(module.exports.format(profile));
 			user.salt = salt;
@@ -57,7 +54,7 @@ module.exports = {
 			});
 
 			user.save(function(err, user) {
-				if (err) handleError(err);
+				if (err) console.error(err);
 				// Successfully registered user
 				process.nextTick(function() {
 					callback(null, user);
@@ -65,16 +62,14 @@ module.exports = {
 			});
 		});
 	},
-
 	loginUser: function(email, password, callback) {
 		db.User.findOne({email: email}, function(err, user) {
-			if (err) handleError(err);
+			if (err) console.error(err);
 
 			if (user != null) {
-				// console.log(user)
 				// Salt password to see if hashes will match with the user's salt
 				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key){
-					if (err) handleError(err);
+					if (err) console.error(err);
 					
 					if (user.password_hash == key.toString('hex')) {
 						process.nextTick(function() {
@@ -93,14 +88,41 @@ module.exports = {
 			}
 		});
 	},
-
 	isEmailTaken: function(email, callback) {
 		db.User.findOne({email: email}, function(err, user) {
-			if (err) handleError(err);
+			if (err) console.error(err);
 
 			process.nextTick(function() {
 				callback(user != null);
 			});
 		});
 	},
+	startSession: function(user) {
+		// May want to have user send back a date object beforeDestroyed to get a more accurate time
+		var sess_id = utils.uniqueID();
+		
+		user.session_history.push({ sess_id: sess_id, start: new Date(), end: undefined });
+		db.User.updateOne({ _id: user._id }, user, function(err) {
+			if(err) console.error(err);
+		});
+
+		return sess_id;
+	},
+	endSession: function(user) {
+		// May want to have user send back a date object beforeDestroyed to get a more accurate time
+		var user_id = {_id: user.id};
+
+		db.User.findOne(user_id, function(err, profile) {
+			if(profile != null) {
+				var index = utils.indexOf(profile.session_history, 'sess_id', user.sess_id);
+				if(index > -1) {
+					profile.session_history[index]['end'] = new Date();
+
+					db.User.updateOne(user_id, profile, function(err) {
+						if(err) console.error(err);
+					});
+				}
+			}
+		});
+	}
 };

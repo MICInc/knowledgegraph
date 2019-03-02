@@ -76,6 +76,7 @@ var user_schema = new Schema({
         type: String,
         sparse: true
     },
+    session_history: [{}],
     subjects: [{
         type: String, // entity ids
         sparse: true
