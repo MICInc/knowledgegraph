@@ -31,7 +31,10 @@ router.get('/', function(req, res) {
 router.post('/library/clear', function(req, res) {
 	var user_id = { _id: req.body.user_id };
 
+	console.log(user_id)
+
 	db.User.findOne(user_id, function(err, profile) {
+		console.log(profile);
 		profile.library = [];
 
 		db.User.updateOne(user_id, profile, function(err) {

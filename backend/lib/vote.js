@@ -3,11 +3,8 @@ var db = require('../db/database');
 module.exports = {
 	vote: function(user, content, value, res) {
 		db.User.findOne(user, function(err, profile) {
-			var voted = module.exports.has_voted(profile, content);
-
-			db.User.updateOne(user, profile, function(err) {
-				if(err) console.error(err);
-			});
+			var voted = module.exports.is_valid(user, profile, content);
+			console.log(voted)
 
 			if(voted) {
 				var content_id = { _id: content._id };
@@ -28,17 +25,24 @@ module.exports = {
 			}
 		});
 	},
-	has_voted: function(profile, content) {
+	is_valid: function(user, profile, content) {
 		var library = profile.library;
 		var index = -1;
 
 		for(var i = 0; i < library.length; i++) {
-			if (library[i]._id == content._id && library[i].liked == content.liked) index = i;
+			if (library[i]._id == content._id) index = i;
 		}
-	
-		if(index == -1) library.push(content);
-		else library[index] = content;
 
-		return index == -1;
+		var change_vote = (index > -1 && library[index].liked != content.liked);
+		var hasnt_voted = index == -1;
+	
+		if(index == -1) profile.library.push(content);
+		else profile.library[index] = content;
+
+		db.User.updateOne(user, profile, function(err) {
+			if(err) console.error(err);
+		});
+
+		return change_vote || hasnt_voted;
 	}
 }
