@@ -35,8 +35,9 @@ export default {
 			id: this.$route.params.id,
 			results: [],
 			query: {
+				user: this.$store.state.userInfo != null ? this.$store.state.userInfo.id : '',
 				term: ''
-			}
+			},
 		}
 	},
 	methods: {

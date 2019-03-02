@@ -80,10 +80,7 @@ var user_schema = new Schema({
         type: String, // entity ids
         sparse: true
     }],
-    search_history: [{ 
-        type: String,
-        sparse: true
-    }],
+    search_history: [{}],
     url: {
         type: String,
         required: true

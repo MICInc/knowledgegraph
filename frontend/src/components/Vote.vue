@@ -2,8 +2,8 @@
 	<div class='container'>
 		<div id="votes">
 			<span id="total">{{total}}</span><br>
-			<button v-on:click="upvote()">+</button>
-			<button v-on:click="downvote()">-</button>
+			<button v-if="show" v-on:click="upvote()">+</button>
+			<button v-if="show" v-on:click="downvote()">-</button>
 		</div>
 	</div>
 </template>
@@ -14,7 +14,8 @@ export default {
 	data() {
 		return {
 			total: this.likes - this.dislikes,
-			user_id: this.$store.state.userInfo.id
+			user_id: this.$store.state.userInfo.id,
+			show: this.$store.state.isLoggedIn
 		}
 	},
 	methods: {
