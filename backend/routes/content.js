@@ -139,5 +139,4 @@ router.post('/downvote', function(req, res) {
 	vote.vote(user, content, res);
 });
 
-
 module.exports = router;

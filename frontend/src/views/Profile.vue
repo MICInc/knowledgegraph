@@ -2,6 +2,8 @@
 	<div class="content">
 		<PageNav></PageNav>
 		<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+		<h3>Citations</h3>
+		<span>{{ profile.citations }}</span>
 		<h3>Library</h3>
 		<button v-on:click="clear_library()">clear</button>
 	</div>

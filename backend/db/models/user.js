@@ -55,6 +55,9 @@ var user_schema = new Schema({
         trim: true
     },
     library: [{}],
+    num_citations: {
+        type: Number
+    },
     password_hash: {
         type: String,
         required: true

@@ -4,6 +4,8 @@
 		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
 			<Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id"></Vote>
+			<label>citations </label>
+			<span>{{ content.num_citations }}</span>
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'>{{ author }} </span>
