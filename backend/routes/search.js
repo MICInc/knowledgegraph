@@ -5,7 +5,7 @@ var sh = require('../lib/search_handler');
 
 router.get('/', function(req, res, next){
 	var term = req.query.term;
-
+	console.log(req.query);
 	if(term != undefined) {
 		// save user's query if logged in and has an account
 		if('user' in req.query) {

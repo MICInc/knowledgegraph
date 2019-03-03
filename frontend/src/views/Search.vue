@@ -50,7 +50,15 @@ export default {
 				return data.data;
 			});
 		}
-	}
+	},
+	watch: {
+    	$route (to, from){
+        	this.query.term = to.query.term;
+        	this.search().then(data => {
+				this.results = data;
+			});
+    	}
+	} 
 }
 </script>
 

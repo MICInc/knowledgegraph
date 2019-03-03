@@ -47,8 +47,7 @@ export default {
 	},
 	methods: {
 		search() {
-			router.push({path: '/search', query: {term: this.query} })
-			console.log('here.......');
+			router.push({path: '/search', query: {term: this.query} });
 		}
 	}
 }
