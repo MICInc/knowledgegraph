@@ -125,6 +125,11 @@ export default new Router({
 			}
 		},
 		{
+			path: '/forgot',
+			name: 'forgot',
+			component: () => import('./views/Forgot.vue')
+		},
+		{
 			path: '/archived/conference',
 			name: 'oldConference',
 			component: () => import('./views/OldConference.vue'),

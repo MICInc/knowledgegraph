@@ -4,6 +4,7 @@ var UserAuth = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
 const config = require('../config.js');
 var form = require('../lib/form');
+const nodemailer = require('nodemailer');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -93,6 +94,39 @@ router.post('/login', function(req, res, next) {
 
 router.post('/logout', function(req, res, next) {
 	UserAuth.endSession(req.body);
+});
+
+router.post('/forgot', function(req, res, next) {
+	var email = req.body.email;
+
+	UserAuth.findByEmail(email, function(profile) {
+		if(user != null) {
+			var new_pw = UserAuth.resetPassword();
+
+			let transporter = nodemailer.createTransport({
+				host: '',
+				port: 465,
+				secure: true,
+				auth: {
+					user: '',
+					pass: ''
+				}
+			});
+
+			let mailOptions = {
+				from: '"MIC Team" <tech@machineintelligence.cc>',
+				to: email,
+				subject: 'MIC Password Recovery',
+				text: 'Fuck off - Gordon Ramsay...btw here\'s your new password: '+new_pw,
+				html: '<b>Here\'s your password</b>'
+			}
+
+			transporter.sendMail(mailOptions);
+			
+			res.status(200).send('Please check your email');
+		}
+		else res.status(200).send('Email does not exist');
+	});
 });
 
 module.exports = router;

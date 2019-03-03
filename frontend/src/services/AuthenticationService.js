@@ -13,4 +13,7 @@ export default {
 		logoutUser(data) {
 			return Api().post('/logout', data)
 		},
+		forgotLogin(data) {
+			return Api().post('/forgot', data)
+		}
 }

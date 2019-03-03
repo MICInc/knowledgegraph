@@ -88,13 +88,18 @@ module.exports = {
 			}
 		});
 	},
-	isEmailTaken: function(email, callback) {
+	findByEmail: function(email, callback) {
 		db.User.findOne({email: email}, function(err, user) {
 			if (err) console.error(err);
 
 			process.nextTick(function() {
-				callback(user != null);
+				callback(user);
 			});
+		});
+	},
+	isEmailTaken: function(email, callback) {
+		module.exports.findByEmail({email: email}, function(user) {
+			callback(user != null);
 		});
 	},
 	startSession: function(user) {
@@ -124,5 +129,8 @@ module.exports = {
 				}
 			}
 		});
+	},
+	resetPassword() {
+		return utils.uniqueID(15);
 	}
 };
