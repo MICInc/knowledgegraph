@@ -1,10 +1,10 @@
 <template>
 	<div class="jumbo">
-		<vue-particles color="#545f99"
+		<vue-particles color="#5d5499"
 			:particleOpacity="0.5"
       :particlesNumber="120"
       :particleSize="5"
-      linesColor="#545f99"
+      linesColor="#5d5499"
       :lineOpacity="0.3"
       :moveSpeed="2"
       :hoverEffect="false"
@@ -63,7 +63,6 @@
 	max-width: 1140px;
 	width: 90%;
 	margin: 0 auto;
-	border: 1px solid #545f99;
 }
 
 	#particles-js {
@@ -102,7 +101,6 @@
 }
 
 .heading .main-heading {
-	background: #545f99;
 	padding: 30px 20px;
 	margin-bottom: 35px;
 }
@@ -112,12 +110,11 @@
 	letter-spacing: 3px;
 	font-size: 2.2em;
 	font-weight: 400;
-	color: #fff;
+	color: #5d5499;
 	display: inline;
 }
 
 .heading .sub-heading {
-	background: #545f99;
 	padding: 17px;
 }
 
@@ -125,7 +122,7 @@
 	font-size: 1.7em;
 	font-weight: 400;
 	letter-spacing: 1px;
-	color: #fff;
+	color: #5d5499;
 	margin: 0
 }
 

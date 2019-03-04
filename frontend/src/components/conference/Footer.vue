@@ -45,7 +45,7 @@
 	max-width: 1140px;
 	width: 90%;
 	margin: 0 auto;
-	border: 1px solid #545f99;
+	/*border: 1px solid #5d5499;*/
 }
 
 .section-head {
@@ -64,11 +64,11 @@
 }
 
 footer {
-	margin-left: #545f99;
+	margin-left: #5d5499;
 }
 
 footer .container {
-	color: #545f99;
+	color: #5d5499;
 }
 
 footer .container .rows {
@@ -106,7 +106,7 @@ footer .bottom p.copyright {
 }
 
 footer .bottom a.code-of-conduct {
-	color: #545f99;
+	color: #5d5499;
 	font-weight: 600;
 	font-size: 14px;
 }

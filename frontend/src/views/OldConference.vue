@@ -1,16 +1,16 @@
 <template>
 	<div class="main-conference">
 		<nav v-if="viewSideNav" v-on:click="toggleViewSideNav" id="hidden-nav">
-				<ul>
-						<li>
-								<h3>Menu</h3>
-						</li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#location-info">Location Info</a></li>
-						<li><a href="#our-community">Our Community</a></li>
-						<li><a href="#sponsors">Sponsors</a></li>
-						<li><a href="#committee">Conference Committee</a></li>
-				</ul>
+			<ul>
+				<li>
+					<h3>Menu</h3>
+				</li>
+				<li><a href="#about">About</a></li>
+				<li><a href="#location-info">Location Info</a></li>
+				<li><a href="#our-community">Our Community</a></li>
+				<li><a href="#sponsors">Sponsors</a></li>
+				<li><a href="#committee">Conference Committee</a></li>
+			</ul>
 		</nav>
 		<ul v-if="!viewSideNav" v-on:click="toggleViewSideNav" id="sidebar">
 			<li></li>
@@ -72,7 +72,7 @@
 
 #sidebar {
 	width: 50px;
-	background: #545f99;
+	background: #5d5499;
 	position: fixed;
 	height: 100vh;
 	top: 0;
@@ -93,7 +93,7 @@
 }
 
 #hidden-nav {
-	background: #545f99;
+	background: #5d5499;
 	position: fixed;
 	height: 100vh;
 	width: 250px;
@@ -129,7 +129,7 @@
 }
 
 #hidden-nav ul li a:hover {
-	background: #717cb2;
+	background: #655ba5;
 }
 
 #hidden-nav .cta {

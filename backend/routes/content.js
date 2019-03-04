@@ -166,18 +166,23 @@ router.post('/cleanup', function(req, res) {
 	var user_id = { _id: req.body.user_id };
 
 	db.Content.findOne(content_id, function(err, article) {
-		article.view_duration.end = new Date();
+		if(article != null) {
+			article.view_duration['end'] = new Date();
 
-		db.Content.updateOne(content_id, article, function(err) {
-			if(err) console.error(err);
-		});
+			db.Content.updateOne(content_id, article, function(err) {
+				if(err) console.error(err);
+			});
+		}
 	});
 
+	console.log(user_id);
 	db.User.findOne(user_id, function(err, profile) {
-		profile.view_duration.end = new Date();
-		db.User.updateOne(user_id, profile, function(err) {
-			if(err) console.error(err);
-		})
+		if(profile != null) {
+			profile.view_duration['end'] = new Date();
+			db.User.updateOne(user_id, profile, function(err) {
+				if(err) console.error(err);
+			});
+		}
 	});
 });
 

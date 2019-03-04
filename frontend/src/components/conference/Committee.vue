@@ -6,41 +6,12 @@
 			</div>
 			<div class="columns">
 				<div class="left">
-					<div class="members">
-						<div class="title">Head Coordinators</div>
-						<div class="names">Justin Chen</div>
+					<div class="members" v-for="(member, index) in committee">
+						<div class="title">{{ member.title }}</div>
+						<div class="names">{{ member.name }}</div>
 					</div>
-					<!-- <div class="member">
-						<div class="title">Workshop Coordinator and Community Outreach</div>
-						<div class="name">Dan Pechi</div>
-					</div>
-					<div class="member">
-						<div class="title">Panel Coordinator</div>
-						<div class="name">Mirac Suzgun</div>
-					</div>
-					<div class="member">
-						<div class="title">Website Coordinator</div>
-						<div class="name">Devin de Hueck</div>
-					</div>-->
 				</div>
-				<!-- <div class="right">
-					<div class="member">
-						<div class="title">Finance Coordinator</div>
-						<div class="name">Isaac Wolverton</div>
-					</div>
-					<div class="member">
-						<div class="title">Diversity Scholarship Chair</div>
-						<div class="name">Chloe Kaubisch</div>
-					</div>
-					<div class="member">
-						<div class="title">Sponsorship Chair</div>
-						<div class="name">Charles Ma</div>
-					</div>
-					<div class="member">
-						<div class="title">Branding</div>
-						<div class="name">Tammy Qiu</div>
-					</div>
-				</div> -->
+				<!-- <div class="right"></div> -->
 			</div>
 		</div>
 	</div>
@@ -49,6 +20,21 @@
 <script>
 	export default {
 		name: 'Committee',
+		data() {
+			return {
+				committee: [
+					{name: 'Justin Chen', title: 'Head Coordinator'},
+					{name: '', title: 'Workshop Coordinator'},
+					{name: '', title: 'Community Outreach'},
+					{name: '', title: 'Panel Coordinator'},
+					{name: '', title: 'Website Coordinator'},
+					{name: '', title: 'Finance Coordinator'},
+					{name: '', title: 'Diversity Scholarship Chair'},
+					{name: '', title: 'Sponsorship Chair'},
+					{name: '', title: 'Branding'}
+				]
+			}
+		}
 	}
 </script>
 
@@ -58,7 +44,7 @@
 	max-width: 1140px;
 	width: 90%;
 	margin: 0 auto;
-	border: 1px solid #545f99;
+	/*border: 1px solid #5d5499;*/
 }
 
 .section-head {
@@ -77,9 +63,8 @@
 }
 
 #committee .container {
-	background: #545f99;
-	color: #fff;
 	padding-bottom: 30px;
+	color: #5d5499;
 }
 
 #committee .section-head  {
@@ -87,8 +72,8 @@
 }
 
 #committee .section-head h2 {
-	color: #545f99;
-	background: #fff;
+	color: #fff;
+	background: #5d5499;
 }
 
 #committee .columns {

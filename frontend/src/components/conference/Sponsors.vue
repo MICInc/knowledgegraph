@@ -30,7 +30,7 @@
 	max-width: 1140px;
 	width: 90%;
 	margin: 0 auto;
-	border: 1px solid #545f99;
+	/*border: 1px solid #5d5499;*/
 }
 
 .cta-button {
@@ -53,7 +53,7 @@
 
 .section-head {
 	padding: 40px 0 0 0;
-  margin: 0 50px;
+	margin: 0 50px;
 }
 
 .section-head h2 {
@@ -72,7 +72,7 @@
 
 #sponsors .section-head h2 {
 	color: #fff;
-	background: #545f99;
+	background: #5d5499;
 }
 
 #sponsors .sponsor-grid {
