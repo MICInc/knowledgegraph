@@ -38,9 +38,10 @@ import Vote from '@/components/Vote'
 export default {
 	name: 'Content',
 	created() {
-		window.addEventListener('beforeunload', this.cleanup);
+		// window.addEventListener('beforeunload', this.cleanup);
 	},
 	beforeMount() {
+		// window.addEventListener('beforeunload', this.cleanup);
 		if(this.$store.state.isLoggedIn) this.user = this.$store.state.userInfo.id;
 
 		this.get_content().then(data => {
@@ -75,16 +76,12 @@ export default {
 		check_content() {
 			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
 		},
-		cleanup(event) {
-			ContentService.cleanup({ 
-				user: this.$store.state.userInfo != null ? this.$store.state.userInfo.id : '',
-				content_id: this.content_id
-			});
-
-			event.preventDefault();
-			evt.returnValue = '';
-			return null;
-		}
+		// cleanup() {
+		// 	ContentService.cleanup({ 
+		// 		user: this.$store.state.userInfo != null ? this.$store.state.userInfo.id : '',
+		// 		content_id: this.content_id
+		// 	});
+		// }
 	}
 }
 </script>

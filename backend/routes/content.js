@@ -84,7 +84,7 @@ router.get('/', function(req, res) {
 				var start = new Date();
 
 				res.status(200).send(article);
-				article.view_duration.push({ start: start, end: undefined });
+				article.view_duration.push({ start: start });
 
 				db.Content.updateOne(query, article, function(err) {
 					if(err) console.error(err);
@@ -94,7 +94,7 @@ router.get('/', function(req, res) {
 					var user = { _id: user_id };
 
 					db.User.findOne(user, function(err, profile) {
-						profile.view_duration.push({ start: start, end: undefined, content: article._id});
+						profile.view_duration.push({ start: start, content: article._id});
 
 						db.User.updateOne(user, profile, function(err) {
 							if(err) console.error(err);
@@ -161,9 +161,11 @@ router.post('/downvote', function(req, res) {
 	vote.vote(user, content, res);
 });
 
-router.post('/cleanup', function(req, res) {
+router.options('/cleanup', function(req, res) {
 	var content_id = { _id: req.body.content_id };
 	var user_id = { _id: req.body.user_id };
+	console.log(content_id);
+	console.log(user_id);
 
 	db.Content.findOne(content_id, function(err, article) {
 		if(article != null) {
