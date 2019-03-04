@@ -6,11 +6,13 @@
 						<div class="logo"><img src="/img/mic-logo.png" alt="MIC Conference Logo" /></div>
 					</div>
 					<div class="bottom">
-						<p class="copyright">© Copyright 2018</p><a class="code-of-conduct" href="http://confcodeofconduct.com/"> Conference Code of Conduct</a>
-						<div class="social-links">
-							<a href="https://www.facebook.com/events/339954023078301/"><img src="/img/social-media-icons/facebook-icon.png" alt=""/></a>
-							<a href="https://twitter.com/mic_conf"><img src="/img/social-media-icons/twitter-icon.png" alt=""/></a>
-							<a href="https://medium.com/mit-mic"><img src="/img/social-media-icons/medium-icon.png" alt="" /></a>
+						<p class="copyright">© Copyright {{year}}</p><a class="code-of-conduct" href="http://confcodeofconduct.com/"> Conference Code of Conduct</a>
+						<div>
+							<template  v-for="(value, index) in social">
+								<a class="social-links" :href="value.href" alt=""/>
+									<img class="social-icon" :src="value.img" alt=""/>
+								</a>
+							</template>
 						</div>
 					</div>
 				</div>
@@ -21,6 +23,19 @@
 <script>
 	export default {
 		name: 'Footer',
+		data() {
+			return {
+				year: (new Date()).getFullYear(),
+				social: [
+					{ href: 'https://www.facebook.com/events/339954023078301/', img: '/img/social-media-icons/facebook-icon.png' },
+					{ href: 'https://twitter.com/mic_conf', img: '/img/social-media-icons/twitter-icon.png' },
+					{ href: 'https://medium.com/mit-mic', img: '/img/social-media-icons/medium-icon.png' },
+					{ href: 'https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg', img: '/img/social-media-icons/medium-icon.png' },
+					{ href: 'https://www.reddit.com/user/MICInc', img: '/img/social-media-icons/medium-icon.png' }
+
+				]
+			}
+		}
 	}
 </script>
 
@@ -100,15 +115,12 @@ footer .bottom .cta {
 	display: flex;
 }
 
-footer .bottom .cta a:first-child {
+.social-links {
 	margin-right: 10px;
 }
 
-footer .bottom .social-links a:first-child > img {
+.social-icon {
 	margin-left: 0;
-}
-
-footer .bottom .social-links a img{
 	width: 40px;
 	margin-left: 5px;
 }

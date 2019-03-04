@@ -8,9 +8,9 @@
 				<div class="left">
 					<div class="members">
 						<div class="title">Head Coordinators</div>
-						<div class="names">Justin Chen, Ajay Jain, Nikhil Murthy</div>
+						<div class="names">Justin Chen</div>
 					</div>
-					<div class="member">
+					<!-- <div class="member">
 						<div class="title">Workshop Coordinator and Community Outreach</div>
 						<div class="name">Dan Pechi</div>
 					</div>
@@ -21,9 +21,9 @@
 					<div class="member">
 						<div class="title">Website Coordinator</div>
 						<div class="name">Devin de Hueck</div>
-					</div>
-					</div>
-				<div class="right">
+					</div>-->
+				</div>
+				<!-- <div class="right">
 					<div class="member">
 						<div class="title">Finance Coordinator</div>
 						<div class="name">Isaac Wolverton</div>
@@ -40,7 +40,7 @@
 						<div class="title">Branding</div>
 						<div class="name">Tammy Qiu</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>

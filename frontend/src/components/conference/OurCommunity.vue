@@ -26,13 +26,6 @@
 									<p>We are a community of undergraduates at Harvard aiming to promote and foster interest in machine learning and artificial intelligence. We host technical workshops on advanced topics in machine learning, work on challenging real-world problems, discuss the current state of the field, and - most importantly - attempt to create a friendly and collaborative environment both for aspiring machine learning researchers and also for people who have just taken their first step into the fascinating and mysterious world of artificial intelligence. We seek to equip everyone with knowledge in machine learning and artificial intelligence and prepare them to face the new wave of the future.</p>
 							</div>
 					</div>
-					<div class="school-tile">
-						<div class="shield"><a href="https://tufts-mic.github.io/MIC-site/"><img src="/img/mic-schools/tufts-logo.png" alt="Tufts logo"/></a></div>
-						<div class="description">
-								<p class="school-name">Tufts University</p>
-								<p>Tufts offers several courses dealing more broadly with machine learning, but currently no focused curriculum geared towards modern deep learning. Tufts MIC aims to foster interest and research in machine intelligence on campus in an undergraduate-friendly environment. We host workshops and guest lecturers, coordinate group coding projects, and collaborate with the Tufts Machine Learning Reading Group to cover the latest machine intelligence breakthroughs.</p>
-							</div>
-					</div>
 			</div>
 		</div>
 	</div>

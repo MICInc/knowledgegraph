@@ -88,7 +88,8 @@ var user_schema = new Schema({
     url: {
         type: String,
         required: true
-    }
+    },
+    view_duration: [{}]
 });
 
 var conn = mongoose.createConnection('mongodb://localhost:27017/profile', { useNewUrlParser: true });

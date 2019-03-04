@@ -37,7 +37,12 @@ import Vote from '@/components/Vote'
 
 export default {
 	name: 'Content',
+	created() {
+		window.addEventListener('beforeunload', this.cleanup);
+	},
 	beforeMount() {
+		if(this.$store.state.isLoggedIn) this.user = this.$store.state.userInfo.id;
+
 		this.get_content().then(data => {
 			this.content_id = data._id;
 			this.content = data;
@@ -53,14 +58,15 @@ export default {
 		return {
 			content_id: '',
 			url: this.$route.params.id,
-			content: {}
+			content: {},
+			user: ''
 		}
 	},
 	methods: {
 		async get_content() {
-			return await ContentService.getContent({ params: { url: this.url } })
+			return await ContentService.getContent({ params: { user: this.user, url: this.url } })
 			.then(function(data) {
-				return data.data[0];
+				return data.data;
 			})
 			.catch(function(error) {
 				console.log('Page not found');
@@ -68,6 +74,16 @@ export default {
 		},
 		check_content() {
 			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
+		},
+		cleanup(event) {
+			ContentService.cleanup({ 
+				user: this.$store.state.userInfo != null ? this.$store.state.userInfo.id : '',
+				content_id: this.content_id
+			});
+
+			event.preventDefault();
+			evt.returnValue = '';
+			return null;
 		}
 	}
 }

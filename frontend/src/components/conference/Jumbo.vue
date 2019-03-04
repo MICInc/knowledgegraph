@@ -18,11 +18,13 @@
 						<h1>Machine Intelligence Conference</h1>
 					</div>
 					<div class="sub-heading">
-						<h2>Nov. 3rd, 2018 - 6th Floor of MIT Media Lab </h2>
+						<h2>Sep. 7th, 2019 - 6th Floor of MIT Media Lab </h2>
 					</div>
 				</div>
 			</div>
-			<div class="cta"><a class="cta-button" href="/schedule">View the Schedule</a></div>
+			<div class="cta">
+				<router-link class="cta-button" tag="a" to="/conference">Register</router-link>
+			</div>
 		</div>
 	</div>
 </template>
@@ -48,7 +50,10 @@
 	border-radius: 0px;
 	background: #e38484;
 	color: #fff;
-	font-family: Lato;
+	font-family: 'Avenir', sans-serif;
+	font-weight: bold;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	text-transform: uppercase;
 	font-size: .8em;
 	letter-spacing: 1px;

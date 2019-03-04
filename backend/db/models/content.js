@@ -12,7 +12,7 @@ var content_schema = new mongoose.Schema({
 	citations: [{
 		type: String
 	}],
-	content:  [{}],
+	content: [{}],
 	date_created: {
 		type: Date,
 		required: true
@@ -79,28 +79,13 @@ var content_schema = new mongoose.Schema({
 		type: Boolean,
 		required: true
 	},
-	questions: [{
-		type: String,
-		required: true,
-		trim: true
-	}],
 	saved_by: [{
 		type: String, //user-ids
 		required: true
 	}],
-	solutions: [{
-		type: String,
-		required: true,
-		trim: true
-	}],
 	subseqs: [{
 		type: String, //content-ids
 		required: true
-	}],
-	table_of_contents: [{
-		type: String,
-		required: true,
-		trim: true
 	}],
 	title: {
 		type: String,
@@ -110,7 +95,8 @@ var content_schema = new mongoose.Schema({
 		type: String,
 		trim: true,
 		required: true
-	}
+	},
+	view_duration: [{}] //list of date object pairs {start_view, end_view}
 }, Content.options);
 
 module.exports.Content = Content.model.discriminator('Content', content_schema);

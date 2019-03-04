@@ -75,15 +75,37 @@ router.post('/parse', function(req, res, next) {
 });
 
 router.get('/', function(req, res) {
-	if (req.query.url) {
+	if(req.query.url) {
 		var query = { url: req.query.url };
+		var user_id = req.query.user.length > 0 ? req.query.user : '';
 
-		db.Content.find(query, function(err, results) {
-			if(results.length > 0 && results[0].published) res.send(results);
+		db.Content.findOne(query, function(err, article) {
+			if(article.published) {
+				var start = new Date();
+
+				res.status(200).send(article);
+				article.view_duration.push({ start: start, end: undefined });
+
+				db.Content.updateOne(query, article, function(err) {
+					if(err) console.error(err);
+				});
+
+				if(user_id.length > 0) {
+					var user = { _id: user_id };
+
+					db.User.findOne(user, function(err, profile) {
+						profile.view_duration.push({ start: start, end: undefined, content: article._id});
+
+						db.User.updateOne(user, profile, function(err) {
+							if(err) console.error(err);
+						});
+					});
+				}
+			}
 			else res.status(404).send('Article not found');
 		});
 	}
-	else if (req.query.id == -1) {
+	else if(req.query.id == -1) {
 		var query = {};
 
 		db.Content.find(query, function(err, results) {
@@ -137,6 +159,26 @@ router.post('/downvote', function(req, res) {
 	var user = { _id: ballot.profile_id };
 	var content = { _id: ballot.content_id, liked: -1, date: new Date() };;
 	vote.vote(user, content, res);
+});
+
+router.post('/cleanup', function(req, res) {
+	var content_id = { _id: req.body.content_id };
+	var user_id = { _id: req.body.user_id };
+
+	db.Content.findOne(content_id, function(err, article) {
+		article.view_duration.end = new Date();
+
+		db.Content.updateOne(content_id, article, function(err) {
+			if(err) console.error(err);
+		});
+	});
+
+	db.User.findOne(user_id, function(err, profile) {
+		profile.view_duration.end = new Date();
+		db.User.updateOne(user_id, profile, function(err) {
+			if(err) console.error(err);
+		})
+	});
 });
 
 module.exports = router;
