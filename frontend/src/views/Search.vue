@@ -3,9 +3,17 @@
 		<PageNav></PageNav>
 		<div id="search-body">
 			<span id="result-count">results ({{results.length}})</span><br>
-			<ul>
+			<select v-model="view">
+  				<option v-for="(type, index) in view_type" :value="type">{{ type }}</option>
+  			</select>
+			<ul v-show="view == 'article'">
 				<li v-for='item in results'>
 					<ArticleCell :item="item"></ArticleCell>
+				</li>
+			</ul>
+			<ul v-show="view == 'user'">
+				<li v-for='item in people'>
+					<ProfileCell :item="item"></ProfileCell>
 				</li>
 			</ul>
 		</div>
@@ -16,28 +24,34 @@
 import PageNav from '@/components/PageNav.vue'
 import SearchService from '@/services/SearchService'
 import ArticleCell from '@/components/ArticleCell'
+import ProfileCell from '@/components/ProfileCell'
 
 export default {
 	name: 'search',
 	components: {
 		PageNav,
-		ArticleCell
+		ArticleCell,
+		ProfileCell
 	},
 	created() {
 		this.query.term = this.$route.query.term;
 
 		this.search().then(data => {
-			this.results = data;
+			if(data.content != null && data.content.length > 0) this.results = data.content;
+			if(data.users != null && data.users.length > 0) this.people = data.users;
 		});
 	},
 	data () {
 		return {
 			id: this.$route.params.id,
 			results: [],
+			people: [],
 			query: {
 				user: this.$store.state.userInfo != null ? this.$store.state.userInfo.id : '',
 				term: ''
 			},
+			view: 'article',
+			view_type: ['user', 'article']
 		}
 	},
 	methods: {
@@ -47,17 +61,18 @@ export default {
 		async search() {
 			return await SearchService.search({params: this.query})
 			.then(function(data) {
+				console.log(data);
 				return data.data;
 			});
 		}
 	},
 	watch: {
-    	$route (to, from){
-        	this.query.term = to.query.term;
-        	this.search().then(data => {
+		$route (to, from){
+			this.query.term = to.query.term;
+			this.search().then(data => {
 				this.results = data;
 			});
-    	}
+		}
 	} 
 }
 </script>

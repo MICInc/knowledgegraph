@@ -5,7 +5,7 @@ var sh = require('../lib/search_handler');
 
 router.get('/', function(req, res, next){
 	var term = req.query.term;
-	console.log(req.query);
+	
 	if(term != undefined) {
 		// save user's query if logged in and has an account
 		if('user' in req.query) {
@@ -33,9 +33,21 @@ router.get('/', function(req, res, next){
 			console.error(err);
 		});
 
-		// do search and return results
-		db.Content.find(sh.format_query(req.query.term), function (err, results) {
-			res.send(sh.filter_results(results));
+		var term = req.query.term;
+		var regx = new RegExp(term, "i")
+
+		db.Content.find(sh.format_query(term), function (err, articles) {
+			var results = {};
+
+			if(err) console.error(err);
+			if(articles.length > 0) results['content'] = articles;
+			
+			db.User.find({ $or:[ { first_name: regx }, { last_name: regx }]}, function(err, profiles) {
+				if(err) console.error(err);
+				if(profiles.length > 0) results['users'] = profiles;
+
+				res.send(results);
+			});
 		});
 	}
 });
