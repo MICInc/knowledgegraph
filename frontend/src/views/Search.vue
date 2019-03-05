@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<div class="container">
+		<div id="search">
 			<span id="result-count">results ({{results.length}})</span><br>
 			<select v-model="view">
   				<option v-for="(type, index) in view_type" :value="type">{{ type }}</option>
@@ -79,8 +79,8 @@ export default {
 
 <style scoped>
 
-#search-body {
-	margin: 0px 10%;
+#search {
+	margin-top: 10px;
 }
 
 #result-count {
