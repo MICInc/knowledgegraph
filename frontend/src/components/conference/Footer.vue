@@ -9,8 +9,11 @@
 						<p class="copyright">© Copyright {{year}}</p><a class="code-of-conduct" href="http://confcodeofconduct.com/"> Conference Code of Conduct</a>
 						<div>
 							<template  v-for="(value, index) in social">
-								<a class="social-links" :href="value.href" alt=""/>
-									<img class="social-icon" :src="value.img" alt=""/>
+								<a class="social-links" :href="value.href">
+									<img class="social-icon" 
+										 :src="social[index].mouse ? value.img: value.hover" 
+										 @mouseover="social[index].mouse = true" 
+										 @onmouseout="social[index].mouse = false">
 								</a>
 							</template>
 						</div>
@@ -27,12 +30,10 @@
 			return {
 				year: (new Date()).getFullYear(),
 				social: [
-					{ href: 'https://www.facebook.com/events/339954023078301/', img: '/img/social-media-icons/facebook-icon.png' },
-					{ href: 'https://twitter.com/mic_conf', img: '/img/social-media-icons/twitter-icon.png' },
-					{ href: 'https://medium.com/mit-mic', img: '/img/social-media-icons/medium-icon.png' },
-					{ href: 'https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg', img: '/img/social-media-icons/medium-icon.png' },
-					{ href: 'https://www.reddit.com/user/MICInc', img: '/img/social-media-icons/medium-icon.png' }
-
+					{ mouse: false, hover: '/img/social-media-icons/facebook-icon-hover.png', href: 'https://www.facebook.com/events/339954023078301/', img: '/img/social-media-icons/facebook-icon.png' },
+					{ mouse: false, hover: '/img/social-media-icons/twitter-icon-hover.png', href: 'https://twitter.com/mic_conf', img: '/img/social-media-icons/twitter-icon.png' },
+					{ mouse: false, hover: '/img/social-media-icons/youtube-icon-hover.png', href: 'https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg', img: '/img/social-media-icons/youtube-icon.png' },
+					{ mouse: false, hover: '/img/social-media-icons/reddit-icon-hover.png', href: 'https://www.reddit.com/user/MICInc', img: '/img/social-media-icons/reddit-icon.png' }
 				]
 			}
 		}
