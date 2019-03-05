@@ -2,7 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
-			<img id="cover" src="/img/large.png">
+			<img id="cover" src="/img/cover.jpg">
 			<div id="about">
 				<div id="left">
 					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>

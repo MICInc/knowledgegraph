@@ -1,7 +1,7 @@
 <template>
-	<div class="main" v-on:keydown="prevent_default($event)">
+	<div class="container" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
-		<div class="container">
+		<div id="editor">
 			<div id="publish">
 				<button v-on:click.prevent="publish()">Publish</button>
 				<span id="status" class="save-status">{{ save_status }}</span>
@@ -164,6 +164,10 @@ export default {
 .main {
 	display: flex;
 	flex-direction: column;
+}
+
+#editor {
+	margin-top: 10px;
 }
 
 #publish {
