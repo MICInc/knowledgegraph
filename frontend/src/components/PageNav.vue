@@ -1,13 +1,9 @@
 <template>
 	<header>
-		<nav id='left'>
-			<ul>
-				<li><router-link tag="a" to="/"><b>HOME</b></router-link></li>
-				<li><router-link tag="a" to="/conference"><b>CONFERENCE</b></router-link></li>
-				<li><router-link tag="a" to="/community"><b>COMMUNITY</b></router-link></li>
-				<router-view/>
-			</ul>
-		</nav>
+		<span id="home">
+			<router-link class="logo" tag="a" to="/"><img src="/img/mic-logo-nav.png"" alt="MIC Conference Logo" /></router-link></li>
+			<router-view/>
+		</span>
 		<input 
 			class="search" 
 			type="search"
@@ -61,12 +57,13 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	height: 50px;
-	border-bottom: 1px solid #EAEAEA;
+	/*border-bottom: 1px solid #EAEAEA;*/
 	position: fixed;
 	top: 0;
-	width: 100%;
+	min-width: 1080px;
 	overflow: hidden;
 	background: #fff;
+	margin: 0 auto;
 }
 
 nav {
@@ -112,5 +109,18 @@ input.search {
 	padding: 5px 5px;
 	font-size: 12px;
 }
+
+#home {
+	font-size: 0.85em;
+}
+
+.logo {
+	margin: 40px 0;
+}
+
+.logo img {
+	width: 38px;
+}
+
 
 </style>

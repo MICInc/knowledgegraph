@@ -1,11 +1,18 @@
 <template>
-	<div class="content">
+	<div class="container">
 		<PageNav></PageNav>
-		<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
-		<h3>Citations</h3>
-		<span>{{ profile.citations }}</span>
-		<h3>Library</h3>
-		<button v-on:click="clear_library()">clear</button>
+		<div class="container">
+			<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+			<nav class="sections">
+				<ul>
+					<li class="tab" v-for="(sect, index) in sections">
+						<a :href="profile.url+sect.href">{{ sect.name.toUpperCase() }}</a>
+						<span class="count">{{ sect.total }}</span>
+					</li>
+				</ul>
+				<!-- <button v-on:click="clear_library()">clear</button> -->
+			</nav>
+		</div>
 	</div>
 </template>
 
@@ -31,7 +38,29 @@ export default {
 			user: {
 				id: 0
 			},
-			profile: {}
+			profile: {},
+			sections: [
+				{
+					name: 'publications',
+					href: '/publications',
+					total: 0
+				},
+				{
+					name: 'library',
+					href: '/library',
+					total: 0
+				},
+				{
+					name: 'followers',
+					href: '/followers',
+					total: 0
+				},
+				{
+					name: 'following',
+					href: '/following',
+					total: 0
+				}
+			]
 		}
 	},
 	methods: {
@@ -58,10 +87,44 @@ export default {
 </script>
 
 <style scoped>
+.main {
+	display: flex;
+	flex-direction: column;
+}
 
-.input-row {
+nav ul {
+	list-style: none;
 	display: flex;
 	align-items: center;
+	margin: 0;
+	padding: 0;
+}
+
+nav ul li {
+	margin-left: 15px;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+nav ul li:first-child {
+	margin-left: 0;
+}
+
+nav ul li a {
+	text-decoration: none;
+	color: #000;
+}
+
+nav ul li a:hover {
+	color: #655ba5;
+}
+
+nav ul li:hover {
+	color: #655ba5;
+}
+
+nav ul li .count {
+	margin-left: 5px;
 }
 
 </style>

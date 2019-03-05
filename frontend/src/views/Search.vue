@@ -1,7 +1,7 @@
 <template>
-	<div id="search">
+	<div class="container">
 		<PageNav></PageNav>
-		<div id="search-body">
+		<div class="container">
 			<span id="result-count">results ({{results.length}})</span><br>
 			<select v-model="view">
   				<option v-for="(type, index) in view_type" :value="type">{{ type }}</option>
@@ -23,8 +23,8 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import SearchService from '@/services/SearchService'
-import ArticleCell from '@/components/ArticleCell'
-import ProfileCell from '@/components/ProfileCell'
+import ArticleCell from '@/components/search/ArticleCell'
+import ProfileCell from '@/components/search/ProfileCell'
 
 export default {
 	name: 'search',

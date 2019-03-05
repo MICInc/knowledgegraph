@@ -65,7 +65,7 @@
 	margin: 0 auto;
 }
 
-	#particles-js {
+#particles-js {
 	position: absolute;
 	z-index: -1;
 	height: 100vh;

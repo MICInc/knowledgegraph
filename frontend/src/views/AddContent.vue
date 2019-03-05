@@ -166,13 +166,6 @@ export default {
 	flex-direction: column;
 }
 
-.container {
-	width: 600px;
-	display: inline-block;
-	flex-direction: column;
-	align-items: center;
-}
-
 #publish {
 	width: 100%;
 	display: inline-block;

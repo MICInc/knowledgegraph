@@ -15,6 +15,21 @@ export default new Router({
 			component: OldConference,
 		},
 		{
+			path: '/home',
+			name: 'home-dev',
+			component: () => import('./views/Home.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' },
+					})
+				}
+			}
+		},
+		{
 			path: '/about',
 			name: 'about',
 			component: () => import('./views/About.vue'),

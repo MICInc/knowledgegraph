@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+	<div class="container">
 		<PageNav></PageNav>
 		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
@@ -90,13 +90,6 @@ export default {
 .main {
 	display: flex;
 	flex-direction: column;
-}
-
-.container {
-	width: 600px;
-	display: inline-block;
-	flex-direction: column;
-	align-items: center;
 }
 
 .caption {
