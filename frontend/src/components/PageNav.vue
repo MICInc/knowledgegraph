@@ -56,7 +56,7 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	height: 50px;
+	height: 60px;
 	/*border-bottom: 1px solid #EAEAEA;*/
 	position: fixed;
 	top: 0;
@@ -111,6 +111,7 @@ input.search {
 }
 
 #home {
+	margin-top: 0px;
 	font-size: 0.85em;
 }
 
@@ -121,6 +122,4 @@ input.search {
 .logo img {
 	width: 38px;
 }
-
-
 </style>

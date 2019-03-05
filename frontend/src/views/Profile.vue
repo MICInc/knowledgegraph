@@ -2,12 +2,19 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
-			<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+			<img id="cover" src="/img/large.png">
+			<div id="about">
+				<div id="left">
+					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+				</div>
+			</div>
 			<nav class="sections">
 				<ul>
 					<li class="tab" v-for="(sect, index) in sections">
-						<a :href="profile.url+sect.href">{{ sect.name.toUpperCase() }}</a>
-						<span class="count">{{ sect.total }}</span>
+						<a :href="profile.url+sect.href">
+							{{ sect.name.toUpperCase() }}
+							<span class="count">{{ sect.total }}</span>
+						</a>
 					</li>
 				</ul>
 				<!-- <button v-on:click="clear_library()">clear</button> -->
@@ -40,6 +47,11 @@ export default {
 			},
 			profile: {},
 			sections: [
+				{
+					name: 'comments',
+					href: '/comments',
+					total: 0
+				},
 				{
 					name: 'publications',
 					href: '/publications',
@@ -119,12 +131,24 @@ nav ul li a:hover {
 	color: #655ba5;
 }
 
-nav ul li:hover {
-	color: #655ba5;
-}
-
 nav ul li .count {
 	margin-left: 5px;
+}
+
+#cover {
+	width: 1080px;
+	height: 340px;
+}
+
+#about {
+	display: flex;
+}
+
+#about #right {
+	width: 60%;
+	margin-top: 10px;
+	display: flex;
+	justify-content: flex-end;
 }
 
 </style>
