@@ -97,6 +97,21 @@ module.exports = {
 			});
 		});
 	},
+	findById: function(id, callback) {
+		db.User.findOne({ _id: id }, function(err, user) {
+			if(err) console.error(err);
+
+			process.nextTick(function() {
+				callback(user);
+			});
+		});
+	},
+	findAllById: function(users, callback) {
+		db.User.find({ _id: { $in : users }}, function(err, profiles) {
+			if(err) console.error(err);
+			callback(profiles);
+		});
+	},
 	isEmailTaken: function(email, callback) {
 		module.exports.findByEmail({email: email}, function(user) {
 			callback(user != null);

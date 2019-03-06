@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 var utils = require('./utils');
 var path = require('path');
+var db = require('../db/database');
 
 module.exports = {
 	extract: function(req) {
 		var title = req.body.title;
 		var data = req.body.data;
 		var id = req.body.id;
-		var user = req.body.user;
+		var authors = req.body.authors;
 		var title = data.title;
 		// only optimize and create hashtags if published
 		data.cell = data.publish && data.cell != undefined ? module.exports.format_hashtags(data.cell) : {};
@@ -19,15 +20,13 @@ module.exports = {
 
 		return {
 			"_id": id.length > 0 ? id : mongoose.Types.ObjectId(),
-			"authors": user.first_name+' '+user.last_name,
+			"authors": authors,
 			"citations": data.citations.split(','),
 			"content": data.cell,
 			"date_created": data.date_created,
 			"description": "",
-			"first_name": user.first_name,
 			"hashtag": data.cell.hashtag,
 			"last_modified": data.last_modified,
-			"last_name": user.last_name,
 			"num_citations": 0,
 			"num_comments": 0,
 			"num_dislikes": 0,
@@ -50,6 +49,8 @@ module.exports = {
 		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 	},
 	update_hashtags: function(src, target) {
+		if(src == null || target == null) return [];
+
 		for(var i = 0; i < target.length; i++) src.push(target[i]);
 		return  module.exports.unique(src);
 	},

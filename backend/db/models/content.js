@@ -5,10 +5,7 @@ var content_schema = new mongoose.Schema({
 	_id: {
 		type: String
 	},
-	authors: [{
-		type: String,
-		required: true
-	}],
+	authors: [{}],
 	citations: [{
 		type: String
 	}],
@@ -21,12 +18,10 @@ var content_schema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
-	first_name:  {
+	hashtag:[{
 		type: String,
-		required: true,
 		trim: true
-	},
-	hashtag:[],
+	}],
 	hints: [{
 		type: String,
 		trim: true
@@ -38,11 +33,6 @@ var content_schema = new mongoose.Schema({
 	last_modified: {
 		type: Date,
 		required: true
-	},
-	last_name:  {
-		type: String,
-		required: true,
-		trim: true
 	},
 	num_citations: {
 		type: Number,

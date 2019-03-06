@@ -52,7 +52,8 @@ router.post('/signup', function(req, res) {
 					id: user._id,
 					first_name: user.first_name,
 					last_name: user.last_name,
-					sess_id: UserAuth.startSession(user)
+					sess_id: UserAuth.startSession(user),
+					url: user.url
 				}
 			});
 
@@ -81,7 +82,8 @@ router.post('/login', function(req, res, next) {
 					id: user._id,
 					first_name: user.first_name,
 					last_name: user.last_name,
-					sess_id: UserAuth.startSession(user)
+					sess_id: UserAuth.startSession(user),
+					url: user.url
 				}
 			});
 

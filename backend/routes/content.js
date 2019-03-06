@@ -7,7 +7,7 @@ var db = require('../db/database');
 var path = require('path');
 var fs = require('fs-extra');
 var vote = require('../lib/vote');
-
+var ua = require('../lib/user-auth');
 const article_storage = './storage/content/article';
 
 router.post('/', function(req, res, next) {
@@ -15,18 +15,17 @@ router.post('/', function(req, res, next) {
 	var data = fc.extract(req);
 	var query = {_id: data._id};
 
-	db.Content.find(query, function (err, results) {
-		if(results.length > 0) {
-			var article = results[0];
+	db.Content.findOne(query, function (err, article) {
+		if(article != null) {
 			var index = req.body.data.update_cell;
 
-			if(data.publish) article['hashtag'] = fc.update_hashtags(article['hashtag'], data['hashtag']);
+			if(data.published) article['hashtag'] = fc.update_hashtags(article['hashtag'], data['hashtag']);
 
+			// conditions for updating
 			var is_null = data['content'] == null;
 			var is_obj = data['content'].constructor === Object;
 			var has_obj = Object.keys(data['content']).length > 0;
 
-			// update cell content
 			if(!is_null && is_obj && has_obj) {
 				// update existing cell else add new cell
 				if(index < article['content'].length) article['content'][index] = data['content'];
@@ -35,12 +34,10 @@ router.post('/', function(req, res, next) {
 				data['content'] = article['content'];
 			}
 
-			article = new db.Content(data);
-			var updated = article.toObject();
+			article = (new db.Content(data)).toObject();
+			delete article._id;
 
-			delete updated._id;
-
-			db.Content.updateOne(query, updated, function(err) {
+			db.Content.updateOne(query, article, function(err) {
 				if(err) console.error(err);
 				else res.send({ id: data._id.toString(), url: data.url });
 			});
@@ -50,7 +47,7 @@ router.post('/', function(req, res, next) {
 			data['content'] = [data['content']];
 			var article = new db.Content(data);
 
-			article.collection.dropIndexes(function(err, results) {
+			article.collection.dropIndexes(function(err, result) {
 				if(err) console.log('content.js: '+err);
 			});
 

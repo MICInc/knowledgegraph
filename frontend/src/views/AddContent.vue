@@ -33,6 +33,7 @@ export default {
 	},
 
 	created() {
+		this.authors.push(this.$store.state.userInfo);
 		this.save();
 	},
 	data() {
@@ -53,7 +54,7 @@ export default {
 			tags: [],
 			upload: [],
 			url: '',
-			user: this.$store.state.userInfo
+			authors: []
 		}
 	},
 	methods: {
@@ -102,9 +103,9 @@ export default {
 		},
 		save() {
 			this.save_status = 'saving...';
-			
+			console.log(this.authors);
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, data: this.data };
+			var article = { id: this.content_id, authors: this.authors, data: this.data };
 			
 			ContentService.saveContent(article)
 			.then((data) => {
