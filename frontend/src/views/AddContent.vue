@@ -103,7 +103,7 @@ export default {
 		},
 		save() {
 			this.save_status = 'saving...';
-			console.log(this.authors);
+			
 			this.data.last_modified = new Date();
 			var article = { id: this.content_id, authors: this.authors, data: this.data };
 			

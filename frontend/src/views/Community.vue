@@ -1,7 +1,7 @@
 <template>
-	<div class="community">
+	<div class="container">
 		<PageNav></PageNav>
-		<div class="container">
+		<div class="community">
 			<h1>Community Page</h1>
 			<router-link to="/community/start" tag="button">Start a community</router-link>
 			<br>

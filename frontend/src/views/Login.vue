@@ -1,5 +1,5 @@
 <template>
-	<div class="login main">
+	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
 			<form v-on:submit.prevent="handleSubmit">
