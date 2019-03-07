@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Cell from '@/components/Cell'
+import Cell from '@/components/editor/Cell'
 
 export default {
 	components: {

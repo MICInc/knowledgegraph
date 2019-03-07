@@ -17,8 +17,8 @@
 
 <script>
 import PageNav from '@/components/PageNav'
-import Registration from '@/components/Registration'
-import Feedback from '@/components/Feedback'
+import Registration from '@/components/conference/Registration'
+import Feedback from '@/components/conference/Feedback'
 import Footer from '@/components/Footer'
 
 export default {

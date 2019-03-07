@@ -107,7 +107,13 @@ export default new Router({
 						params: { error: 'You need to log in to access this route.' },
 					})
 				}
-			}
+			},
+			// children: [
+			// 	{
+			// 		path: 'start',
+			// 		component: () => import('./views/CommunityReg.vue'),
+			// 	}
+			// ]
 		},
 		{
 			path: '/community/start',
@@ -202,7 +208,29 @@ export default new Router({
 						params: { error: 'You need to log in to access this route.' },
 					})
 				}
-			}
+			},
+			children: [
+				{
+					path: 'comments',
+					component: () => import('@/components/profile/Comments.vue')
+				},
+				{
+					path: 'followers',
+					component: () => import('@/components/profile/Followers.vue')
+				},
+				{
+					path: 'following',
+					component: () => import('@/components/profile/Following.vue')
+				},
+				{
+					path: 'library',
+					component: () => import('@/components/profile/Library.vue')
+				},
+				{
+					path: 'publications',
+					component: () => import('@/components/profile/Publications.vue')
+				}
+			]
 		},
 		{
 			path: '*',

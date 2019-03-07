@@ -18,7 +18,7 @@
 <script>
 import PageNav from '@/components/PageNav';
 import ContentService from '@/services/ContentService.js';
-import DynamicContent from '@/components/DynamicContent';
+import DynamicContent from '@/components/editor/DynamicContent';
 import Path from 'path';
 
 window.onbeforeunload = function() {

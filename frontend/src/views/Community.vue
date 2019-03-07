@@ -54,11 +54,6 @@ export default {
 	flex-direction: column;
 }
 
-.container {
-	flex: 1;
-	width: 1080px;
-}
-
 button {
 	background: #502984;
 	color: #FFF;

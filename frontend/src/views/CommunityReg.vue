@@ -1,7 +1,7 @@
 <template>
-	<div id="community-reg">
+	<div class="container">
 		<PageNav></PageNav>
-		<div id="body">
+		<div id="community-reg">
 			<div>
 				<h2>Join the Machine Intelligence Community</h2>
 				<p>

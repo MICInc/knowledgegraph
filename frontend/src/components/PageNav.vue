@@ -2,7 +2,6 @@
 	<header>
 		<span id="home">
 			<router-link class="logo" tag="a" to="/"><img src="/img/mic-logo-nav.png"" alt="MIC Conference Logo" /></router-link></li>
-			<router-view/>
 		</span>
 		<input 
 			class="search" 

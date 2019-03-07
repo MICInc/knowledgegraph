@@ -11,7 +11,7 @@
 			<nav class="sections">
 				<ul>
 					<li class="tab" v-for="(sect, index) in sections">
-						<a :href="profile.url+sect.href">
+						<a :href="'/profile/'+url+sect.href" v-on:click="switch_section(sect.name)">
 							{{ sect.name.toUpperCase() }}
 							<span class="count">{{ sect.total }}</span>
 						</a>
@@ -19,6 +19,7 @@
 				</ul>
 				<!-- <button v-on:click="clear_library()">clear</button> -->
 			</nav>
+			<router-view></router-view>
 		</div>
 	</div>
 </template>
@@ -26,6 +27,11 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import ProfileService from '@/services/ProfileService'
+import Comments from '@/components/profile/Comments'
+import Followers from '@/components/profile/Followers'
+import Following from '@/components/profile/Following'
+import Library from '@/components/profile/Library'
+import Publications from '@/components/profile/Publications'
 
 export default {
 	name: 'content',
@@ -37,7 +43,12 @@ export default {
 		this.user_id = this.$store.state.userInfo.id;
 	},
 	components: {
-		PageNav
+		PageNav,
+		Comments,
+		Followers,
+		Following,
+		Library,
+		Publications
 	},
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
@@ -93,6 +104,10 @@ export default {
 			.catch(function(err) {
 				console.log(err);
 			});
+		},
+		switch_section(name) {
+			console.log(this.url);
+			// router.push({ path: '/profile/'+this.url+'/'+name });
 		}
 	}
 }
