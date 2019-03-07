@@ -5,11 +5,7 @@
 				<li>
 					<h3>Menu</h3>
 				</li>
-				<li><a href="#about">About</a></li>
-				<li><a href="#location-info">Location Info</a></li>
-				<li><a href="#our-community">Our Community</a></li>
-				<li><a href="#sponsors">Sponsors</a></li>
-				<li><a href="#committee">Conference Committee</a></li>
+				<li v-for="(item, index) in menu"><a :href="item.href">item.name</a></li>
 			</ul>
 		</nav>
 		<ul v-if="!viewSideNav" v-on:click="toggleViewSideNav" id="sidebar">
@@ -39,7 +35,7 @@
 	import Footer from '@/components/conference/Footer.vue'
 
 	export default {
-		name: 'oldConference',
+		name: 'oldconf',
 		components: {
 			Jumbo,
 			About,
@@ -52,6 +48,28 @@
 
 		data () {
 			return {
+				menu: [
+					{
+						name: 'About',
+						href: '#about'
+					},
+					{
+						name: 'Location Info',
+						href: '#location-info'
+					},
+					{
+						name: 'Our Community',
+						href: '#our-community'
+					},
+					{
+						name: 'Sponsors',
+						href: '#sponsors'
+					},
+					{
+						name: 'Conference Committee',
+						href: '#committee'
+					}
+				],
 				viewSideNav: false,
 			}
 		},

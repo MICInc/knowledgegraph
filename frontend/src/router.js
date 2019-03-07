@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import OldConference from './views/OldConference.vue'
 import store from '@/store'
 
 Vue.use(Router)
@@ -11,12 +10,12 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			name: 'home',
-			component: OldConference,
+			name: '',
+			component: () => import('./views/OldConf.vue')
 		},
 		{
 			path: '/home',
-			name: 'home-dev',
+			name: 'home',
 			component: () => import('./views/Home.vue'),
 			beforeEnter: (to, from, next) => {
 				if (store.state.isLoggedIn) {
@@ -24,7 +23,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -139,21 +138,6 @@ export default new Router({
 			path: '/forgot',
 			name: 'forgot',
 			component: () => import('./views/Forgot.vue')
-		},
-		{
-			path: '/archived/conference',
-			name: 'oldConference',
-			component: () => import('./views/OldConference.vue'),
-			beforeEnter: (to, from, next) => {
-				if (store.state.isLoggedIn) {
-					next()
-				} else {
-					next({
-						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
-					})
-				}
-			}
 		},
 		{
 			path: '/login',

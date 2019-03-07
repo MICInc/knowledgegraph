@@ -6,23 +6,33 @@
 			</div>
 			<form v-show="form.show" enctype="multipart/form-data">
 				<button v-on:click.prevent="reveal_form">Hide form</button><br>
-				<label>What's your first name?</label><br>
-				<input :class="{ error: form.error.first_name }" type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
-				<label>What's your last name?</label><br>
-				<input :class="{ error: form.error.last_name }" type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
-				<label v-if="profile.first_name.length > 0 && profile.last_name.length > 0">Hey {{ profile.first_name }} {{ profile.last_name }}, nice to meet you.</label>
-				<div class="birthday">
-					<label :class="{ error_font: form.error.dob }">Birthday</label>
-					<DateSelector v-on:date="set_dob($event)"></DateSelector>
-				</div>
-				<label>Where can we contact you?</label><br>
-				<input :class="{ error: form.error.email }" type="text" value="email" placeholder="email" v-model.trim="profile.email"><br>
-				<label>Password</label><br>
-				<input :class="{ error: form.error.password }" type="password" value="password" placeholder="password" v-model="profile.password"><br>
-				<label>Confirm password</label><br>
-				<input :class="{ error: form.error.confirm_pw }" type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password"><br>
+				<span v-if="!$store.state.isLoggedIn">
+					<label>What's your first name?</label><br>
+					<input :class="{ error: form.error.first_name }" type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
+					<label>What's your last name?</label><br>
+					<input :class="{ error: form.error.last_name }" type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
+					<label v-if="profile.first_name.length > 0 && profile.last_name.length > 0">Hey {{ profile.first_name }} {{ profile.last_name }}, nice to meet you.</label>
+					<div class="birthday">
+						<label :class="{ error_font: form.error.dob }">Birthday</label>
+						<DateSelector v-on:date="set_dob($event)"></DateSelector>
+					</div>
+					<label>Gender</label><br>
+					<select :class="{ error: form.error.gender }" name="gender" v-model="profile.gender">
+						<option v-for="gender in form.gender">{{ gender }}</option>
+					</select><br>
+					<label>What is your ethnicity?</label><br>
+					<select :class="{ error: form.error.ethnicity }" name="ethnicity" v-model="profile.ethnicity">
+						<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
+					</select><br>
+					<label>Where can we contact you?</label><br>
+					<input :class="{ error: form.error.email }" type="text" value="email" placeholder="email" v-model.trim="profile.email"><br>
+					<label>Password</label><br>
+					<input :class="{ error: form.error.password }" type="password" value="password" placeholder="password" v-model="profile.password"><br>
+					<label>Confirm password</label><br>
+					<input :class="{ error: form.error.confirm_pw }" type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password"><br>
+				</span>
 				<label :class="{ error_font: form.error.affiliation }">Affiliation</label><br>
-				<ul >
+				<ul>
 					<li v-for="affiliation in form.affiliation">
 						<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation">{{ affiliation }}
 					</li>
@@ -34,14 +44,6 @@
 				<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
 				<select :class="{ error: form.error.grade }" name="grade" v-model="profile.grade">
 					<option v-for="grade in form.academic_year">{{ grade }}</option>
-				</select><br>
-				<label>Gender</label><br>
-				<select :class="{ error: form.error.gender }" name="gender" v-model="profile.gender">
-					<option v-for="gender in form.gender">{{ gender }}</option>
-				</select><br>
-				<label>What is your ethnicity?</label><br>
-				<select :class="{ error: form.error.ethnicity }" name="ethnicity" v-model="profile.ethnicity">
-					<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 				</select><br>
 				<label>Please list any food you're allergic to:</label><br>
 				<input v-model.trim="conf_resp.food_allergens"></input><br>
@@ -83,9 +85,6 @@ export default {
 	name: 'signup_form',
 	components: {
 		DateSelector
-	},
-	created() {
-		// this.$store.state.userInfo.id
 	},
 	data() {
 		return {
@@ -236,14 +235,17 @@ input {
 	border: transparent;
 	width: 600px;
 }
+ul {
+	margin-bottom: 10px;
+}
+
+ul li {
+	display: row;
+}
 
 ul li input {
 	margin: 5px 10px 0 0;
 	width: 10px;
-}
-
-ul {
-	margin-bottom: 10px;
 }
 
 .action-buttons {

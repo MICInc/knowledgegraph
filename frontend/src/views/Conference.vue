@@ -6,7 +6,6 @@
 			<Registration v-if="form.registration" v-on:reveal="show_registration()"></Registration>
 			<Feedback v-if="form.feedback" v-on:reveal="show_feedback()"></Feedback>
 			<div v-if="!form.registration && !form.feedback" class="action-buttons">
-				<router-link to="/login" tag="button">LOGIN</router-link>
 				<button v-on:click.prevent="show_registration">REGISTER</button>
 				<button v-on:click.prevent="show_feedback">FEEDBACK</button>
 			</div>
