@@ -1,10 +1,12 @@
 <template>
-	<div id="container">
+	<div class="container">
 		<div id="program-nav">
 			<ul id="nav-bar">
-				<li><button v-on:click="switch_panel('conference')" v-bind:class="{display_button: display == 'conference'}">Conference</button></li>
-				<li><button v-on:click="switch_panel('community')" v-bind:class="{display_button: display == 'community'}">Communities</button></li>
-				<li><button v-on:click="switch_panel('content')" v-bind:class="{display_button: display == 'content'}">Content</button></li>
+				<li><button v-on:click="switch_panel('conference')" v-bind:class="{display_button: display == 'conference'}">CONFERENCE</button></li>
+				<li><button v-on:click="switch_panel('community')" v-bind:class="{display_button: display == 'community'}">
+				COMMUNITIES</button></li>
+				<li><button v-on:click="switch_panel('content')" v-bind:class="{display_button: display == 'content'}">
+				CONTENT</button></li>
 			</ul>
 		</div>
 		<div id="program-panel">
@@ -59,11 +61,16 @@ export default {
 
 #nav-bar {
 	margin: auto;
-	width: 50%;
+	width: 60%;
 }
 
 #nav-bar li {
 	display: inline;
+}
+
+#nav-bar li button {
+	font-size: 0.85em;
+	font-weight: bold;
 }
 
 </style>
