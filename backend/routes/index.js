@@ -4,7 +4,7 @@ var UserAuth = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
 const config = require('../config.js');
 var form = require('../lib/form');
-const nodemailer = require('nodemailer');
+var eh = require('../lib/email_handler');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -34,7 +34,7 @@ router.post('/signup', function(req, res) {
 	var passwordConf = profile.confirm_password;
 
 	var result = form.is_complete(profile);
-	console.log(result);
+	console.log('form complete: '+result.ok)
 
 	if(!result.ok) {
 		res.send({ error: result.errors });
@@ -43,7 +43,7 @@ router.post('/signup', function(req, res) {
 
 	UserAuth.registerUser(req.body, function(err, user) {
 		if (!err) {
-			let token = jwt.sign({email: email}, config.secret, {expiresIn: '24h'});
+			let token = jwt.sign({ email: email }, config.secret, { expiresIn: '24h' });
 
 			res.json({
 				message: 'User successfully created.',
@@ -57,8 +57,9 @@ router.post('/signup', function(req, res) {
 				}
 			});
 
+			// eh.send_verification(email);
 		} else {
-			res.send({error: err.message})
+			res.send({ error: err.message })
 		}
 	});
 });

@@ -5,7 +5,7 @@
 				<li>
 					<h3>Menu</h3>
 				</li>
-				<li v-for="(item, index) in menu"><a :href="item.href">item.name</a></li>
+				<li v-for="(item, index) in menu"><a :href="item.href">{{ item.name }}</a></li>
 			</ul>
 		</nav>
 		<ul v-if="!viewSideNav" v-on:click="toggleViewSideNav" id="sidebar">
@@ -68,6 +68,10 @@
 					{
 						name: 'Conference Committee',
 						href: '#committee'
+					},
+					{
+						name: 'Schedule',
+						href: '/conference/schedule/'+(new Date()).getFullYear()
 					}
 				],
 				viewSideNav: false,

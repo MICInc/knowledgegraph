@@ -132,7 +132,13 @@ export default new Router({
 		{
 			path: '/conference',
 			name: 'conference',
-			component: () => import('./views/Conference.vue')
+			component: () => import('./views/Conference.vue'),
+			children: [
+				{
+					path: 'schedule/:id',
+					component: () => import('@/components/conference/Schedule.vue')
+				}
+			]
 		},
 		{
 			path: '/forgot',

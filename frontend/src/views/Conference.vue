@@ -10,6 +10,7 @@
 				<button v-on:click.prevent="show_feedback">FEEDBACK</button>
 			</div>
 		</div>
+		<router-view></router-view>
 	</div>
 </template>
 
