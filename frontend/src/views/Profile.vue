@@ -2,7 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
-			<img id="cover" src="/img/cover.jpg">
+			<CoverPhoto></CoverPhoto>
 			<div id="about">
 				<div id="left">
 					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
@@ -32,6 +32,7 @@ import Followers from '@/components/profile/Followers'
 import Following from '@/components/profile/Following'
 import Library from '@/components/profile/Library'
 import Publications from '@/components/profile/Publications'
+import CoverPhoto from '@/components/profile/CoverPhoto'
 
 export default {
 	name: 'content',
@@ -44,6 +45,7 @@ export default {
 	},
 	components: {
 		PageNav,
+		CoverPhoto,
 		Comments,
 		Followers,
 		Following,
@@ -148,11 +150,6 @@ nav ul li a:hover {
 
 nav ul li .count {
 	margin-left: 5px;
-}
-
-#cover {
-	width: 1080px;
-	height: 340px;
 }
 
 #about {
