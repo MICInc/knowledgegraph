@@ -113,7 +113,7 @@ module.exports = {
 		});
 	},
 	isEmailTaken: function(email, callback) {
-		module.exports.findByEmail({email: email}, function(user) {
+		module.exports.findByEmail(email, function(user) {
 			callback(user != null);
 		});
 	},

@@ -58,6 +58,7 @@
 		</div>
 		<div v-if="form.complete">
 			Thanks for submititng your application for our conference!<br>
+			Please check your email for the signup confirmation link.<br>
 			Stay updated with the Machine Intelligence Community<br>
 			<a href="https://www.facebook.com/miconference/">Facebook</a>
 			<a href="https://twitter.com/mic_conf">Twitter</a>
