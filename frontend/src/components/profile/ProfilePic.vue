@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div id="profile_pic">
 		<div class="crop">
 			<img v-if="src.length > 0" :src="src">
 			<div v-else></div>
@@ -76,6 +76,13 @@ export default {
 	border: solid;
 	border-width: 1px;
 	border-color: #e0e0e0;
+}
+
+#upload {
+	top: 0px;
+	width: 150px;
+	background-color: #000;
+	z-index: 1;
 }
 
 #upload label {
