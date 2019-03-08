@@ -2,7 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
-			<CoverPhoto></CoverPhoto>
+			<ProfilePic></ProfilePic>
 			<div id="about">
 				<div id="left">
 					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
@@ -32,7 +32,7 @@ import Followers from '@/components/profile/Followers'
 import Following from '@/components/profile/Following'
 import Library from '@/components/profile/Library'
 import Publications from '@/components/profile/Publications'
-import CoverPhoto from '@/components/profile/CoverPhoto'
+import ProfilePic from '@/components/profile/ProfilePic'
 
 export default {
 	name: 'content',
@@ -45,12 +45,12 @@ export default {
 	},
 	components: {
 		PageNav,
-		CoverPhoto,
 		Comments,
 		Followers,
 		Following,
 		Library,
-		Publications
+		Publications,
+		ProfilePic
 	},
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {

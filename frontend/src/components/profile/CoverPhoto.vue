@@ -32,6 +32,7 @@ export default {
 					var src = e.target.result;
 				
 					if(src.length > 0) {
+						console.log(el.files[0]);
 						this.name = el.files[0].name;
 						this.src = src;
 						this.last_modified = new Date();
@@ -97,5 +98,9 @@ export default {
 	width: 1080px;
 	height: auto;
 	cursor: move;
+}
+
+#cover {
+	z-index: -1;
 }
 </style>

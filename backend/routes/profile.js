@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../db/database');
 var ua = require('../lib/user-auth');
+var jwt = require('jsonwebtoken');
 
 router.post('/', function(req, res) {
 	// TODO: should validate email address before querying
@@ -37,6 +38,10 @@ router.post('/library/clear', function(req, res) {
 			else res.status(200).send('cleared');
 		});
 	});
+});
+
+router.get('/edit', function(req, res) {
+
 });
 
 

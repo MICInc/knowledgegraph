@@ -6,6 +6,12 @@ export default {
 		getProfile(data) {
 			return Api().get('/profile', data)
 		},
+		getLibrary(data) {
+			return Api().get('/profile/library', data)
+		},
+		canEdit(data) {
+			return Api().get('/profile/edit', data);
+		},
 		clearLibrary(data) {
 			return Api().post('/profile/library/clear', data)
 		},
