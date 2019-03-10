@@ -9,7 +9,12 @@
 			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()" autofocus>
 			<br>
 			<form>
-				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)" :collab="data.content"></DynamicContent>
+				<DynamicContent 
+					v-on:edit="update_content($event)" 
+					v-on:add="add_content($event)" 
+					v-on:remove="remove_content($event)" 
+					:collab="data.content">
+				</DynamicContent>
 			</form>
 		</div>
 	</div>
@@ -57,6 +62,14 @@ export default {
 		}
 	},
 	methods: {
+		add_content(index) {
+			ContentService.addContent({ id: this.content_id, index: index })
+			.then((data) => {
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		},
 		prevent_default(event) {
 			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
 				event.preventDefault();

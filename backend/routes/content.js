@@ -44,10 +44,46 @@ router.post('/', function(req, res, next) {
 	});
 });
 
-router.post('/parse', function(req, res, next) {
+router.post('/add', function(req, res) {
+	var data = req.body;
+	var query = { _id: data.id };
 
-	fh.write(req, res, article_storage);
-	// call pdf parsing code here
+	db.Content.findOne(query, function(err, article) {
+		if(article != null) {
+			article.content.splice(data.index, 0, {});
+			
+			for(var i = data.index; i < article.content.length; i++) {
+				article.content.index += 1;
+			}
+
+			db.Content.updateOne(query, article, function(err) {
+				if(err) console.error(err);
+			});
+		}
+	});
+});
+
+router.post('/remove', function(req, res) {
+	var data = req.body;
+	var query = { _id: data.id };
+
+	db.Content.find(query, function (err, results) {
+		var content = results[0]['content'];
+		
+		if(data.index < content.length) content.splice(data.index, 1);
+
+		results[0]['content'] = content;
+		
+		var article = new db.Content(results[0]);
+		var updated = article.toObject();
+
+		delete updated._id;
+
+		db.Content.updateOne(query, updated, function(err) {
+			if(err) console.error(err);
+			else res.status(200).send('removed cell '+data.index);
+		});
+	});
 });
 
 router.get('/', function(req, res) {
@@ -101,29 +137,6 @@ router.get('/img', function(req, res) {
 	console.log('article: '+req.query.content_id+' retrieve image: '+req.query.name);
 });
 
-router.post('/remove', function(req, res) {
-	var data = req.body;
-	var query = { _id: data.id };
-
-	db.Content.find(query, function (err, results) {
-		var content = results[0]['content'];
-		
-		if(data.index < content.length) content.splice(data.index, 1);
-
-		results[0]['content'] = content;
-		
-		var article = new db.Content(results[0]);
-		var updated = article.toObject();
-
-		delete updated._id;
-
-		db.Content.updateOne(query, updated, function(err) {
-			if(err) console.error(err);
-			else res.status(200).send('removed cell '+data.index);
-		});
-	});
-});
-
 router.post('/upvote', function(req, res) {
 	var ballot = fc.verify_vote(req.body);
 	var user = { _id: ballot.profile_id };
@@ -163,6 +176,12 @@ router.options('/cleanup', function(req, res) {
 			});
 		}
 	});
+});
+
+router.post('/parse', function(req, res, next) {
+
+	fh.write(req, res, article_storage);
+	// call pdf parsing code here
 });
 
 module.exports = router;

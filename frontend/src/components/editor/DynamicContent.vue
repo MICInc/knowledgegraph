@@ -37,7 +37,7 @@ export default {
 			emit_save: {
 				button: false,
 				cell: undefined,
-				update_cell: -1
+				update_cell: -1,
 			}
 		}
 	},
@@ -51,8 +51,8 @@ export default {
 			this.active_index += 1;
 			var cell_id = Math.random();
 			this.cells.splice(this.active_index, 0, { id: cell_id, tag: 'p' });
-			// this.update_indices();
 			this.focus_eol();
+			this.$emit('add', this.active_index);
 		},
 		focus() {
 			var comp = this.$refs['content-'+this.active_index];
@@ -116,10 +116,7 @@ export default {
 
 			this.emit_save.button = true;
 			this.save();
-		},
-		// update_indices() {
-		// 	for(var i = 0; i < this.cells.length; i++) 
-		// }
+		}
 	}
 }
 </script>
