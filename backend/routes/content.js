@@ -18,7 +18,6 @@ router.post('/', function(req, res, next) {
 	db.Content.findOne(query, function (err, article) {
 		if(article != null) {
 			var index = req.body.data.update_cell;
-
 			article = fc.update(index, data, article);
 
 			db.Content.updateOne(query, article, function(err) {

@@ -55,25 +55,31 @@ module.exports = {
 
 		var hashtag = [];
 		var content = article.content;
-		for(var i in content) {
-			content[i] = module.exports.format_hashtags(content[i]);
-			hashtag.concat(content[i].hashtag);
+
+		for(var i = 0; i < content.length; i++) {
+			if(content[i] != null) {
+				content[i] = module.exports.format_hashtags(content[i]);
+				if(content[i].hashtag != null) hashtag.push(...content[i].hashtag);
+			}
 		}
 
-		article.hashtag = hashtag
+		article.hashtag.push(...hashtag);
 
 		return article;
 	},
 	format_hashtags: function(cell) {
+		if(cell != null && cell.html != null) {
 
-		if(cell.html != undefined) {
+			var tags = module.exports.unique(cell.html.match(/(?:^|[ ])#([a-zA-Z]+)/gm));
 
-			cell.hashtag = module.exports.unique(cell.html.match(/(?:^|[ ])#([a-zA-Z]+)/gm));
+			if(tags.length > 0) {
+				cell.hashtag = tags;
 
-			for(var i in cell.hashtag) {
-				var tag = module.exports.escape(cell['hashtag'][i].trim());
-				var atag = '<a class=\"hashtag\" style=\"color:black;\" href=/search?term='+tag.substring(1)+'>'+tag+'</a>';
-				cell['html'] = cell['html'].replace((new RegExp(tag, 'g')), atag);
+				for(var i in cell.hashtag) {
+					var tag = module.exports.escape(cell['hashtag'][i].trim());
+					var atag = '<a class=\"hashtag\" style=\"color:black;\" href=/search?term='+tag.substring(1)+'>'+tag+'</a>';
+					cell['html'] = cell['html'].replace((new RegExp(tag, 'g')), atag);
+				}
 			}
 		}
 	
@@ -83,15 +89,18 @@ module.exports = {
 		if(src.title != tgt.title) tgt.title = src.title;
 
 		// update existing cell else add new cell
-		if(index < tgt['content'].length) tgt['content'][index] = src['content'];
-		else tgt['content'].push(src['content']);
+		if(src['content'] != null) {
+			if(index < tgt['content'].length) tgt['content'][index] = src['content'];
+			else tgt['content'].push(src['content']);
+		}
 
 		if(src.published) {
 			// need to iterate through all saved cells and extract hashtags
 			// right now it's only looking at the most recently updated cell.
 			tgt.published = src.published;
 			tgt = module.exports.update_hashtags(tgt);
-			if(tgt.content.length > 0) tgt.preview = module.exports.preview(tgt.content[0].text);
+
+			if(tgt.content.length > 0 && tgt.content[0] != null) tgt.preview = module.exports.preview(tgt.content[0].text);
 			if(src.url != tgt.url) tgt.url = module.exports.generate_url(tgt.title);
 		}
 

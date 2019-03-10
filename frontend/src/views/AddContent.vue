@@ -85,8 +85,6 @@ export default {
 				else {
 					this.save_status = 'unpublished';
 				}
-
-				// this.redirect();
 			}
 		},
 		redirect() {

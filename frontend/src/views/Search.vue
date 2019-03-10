@@ -3,14 +3,18 @@
 		<PageNav></PageNav>
 		<div id="search">
 			<span id="result-count">results ({{results.length}})</span><br>
-			<ul>
-				<li v-for='item in results'>
-					<ArticleCell :item="item"></ArticleCell>
-				</li>
-				<li v-for='item in people'>
-					<ProfileCell :item="item"></ProfileCell>
-				</li>
-			</ul>
+			<div>
+				<ul>
+					<li v-for='item in results'>
+						<ArticleCell :item="item"></ArticleCell>
+					</li>
+				</ul>
+				<ul>
+					<li v-for='item in people'>
+						<ProfileCell :item="item"></ProfileCell>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </template>
