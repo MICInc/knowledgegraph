@@ -245,7 +245,7 @@ export default {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
 		}
 	},
-	props: ['index', 'content']
+	props: ['index']
 }
 </script>
 

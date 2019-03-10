@@ -91,6 +91,7 @@ module.exports = {
 
 		// update existing cell else add new cell
 		if(src['content'] != null) {
+			// 
 			if(index < tgt['content'].length) tgt['content'][index] = src['content'];
 			else tgt['content'].push(src['content']);
 		}
