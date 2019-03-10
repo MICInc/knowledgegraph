@@ -57,19 +57,16 @@ module.exports = {
 		return  module.exports.unique(src);
 	},
 	format_hashtags: function(cell) {
-		// console.log('format_hashtags');
+
 		if(cell['html'] != undefined) {
-			// console.log(cell['html']);
+
 			cell['hashtag'] = module.exports.unique(cell['html'].match(/(?:^|[ ])#([a-zA-Z]+)/gm));
-			// console.log('before:');
-			// console.log(cell['hashtag']);
+
 			for(var i in cell['hashtag']) {
 				var tag = module.exports.escape(cell['hashtag'][i].trim());
 				var atag = '<a class=\"hashtag\" style=\"color:black;\" href=/search?term='+tag.substring(1)+'>'+tag+'</a>';
 				cell['html'] = cell['html'].replace((new RegExp(tag, 'g')), atag);
 			}
-			// console.log('after:');
-			// console.log(cell['hashtag']);
 		}
 	
 		return cell;
