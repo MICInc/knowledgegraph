@@ -14,10 +14,6 @@ var content_schema = new mongoose.Schema({
 		type: Date,
 		required: true
 	},
-	description: {
-		type: String,
-		trim: true
-	},
 	hashtag:[{
 		type: String,
 		trim: true
@@ -65,6 +61,10 @@ var content_schema = new mongoose.Schema({
 		type: String, // content-ids
 		required: true
 	}],
+	preview: {
+		type: String,
+		trim: true
+	},
 	published: {
 		type: Boolean,
 		required: true
@@ -83,8 +83,7 @@ var content_schema = new mongoose.Schema({
 	},
 	url: {
 		type: String,
-		trim: true,
-		required: true
+		trim: true
 	},
 	view_duration: [{}] //list of date object pairs {start_view, end_view}
 }, Content.options);

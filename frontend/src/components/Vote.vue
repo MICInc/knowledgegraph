@@ -64,6 +64,7 @@ button {
 
 #votes button {
 	display: inline-block;
+	background-color: transparent;
 }
 
 #votes button:hover {

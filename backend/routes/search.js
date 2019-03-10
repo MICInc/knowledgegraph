@@ -40,7 +40,7 @@ router.get('/', function(req, res, next){
 			var results = {};
 
 			if(err) console.error(err);
-			if(articles.length > 0) results['content'] = articles;
+			if(articles.length > 0) results['content'] = sh.filter_results(articles);
 			
 			db.User.find({ $or:[ { first_name: regx }, { last_name: regx }]}, function(err, profiles) {
 				if(err) console.error(err);

@@ -7,8 +7,6 @@
 				<li v-for='item in results'>
 					<ArticleCell :item="item"></ArticleCell>
 				</li>
-			</ul>
-			<ul>
 				<li v-for='item in people'>
 					<ProfileCell :item="item"></ProfileCell>
 				</li>
@@ -55,6 +53,10 @@ export default {
 		handleSubmit() {
 			alert("You've submitted the form!")
 		},
+		reset() {
+			this.people = [];
+			this.results = [];
+		},
 		async search() {
 			return await SearchService.search({params: this.query})
 			.then(function(data) {
@@ -64,9 +66,12 @@ export default {
 	},
 	watch: {
 		$route (to, from) {
+			this.reset();
+
 			this.query.term = to.query.term;
 			this.search().then(data => {
 				this.results = data;
+				console.log('here: ', this.results);
 			});
 		}
 	} 

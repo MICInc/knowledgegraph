@@ -5,8 +5,22 @@ module.exports = {
 	filter_query: function(query) {
 		return module.exports.escape(query);
 	},
-	filter_results: function(results) {
-		return results;
+	filter_results: function(content) {
+		var filtered = [];
+
+		for(var i in content) {
+			filtered.push({ 
+				id: content[i]._id,
+				title: content[i].title,
+				authors: content[i].authors,
+				preview: content[i].preview,
+				url: content[i].url,
+				likes: content[i].num_likes,
+				dislikes: content[i].num_dislikes,
+			});
+		}
+		
+		return filtered;
 	},
 	filter_users: function(users) {
 		var filtered = [];
