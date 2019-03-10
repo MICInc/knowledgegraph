@@ -50,19 +50,27 @@ module.exports = {
 	escape(str) {
 		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 	},
-	update_hashtags: function(src, target) {
-		if(src == null || target == null) return [];
+	update_hashtags: function(article) {
+		if(article.content.length == 0) return article;
 
-		for(var i = 0; i < target.length; i++) src.push(target[i]);
-		return  module.exports.unique(src);
+		var hashtag = [];
+		var content = article.content;
+		for(var i in content) {
+			content[i] = module.exports.format_hashtags(content[i]);
+			hashtag.concat(content[i].hashtag);
+		}
+
+		article.hashtag = hashtag
+
+		return article;
 	},
 	format_hashtags: function(cell) {
 
-		if(cell['html'] != undefined) {
+		if(cell.html != undefined) {
 
-			cell['hashtag'] = module.exports.unique(cell['html'].match(/(?:^|[ ])#([a-zA-Z]+)/gm));
+			cell.hashtag = module.exports.unique(cell.html.match(/(?:^|[ ])#([a-zA-Z]+)/gm));
 
-			for(var i in cell['hashtag']) {
+			for(var i in cell.hashtag) {
 				var tag = module.exports.escape(cell['hashtag'][i].trim());
 				var atag = '<a class=\"hashtag\" style=\"color:black;\" href=/search?term='+tag.substring(1)+'>'+tag+'</a>';
 				cell['html'] = cell['html'].replace((new RegExp(tag, 'g')), atag);
@@ -74,18 +82,18 @@ module.exports = {
 	update(index, src, tgt) {
 		if(src.title != tgt.title) tgt.title = src.title;
 
+		// update existing cell else add new cell
+		if(index < tgt['content'].length) tgt['content'][index] = src['content'];
+		else tgt['content'].push(src['content']);
+
 		if(src.published) {
 			// need to iterate through all saved cells and extract hashtags
 			// right now it's only looking at the most recently updated cell.
 			tgt.published = src.published;
-			tgt.hashtag = module.exports.update_hashtags(tgt.hashtag, src.hashtag);
+			tgt = module.exports.update_hashtags(tgt);
 			if(tgt.content.length > 0) tgt.preview = module.exports.preview(tgt.content[0].text);
 			if(src.url != tgt.url) tgt.url = module.exports.generate_url(tgt.title);
 		}
-
-		// update existing cell else add new cell
-		if(index < tgt['content'].length) tgt['content'][index] = src['content'];
-		else tgt['content'].push(src['content']);
 
 		return tgt;
 	},
