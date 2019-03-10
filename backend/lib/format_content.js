@@ -10,8 +10,11 @@ module.exports = {
 		var id = req.body.id;
 		var authors = req.body.authors;
 		var title = data.title;
+		var hashtag = [];
+
 		// only optimize and create hashtags if published
-		data.cell = data.publish && data.cell != undefined ? module.exports.format_hashtags(data.cell) : {};
+		if(data.publish && data.cell != null) data.cell = module.exports.format_hashtags(data.cell);
+		if(data.cell != null) hashtag = data.cell.hashtag;
 
 		/*
 			authors - string combination of session info and coauthors
@@ -25,7 +28,7 @@ module.exports = {
 			"content": data.cell,
 			"date_created": data.date_created,
 			"description": "",
-			"hashtag": data.cell.hashtag,
+			"hashtag": hashtag,
 			"last_modified": data.last_modified,
 			"num_citations": 0,
 			"num_comments": 0,
@@ -55,15 +58,19 @@ module.exports = {
 		return  module.exports.unique(src);
 	},
 	format_hashtags: function(cell) {
-
+		console.log('format_hashtags');
 		if(cell['html'] != undefined) {
+			console.log(cell['html']);
 			cell['hashtag'] = module.exports.unique(cell['html'].match(/(?:^|[ ])#([a-zA-Z]+)/gm));
-
+			console.log('before:');
+			console.log(cell['hashtag']);
 			for(var i in cell['hashtag']) {
 				var tag = module.exports.escape(cell['hashtag'][i].trim());
 				var atag = '<a class=\"hashtag\" style=\"color:black;\" href=/search?term='+tag.substring(1)+'>'+tag+'</a>';
 				cell['html'] = cell['html'].replace((new RegExp(tag, 'g')), atag);
 			}
+			console.log('after:');
+			console.log(cell['hashtag']);
 		}
 	
 		return cell;

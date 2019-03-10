@@ -148,8 +148,8 @@ export default {
 				this.is_empty = false;
 			}
 			
-			this.cell.html = el.innerHTML;
-			this.cell.text = el.innerText;
+			this.cell.html = this.trim(el.innerHTML);
+			this.cell.text = this.trim(el.innerText);
 			this.cell.last_modified = new Date();
 
 			this.save();

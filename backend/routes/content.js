@@ -19,20 +19,31 @@ router.post('/', function(req, res, next) {
 		if(article != null) {
 			var index = req.body.data.update_cell;
 
-			if(data.published) article['hashtag'] = fc.update_hashtags(article['hashtag'], data['hashtag']);
+			if(data.published) {
+				// need to iterate through all saved cells and extract hashtags
+				// right now it's only looking at the most recently updated cell.
+				article['hashtag'] = fc.update_hashtags(article['hashtag'], data['hashtag']);
+			}
 
 			// conditions for updating
-			var is_null = data['content'] == null;
-			var is_obj = data['content'].constructor === Object;
-			var has_obj = Object.keys(data['content']).length > 0;
+			// var is_null = data['content'] == null;
+			// var is_obj = data['content'].constructor === Object;
+			// var has_obj = Object.keys(data['content']).length > 0;
 
-			if(!is_null && is_obj && has_obj) {
+			// console.log('is_null: '+is_null);
+			// console.log('is_obj: '+is_obj);
+			// console.log('has_obj: '+has_obj);
+
+			// if(!is_null && is_obj && has_obj) {
 				// update existing cell else add new cell
-				if(index < article['content'].length) article['content'][index] = data['content'];
+				if(index < article['content'].length) {
+					// console.log('cell: '+index);
+					article['content'][index] = data['content'];
+				}
 				else article['content'].push(data['content']);
 
 				data['content'] = article['content'];
-			}
+			// }
 
 			article = (new db.Content(data)).toObject();
 			delete article._id;
@@ -77,7 +88,8 @@ router.get('/', function(req, res) {
 		var user_id = req.query.user.length > 0 ? req.query.user : '';
 
 		db.Content.findOne(query, function(err, article) {
-			if(article.published) {
+
+			if(article != null && article.published) {
 				var start = new Date();
 
 				res.status(200).send(article);

@@ -43,7 +43,6 @@ export default {
 				date_created: new Date(),
 				cell: undefined,
 				citations: '',
-				content: [],
 				last_modified: undefined,
 				prereq: '',
 				publish: false,
