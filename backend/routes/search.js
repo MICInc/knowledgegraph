@@ -9,8 +9,8 @@ router.get('/', function(req, res, next){
 	if(term != undefined) {
 		// save user's query if logged in and has an account
 		if('user' in req.query) {
-			var user = {_id: req.query.user};
-			var log = {query: term, date: new Date()};
+			var user = { _id: req.query.user };
+			var log = { query: term, date: new Date() };
 
 			db.User.findOne(user, function(err, profile) {
 				if(profile != null) {
@@ -34,7 +34,7 @@ router.get('/', function(req, res, next){
 		});
 
 		var term = req.query.term;
-		var regx = new RegExp(term, "i")
+		var regx = new RegExp(term, "i");
 
 		db.Content.find(sh.format_query(term), function (err, articles) {
 			var results = {};
@@ -44,7 +44,7 @@ router.get('/', function(req, res, next){
 			
 			db.User.find({ $or:[ { first_name: regx }, { last_name: regx }]}, function(err, profiles) {
 				if(err) console.error(err);
-				if(profiles.length > 0) results['users'] = profiles;
+				if(profiles.length > 0) results['users'] = sh.filter_users(profiles);
 
 				res.send(results);
 			});

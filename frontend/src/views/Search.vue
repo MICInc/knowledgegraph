@@ -3,15 +3,12 @@
 		<PageNav></PageNav>
 		<div id="search">
 			<span id="result-count">results ({{results.length}})</span><br>
-			<select v-model="view">
-  				<option v-for="(type, index) in view_type" :value="type">{{ type }}</option>
-  			</select>
-			<ul v-show="view == 'article'">
+			<ul>
 				<li v-for='item in results'>
 					<ArticleCell :item="item"></ArticleCell>
 				</li>
 			</ul>
-			<ul v-show="view == 'user'">
+			<ul>
 				<li v-for='item in people'>
 					<ProfileCell :item="item"></ProfileCell>
 				</li>
@@ -61,13 +58,12 @@ export default {
 		async search() {
 			return await SearchService.search({params: this.query})
 			.then(function(data) {
-				console.log(data);
 				return data.data;
 			});
 		}
 	},
 	watch: {
-		$route (to, from){
+		$route (to, from) {
 			this.query.term = to.query.term;
 			this.search().then(data => {
 				this.results = data;

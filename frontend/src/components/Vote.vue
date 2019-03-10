@@ -1,7 +1,7 @@
 <template>
 	<div class='container'>
 		<div id="votes">
-			<span id="total">{{total}}</span><br>
+			<span id="total">{{total}}</span>
 			<button v-if="show" v-on:click="upvote()">+</button>
 			<button v-if="show" v-on:click="downvote()">-</button>
 		</div>
@@ -42,7 +42,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+button {
+	font-size: 0.9em;
+	font-weight: bold;
+}
+
 .container {
 	/*background-color: purple;*/
 }
@@ -60,7 +66,13 @@ export default {
 	display: inline-block;
 }
 
-#total {
+#votes button:hover {
+	color: #5d5499;
+}
 
+#total {
+	width: 100%;
+	margin: 0 auto;
+	text-align: center;
 }
 </style>
