@@ -64,6 +64,7 @@ module.exports = {
 		}
 
 		article.hashtag.push(...hashtag);
+		article.hashtag = module.exports.unique(article.hashtag);
 
 		return article;
 	},
