@@ -79,8 +79,6 @@ export default {
 		},
 		remove_cell(index) {
 			if(index >= 0) {
-				if(this.cells[index].tag == 'p' && this.active_index == 0) return;
-
 				this.cells.splice(index, 1);
 
 				var prev = index - 1;

@@ -67,19 +67,18 @@ router.post('/remove', function(req, res) {
 	var data = req.body;
 	var query = { _id: data.id };
 
-	db.Content.find(query, function (err, results) {
-		var content = results[0]['content'];
+	db.Content.findOne(query, function (err, article) {
+		var content = article.content;
 		
 		if(data.index < content.length) content.splice(data.index, 1);
 
-		results[0]['content'] = content;
+		article.content = content;
 		
-		var article = new db.Content(results[0]);
-		var updated = article.toObject();
+		for(var i = data.index; i < article.content.length; i++) {
+			article.content[i].index -= 1;
+		}
 
-		delete updated._id;
-
-		db.Content.updateOne(query, updated, function(err) {
+		db.Content.updateOne(query, article, function(err) {
 			if(err) console.error(err);
 			else res.status(200).send('removed cell '+data.index);
 		});
