@@ -1,7 +1,7 @@
 <template>
 	<div class='container'>
 		<div id="votes">
-			<span id="total">{{total}}</span>
+			<span id="total">{{ format_total }}</span>
 			<button v-if="show" v-on:click="upvote()">+</button>
 			<button v-if="show" v-on:click="downvote()">-</button>
 		</div>
@@ -16,6 +16,19 @@ export default {
 			total: this.likes - this.dislikes,
 			user_id: this.$store.state.userInfo.id,
 			show: this.$store.state.isLoggedIn
+		}
+	},
+	computed: {
+		format_total() {
+			if(this.total < 1000) return this.total;
+
+			var mag = { 'K': 3, 'M': 6, 'B': 9, 'T': 12 };
+			for(var i in mag) {
+				var div = Math.round(this.total / (Math.pow(10, mag[i])) * 10) / 10;
+				console.log(div)
+				if( 0 < div && div < 1000 ) return div+' '+i; 
+			}
+			return '∞';
 		}
 	},
 	methods: {
