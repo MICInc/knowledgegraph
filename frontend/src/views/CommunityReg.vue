@@ -13,7 +13,7 @@
 			<form id="community-reg-form">
 				<div class='form-sect'>
 	 				<label class="expand-section">I.  Where will MIC's next community be?</label>
-					<select id="schools" v-model.trim="org.school">
+					<select :class="{error: form.error.school }" id="schools" v-model.trim="org.school">
 						<option v-for="school in form.schools">{{ school.name }}</option>
 					</select>
 				</div>
@@ -94,6 +94,15 @@ export default {
 	data() {
 		return {
 			form: {
+				error: {
+					school: false,
+					name: false,
+					established: false,
+					aff_exists: false,
+					aff_name: false,
+					aff_contact_name: false,
+					aff_contact_email: false
+				},
 				complete: false,
 				exists: false,
 				funding_freq: ['Annually', 'Semesterly', 'Quarterly', 'Monthly', 'Weekly', 'Daily'],
@@ -190,11 +199,19 @@ export default {
 			this.form.has_schools = !this.form.has_schools;
 		},
 		submit() {
-			this.form.complete = true;
-			CommunityService.submitCommunity(this.org)
-			.then((resp) => {
+			this.a_submit().then((resp) => {
+				var err = response.data.error;
 				console.log(resp.data);
+
+				if(err != undefined && resp.status == 200) {
+					this.form.error = err;
+				} else if (resp.status == 200) {
+					this.form.complete = true;
+				}
 			});
+		},
+		async a_submit() {
+			return await CommunityService.submitCommunity(this.org);
 		}
 	}
 }
@@ -316,6 +333,12 @@ input {
 
 #schools {
 	font-size: 1em;
+}
+
+.error {
+	border: solid;
+	border-width: 0.5px;
+	border-color: red;
 }
 
 </style>

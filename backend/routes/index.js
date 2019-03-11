@@ -34,7 +34,6 @@ router.post('/signup', function(req, res) {
 	var passwordConf = profile.confirm_password;
 
 	var result = form.is_complete(profile);
-	console.log('form complete: '+result.ok)
 
 	if(!result.ok) {
 		res.send({ error: result.errors });

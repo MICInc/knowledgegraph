@@ -5,6 +5,14 @@ var form = require('../lib/form');
 
 router.post('/', function(req, res) {
 	var community = req.body.school;
+
+	var result = form.is_complete(community);
+
+	if(!result.ok) {
+		res.send({ error: result.errors });
+		return;
+	}
+
 	ch.exists(community, function(exists) {
 		if(exists) res.send({ error: community+' already exists!' });
 		else ch.create(req.body, function(resp) {
