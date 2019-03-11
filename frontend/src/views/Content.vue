@@ -92,6 +92,10 @@ export default {
 	flex-direction: column;
 }
 
+#article-info {
+	width: 1080px;
+}
+
 .caption {
 	text-align: center;
 	font-size: 0.8em;

@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
+	<div class="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
@@ -249,7 +249,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 *:focus {
     outline: none;
 }
@@ -261,7 +261,7 @@ export default {
 }
 
 .content {
-	width: 100%;
+	width: 1080px;
 	-o-transition:.5s;
 	-ms-transition:.5s;
 	-moz-transition:.5s;

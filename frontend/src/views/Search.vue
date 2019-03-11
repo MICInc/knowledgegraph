@@ -76,8 +76,6 @@ export default {
 			this.search().then(data => {
 				if(data.content != null && data.content.length > 0) this.results = data.content;
 				if(data.users != null && data.users.length > 0) this.people = data.users;
-				// this.results = data;
-				console.log('here: ', this.results);
 			});
 		}
 	} 

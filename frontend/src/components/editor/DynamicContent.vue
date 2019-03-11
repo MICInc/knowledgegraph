@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)">
+	<div class="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -119,5 +119,5 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 </style>
