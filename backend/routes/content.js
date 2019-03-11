@@ -53,7 +53,7 @@ router.post('/add', function(req, res) {
 			article.content.splice(data.index, 0, {});
 			
 			for(var i = data.index; i < article.content.length; i++) {
-				article.content.index += 1;
+				article.content[i].index += 1;
 			}
 
 			db.Content.updateOne(query, article, function(err) {
@@ -134,7 +134,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/img', function(req, res) {
-	console.log('article: '+req.query.content_id+' retrieve image: '+req.query.name);
+	// console.log('article: '+req.query.content_id+' retrieve image: '+req.query.name);
 });
 
 router.post('/upvote', function(req, res) {
@@ -154,8 +154,6 @@ router.post('/downvote', function(req, res) {
 router.options('/cleanup', function(req, res) {
 	var content_id = { _id: req.body.content_id };
 	var user_id = { _id: req.body.user_id };
-	console.log(content_id);
-	console.log(user_id);
 
 	db.Content.findOne(content_id, function(err, article) {
 		if(article != null) {
@@ -167,7 +165,6 @@ router.options('/cleanup', function(req, res) {
 		}
 	});
 
-	console.log(user_id);
 	db.User.findOne(user_id, function(err, profile) {
 		if(profile != null) {
 			profile.view_duration['end'] = new Date();
