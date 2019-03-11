@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<div id="community-reg">
+		<div class="community-reg" v-if="!form.complete">
 			<div>
 				<h2>Join the Machine Intelligence Community</h2>
 				<p>
@@ -75,6 +75,9 @@
 				<button v-on:click.prevent="submit">Submit</button>
 			</form>
 		</div>
+		<div class="community-reg" v-if="form.complete">
+			Thank you for completing this form.
+		</div>
 	</div>
 </template>
 
@@ -91,6 +94,7 @@ export default {
 	data() {
 		return {
 			form: {
+				complete: false,
 				exists: false,
 				funding_freq: ['Annually', 'Semesterly', 'Quarterly', 'Monthly', 'Weekly', 'Daily'],
 				schools: institutions,
@@ -186,6 +190,7 @@ export default {
 			this.form.has_schools = !this.form.has_schools;
 		},
 		submit() {
+			this.form.complete = true;
 			CommunityService.submitCommunity(this.org)
 			.then((resp) => {
 				console.log(resp.data);
@@ -229,6 +234,10 @@ button:hover {
 .container {
 	flex: 1;
 	width: 1080px;
+}
+
+.community-reg {
+	margin-top: 10px;
 }
 
 .form-button {

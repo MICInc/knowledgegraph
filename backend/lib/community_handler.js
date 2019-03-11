@@ -17,11 +17,11 @@ module.exports = {
 		community.save()
 		.then(item => {
 			console.log('Saved community');
-			callback(true);
+			callback(200);
 		})
 		.catch(err => {
 			console.log(err);
-			callback(false);
+			callback(400);
 		});
 	},
 	exists: function(community, callback) {
