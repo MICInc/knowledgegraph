@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
 var sh = require('../lib/search_handler');
+var ch = require('../lib/community_handler');
 
 router.get('/', function(req, res, next){
 	var term = req.query.term;
@@ -45,8 +46,11 @@ router.get('/', function(req, res, next){
 			db.User.find({ $or:[ { first_name: regx }, { last_name: regx }]}, function(err, profiles) {
 				if(err) console.error(err);
 				if(profiles.length > 0) results['users'] = sh.filter_users(profiles);
-
 				res.send(results);
+				// ch.find({ $or:[ { name: regx }, { school: regx }]}, function(communities) {
+				// 	if(communities != null && communities.length > 0) results['communities'] = communities;
+				// 	res.send(results);
+				// });
 			});
 		});
 	}

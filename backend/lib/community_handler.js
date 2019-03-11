@@ -25,10 +25,15 @@ module.exports = {
 		});
 	},
 	exists: function(community, callback) {
-		db.Community.findOne({name: community}, function(err, org) {
-			var exists = org != null;
-			if(err) handleError(err);
-			callback(exists);
+		module.exports.find(community, function(org) {
+			callback(org != null);
+		});
+	},
+	find: function(community, callback) {
+		db.Community.findOne({ name: community }, function(err, org) {
+			if(err) console.error(err);
+			console.log(org);
+			callback(org);
 		});
 	},
 	get_all: function(query, callback) {
