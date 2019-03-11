@@ -67,21 +67,19 @@ router.post('/remove', function(req, res) {
 	var data = req.body;
 	var query = { _id: data.id };
 
-	db.Content.findOne(query, function (err, article) {
-		var content = article.content;
-		
-		if(data.index < content.length) content.splice(data.index, 1);
+	db.Content.findOne(query, function (err, article) {		
+		if(article != null) {
+			if(data.index < article.content.length) article.content.splice(data.index, 1);
+			
+			for(var i = 0; i < article.content.length; i++) {
+				article.content[i].index -= 1;
+			}
 
-		article.content = content;
-		
-		for(var i = data.index; i < article.content.length; i++) {
-			article.content[i].index -= 1;
+			db.Content.updateOne(query, article, function(err) {
+				if(err) console.error(err);
+				else res.status(200).send('removed cell '+data.index);
+			});
 		}
-
-		db.Content.updateOne(query, article, function(err) {
-			if(err) console.error(err);
-			else res.status(200).send('removed cell '+data.index);
-		});
 	});
 });
 
