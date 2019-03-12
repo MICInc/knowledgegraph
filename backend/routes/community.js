@@ -7,6 +7,8 @@ router.post('/', function(req, res) {
 	var submission = req.body;
 	var result = form.is_complete(submission);
 
+	console.log(result);
+
 	if(!result.ok) {
 		res.send({ error: result.errors });
 		return;

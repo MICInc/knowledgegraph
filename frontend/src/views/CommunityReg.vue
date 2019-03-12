@@ -46,28 +46,33 @@
 					<label class="expand-section">III. Who are your executives?</label>
 					<div v-for="(value, index) in org.execs.core">
 						<div class="name">
-							<div>
-								<input class="core-exec" :placeholder="value.position" disabled>
-								<input :ref="'exec_first_name'+index" type="text" placeholder="First name" v-model.trim="org.execs.core[index].first_name">
-								<input :ref="'exec_last_name'+index" type="text" placeholder="Last name" v-model.trim="org.execs.core[index].last_name">
-								<input :ref="'exec_email'+index" type="text" placeholder="Email" v-model.trim="org.execs.core[index].email">
+							<div v-on:keyup.enter="add_exec(index)">
+								<input 
+									:ref="'exec_position'+index" 
+									type="text" 
+									placeholder="Position" 
+									v-model.trim="org.execs.core[index].position">
+								<input 
+									:ref="'exec_first_name'+index" 
+									type="text" 
+									placeholder="First name" 
+									v-model.trim="org.execs.core[index].first_name">
+								<input 
+									:ref="'exec_last_name'+index" 
+									type="text" 
+									placeholder="Last name" 
+									v-model.trim="org.execs.core[index].last_name">
+								<input 
+									:ref="'exec_email'+index" 
+									type="text"
+									placeholder="Email" 
+									v-model.trim="org.execs.core[index].email">
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="form-sect">
-					<label class="expand-section">IV. Who else is on your executive board?</label>
-					<span>
-						<div v-for="(value, index) in org.execs.misc">
-							<input class="more-execs" :ref="'exec'+index" type="text" placeholder="Position/Role" v-model.trim="org.execs.misc[index].position">
-							<input class="more-execs" :ref="'exec'+index" type="text" placeholder="First name" v-model.trim="org.execs.misc[index].first_name">
-							<input class="more-execs" :ref="'exec'+index" type="text" placeholder="Last name" v-model.trim="org.execs.misc[index].last_name">
-							<input class="more-execs" :ref="'exec'+index" type="text" placeholder="Email" v-model.trim="org.execs.misc[index].email" v-on:keyup.enter="add_exec(index)">
-						</div>
-					</span>
-				</div>
-				<div class="form-sect">
-					<label class="expand-section">V. Does your organaization have advisors?</label>
+					<label class="expand-section">IV. Does your organaization have advisors?</label>
 					<div v-for="(value, index) in org.advisors">
 						<input class="advisor-field" :ref="'advisor_first'+index" type="text" placeholder="First name" v-model.trim="org.advisors[index].first_name">
 						<input class="advisor-field" :ref="'advisor_last'+index" type="text" placeholder="Last name" v-model.trim="org.advisors[index].last_name">
@@ -125,34 +130,14 @@ export default {
 						name: ''
 					}
 				},
-				established: 0,
+				established: '',
 				execs: {
-					core: [
-					{
-						position: 'President',
+					core: [{
+						position: '',
 						first_name: '',
 						last_name: '',
 						email: ''
-					},
-					{
-						position: 'Secretary',
-						first_name: '',
-						last_name: '',
-						email: ''
-					},
-					{
-						position: 'Treasurer',
-						first_name: '',
-						last_name: '',
-						email: ''
-					},
-					{
-						position: 'Vice President',
-						first_name: '',
-						last_name: '',
-						email: ''
-					}],
-					misc: [{}]
+					}]
 				},
 				members: [],
 				name: '',
@@ -166,8 +151,7 @@ export default {
 			this.org.advisors.splice(next, 0, {});
 		},
 		add_exec(index) {
-			var next = index + 1;
-			this.org.execs.misc.splice(next, 0, {});
+			this.org.execs.core.splice(index + 1, 0, {});
 		},
 		add_funding(index) {
 			var next = index + 1;
