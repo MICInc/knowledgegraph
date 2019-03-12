@@ -50,7 +50,6 @@ export default {
 				citations: '',
 				last_modified: undefined,
 				prereq: '',
-				publish: false,
 				subseq: '',
 				title: ''
 			},
@@ -81,23 +80,9 @@ export default {
 				alert('Need a title');
 			}
 			else {
-				this.data.publish = !this.data.publish;
-
-				if(this.data.publish) {
-					this.save_status = 'publishing...';
-				}
-				else {
-					this.save_status = 'unpublishing...';
-				}
-
-				this.save();
-				
-				if(this.data.publish) {
-					this.save_status = 'published';
-				}
-				else {
-					this.save_status = 'unpublished';
-				}
+				this.save_status = 'publishing...';
+				this.save(true);
+				this.save_status = 'published';
 			}
 		},
 		redirect() {
@@ -111,15 +96,14 @@ export default {
 				console.log(error);
 			});
 		},
-		save() {
+		save(publish=false) {
 			this.save_status = 'saving...';
 			
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, authors: this.authors, data: this.data };
+			var article = { id: this.content_id, authors: this.authors, data: this.data, publish: publish };
 			
 			ContentService.saveContent(article)
 			.then((data) => {
-
 				if(data != undefined) {
 					if(this.content_id.length == 0) {
 						this.content_id = data['data'].id;
@@ -127,12 +111,13 @@ export default {
 					if(this.url != data['data'].url) {
 						this.url = data['data'].url;
 					}
+
+					this.save_status = 'saved';
 				}
 			})
 			.catch(error => {
 				console.log(error);
 			});
-			this.save_status = 'saved';
 		},
 		update_content(emit_save) {
 			this.data.cell = emit_save.cell;
@@ -161,6 +146,9 @@ export default {
 			e.target.value = e.target.value.toUpperCase();
 			this.$set(o, prop, e.target.value);
 			e.target.setSelectionRange(start, start);
+		},
+		async a_publish() {
+			return await ContentService.publish();
 		}
 	},
 	props: ['content'],

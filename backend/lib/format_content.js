@@ -10,9 +10,10 @@ module.exports = {
 		var authors = req.body.authors;
 		var title = data.title;
 		var hashtag = [];
+		var publish = req.body.publish;
 
 		// only optimize and create hashtags if published
-		if(data.publish && data.cell != null) data.cell = module.exports.format_hashtags(data.cell);
+		if(publish && data.cell != null) data.cell = module.exports.format_hashtags(data.cell);
 		if(data.cell != null) hashtag = data.cell.hashtag;
 
 		/*
@@ -27,6 +28,7 @@ module.exports = {
 			"content": data.cell,
 			"date_created": data.date_created,
 			"hashtag": hashtag,
+			"is_published": publish,
 			"last_modified": data.last_modified,
 			"num_citations": 0,
 			"num_comments": 0,
@@ -36,12 +38,11 @@ module.exports = {
 			"num_shares": 0,
 			"prereqs": [],
 			"preview": '',
-			"published": data.publish,
+			"publication": {},
 			"save_by": [],
 			"subseqs": [],
 			"title": title,
-			"url": module.exports.generate_url(title),
-			"year": (new Date()).getFullYear()
+			"url": module.exports.generate_url(title)
 		};
 	},
 	compress_html: function(cell) {
@@ -68,6 +69,31 @@ module.exports = {
 
 		return article;
 	},
+	filter_results: function(article) {
+		var authors = [];
+
+		for(var i = 0; i < article.authors.length; i++) {
+			var a = article.authors[i];
+			authors.push({ first_name: a.first_name, last_name: a.last_name, url: a.url });
+		}
+
+		return {
+			id: article._id,
+			authors: authors,
+			citations: article.citations,
+			date_created: article.date_created,
+			last_modified: article.last_modified,
+			num_citations: article.num_citations,
+			num_likes: article.num_likes,
+			num_dislikes: article.num_dislikes,
+			num_shares: article.num_shares,
+			prereqs: article.prereqs,
+			publication: article.publication,
+			subseqs: article.subseqs,
+			title: article.title,
+			url: article.url,
+		};
+	},
 	format_hashtags: function(cell) {
 		if(cell != null && cell.html != null) {
 
@@ -87,6 +113,7 @@ module.exports = {
 		return cell;
 	},
 	update(index, src, tgt) {
+
 		if(src.title != tgt.title) tgt.title = src.title;
 
 		// update existing cell else add new cell
@@ -96,14 +123,16 @@ module.exports = {
 			else tgt['content'].push(src['content']);
 		}
 
-		if(src.published) {
-			// need to iterate through all saved cells and extract hashtags
-			// right now it's only looking at the most recently updated cell.
-			tgt.published = src.published;
+		if(src.is_published) {
+			// once published (asserted), permanently published!
+			tgt.is_published = src.is_published;
 			tgt = module.exports.update_hashtags(tgt);
 
+			// update search preview text and, if needed, article url
 			if(tgt.content.length > 0 && tgt.content[0] != null) tgt.preview = module.exports.preview(tgt.content[0].text);
 			if(src.url != tgt.url) tgt.url = module.exports.generate_url(tgt.title);
+
+			tgt.publication = tgt.content;
 		}
 
 		return tgt;

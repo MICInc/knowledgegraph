@@ -25,7 +25,6 @@ export default {
 			var mag = { 'K': 3, 'M': 6, 'B': 9, 'T': 12 };
 			for(var i in mag) {
 				var div = Math.round(this.total / (Math.pow(10, mag[i])) * 10) / 10;
-				console.log(div)
 				if( 0 < div && div < 1000 ) return div+' '+i; 
 			}
 			return '∞';
@@ -33,7 +32,7 @@ export default {
 	},
 	filters: {
 		commas(num) {
-			if (!num) return '';
+			if (!num || num == 0) return '0';
 			return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 	},

@@ -40,6 +40,6 @@ module.exports = {
 		var query = module.exports.filter_query(query);
 		query = { $regex: new RegExp("^" + query.toLowerCase(), "i") };
 
-		return { 'title': query, 'published': true };
+		return { 'title': query, 'is_published': true };
 	}
 }

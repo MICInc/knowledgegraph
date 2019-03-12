@@ -90,10 +90,10 @@ router.get('/', function(req, res) {
 
 		db.Content.findOne(query, function(err, article) {
 
-			if(article != null && article.published) {
+			if(article != null && article.is_published) {
 				var start = new Date();
 
-				res.status(200).send(article);
+				res.status(200).send(fc.filter_results(article));
 				article.view_duration.push({ start: start });
 
 				db.Content.updateOne(query, article, function(err) {

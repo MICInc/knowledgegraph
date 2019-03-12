@@ -9,7 +9,7 @@
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
 				<span class='authors' v-for='author in content.authors'><a :href="'/profile/'+author.url">{{ author.first_name+' '+author.last_name }}</a></span>
-				<div v-for="c in content.content">
+				<div v-for="c in content.publication">
 					<hr v-if="c.tag == 'hr'">
 					<p v-if="c.tag == 'p'" v-html="c.html"></p>
 					<figure v-if="c.tag == 'img'">
@@ -45,8 +45,10 @@ export default {
 		if(this.$store.state.isLoggedIn) this.user = this.$store.state.userInfo.id;
 
 		this.get_content().then(data => {
-			this.content_id = data._id;
-			this.content = data;
+			if(data) {
+				this.content_id = data.id;
+				this.content = data;
+			}
 		});
 	},
 	components: {

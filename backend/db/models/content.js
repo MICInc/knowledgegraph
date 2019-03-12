@@ -18,14 +18,14 @@ var content_schema = new mongoose.Schema({
 		type: String,
 		trim: true
 	}],
-	hints: [{
-		type: String,
-		trim: true
-	}],
 	images: [{
 		type: String,
 		trim: true
 	}],
+	is_published: {
+		type: Boolean,
+		required: true
+	},
 	last_modified: {
 		type: Date,
 		required: true
@@ -65,10 +65,7 @@ var content_schema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
-	published: {
-		type: Boolean,
-		required: true
-	},
+	publication: [{}],
 	saved_by: [{
 		type: String, //user-ids
 		required: true
