@@ -45,7 +45,7 @@
 				<div class='form-sect'>
 					<label class="expand-section">III. Who are your executives?</label>
 					<div v-for="(value, index) in org.execs.core">
-						<div class="name">
+						<div :class="{error: form.error.school }" class="name">
 							<div v-on:keyup.enter="add_exec(index)">
 								<input 
 									:ref="'exec_position'+index" 

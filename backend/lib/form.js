@@ -1,17 +1,13 @@
 module.exports = {
 	is_complete: function(form) {
-		// errors should contain true if there IS an erorr
 		var errors = {};
 		var keys = Object.keys(form);
 
+		// errors should contain true if there IS an erorr
+		// ok indicates if the given FORM is OK
 		for(var i in keys) errors[keys[i]] = module.exports.is_empty(form[keys[i]]);
+		for(var i in errors) if(errors[i]) return { ok: false, errors: errors };
 
-		for(var i in errors) {
-			if(errors[i]) {
-				// ok indicates if the given FORM is OK
-				return { ok: false, errors: errors };
-			}
-		}
 		return { ok: true, errors: {} };
 	},
 	is_empty: function(data) {
