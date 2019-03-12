@@ -1,7 +1,7 @@
 <template>
 	<div class='container'>
 		<div id="votes">
-			<span id="total">{{ format_total }}</span>
+			<span id="total">{{ format_total | commas }}</span>
 			<button v-if="show" v-on:click="upvote()">+</button>
 			<button v-if="show" v-on:click="downvote()">-</button>
 		</div>
@@ -20,7 +20,7 @@ export default {
 	},
 	computed: {
 		format_total() {
-			if(this.total < 1000) return this.total;
+			if(!this.abbrev || this.total < 1000) return this.total;
 
 			var mag = { 'K': 3, 'M': 6, 'B': 9, 'T': 12 };
 			for(var i in mag) {
@@ -29,6 +29,12 @@ export default {
 				if( 0 < div && div < 1000 ) return div+' '+i; 
 			}
 			return '∞';
+		}
+	},
+	filters: {
+		commas(num) {
+			if (!num) return '';
+			return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 	},
 	methods: {
@@ -51,7 +57,7 @@ export default {
 			});
 		}
 	},
-	props: ['content_id', 'likes', 'dislikes']
+	props: ['content_id', 'likes', 'dislikes', 'abbrev']
 }
 </script>
 

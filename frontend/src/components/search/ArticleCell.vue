@@ -2,7 +2,7 @@
 	<div class='container'>
 		<div class="result">
 			<div class="vote">
-				<Vote :likes="item.likes" :dislikes="item.dislikes" :content_id="item.id"></Vote>
+				<Vote :likes="item.likes" :dislikes="item.dislikes" :content_id="item.id" :abbrev="true"></Vote>
 			</div>
 			<div class="vote">
 				<router-link class="result-header" v-bind:to="'/content/'+item.url">{{ item.title }}</router-link>
