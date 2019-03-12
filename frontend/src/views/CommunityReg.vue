@@ -20,15 +20,17 @@
 				<div class='form-sect'>
 					<label class="expand-section" v-on:click="show_established_form()">II. Does your community already exist?</label><br>
 					<label class="field-header">What's the name of your organization?</label><br>
-					<input class="full-width" type="text" v-model.trim="org.name"><br>
+					<input :class="{error: form.error.school }" class="full-width" type="text" v-model.trim="org.name"><br>
 					<label class="field-header">When was your organization established?</label><br>
-					<input type="text" class="full-width" v-model.number="org.established"><br>
+					<input :class="{error: form.error.school }" type="text" class="full-width" v-model.number="org.established"><br>
 					<span>
 						<label class="field-header" v-if="org.name.length == 0">Is your organization affiliated with an institution?</label>
 						<label class="field-header" v-else>Is {{ org.name }} affiliated with an institution? </label>
 					</span><br>
-					<input type="radio" value="yes" v-model="org.aff_exists"> Yes
-					<input type="radio" value="no" v-model="org.aff_exists"> No
+					<span :class="{error: form.error.school }">
+						<input type="radio" value="yes" v-model="org.aff_exists"> Yes
+						<input type="radio" value="no" v-model="org.aff_exists"> No
+					</span>
 					<br>
 					<span v-if="org.aff_exists == 'yes'">
 						<label class="field-header">What's the name of the institution:</label>
@@ -95,13 +97,13 @@ export default {
 		return {
 			form: {
 				error: {
-					school: false,
-					name: false,
+					advisors: false,
+					affiliation: false,
 					established: false,
-					aff_exists: false,
-					aff_name: false,
-					aff_contact_name: false,
-					aff_contact_email: false
+					execs: false,
+					members: false,
+					name: false,
+					school: false
 				},
 				complete: false,
 				exists: false,
@@ -200,7 +202,7 @@ export default {
 		},
 		submit() {
 			this.a_submit().then((resp) => {
-				var err = response.data.error;
+				var err = resp.data.error;
 				console.log(resp.data);
 
 				if(err != undefined && resp.status == 200) {
@@ -277,7 +279,6 @@ form {
 }
 
 .full-width {
-	margin-left: 10px;
 	width: 100%;
 }
 

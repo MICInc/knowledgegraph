@@ -4,14 +4,15 @@ var ch = require('../lib/community_handler');
 var form = require('../lib/form');
 
 router.post('/', function(req, res) {
-	var community = req.body.school;
-
-	var result = form.is_complete(community);
+	var submission = req.body;
+	var result = form.is_complete(submission);
 
 	if(!result.ok) {
 		res.send({ error: result.errors });
 		return;
 	}
+
+	var community = form.school;
 
 	ch.exists(community, function(exists) {
 		if(exists) res.send({ error: community+' already exists!' });
