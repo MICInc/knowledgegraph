@@ -74,7 +74,6 @@ import axios from 'axios'
 import AuthService from '@/services/AuthenticationService'
 import RegistrationService from '@/services/RegistrationService.js'
 import ContentService from '@/services/ContentService.js'
-import institutions from '@/data/schools.json'
 import DateSelector from '@/components/DateSelector'
 
 var years = function range(size, today) {
@@ -116,7 +115,7 @@ export default {
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
 				months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-				schools: institutions,
+				schools: [],
 				show: true,
 				travel: false,
 				years: years(100, (new Date()).getFullYear())

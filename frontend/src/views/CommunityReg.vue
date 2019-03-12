@@ -90,7 +90,6 @@
 
 <script>
 import CommunityService from '@/services/CommunityService';
-import institutions from '@/data/schools.json'
 import PageNav from '@/components/PageNav'
 
 export default {
@@ -113,7 +112,7 @@ export default {
 				complete: false,
 				exists: false,
 				funding_freq: ['Annually', 'Semesterly', 'Quarterly', 'Monthly', 'Weekly', 'Daily'],
-				schools: institutions,
+				schools: [],
 				aff_exists: false,
 				server_resp: '',
 				more_board: false,
