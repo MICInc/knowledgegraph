@@ -1,6 +1,6 @@
 <template>
 	<div class='form-sect'>
-		<label class="expand-section">III. Who are your executives?</label>
+		<label class="section-heading">III. Who are your executives?</label>
 		<div v-for="(value, index) in execs">
 			<div :class="{ error: error }" class="name">
 				<div v-on:keyup.enter="add_exec(index)">

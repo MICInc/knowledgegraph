@@ -4,8 +4,13 @@
 		<div class="community-reg" v-if="!form.complete">
 			<ReadMe></ReadMe>
 			<form id="community-reg-form">
-				<School :error="form.error.school"></School>
-				<Institution 
+				<School
+					:error="form.error.school"
+					v-on:school="set_school($event)">
+				</School>
+				{{ org.school }}
+				<Institution
+					:school="org.school"
 					:err_name="form.error.name"
 					:eff_aff="form.error.affiliation"
 					:err_est="form.error.established">
@@ -64,6 +69,9 @@ export default {
 		}
 	},
 	methods: {
+		set_school(name) {
+			this.org.school = name;
+		},
 		submit() {
 			this.a_submit().then((resp) => {
 				var err = resp.data.error;
@@ -123,6 +131,17 @@ button:hover {
 	margin-top: 10px;
 }
 
+label {
+	font-size: 1em;
+	font-weight: 600;
+}
+
+.section-heading {
+	color: #593c75;
+	font-size: 1.5em;
+	cursor: pointer;
+}
+
 .form-button {
 	margin-bottom: 15px;
 }
@@ -144,11 +163,6 @@ form {
 
 .full-width {
 	width: 100%;
-}
-
-label {
-	font-size: 13px;
-	font-weight: 600;
 }
 
 input {
@@ -184,12 +198,6 @@ input {
 	margin-right: 0px;
 	margin-left: 0px;
 	width: 31%;
-}
-
-.expand-section {
-	color: #593c75;
-	font-size: 1.5em;
-	cursor: pointer;
 }
 
 .field-header {

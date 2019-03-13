@@ -1,6 +1,6 @@
 <template>
 	<div class="form-sect">
-		<label class="expand-section">IV. Does your organaization have advisors?</label>
+		<label class="section-heading">IV. Does your organaization have advisors?</label>
 		<div class="advisor-field" v-for="(value, index) in advisors" v-on:keyup.enter="add_advisor(index)">
 			<input type="text" placeholder="First name" v-model.trim="advisors[index].first_name">
 			<input type="text" placeholder="Last name" v-model.trim="advisors[index].last_name">
