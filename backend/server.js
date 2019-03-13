@@ -90,13 +90,17 @@ else {
 
 	app.all('*', function (req, res, next) {
 		origin = req.get('origin');
-		var whitelist = ['http://localhost:8080', 'http://localhost:8081']; // Development whitelist
+
+		// Development whitelist
+		var whitelist = ['http://localhost:8080', 'http://localhost:8081'];
+		
 		corsOptions = {
 			origin: function (origin, callback) {
 					var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
 					callback(null, originIsWhitelisted);
 			}
 		};
+		
 		next();
 	});
 

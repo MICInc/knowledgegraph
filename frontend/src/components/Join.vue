@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import DateSelector from '@/components/DateSelector'
+import DateSelector from '@/components/form/DateSelector'
 import AuthService from '@/services/AuthenticationService'
 import router from '@/router'
 

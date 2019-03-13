@@ -74,7 +74,7 @@ import axios from 'axios'
 import AuthService from '@/services/AuthenticationService'
 import RegistrationService from '@/services/RegistrationService.js'
 import ContentService from '@/services/ContentService.js'
-import DateSelector from '@/components/DateSelector'
+import DateSelector from '@/components/form/DateSelector'
 
 var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
