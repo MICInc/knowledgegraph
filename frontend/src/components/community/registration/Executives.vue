@@ -1,7 +1,7 @@
 <template>
 	<div class='form-sect'>
 		<label class="section-heading">III. Who are your executives?</label>
-		<div v-for="(value, index) in execs">
+		<div v-for="(value, index) in execs" v-on:keyup="update()">
 			<div :class="{ error: error }" class="name">
 				<div v-on:keyup.enter="add_exec(index)">
 					<input 
@@ -46,6 +46,9 @@ export default {
 	methods: {
 		add_exec(index) {
 			this.execs.splice(index + 1, 0, {});
+		},
+		update() {
+			this.$emit('execs', this.execs);
 		}
 	},
 	props: ['error']

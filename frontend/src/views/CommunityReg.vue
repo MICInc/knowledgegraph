@@ -8,15 +8,18 @@
 					:error="form.error.school"
 					v-on:school="set_school($event)">
 				</School>
-				{{ org.school }}
-				<Institution
+				<Organization
 					:school="org.school"
 					:err_name="form.error.name"
 					:eff_aff="form.error.affiliation"
-					:err_est="form.error.established">
-				</Institution>
-				<Executives :error="form.error.execs"></Executives>
-				<Advisors></Advisors>
+					:err_est="form.error.established"
+					v-on:org="set_org($event)">
+				</Organization>
+				<Executives 
+					:error="form.error.execs"
+					v-on:execs="set_execs($event)">
+				</Executives>
+				<Advisors v-on:advisors="set_advisors($event)"></Advisors>
 				<button v-on:click.prevent="submit">Submit</button>
 			</form>
 		</div>
@@ -31,7 +34,7 @@ import CommunityService from '@/services/CommunityService';
 import PageNav from '@/components/PageNav'
 import ReadMe from '@/components/community/registration/ReadMe'
 import School from '@/components/community/registration/School'
-import Institution from '@/components/community/registration/Institution'
+import Organization from '@/components/community/registration/Organization'
 import Executives from '@/components/community/registration/Executives'
 import Advisors from '@/components/community/registration/Advisors'
 
@@ -41,7 +44,7 @@ export default {
 		PageNav,
 		ReadMe,
 		School,
-		Institution,
+		Organization,
 		Executives,
 		Advisors
 	},
@@ -69,10 +72,23 @@ export default {
 		}
 	},
 	methods: {
+		set_advisors(advisors) {
+			this.advisors = advisors;
+		},
+		set_execs(execs) {
+			this.org.execs = execs;
+		},
+		set_org(data) {
+			this.org.affiliation = { contact: data.contact }
+			this.org.established = data.established;
+			this.org.name = data.name;
+		},
 		set_school(name) {
 			this.org.school = name;
 		},
 		submit() {
+			console.log(this.org);
+
 			this.a_submit().then((resp) => {
 				var err = resp.data.error;
 				console.log(resp.data);

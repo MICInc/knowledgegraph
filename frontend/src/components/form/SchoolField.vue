@@ -2,7 +2,7 @@
 	<div>
 		<input type="text" v-model.trim="school"><br>
 		<select :class="{ error: error }" v-model.trim="school">
-			<option v-for="name in schools">{{ name }}</option>
+			<option v-for="name in schools" v-on:click="update()">{{ name }}</option>
 		</select>
 	</div>
 </template>
@@ -14,6 +14,11 @@ export default {
 		return {
 			schools: ['Boston University', 'Massachusetts Institute of Technology'],
 			school: ''
+		}
+	},
+	methods: {
+		update() {
+			this.$emit('school', this.school);
 		}
 	},
 	props: ['error']

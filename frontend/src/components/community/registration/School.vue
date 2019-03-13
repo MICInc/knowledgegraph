@@ -3,7 +3,7 @@
 		<label class="section-heading">I.  Where will MIC's next community be?</label>
 		<SchoolField 
 			:error="error"
-			v-on:school="set($event)">
+			v-on:school="update($event)">
 		</SchoolField>
 	</div>
 </template>
@@ -19,9 +19,8 @@ export default {
 		}
 	},
 	methods: {
-		set(name) {
+		update(name) {
 			this.$emit('school', name);
-			console.log('here');
 		}
 	},
 	props: ['error']
