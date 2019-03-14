@@ -14,13 +14,9 @@ export default {
 	components: {
 		SchoolField
 	},
-	data() {
-		return {
-		}
-	},
 	methods: {
-		update(name) {
-			this.$emit('school', { name: this.name });
+		update(school) {
+			this.$emit('update', { school: school });
 		}
 	},
 	props: ['error']

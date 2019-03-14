@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<div class="community-reg" v-if="!form.complete">
 			<ReadMe></ReadMe>
-			<form id="community-reg-form">
+			<form id="community-reg-form" v-on:keydown.enter="prevent_default($event)">
 				<School
 					:error="form.error.school"
 					v-on:update="update($event)">
@@ -73,6 +73,9 @@ export default {
 		}
 	},
 	methods: {
+		prevent_default(event) {
+			event.preventDefault()
+		},
 		set_advisors(advisors) {
 			this.org.advisors = advisors;
 			console.log('set_advisors');
@@ -106,7 +109,6 @@ export default {
 		},
 		update(data) {
 			for(var k in data) this.org[k] = data[k];
-			console.log(this.org);
 		},
 		async a_submit() {
 			return await CommunityService.submitCommunity(this.org);
