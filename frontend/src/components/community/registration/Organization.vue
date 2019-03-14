@@ -24,15 +24,15 @@
 			<span :class="{ error: err_aff }">
 				<input 
 					type="radio" 
-					:value="true" 
+					:value="'yes'" 
 					v-model="exists"> Yes
 				<input 
 					type="radio" 
-					:value="false" 
+					:value="'no'" 
 					v-model="exists"> No
 			</span>
 		</div>
-		<div v-if="exists">
+		<div v-if="exists == 'yes'">
 			<label class="field-header">Who can we contact at your institution?</label><br>
 			Name: <input 
 				type="text" 
@@ -58,7 +58,7 @@ export default {
 				name: ''
 			},
 			established: '',
-			exists: false,
+			exists: '',
 			name: ''
 		}
 	},

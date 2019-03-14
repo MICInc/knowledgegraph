@@ -11,7 +11,7 @@
 				<Organization
 					:school="org.school"
 					:err_name="form.error.name"
-					:eff_aff="form.error.affiliation"
+					:err_aff="form.error.affiliation"
 					:err_est="form.error.established"
 					v-on:update="update($event)">
 				</Organization>
@@ -56,6 +56,7 @@ export default {
 					affiliation: false,
 					established: false,
 					execs: false,
+					exists: false,
 					name: false,
 					school: false
 				},
@@ -66,7 +67,7 @@ export default {
 				affiliation: {},
 				established: '',
 				execs: [],
-				exists: false,
+				exists: '',
 				name: '',
 				school: ''
 			}
@@ -78,27 +79,21 @@ export default {
 		},
 		set_advisors(advisors) {
 			this.org.advisors = advisors;
-			console.log('set_advisors');
 		},
 		set_execs(execs) {
 			this.org.execs = execs;
-			console.log('set_execs');
 		},
 		set_org(data) {
 			this.org.affiliation = { contact: data.contact }
 			this.org.established = data.established;
 			this.org.name = data.name;
-			console.log('set_org');
 		},
 		set_school(name) {
 			this.org.school = name;
 		},
 		submit() {
-			console.log(this.org);
-
 			this.a_submit().then((resp) => {
 				var err = resp.data.error;
-				console.log(resp.data);
 
 				if(err != undefined && resp.status == 200) {
 					this.form.error = err;
