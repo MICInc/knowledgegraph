@@ -20,7 +20,7 @@ export default {
 	},
 	methods: {
 		update(name) {
-			this.$emit('school', name);
+			this.$emit('school', { name: this.name });
 		}
 	},
 	props: ['error']

@@ -16,12 +16,12 @@ export default {
 			school: ''
 		}
 	},
-	methods: {
-		update() {
-			this.$emit('school', this.school);
+	props: ['error'],
+	watch: {
+		school: function(sel, prev) {
+			this.$emit('school', sel);
 		}
-	},
-	props: ['error']
+	}
 }
 </script>
 

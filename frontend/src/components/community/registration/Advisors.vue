@@ -26,7 +26,7 @@ export default {
 			else this.advisors.splice(index, 1);
 		},
 		update() {
-			this.$emit('advisors', this.advisors);
+			this.$emit('update', { advisors: this.advisors });
 		}
 	}
 }

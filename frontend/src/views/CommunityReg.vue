@@ -6,20 +6,20 @@
 			<form id="community-reg-form">
 				<School
 					:error="form.error.school"
-					v-on:school="set_school($event)">
+					v-on:update="update($event)">
 				</School>
 				<Organization
 					:school="org.school"
 					:err_name="form.error.name"
 					:eff_aff="form.error.affiliation"
 					:err_est="form.error.established"
-					v-on:org="set_org($event)">
+					v-on:update="update($event)">
 				</Organization>
 				<Executives 
 					:error="form.error.execs"
-					v-on:execs="set_execs($event)">
+					v-on:update="update($event)">
 				</Executives>
-				<Advisors v-on:advisors="set_advisors($event)"></Advisors>
+				<Advisors v-on:update="update($event)"></Advisors>
 				<button v-on:click.prevent="submit">Submit</button>
 			</form>
 		</div>
@@ -66,6 +66,7 @@ export default {
 				affiliation: {},
 				established: '',
 				execs: [],
+				exists: false,
 				name: '',
 				school: ''
 			}
@@ -73,15 +74,18 @@ export default {
 	},
 	methods: {
 		set_advisors(advisors) {
-			this.advisors = advisors;
+			this.org.advisors = advisors;
+			console.log('set_advisors');
 		},
 		set_execs(execs) {
 			this.org.execs = execs;
+			console.log('set_execs');
 		},
 		set_org(data) {
 			this.org.affiliation = { contact: data.contact }
 			this.org.established = data.established;
 			this.org.name = data.name;
+			console.log('set_org');
 		},
 		set_school(name) {
 			this.org.school = name;
@@ -99,6 +103,10 @@ export default {
 					this.form.complete = true;
 				}
 			});
+		},
+		update(data) {
+			for(var k in data) this.org[k] = data[k];
+			console.log(this.org);
 		},
 		async a_submit() {
 			return await CommunityService.submitCommunity(this.org);

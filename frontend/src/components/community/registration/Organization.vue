@@ -6,8 +6,7 @@
 				:class="{ error: err_name }" 
 				class="full-width" 
 				type="text" 
-				v-model.trim="name"
-				v-on:keyup="update()">
+				v-model.trim="name">
 			<br>
 		</div>
 		<div>
@@ -16,8 +15,7 @@
 				:class="{ error: err_est }" 
 				type="text" 
 				class="full-width" 
-				v-model.number="established" 
-				v-on:keyup="update()">
+				v-model.number="established">
 			<br>
 		</div>
 		<div>
@@ -26,29 +24,25 @@
 			<span :class="{ error: err_aff }">
 				<input 
 					type="radio" 
-					value="yes" 
-					v-model="exists"
-					v-on:click="update()"> Yes
+					:value="true" 
+					v-model="exists"> Yes
 				<input 
 					type="radio" 
-					value="no" 
-					v-model="exists"
-					v-on:click="update()"> No
+					:value="false" 
+					v-model="exists"> No
 			</span>
 		</div>
-		<div v-if="exists == 'yes'">
+		<div v-if="exists">
 			<label class="field-header">Who can we contact at your institution?</label><br>
 			Name: <input 
 				type="text" 
 				class="full-width" 
-				v-model.trim="contact.name"
-				v-on:click="update()">
+				v-model.trim="contact.name">
 			<br>
 			Email: <input 
 				type="text" 
 				class="full-width" 
-				v-model.trim="contact.email"
-				v-on:click="update()">
+				v-model.trim="contact.email">
 			<br>
 		</div>
 	</div>
@@ -68,16 +62,14 @@ export default {
 			name: ''
 		}
 	},
-	method: {
-		update() {
-			this.$emit('org', { 
-				contact: this.contact,
-				established: this.established,
-				name: this.name 
-			});
-		}
-	},
-	props: ['school', 'err_name', 'err_aff', 'err_est']
+	props: ['school', 'err_name', 'err_aff', 'err_est'],
+	watch: {
+		'contact.email': function(curr, prev) { this.$emit('update', { affiliation: { contact: this.contact }}); },
+		'contact.name': function(curr, prev) { this.$emit('update', { affiliation: { contact: this.contact }}); },
+		established: function(curr, prev) { this.$emit('update', { established: this.established }); },
+		exists: function(curr, prev) { this.$emit('update', { exists: this.exists }); },
+		name: function(curr, prev) { this.$emit('update', { name: this.name }); }
+	}
 }
 </script> 
 
