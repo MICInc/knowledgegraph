@@ -94,7 +94,7 @@ export default {
 		submit() {
 			this.a_submit().then((resp) => {
 				var err = resp.data.error;
-
+				
 				if(err != undefined && resp.status == 200) {
 					this.form.error = err;
 				} else if (resp.status == 200) {

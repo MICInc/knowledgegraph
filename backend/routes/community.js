@@ -17,7 +17,7 @@ router.post('/', function(req, res) {
 	ch.exists(community, function(exists) {
 		if(exists) res.send({ error: community+' already exists!' });
 		else ch.create(req.body, function(resp) {
-			if(resp == 200) res.status(200);
+			if(resp == 200) res.status(200).send(200);
 			else res.status(400).send('Please try again.');
 		});
 	});
