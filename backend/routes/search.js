@@ -58,7 +58,7 @@ router.get('/', function(req, res, next){
 });
 
 router.get('/school', function(req, res) {
-	db.School.find({ name: { $regex: '^'+req.query}}, function(err, schools) {
+	db.School.find({ name: new RegExp('^'+req.query.name, "i")}, function(err, schools) {
 		console.log(schools[0]);
 		if(schools) res.status(200).send(schools);
 		else res.status(400).send({});

@@ -13,9 +13,20 @@ var morgan = require('morgan');
 var cors = require('cors');
 var port = process.env.PORT || 7000; //keep this or change as long as greater than 1024
 const ws = require('ws');
+const db = require('./db/database')
 
 // master process
 if(cluster.isMaster)  {
+	//Load database
+	db.School.estimatedDocumentCount({}, function(err, total) {
+		if(total == 0) {
+			var file = require('./db/schools.json');
+			db.School.create(file, function(err, result) {
+				if(err) console.error(err);
+			});
+		}
+	});
+
 	// Fork workers.
 	for (var i = 0; i < numCPUs; i++) {
 		cluster.fork();

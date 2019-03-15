@@ -36,7 +36,7 @@ export default {
 	methods: {
 		suggest(event) {
 			this.show = true;
-			SearchService.findSchool({ params: this.query })
+			SearchService.findSchool({ params: { name: this.query }})
 			.then((resp) => {
 				this.schools = resp.data;
 			})
