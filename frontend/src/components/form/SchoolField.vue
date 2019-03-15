@@ -2,7 +2,7 @@
 	<div>
 		<div class="autocomplete">
 			<input type="text" v-model.trim="query" v-on:keyup="suggest($event)">
-			<div v-show="show">
+			<div v-show="query.length > 0">
 				<ul>
 					<li v-for="(school, index) in filter">{{ school.name }}</li>
 				</ul>
@@ -23,19 +23,17 @@ export default {
 			return this.schools.filter(function(school) {
 				if(school.name != undefined) return school.name.match(new RegExp('('+term+')', 'i'));
 				else return '';
-			});
+			}).splice(0, 5);
 		}
 	},
 	data() {
 		return {
 			schools: [],
-			query: '',
-			show: false
+			query: ''
 		}
 	},
 	methods: {
 		suggest(event) {
-			this.show = true;
 			SearchService.findSchool({ params: { name: this.query }})
 			.then((resp) => {
 				this.schools = resp.data;
