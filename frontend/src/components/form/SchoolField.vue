@@ -52,7 +52,7 @@ export default {
 	},
 	props: ['error'],
 	watch: {
-		school: function(sel, prev) {
+		query: function(sel, prev) {
 			this.$emit('school', sel);
 		}
 	}

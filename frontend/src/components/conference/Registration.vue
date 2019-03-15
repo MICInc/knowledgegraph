@@ -38,9 +38,7 @@
 					</li>
 				</ul>
 				<label>What school do you attend?</label><br>
-				<select :class="{ error: form.error.school }" name="school" v-model="profile.school">
-					<option v-for="school in form.schools">{{ school.name }}</option>
-				</select><br>
+				<SchoolField v-on:school="update($event)"></SchoolField>
 				<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
 				<select :class="{ error: form.error.grade }" name="grade" v-model="profile.grade">
 					<option v-for="grade in form.academic_year">{{ grade }}</option>
@@ -75,6 +73,7 @@ import AuthService from '@/services/AuthenticationService'
 import RegistrationService from '@/services/RegistrationService.js'
 import ContentService from '@/services/ContentService.js'
 import DateSelector from '@/components/form/DateSelector'
+import SchoolField from '@/components/form/SchoolField'
 
 var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
@@ -83,7 +82,8 @@ var years = function range(size, today) {
 export default {
 	name: 'signup_form',
 	components: {
-		DateSelector
+		DateSelector,
+		SchoolField
 	},
 	data() {
 		return {
@@ -204,6 +204,9 @@ export default {
 					});
 				}
 			});
+		},
+		update(data) {
+			this.profile.school = data;
 		}
 	}
 }
