@@ -103,7 +103,7 @@ export default {
 			});
 		},
 		async getContent() {
-			return await ProfileService.getProfile({ url: this.url })
+			return await ProfileService.getProfile({ params: { url: this.url }})
 			.then(function(resp) {
 				console.log(resp.status);
 				if(resp.data != undefined && resp.status == 200) return resp.data;

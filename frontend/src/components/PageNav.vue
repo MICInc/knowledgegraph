@@ -11,6 +11,9 @@
 			v-on:keydown.enter.prevent="search()"
 			v-model="query">
 		<nav id=right>
+			<ul>
+				<li>{{ user }} </li>
+			</ul>
 			<ul v-if="!isLoggedIn">
 				<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>
 				<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
@@ -37,6 +40,7 @@ export default {
 	},
 	data () {
 		return {
+			user: this.$store.state.userInfo.first_name,
 			query: ''
 		}
 	},
