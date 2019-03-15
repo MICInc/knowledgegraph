@@ -5,6 +5,6 @@ export default {
 		return Api().get('/search', data);
 	},
 	findSchool(data) {
-		return Api().get('/school', data);
+		return Api().get('/search/school', data);
 	}
 }

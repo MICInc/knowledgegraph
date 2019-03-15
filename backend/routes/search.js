@@ -56,4 +56,12 @@ router.get('/', function(req, res, next){
 	}
 });
 
+router.get('/school', function(req, res) {
+	db.School.find({ name: req.query }, function(err, schools) {
+		console.log(schools);
+		if(schools) res.status(200).send(schools);
+		else res.status(400).send({});
+	});
+});
+
 module.exports = router;

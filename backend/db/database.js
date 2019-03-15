@@ -7,7 +7,7 @@ var Community = require('./models/community.js');
 var Conference = require('./models/conference.js');
 var Feedback = require('./models/feedback.js');
 var Search = require('./models/search.js');
-var School = require('./models/school');
+var School = require('./models/school.js');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
