@@ -4,7 +4,7 @@
 			<input type="text" v-model.trim="query" v-on:keyup="suggest($event)">
 			<div v-show="show">
 				<ul>
-					<li v-for="(name, index) in filter">{{ name }}</li>
+					<li v-for="(school, index) in filter">{{ school.name }}</li>
 				</ul>
 			</div>
 		</div>
@@ -19,14 +19,16 @@ export default {
 	computed: {
 		filter: function() {
 			var term = this.query;
-			return this.schools.filter(function(name) {
-				return name.match(new RegExp('('+term+')', 'i'));
+
+			return this.schools.filter(function(school) {
+				if(school.name != undefined) return school.name.match(new RegExp('('+term+')', 'i'));
+				else return '';
 			});
 		}
 	},
 	data() {
 		return {
-			schools: ['Boston University', 'Massachusetts Institute of Technology'],
+			schools: [],
 			query: '',
 			show: false
 		}
@@ -36,8 +38,7 @@ export default {
 			this.show = true;
 			SearchService.findSchool({ params: this.query })
 			.then((resp) => {
-				console.log(resp.data);
-				// this.schools = resp;
+				this.schools = resp.data;
 			})
 			.catch();
 		}

@@ -35,7 +35,6 @@ router.get('/', function(req, res, next){
 		});
 
 		var term = req.query.term;
-		var regx = new RegExp(term, "i");
 
 		db.Content.find(sh.format_query(term), function (err, articles) {
 			var results = {};
@@ -43,6 +42,8 @@ router.get('/', function(req, res, next){
 			if(err) console.error(err);
 			if(articles.length > 0) results['content'] = sh.filter_results(articles);
 			
+			var regx = new RegExp(term, "i");
+
 			db.User.find({ $or:[ { first_name: regx }, { last_name: regx }]}, function(err, profiles) {
 				if(err) console.error(err);
 				if(profiles.length > 0) results['users'] = sh.filter_users(profiles);
@@ -57,11 +58,11 @@ router.get('/', function(req, res, next){
 });
 
 router.get('/school', function(req, res) {
-	db.School.find({ name: req.query }, function(err, schools) {
-		console.log(schools);
+	db.School.find({ name: { $regex: '^'+req.query}}, function(err, schools) {
+		console.log(schools[0]);
 		if(schools) res.status(200).send(schools);
 		else res.status(400).send({});
-	});
+	}).select('-_id').select('-__v');
 });
 
 module.exports = router;
