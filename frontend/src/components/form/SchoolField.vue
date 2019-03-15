@@ -1,10 +1,13 @@
 <template>
 	<div>
 		<div class="autocomplete">
-			<input type="text" v-model.trim="query" v-on:keyup="suggest($event)">
-			<div v-show="query.length > 0">
+			<input 
+				type="text" 
+				v-model.trim="query"
+				v-on:keyup="suggest()">
+			<div class="typeahead" v-show="has_suggestions">
 				<ul>
-					<li v-for="(school, index) in filter">{{ school.name }}</li>
+					<li v-for="(school, index) in filter" v-on:click="select(school.name)">{{ school.name }}</li>
 				</ul>
 			</div>
 		</div>
@@ -29,14 +32,20 @@ export default {
 	data() {
 		return {
 			schools: [],
-			query: ''
+			query: '',
+			has_suggestions: false
 		}
 	},
 	methods: {
-		suggest(event) {
+		select(school) {
+			this.query = school;
+			this.has_suggestions = false;
+		},
+		suggest() {
 			SearchService.findSchool({ params: { name: this.query }})
 			.then((resp) => {
 				this.schools = resp.data;
+				this.has_suggestions = this.schools.length > 0;
 			})
 			.catch();
 		}
@@ -55,5 +64,18 @@ export default {
 	border: solid;
 	border-width: 0.5px;
 	border-color: red;
+}
+
+.typeahead {
+	border: solid;
+	border-width: 1px;
+	border-top: none;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-color: #ccc;
+}
+
+.typeahead ul li:hover {
+	background-color: #ccc;
 }
 </style>
