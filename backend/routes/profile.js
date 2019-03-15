@@ -20,10 +20,11 @@ router.post('/', function(req, res) {
 });
 
 router.get('/', function(req, res) {
-	query = {};
+	// console.log(req);
 
-	db.User.find(query, function(err, results) {
-		res.send(results);
+	db.User.findOne({ url: req.body.url }, function(err, results) {
+		if(results) res.status(200).send(results);
+		else res.status(400).send();
 	});
 });
 

@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<div class="community-reg" v-if="!form.complete">
 			<ReadMe></ReadMe>
-			<form id="community-reg-form" v-on:keydown.enter="prevent_default($event)">
+			<form id="community-reg-form" autocomplete="off" v-on:keydown.enter="prevent_default($event)">
 				<School
 					:error="form.error.school"
 					v-on:update="update($event)">

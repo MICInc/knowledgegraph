@@ -33,12 +33,13 @@ import Following from '@/components/profile/Following'
 import Library from '@/components/profile/Library'
 import Publications from '@/components/profile/Publications'
 import ProfilePic from '@/components/profile/ProfilePic'
+import router from '@/router'
 
 export default {
 	name: 'content',
 	beforeMount() {
 		this.getContent().then(data => {
-			this.profile = data;
+			if(data) this.profile = data;
 		});
 		
 		this.user_id = this.$store.state.userInfo.id;
@@ -58,7 +59,10 @@ export default {
 			user: {
 				id: 0
 			},
-			profile: {},
+			profile: {
+				first_name: '',
+				last_name: ''
+			},
 			sections: [
 				{
 					name: 'comments',
@@ -99,12 +103,13 @@ export default {
 			});
 		},
 		async getContent() {
-			return await ProfileService.getProfile({ params: { url: this.url } })
-			.then(function(data) {
-				return data.data[0];
+			return await ProfileService.getProfile({ url: this.url })
+			.then(function(resp) {
+				console.log(resp.status);
+				if(resp.data != undefined && resp.status == 200) return resp.data;
 			})
 			.catch(function(err) {
-				console.log(err);
+				router.push({ name: 'notfound' });
 			});
 		},
 		switch_section(name) {

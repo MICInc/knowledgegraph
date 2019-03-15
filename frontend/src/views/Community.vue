@@ -27,8 +27,6 @@ export default {
 	beforeMount() {
 		this.get_all().then((data) => {
 			this.communities = data.data;
-			console.log('communities: ');
-			console.log(this.communities);
 		});
 	},
 	data() {
