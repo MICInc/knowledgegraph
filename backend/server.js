@@ -77,7 +77,7 @@ else {
 	var profile_route = require('./routes/profile');
 	var conf_route = require('./routes/conference');
 	var community_route = require('./routes/community');
-	var size = 10;
+	var size = 2;
 	var unit = 'mb';
 	var upload_limit = size+unit;
 
@@ -85,8 +85,6 @@ else {
 	app.use(bodyParser.urlencoded({limit: upload_limit, extended: true}))
 	app.use(errors);
 	app.use(morgan('tiny'));
-	app.use(bodyParser.urlencoded({ extended: true }));
-	app.use(bodyParser.json());
 	app.use(cors({credentials: true, origin: true}));
 
 	app.use(helmet());

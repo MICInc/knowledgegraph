@@ -46,6 +46,7 @@ export default {
 				tag: 'p',
 				text: '',
 			},
+			file_limit: 2, //unit = mb
 			has_caption: true,
 			has_caption_default: true,
 			image_active: false,
@@ -67,7 +68,7 @@ export default {
 			this.$emit('active_index', this.index);
 			this.$emit('focus');
 
-			if(el.files && el.files[0]) {
+			if(el.files && el.files[0] && this.valid_size(el.files[0].size)) {
 				var reader = new FileReader();
 				reader.onload = (e) => {
 					// everything in this scope is async so accessing any of the variables
@@ -249,6 +250,12 @@ export default {
 		},
 		trim(str, all=false) {
 			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
+		},
+		valid_size(bytes) {
+			var size_mb = bytes/(Math.pow(10, 6));
+			var valid = size_mb <= this.file_limit; 
+			if(!valid) alert('Image is '+size_mb.toFixed(2)+' MB > 2 MB.');
+			return valid;
 		}
 	},
 	props: ['index']
