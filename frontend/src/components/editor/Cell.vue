@@ -140,7 +140,7 @@ export default {
 		},
 		input(event) {
 			var el = event.target;
-			console.log(this.removeStyles(el));
+			this.removeStyles(el);
 
 			if(el.innerText.length == 0) { 
 				this.is_empty = true;
@@ -178,6 +178,7 @@ export default {
 			// source: https://stackoverflow.com/questions/9252839/simplest-way-to-remove-all-the-styles-in-a-page
 			el.removeAttribute('style');
 			el.style.color = 'black';
+
 			if(el.childNodes.length > 0) {
 				for(var child in el.childNodes) {
 					if(el.childNodes[child].nodeType == 1) this.removeStyles(el.childNodes[child]);
@@ -232,12 +233,6 @@ export default {
 				range.select();
 			}
 		},
-		shift_enter(event) {
-			// console.log('shift');
-		},
-		show_caption(event) {
-			// console.log(event)
-		},
 		switch_tag(tag, event) {
 			this.$emit('active_index', this.index);
 			this.$emit('tag', {index: this.index, tag: tag});
@@ -253,7 +248,7 @@ export default {
 			this.is_empty = tag != 'hr';
 		},
 		trim(str, all=false) {
-			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
+			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
 		}
 	},
 	props: ['index']

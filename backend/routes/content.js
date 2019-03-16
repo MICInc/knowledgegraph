@@ -11,7 +11,6 @@ var ua = require('../lib/user-auth');
 const article_storage = './storage/content/article';
 
 router.post('/', function(req, res, next) {
-
 	var data = fc.extract(req);
 	var query = { _id: data._id };
 
@@ -19,7 +18,6 @@ router.post('/', function(req, res, next) {
 		if(article != null) {
 			var index = req.body.data.update_cell;
 			article = fc.update(index, data, article);
-			console.log(article.content);
 
 			db.Content.updateOne(query, article, function(err) {
 				if(err) console.error(err);
@@ -30,7 +28,7 @@ router.post('/', function(req, res, next) {
 			var article = new db.Content(data);
 
 			article.collection.dropIndexes(function(err, result) {
-				if(err) console.log('content.js: '+err);
+				if(err) console.error('content.js: '+err);
 			});
 
 			article.save()
