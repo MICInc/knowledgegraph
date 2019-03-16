@@ -1,32 +1,24 @@
-module.exports = function(req)
-{
-	var api = req.path;
-
-	if(!api.match(/^[a-zA-Z0-9\-\/%]+$/))
-		return null;
-
-	api = api.toLowerCase();
-
-	if(api.match(/\/results/g) && (typeof req.param('query') != 'undefined'))
-	{
-		// api = req.param('query').toLowerCase().replace(/%20/g, ' ').replace(/\+/g, ' ').replace(/%/g, '');
-		// console.log(api);
-
-		return api;
+var xss = require('xss');
+var options = {
+	whiteList: {
+		a: ['b', 'i', 'u', 'img', 'a']
 	}
-	else if(api.match(/\/path\//g))
-	{
-		api = api.replace('\/path\/', '').replace(/%/g, '');
-		
-		if(api == 'about' || api == 'help' || api == 'terms' || api == 'submit' || api == 'support' || api == 'privacy')
-		{
-			return api;
-		}
-		else if(api == 'sitemap')
-		{
-			return 'sitemap.xml';
-		}
-	}
+};
+var filter = new xss.FilterXSS(options);
 
-	return null;
+module.exports = {
+	alphanumeric(str) {
+		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1")
+	},
+	filter_xss: function(str) {
+		return str;
+		// return filter.process(str);
+	},
+	is_valid: function(str) {
+		if(!str.match(/^[a-zA-Z0-9\-\/%]+$/)) return null;
+		return str;
+	},
+	remove_tags(str) {
+		return str.replace(/(<([^>]+)>)/ig,"");
+	}
 }

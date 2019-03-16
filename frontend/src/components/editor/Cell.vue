@@ -140,6 +140,7 @@ export default {
 		},
 		input(event) {
 			var el = event.target;
+			console.log(this.removeStyles(el));
 
 			if(el.innerText.length == 0) { 
 				this.is_empty = true;
@@ -170,6 +171,16 @@ export default {
 					event.preventDefault();
 
 					this.$emit('remove', this.index);
+				}
+			}
+		},
+		removeStyles(el) {
+			// source: https://stackoverflow.com/questions/9252839/simplest-way-to-remove-all-the-styles-in-a-page
+			el.removeAttribute('style');
+			el.style.color = 'black';
+			if(el.childNodes.length > 0) {
+				for(var child in el.childNodes) {
+					if(el.childNodes[child].nodeType == 1) this.removeStyles(el.childNodes[child]);
 				}
 			}
 		},
@@ -270,6 +281,7 @@ export default {
 	min-height: 1em;
 	overflow:hidden;
 	margin: 5 0px;
+	color: black;
 }
 
 .content:hover {

@@ -1,16 +1,8 @@
-var xss = require('xss');
-var options = {
-	whiteList: {
-		a: ['b', 'i', 'u', 'img', 'a']
-	}
-};
+var filer = require('./filter');
 
 module.exports = {
-	escape(str) {
-		return xss(str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), options);
-	},
 	filter_query: function(query) {
-		return module.exports.escape(query);
+		return filter.filter_xss(query);
 	},
 	filter_results: function(content) {
 		var filtered = [];
@@ -44,9 +36,7 @@ module.exports = {
 		return filtered;
 	},
 	format_query: function(query) {
-		var query = module.exports.filter_query(query);
-		query = { $regex: new RegExp("^" + query.toLowerCase(), "i") };
-
-		return { 'title': query, 'is_published': true };
+		var query = filter.filter_xss(query);
+		return { 'title': { $regex: new RegExp("^" + query, "i") }, 'is_published': true };
 	}
 }

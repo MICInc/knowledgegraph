@@ -2,33 +2,30 @@ var db = require('../db/database');
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 var utils = require('./utils');
+var filter = require('./filter')
 
 module.exports = {
-	filter: function(data) {
-		// TODO: Extend to filter for real names and profanity
-		return data == null ? '' : data;
-	},
 	format: function(profile) {
 		return {
 			id: mongoose.Types.ObjectId(),
-			affiliation: module.exports.filter(profile.affiliation),
+			affiliation: filter.filter_xss(profile.affiliation),
 			bio: "",
 			date_joined: new Date(),
 			dob: profile.dob,
 			email: profile.email,
-			ethnicity: module.exports.filter(profile.ethnicity),
-			first_name: module.exports.filter(profile.first_name),
+			ethnicity: filter.filter_xss(profile.ethnicity),
+			first_name: filter.filter_xss(profile.first_name),
 			following: [],
-			grade: module.exports.filter(profile.grade),
-			gender: module.exports.filter(profile.gender),
-			last_name: module.exports.filter(profile.last_name),
+			grade: filter.filter_xss(profile.grade),
+			gender: filter.filter_xss(profile.gender),
+			last_name: filter.filter_xss(profile.last_name),
 			library: [],
 			liked_articles: [],
 			liked_papers: [],
 			password_hash: '',
 			rank: 0,
 			salt: '',
-			school: module.exports.filter(profile.school),
+			school: filter.filter_xss(profile.school),
 			search_history: [],
 			subjects: [],
 			url: (profile.first_name+'-'+profile.last_name).toLowerCase()
@@ -63,7 +60,7 @@ module.exports = {
 		});
 	},
 	loginUser: function(email, password, callback) {
-		db.User.findOne({email: email}, function(err, user) {
+		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
 			if (err) console.error(err);
 
 			if (user != null) {
@@ -89,7 +86,7 @@ module.exports = {
 		});
 	},
 	findByEmail: function(email, callback) {
-		db.User.findOne({email: email}, function(err, user) {
+		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
 			if (err) console.error(err);
 
 			process.nextTick(function() {
@@ -98,7 +95,7 @@ module.exports = {
 		});
 	},
 	findById: function(id, callback) {
-		db.User.findOne({ _id: id }, function(err, user) {
+		db.User.findOne({ _id: filter.filter_xss(id) }, function(err, user) {
 			if(err) console.error(err);
 
 			process.nextTick(function() {
@@ -113,7 +110,7 @@ module.exports = {
 		});
 	},
 	isEmailTaken: function(email, callback) {
-		module.exports.findByEmail(email, function(user) {
+		module.exports.findByEmail(filter.filter_xss(email), function(user) {
 			callback(user != null);
 		});
 	},

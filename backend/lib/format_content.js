@@ -2,13 +2,14 @@ var mongoose = require('mongoose');
 var utils = require('./utils');
 var path = require('path');
 var db = require('../db/database');
+var filter = require('./filter');
 
 module.exports = {
 	extract: function(req) {
 		var data = req.body.data;
 		var id = req.body.id;
 		var authors = req.body.authors;
-		var title = data.title;
+		var title = filter.filter_xss(data.title);
 		var hashtag = [];
 		var publish = req.body.publish;
 
@@ -47,9 +48,6 @@ module.exports = {
 	},
 	compress_html: function(cell) {
 		return cell;
-	},
-	escape(str) {
-		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 	},
 	update_hashtags: function(article) {
 		if(article.content.length == 0) return article;
@@ -103,7 +101,7 @@ module.exports = {
 				cell.hashtag = tags;
 
 				for(var i in cell.hashtag) {
-					var tag = module.exports.escape(cell['hashtag'][i].trim());
+					var tag = filter.filter_xss(cell['hashtag'][i].trim());
 					var atag = '<a class=\"hashtag\" style=\"color:black;\" href=/search?term='+tag.substring(1)+'>'+tag+'</a>';
 					cell['html'] = cell['html'].replace((new RegExp(tag, 'g')), atag);
 				}

@@ -19,6 +19,7 @@ router.post('/', function(req, res, next) {
 		if(article != null) {
 			var index = req.body.data.update_cell;
 			article = fc.update(index, data, article);
+			console.log(article.content);
 
 			db.Content.updateOne(query, article, function(err) {
 				if(err) console.error(err);
