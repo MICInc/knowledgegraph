@@ -72,7 +72,7 @@ export default {
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
-	background-color: #5d5499;
+	background-color: #F9F9F9;
 	border: solid;
 	border-width: 1px;
 	border-color: #e0e0e0;
@@ -81,7 +81,6 @@ export default {
 #upload {
 	top: 0px;
 	width: 150px;
-	background-color: #000;
 	z-index: 1;
 }
 
