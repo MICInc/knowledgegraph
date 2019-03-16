@@ -1,6 +1,13 @@
+var xss = require('xss');
+var options = {
+	whiteList: {
+		a: ['b', 'i', 'u', 'img', 'a']
+	}
+};
+
 module.exports = {
 	escape(str) {
-		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+		return xss(str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), options);
 	},
 	filter_query: function(query) {
 		return module.exports.escape(query);

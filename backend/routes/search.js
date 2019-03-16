@@ -10,7 +10,7 @@ router.get('/', function(req, res, next){
 	if(term != undefined) {
 		// save user's query if logged in and has an account
 		if('user' in req.query) {
-			var user = { _id: req.query.user };
+			var user = { _id: sh.escape(req.query.user) };
 			var log = { query: term, date: new Date() };
 
 			db.User.findOne(user, function(err, profile) {
@@ -58,7 +58,7 @@ router.get('/', function(req, res, next){
 });
 
 router.get('/school', function(req, res) {
-	db.School.find({ name: new RegExp('^'+req.query.name, "i")}, function(err, schools) {
+	db.School.find({ name: new RegExp('^'+sh.escape(req.query.name), "i")}, function(err, schools) {
 		if(schools) res.status(200).send(schools);
 		else res.status(400).send({});
 	}).select('-_id').select('-__v');
