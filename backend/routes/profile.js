@@ -30,12 +30,15 @@ router.post('/library/clear', function(req, res) {
 	var user_id = { _id: req.body.user_id };
 
 	db.User.findOne(user_id, function(err, profile) {
-		profile.library = [];
+		if(err) console.error(err);
+		else {
+			profile.library = [];
 
-		db.User.updateOne(user_id, profile, function(err) {
-			if(err) console.error(err);
-			else res.status(200).send('cleared');
-		});
+			db.User.updateOne(user_id, profile, function(err) {
+				if(err) console.error(err);
+				else res.status(200).send('cleared');
+			});
+		}
 	});
 });
 
@@ -43,12 +46,25 @@ router.post('/picture', function(req, res) {
 	var user_id = { _id: req.body.user_id };
 
 	db.User.findOne(user_id, function(err, profile) {
-		profile.picture = { src: req.body.src, name: req.body.name, last_modified: req.body.last_modified };
+		if(err) console.error(err);
+		else {
+			profile.picture = { src: req.body.src, name: req.body.name, last_modified: req.body.last_modified };
 
-		db.User.updateOne(user_id, profile, function(err) {
-			if(err) console.error(err);
-			else res.status(200).send('uploaded');
-		});
+			db.User.updateOne(user_id, profile, function(err) {
+				if(err) console.error(err);
+				else res.status(200).send('uploaded');
+			});
+		}
+	});
+});
+
+router.get('/picture', function(req, res) {
+	var query = { _id: req.query.user_id, token: req.query.token };
+	
+	db.User.findOne(query, function(err, profile) {
+		if(err) console.error(err);
+		if(profile) res.status(200).send({ src: profile.picture.src });
+		else res.status(200).send({ src: '' });
 	});
 });
 

@@ -51,7 +51,7 @@ router.post('/signup', function(req, res) {
 					id: user._id,
 					first_name: user.first_name,
 					last_name: user.last_name,
-					sess_id: UserAuth.startSession(user),
+					sess_id: UserAuth.start_session(user, token),
 					url: user.url
 				}
 			});
@@ -82,11 +82,10 @@ router.post('/login', function(req, res, next) {
 					id: user._id,
 					first_name: user.first_name,
 					last_name: user.last_name,
-					sess_id: UserAuth.startSession(user),
+					sess_id: UserAuth.start_session(user, token),
 					url: user.url
 				}
 			});
-
 		} else {
 			console.log(err)
 			res.send({error: err.message})
@@ -95,7 +94,7 @@ router.post('/login', function(req, res, next) {
 });
 
 router.post('/logout', function(req, res, next) {
-	UserAuth.endSession(req.body);
+	UserAuth.end_session(req.body);
 });
 
 router.post('/forgot', function(req, res, next) {

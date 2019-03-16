@@ -19,6 +19,7 @@ export default {
 		// this.can_edit().then((resp) => {
 		// 	this.is_myprof = resp;
 		// });
+		this.a_picture();
 	},
 	data() {
 		return {
@@ -50,14 +51,17 @@ export default {
 			}
 		},
 		save() {
-			ProfileService.uploadProfPic({ token: this.token, user_id: this.user_id, name: this.name, src: this.src })
+			ProfileService.uploadProfPic({ token: this.token, user_id: this.user_id, name: this.name, src: this.src });
+		},
+		async a_picture() {
+			ProfileService.getProfilePic({ params:{ token: this.token, user_id: this.user_id }})
 			.then((resp) => {
-				console.log(resp);
+				if(resp.data.src.length > 0) this.src = resp.data.src;
 			})
 			.catch((data) => {
 
 			});
-		}
+		},
 	},
 	props: ['token', 'user_id']
 }

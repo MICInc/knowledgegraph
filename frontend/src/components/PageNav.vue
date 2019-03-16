@@ -12,7 +12,7 @@
 			v-model="query">
 		<nav id=right>
 			<ul>
-				<li>{{ user }} </li>
+				<li><a :href="url">{{ user }}</a></li>
 			</ul>
 			<ul v-if="!isLoggedIn">
 				<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>
@@ -41,6 +41,7 @@ export default {
 	data () {
 		return {
 			user: this.$store.state.userInfo.first_name,
+			url: '/profile/'+this.$store.state.userInfo.url,
 			query: ''
 		}
 	},

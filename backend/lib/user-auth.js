@@ -114,24 +114,28 @@ module.exports = {
 			callback(user != null);
 		});
 	},
-	startSession: function(user) {
+	start_session: function(user, token) {
 		// May want to have user send back a date object beforeDestroyed to get a more accurate time
 		var sess_id = utils.uniqueID();
 		
 		user.session_history.push({ sess_id: sess_id, start: new Date(), end: undefined });
+		user.token = token;
+
 		db.User.updateOne({ _id: user._id }, user, function(err) {
 			if(err) console.error(err);
 		});
 
 		return sess_id;
 	},
-	endSession: function(user) {
+	end_session: function(user) {
 		// May want to have user send back a date object beforeDestroyed to get a more accurate time
-		var user_id = {_id: user.id};
+		var user_id = { _id: user.id };
 
 		db.User.findOne(user_id, function(err, profile) {
 			if(profile != null) {
+				profile.token = '';
 				var index = utils.indexOf(profile.session_history, 'sess_id', user.sess_id);
+
 				if(index > -1) {
 					profile.session_history[index]['end'] = new Date();
 

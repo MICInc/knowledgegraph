@@ -86,6 +86,9 @@ var user_schema = new Schema({
         sparse: true
     }],
     search_history: [{}],
+    token: {
+        type: String
+    },
     url: {
         type: String,
         required: true
