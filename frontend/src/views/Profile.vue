@@ -2,10 +2,13 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
-			<ProfilePic></ProfilePic>
+			<ProfilePic
+				:token="token"
+				:user_id="user_id">
+			</ProfilePic>
 			<div id="about">
 				<div id="left">
-					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+					<h2>{{ first_name }} {{ last_name }}</h2>
 				</div>
 			</div>
 			<nav class="sections">
@@ -55,14 +58,11 @@ export default {
 	},
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
+			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
-			user: {
-				id: 0
-			},
-			profile: {
-				first_name: '',
-				last_name: ''
-			},
+			user_id: 0,
+			first_name: '',
+			last_name: '',
 			sections: [
 				{
 					name: 'comments',
@@ -115,6 +115,11 @@ export default {
 		switch_section(name) {
 			console.log(this.url);
 			// router.push({ path: '/profile/'+this.url+'/'+name });
+		},
+		save(profile) {
+		},
+		update(data) {
+			for(var k in data) this.profile[k] = data[k];
 		}
 	}
 }

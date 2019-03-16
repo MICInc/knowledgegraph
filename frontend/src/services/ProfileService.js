@@ -15,7 +15,10 @@ export default {
 		clearLibrary(data) {
 			return Api().post('/profile/library/clear', data)
 		},
-		createProfile(data) {
-			return Api().post('/profile', data)
+		saveProfile(data) {
+			return Api().post('/profile', data);
+		},
+		uploadProfPic(data) {
+			return Api().post('/profile/picture', data);
 		}
 }

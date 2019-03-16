@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import AuthenicationService from '@/services/AuthenticationService'
+import ProfileService from '@/services/ProfileService'
 
 export default {
 	beforeMount() {
@@ -22,10 +22,10 @@ export default {
 	},
 	data() {
 		return {
+			is_myprof: true,
 			last_modified: undefined,
 			name: '',
-			src: '',
-			is_myprof: true
+			src: ''
 		}
 	},
 	methods: {
@@ -40,19 +40,26 @@ export default {
 					var src = e.target.result;
 				
 					if(src.length > 0) {
-						console.log(el.files[0]);
 						this.name = el.files[0].name;
 						this.src = src;
 						this.last_modified = new Date();
+						this.save();
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
 			}
 		},
-		async can_edit() {
-			// AuthenicationService.canEdit({ id: })
+		save() {
+			ProfileService.uploadProfPic({ token: this.token, user_id: this.user_id, name: this.name, src: this.src })
+			.then((resp) => {
+				console.log(resp);
+			})
+			.catch((data) => {
+
+			});
 		}
-	}
+	},
+	props: ['token', 'user_id']
 }
 </script>
 
