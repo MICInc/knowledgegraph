@@ -15,7 +15,7 @@
 			<nav class="sections">
 				<ul>
 					<li class="tab" v-for="(sect, index) in sections">
-						<a :href="'/profile/'+url+sect.href" v-on:click="switch_section(sect.name)">
+						<a :href="'/'+url+sect.href" v-on:click="switch_section(sect.name)">
 							{{ sect.name.toUpperCase() }}
 							<span class="count">{{ sect.total }}</span>
 						</a>

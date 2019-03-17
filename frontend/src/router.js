@@ -88,11 +88,6 @@ export default new Router({
 				}
 			}
 		},
-		// {
-		// 	path: '/content/:id/edit',
-		// 	name: 'edit',
-		// 	component: () => import('./views/AddContent.vue')
-		// },
 		{
 			path: '/community',
 			name: 'community',
@@ -106,13 +101,7 @@ export default new Router({
 						params: { error: 'You need to log in to access this route.' },
 					})
 				}
-			},
-			// children: [
-			// 	{
-			// 		path: 'start',
-			// 		component: () => import('./views/CommunityReg.vue'),
-			// 	}
-			// ]
+			}
 		},
 		{
 			path: '/community/start',
@@ -186,7 +175,7 @@ export default new Router({
 			// }
 		},
 		{
-			path: '/profile/:id',
+			path: '/:id',
 			name: 'profile',
 			component: () => import('./views/Profile.vue'),
 			beforeEnter: (to, from, next) => {
