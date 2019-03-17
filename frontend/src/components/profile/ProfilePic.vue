@@ -41,6 +41,10 @@ export default {
 						this.src = src;
 						this.last_modified = new Date();
 						this.save();
+						
+						var userInfo = this.$store.state.userInfo;
+						userInfo.picture = src;
+						this.$store.dispatch('set_user_info', [userInfo]);
 					}
 				}
 				reader.readAsDataURL(el.files[0]);

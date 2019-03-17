@@ -22,7 +22,8 @@
 			<div v-else>
 				<div class="prof-pic">
 					<router-link tag="a" :to="'/'+url">
-						<img id="test" v-if="picture.length > 0" :src="picture">
+						<img v-if="picture.length > 0" :src="picture">
+						<div v-else></div>
 					</router-link>
 				</div>
 				<ul class="menu">
@@ -120,20 +121,31 @@ nav ul li a {
 }
 
 .prof-pic {
-	margin: 0;
+	margin: 0 10px;
 	float: left;
+	width: 38px;
+	height: 38px;
 }
 
 .prof-pic img {
-	width: 38px;
-	height: 38px;
+	width: 100%;
+	height: 100%;
 	border-radius: 50%;
+}
+
+.prof-pic div {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #F9F9F9;
+	border: solid;
+	border-width: 1px;
+	border-color: #e0e0e0;
 }
 
 .menu {
 	display: flex;
 	justify-content: flex-end;
-	z-index: 1;
 }
 
 input.search {
