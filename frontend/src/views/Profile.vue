@@ -47,7 +47,6 @@ export default {
 	beforeMount() {
 		this.a_edit();
 		this.getContent();
-		console.log(this.$store.state.userInfo.picture.length);
 	},
 	components: {
 		PageNav,
@@ -114,7 +113,6 @@ export default {
 			ProfileService.canEdit({ params: { user_id: this.user_id, token: this.token, url: this.url }})
 			.then((resp) => {
 				if(resp.data.editable) this.editable = resp.data.editable;
-				console.log(this.editable);
 			})
 			.catch((resp) => {
 				this.editable = false;
