@@ -23,5 +23,8 @@ export default {
 		},
 		uploadProfPic(data) {
 			return Api().post('/profile/picture', data);
+		},
+		get_comments(data) {
+			return Api().post('/profile/comments', data);
 		}
 }

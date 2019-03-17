@@ -41,7 +41,7 @@ export default {
 	data () {
 		return {
 			user: this.$store.state.userInfo.first_name,
-			url: '/profile/'+this.$store.state.userInfo.url,
+			url: this.$store.state.userInfo.url,
 			query: ''
 		}
 	},
