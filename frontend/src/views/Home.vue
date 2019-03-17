@@ -6,6 +6,7 @@
 				<ul>
 					<li><router-link tag="a" to="/conference"><b>CONFERENCE</b></router-link></li>
 					<li><router-link tag="a" to="/community"><b>COMMUNITY</b></router-link></li>
+					<li><router-link tag="a" to="/add"><b>NEW ARTICLE</b></router-link></li>
 				</ul>
 			</nav>
 			<div class="linked-content-list">

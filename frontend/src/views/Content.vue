@@ -6,16 +6,18 @@
 			<Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id" :abbrev="false"></Vote>
 			<label>citations </label>
 			<span>{{ content.num_citations }}</span>
-			<div id="article-info">
-				<h3 id="authors">Authors</h3>
-				<span class='authors' v-for='author in content.authors'><a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a></span>
-				<div v-for="c in content.publication">
-					<hr v-if="c.tag == 'hr'">
-					<p v-if="c.tag == 'p'" v-html="c.html"></p>
+			<h3 id="authors">Authors</h3>
+			<span class='authors' v-for='author in content.authors'><a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a></span>
+			<div v-for="c in content.publication">
+				<div class="article-info">
 					<figure v-if="c.tag == 'img'">
 						<img class="image-content" :src="c.src">
 						<figcaption class="caption">{{ c.caption }}</figcaption>
 					</figure>
+					<div>
+						<hr v-if="c.tag == 'hr'">
+					</div>
+					<p v-if="c.tag == 'p'" v-html="c.html"></p>
 				</div>
 			</div>
 			<div id="bibtex" class="meta-info">
@@ -89,13 +91,15 @@ export default {
 </script>
 
 <style scoped>
-.main {
-	display: flex;
-	flex-direction: column;
+
+.article-info {
+	width: 1080px;
+	padding: 0px;
 }
 
-#article-info {
-	width: 1080px;
+.article-info figure {
+	margin: 0px;
+	width: 100%;
 }
 
 .caption {
@@ -107,8 +111,8 @@ export default {
 .image-content {
 	display: block;
 	margin: auto;
-	max-width: 100%;
-	max-height: 100%;
+	max-width: 1080px;
+	max-height: auto;
 	vertical-align: middle; 
 	border: 1px solid transparent;
 }

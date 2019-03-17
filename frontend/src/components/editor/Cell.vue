@@ -5,27 +5,29 @@
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 		</div>
-		<figure id="figure-content" v-if="'img' == cell.tag" v-on:click="set_active($event)">
-			<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
-			<figcaption class="caption" 
-						v-show="has_caption" 
-						v-on:keyup="caption($event)" 
-						v-on:keydown.delete.stop="remove_caption($event)" 
-						contenteditable>
-				<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
-			</figcaption>
-		</figure>
-		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
-			<hr>
+		<div class="editor-info">
+			<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
+				<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
+				<figcaption class="caption" 
+							v-show="has_caption" 
+							v-on:keyup="caption($event)" 
+							v-on:keydown.delete.stop="remove_caption($event)" 
+							contenteditable>
+					<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
+				</figcaption>
+			</figure>
+			<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
+				<hr>
+			</div>
+			<p id="p-content"
+			   v-if="'p' == cell.tag" 
+			   class="content" 
+			   ref="p-content"
+			   v-on:keyup="input($event)" 
+			   @mousedown="set_active($event)" 
+			   contenteditable>
+			</p>
 		</div>
-		<p id="p-content"
-		   v-if="'p' == cell.tag" 
-		   class="content" 
-		   ref="p-content"
-		   v-on:keyup="input($event)" 
-		   @mousedown="set_active($event)" 
-		   contenteditable>
-		</p>
 	</div>
 </template>
 
@@ -267,6 +269,14 @@ export default {
     outline: none;
 }
 
+.editor-info {
+	width: 1080px;
+}
+
+.editor-info figure {
+	margin: 0px;
+}
+
 .caption {
 	text-align: center;
 	font-size: 0.8em;
@@ -284,6 +294,7 @@ export default {
 	overflow:hidden;
 	margin: 5 0px;
 	color: black;
+	padding: 0px;
 }
 
 .content:hover {
@@ -297,8 +308,8 @@ export default {
 .image-content {
 	display: block;
 	margin: auto;
-	max-width: 100%;
-	max-height: 100%;
+	max-width: 1080px;
+	max-height: auto;
 	vertical-align: middle; 
 	border: 1px solid transparent;
 }
