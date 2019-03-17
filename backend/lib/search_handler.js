@@ -1,4 +1,4 @@
-var filer = require('./filter');
+var filter = require('./filter');
 
 module.exports = {
 	filter_query: function(query) {

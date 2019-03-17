@@ -52,7 +52,8 @@ router.post('/signup', function(req, res) {
 					first_name: user.first_name,
 					last_name: user.last_name,
 					sess_id: UserAuth.start_session(user, token),
-					url: user.url
+					url: user.url,
+					picture: 'picture' in user ? user.picture.src : ''
 				}
 			});
 
@@ -83,7 +84,8 @@ router.post('/login', function(req, res, next) {
 					first_name: user.first_name,
 					last_name: user.last_name,
 					sess_id: UserAuth.start_session(user, token),
-					url: user.url
+					url: user.url,
+					picture: 'picture' in user ? user.picture.src : ''
 				}
 			});
 		} else {

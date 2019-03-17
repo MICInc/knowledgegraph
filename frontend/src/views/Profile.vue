@@ -25,7 +25,6 @@
 						</a>
 					</li>
 				</ul>
-				<!-- <button v-on:click="clear_library()">clear</button> -->
 			</nav>
 			<router-view></router-view>
 		</div>
@@ -48,6 +47,7 @@ export default {
 	beforeMount() {
 		this.a_edit();
 		this.getContent();
+		console.log(this.$store.state.userInfo.picture.length);
 	},
 	components: {
 		PageNav,

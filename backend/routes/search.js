@@ -10,7 +10,7 @@ router.get('/', function(req, res, next){
 	if(term != undefined) {
 		// save user's query if logged in and has an account
 		if('user' in req.query) {
-			var user = { _id: sh.escape(req.query.user) };
+			var user = { _id: sh.filter_query(req.query.user) };
 			var log = { query: term, date: new Date() };
 
 			db.User.findOne(user, function(err, profile) {

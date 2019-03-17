@@ -1,7 +1,9 @@
 <template>
 	<header>
 		<span id="home">
-			<router-link class="logo" tag="a" to="/"><img src="/img/mic-logo-nav.png"" alt="MIC Conference Logo" /></router-link></li>
+			<router-link class="logo" tag="a" to="/">
+				<img src="/img/mic-logo-nav.png"" alt="MIC Conference Logo" />
+			</router-link>
 		</span>
 		<input 
 			class="search" 
@@ -11,16 +13,24 @@
 			v-on:keydown.enter.prevent="search()"
 			v-model="query">
 		<nav id=right>
-			<ul>
-				<li><a :href="'/'+url">{{ user }}</a></li>
-			</ul>
-			<ul v-if="!isLoggedIn">
-				<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>
-				<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
-			</ul>
-			<ul v-else>
-				<li><router-link tag="a" to="/logout"><b>LOGOUT</b></router-link></li>
-			</ul>
+			<div v-if="!isLoggedIn">
+				<ul>
+					<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>
+					<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
+				</ul>
+			</div>
+			<div class="prof-pic" v-else>
+				<router-link tag="a" :to="'/'+url">
+					<img id="test" v-if="picture.length > 0" :src="picture">
+				</router-link>
+				<ul class="menu">
+					<li v-for="(item, index) in menu">
+						<router-link tag="a" :to="item.href">
+							<b>{{ item.name }}</b>
+						</router-link>
+					</li>
+				</ul>
+			</div>
 		</nav>
 	</header>
 </template>
@@ -42,7 +52,14 @@ export default {
 		return {
 			user: this.$store.state.userInfo.first_name,
 			url: this.$store.state.userInfo.url,
-			query: ''
+			picture: this.$store.state.userInfo.picture,
+			query: '',
+			menu: [
+				{
+					href: '/logout',
+					name: 'LOGOUT'
+				}
+			]
 		}
 	},
 	methods: {
@@ -61,7 +78,6 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	height: 60px;
-	/*border-bottom: 1px solid #EAEAEA;*/
 	position: fixed;
 	top: 0;
 	min-width: 1080px;
@@ -72,10 +88,6 @@ header {
 
 nav {
 	padding: 0 20px;
-}
-
-nav, input {
-	width: 33.33%;
 }
 
 #right {
@@ -105,10 +117,24 @@ nav ul li a {
 	font-size: 14px;
 }
 
+.prof-pic {
+	margin: 0;
+}
+
+.prof-pic img {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+}
+
+.menu {
+	z-index: 1;
+}
+
 input.search {
 	border: transparent;
 	height: auto;
-	width: 300px;
+	width: 50%;
 	border-radius: 3px;
 	padding: 5px 5px;
 	font-size: 12px;
@@ -126,4 +152,5 @@ input.search {
 .logo img {
 	width: 38px;
 }
+
 </style>
