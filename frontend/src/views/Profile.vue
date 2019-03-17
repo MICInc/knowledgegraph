@@ -123,7 +123,7 @@ export default {
 		async follow(event) {
 			ProfileService.follow({ user_id: this.user_id, token: this.token, url: this.url })
 			.then((resp) => {
-				this.profile.followers = resp.data.following;
+				this.profile.followers = resp.data.followers;
 			});
 		},
 		async getContent() {
