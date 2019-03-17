@@ -19,7 +19,6 @@
 			<LocationInfo></LocationInfo>
 			<OurCommunity></OurCommunity>
 			<Sponsors></Sponsors>
-			<Committee></Committee>
 			<Footer></Footer>
 		</div>
 	</div>
@@ -31,7 +30,6 @@
 	import LocationInfo from '@/components/conference/LocationInfo.vue'
 	import OurCommunity from '@/components/conference/OurCommunity.vue'
 	import Sponsors from '@/components/conference/Sponsors.vue'
-	import Committee from '@/components/conference/Committee.vue'
 	import Footer from '@/components/conference/Footer.vue'
 
 	export default {
@@ -42,7 +40,6 @@
 			LocationInfo,
 			OurCommunity,
 			Sponsors,
-			Committee,
 			Footer,
 		},
 

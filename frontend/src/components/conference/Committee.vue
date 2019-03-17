@@ -23,15 +23,7 @@
 		data() {
 			return {
 				committee: [
-					{name: 'Justin Chen', title: 'Head Coordinator'},
-					{name: '', title: 'Workshop Coordinator'},
-					{name: '', title: 'Community Outreach'},
-					{name: '', title: 'Panel Coordinator'},
-					{name: '', title: 'Website Coordinator'},
-					{name: '', title: 'Finance Coordinator'},
-					{name: '', title: 'Diversity Scholarship Chair'},
-					{name: '', title: 'Sponsorship Chair'},
-					{name: '', title: 'Branding'}
+					{name: 'Justin Chen', title: 'Head Coordinator'}
 				]
 			}
 		}
