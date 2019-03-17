@@ -21,6 +21,9 @@ export default {
 		uploadProfPic(data) {
 			return Api().post('/profile/picture', data);
 		},
+		follow(data) {
+			return Api.post('/profile/follow', data);
+		},
 		get_comments(data) {
 			return Api().get('/profile/comments', data);
 		},
@@ -30,4 +33,10 @@ export default {
 		get_publications(data) {
 			return Api().get('/profile/publications', data)
 		},
+		get_followers(data) {
+			return Api().get('/profile/followes', data);
+		},
+		get_following(data) {
+			return Api().get('/profile/following', data);
+		}
 }

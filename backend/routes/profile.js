@@ -85,6 +85,7 @@ router.post('/picture', function(req, res) {
 
 router.get('/picture', function(req, res) {
 	var query = { url: req.query.url }
+	console.log(query);
 	
 	db.User.findOne(query, function(err, profile) {
 		if(err) console.error(err);
@@ -125,6 +126,44 @@ router.get('/publications', function(req, res) {
 			}).select('title url').select('-_id');
 		}
 		else res.status(200).send({ editable: editable, publications: [] })
+	});
+});
+
+router.post('/follow', function(req, res) {
+	var me = { _id: req.query.user_id, token: req.query.token };
+
+	db.User.findOne(me, function(err, profile) {
+		if(profile) {
+			db.User.findOne({ url: req.query.url }, function(err, user) {
+				profile.following.push(user._id);
+
+				db.User.updateOne(me, profile, function(err) {
+					if(err) console.error(err);
+					res.status(200).send({ following: profile.following.length });
+				});
+			})
+		}
+		res.status(400).send({ following: 0 });
+	});
+});
+
+router.get('/followers', function(req, res) {
+	db.User.findOne({ url: req.query.url }, function(err, profile) {
+		if(err) console.error(err);
+
+		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
+		if(profile && profile.url == req.query.url) res.status(200).send({ editable: editable, followers: profile.followers });
+		else res.status(200).send({ editable: editable, followers: [] })
+	});
+});
+
+router.get('/following', function(req, res) {
+	db.User.findOne({ url: req.query.url }, function(err, profile) {
+		if(err) console.error(err);
+
+		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
+		if(profile && profile.url == req.query.url) res.status(200).send({ editable: editable, following: profile.following });
+		else res.status(200).send({ editable: editable, following: [] })
 	});
 });
 

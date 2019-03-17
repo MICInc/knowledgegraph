@@ -3,6 +3,7 @@
 		<PageNav></PageNav>
 		<div class="container">
 			<ProfilePic
+				:editable="editable"
 				:token="token"
 				:user_id="user_id"
 				:url="url">
@@ -10,6 +11,9 @@
 			<div id="about">
 				<div id="left">
 					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+				</div>
+				<div v-if="!editable">
+					<button v-on:click="follow($event)">Follow</button>
 				</div>
 			</div>
 			<nav class="sections">
@@ -42,8 +46,8 @@ import router from '@/router'
 export default {
 	name: 'content',
 	beforeMount() {
+		this.a_edit();
 		this.getContent();
-		this.user_id = this.$store.state.userInfo.id;
 	},
 	components: {
 		PageNav,
@@ -56,9 +60,10 @@ export default {
 	},
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
+			editable: false,
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
-			user_id: 0,
+			user_id: this.$store.state.userInfo.id,
 			profile: {
 				comments: 0,
 				first_name: '',
@@ -106,6 +111,19 @@ export default {
 			.catch(function(err) {
 				// console.log(err);
 			});
+		},
+		async a_edit() {
+			ProfileService.canEdit({ params: { user_id: this.user_id, token: this.token, url: this.url }})
+			.then((resp) => {
+				if(resp.data.editable) this.editable = resp.data.editable;
+				console.log(this.editable);
+			})
+			.catch((resp) => {
+				this.editable = false;
+			});
+		},
+		async follow(event) {
+			ProfileService.follow({ params: { user_id: this.user_id, token: this.token, url: this.url }});
 		},
 		async getContent() {
 			return await ProfileService.getProfile({ params: { url: this.url }})

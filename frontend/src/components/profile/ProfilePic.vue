@@ -16,12 +16,10 @@ import ProfileService from '@/services/ProfileService'
 
 export default {
 	beforeMount() {
-		this.a_edit();
 		this.a_picture();
 	},
 	data() {
 		return {
-			editable: false,
 			last_modified: undefined,
 			name: '',
 			src: ''
@@ -59,18 +57,9 @@ export default {
 			.catch((data) => {
 
 			});
-		},
-		async a_edit() {
-			ProfileService.canEdit({ params: { token: this.token, user_id: this.user_id, url: this.url }})
-			.then((resp) => {
-				if(resp.data.editable) this.editable = resp.data.editable;
-			})
-			.catch((resp) => {
-				this.editable = false;
-			});
 		}
 	},
-	props: ['token', 'user_id', 'url']
+	props: ['editable', 'token', 'user_id', 'url']
 }
 </script>
 
