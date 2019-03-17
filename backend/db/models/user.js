@@ -11,6 +11,10 @@ var user_schema = new Schema({
         trim: true,
         sparse: true
     },
+    comments: [{
+        type: String,
+        trim: true
+    }],
     date_joined: {
         type: Date,
         required: true,
@@ -36,9 +40,15 @@ var user_schema = new Schema({
         required: true,
         trim: true
     },
+    followers: [{
+        type: String,
+        sparse: true,
+        trim: true
+    }],
     following: [{
         type: String,
-        sparse: true
+        sparse: true,
+        trim: true
     }],
     grade: {
         type: String,
@@ -54,7 +64,10 @@ var user_schema = new Schema({
         required: true,
         trim: true
     },
-    library: [{}],
+    library: [{
+        type: String,
+        sparse: true
+    }],
     num_citations: {
         type: Number
     },

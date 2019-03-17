@@ -12,7 +12,7 @@
 			v-model="query">
 		<nav id=right>
 			<ul>
-				<li><a :href="url">{{ user }}</a></li>
+				<li><a :href="'/'+url">{{ user }}</a></li>
 			</ul>
 			<ul v-if="!isLoggedIn">
 				<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>

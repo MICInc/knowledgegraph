@@ -21,8 +21,33 @@ router.post('/', function(req, res) {
 
 router.get('/', function(req, res) {
 	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		if(profile) res.status(200).send(profile);
+		var data = {
+			first_name: profile.first_name,
+			last_name: profile.last_name,
+			comments: profile.comments.length,
+			publications: profile.publications.length,
+			library: profile.library.length,
+			followers: profile.followers.length,
+			following: profile.following.length
+		};
+
+		if(profile) res.status(200).send(data);
 		else res.status(400).send();
+	});
+});
+
+router.get('/library', function(req, res) {
+	db.User.findOne({ url: req.query.url }, function(err, profile) {
+		if(err) console.error(err);
+
+		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
+		
+		if(profile && profile.url == req.query.url) {
+			db.Content.find({ _id: { $in: profile.library }}, function(err, library) {
+				res.status(200).send({ editable: editable, library: library });
+			}).select('title url').select('-_id');
+		}
+		else res.status(200).send({ editable: editable, library: [] })
 	});
 });
 
@@ -78,5 +103,29 @@ router.get('/edit', function(req, res) {
 	})
 });
 
+router.get('/comments', function(req, res) {
+	db.User.findOne({ url: req.query.url }, function(err, profile) {
+		if(err) console.error(err);
+
+		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
+		if(profile && profile.url == req.query.url) res.status(200).send({ editable: editable, comments: profile.comments });
+		else res.status(200).send({ editable: editable, comments: [] })
+	});
+});
+
+router.get('/publications', function(req, res) {
+	db.User.findOne({ url: req.query.url }, function(err, profile) {
+		if(err) console.error(err);
+
+		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
+		
+		if(profile && profile.url == req.query.url) {
+			db.Content.find({ _id: { $in: profile.publications }}, function(err, publications) {
+				res.status(200).send({ editable: editable, publications: publications });
+			}).select('title url').select('-_id');
+		}
+		else res.status(200).send({ editable: editable, publications: [] })
+	});
+});
 
 module.exports = router;

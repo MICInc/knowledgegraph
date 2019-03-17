@@ -8,7 +8,7 @@
 			<span>{{ content.num_citations }}</span>
 			<div id="article-info">
 				<h3 id="authors">Authors</h3>
-				<span class='authors' v-for='author in content.authors'><a :href="'/profile/'+author.url">{{ author.first_name+' '+author.last_name }}</a></span>
+				<span class='authors' v-for='author in content.authors'><a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a></span>
 				<div v-for="c in content.publication">
 					<hr v-if="c.tag == 'hr'">
 					<p v-if="c.tag == 'p'" v-html="c.html"></p>

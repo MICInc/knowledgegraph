@@ -6,9 +6,6 @@ export default {
 		getProfile(data) {
 			return Api().get('/profile', data)
 		},
-		getLibrary(data) {
-			return Api().get('/profile/library', data)
-		},
 		canEdit(data) {
 			return Api().get('/profile/edit', data);
 		},
@@ -25,6 +22,12 @@ export default {
 			return Api().post('/profile/picture', data);
 		},
 		get_comments(data) {
-			return Api().post('/profile/comments', data);
-		}
+			return Api().get('/profile/comments', data);
+		},
+		get_library(data) {
+			return Api().get('/profile/library', data)
+		},
+		get_publications(data) {
+			return Api().get('/profile/publications', data)
+		},
 }

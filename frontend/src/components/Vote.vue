@@ -15,7 +15,8 @@ export default {
 		return {
 			total: this.likes - this.dislikes,
 			user_id: this.$store.state.userInfo.id,
-			show: this.$store.state.isLoggedIn
+			show: this.$store.state.isLoggedIn,
+			token: this.$store.state.userInfo.token
 		}
 	},
 	computed: {
@@ -38,7 +39,7 @@ export default {
 	},
 	methods: {
 		async upvote() {
-			ContentService.upvote({ content_id: this.content_id, profile_id: this.user_id })
+			ContentService.upvote({ content_id: this.content_id, profile_id: this.user_id, token: this.token })
 			.then((data) => {
 				this.total = data.data.total != undefined ? data.data.total : this.total;
 			})
@@ -47,7 +48,7 @@ export default {
 			});
 		},
 		async downvote() {
-			ContentService.downvote({ content_id: this.content_id, profile_id: this.user_id })
+			ContentService.downvote({ content_id: this.content_id, profile_id: this.user_id, token: this.token })
 			.then((data) => {
 				this.total = data.data.total != undefined ? data.data.total : this.total;
 			})

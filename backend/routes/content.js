@@ -39,6 +39,18 @@ router.post('/', function(req, res, next) {
 				console.error(err);
 				res.status(400).send('Save error');
 			});
+
+			var user = { _id: req.body.user_id, token: req.body.token };
+			
+			db.User.findOne(user, function(err, profile) {
+				// only store article id so that forced to get latest url and 
+				// content incase article renamed, which will generate url
+				profile.publications.push(data._id.toString());
+				
+				db.User.updateOne(user, profile, function(err) {
+					if(err) console.error(err);
+				});
+			});
 		}
 	});
 });
@@ -138,6 +150,18 @@ router.post('/upvote', function(req, res) {
 	var user = { _id: ballot.profile_id };
 	var content = { _id: ballot.content_id, liked: 1, date: new Date() };
 	vote.vote(user, content, res);
+
+	var user = { _id: ballot.profile_id, token: ballot.token };
+			
+	db.User.findOne(user, function(err, profile) {
+		if(!profile) return;
+
+		profile.library.push(ballot.content_id);
+		
+		db.User.updateOne(user, profile, function(err) {
+			if(err) console.error(err);
+		});
+	});
 });
 
 router.post('/downvote', function(req, res) {
@@ -145,6 +169,19 @@ router.post('/downvote', function(req, res) {
 	var user = { _id: ballot.profile_id };
 	var content = { _id: ballot.content_id, liked: -1, date: new Date() };;
 	vote.vote(user, content, res);
+
+	var user = { _id: ballot.profile_id, token: ballot.token };
+			
+	db.User.findOne(user, function(err, profile) {
+		if(!profile) return;
+		
+		var index = profile.library.indexOf(ballot.content_id);
+		if(index !== -1) profile.library.splice(index, 1);
+		
+		db.User.updateOne(user, profile, function(err) {
+			if(err) console.error(err);
+		});
+	});
 });
 
 router.options('/cleanup', function(req, res) {

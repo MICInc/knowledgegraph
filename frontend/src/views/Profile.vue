@@ -9,7 +9,7 @@
 			</ProfilePic>
 			<div id="about">
 				<div id="left">
-					<h2>{{ first_name }} {{ last_name }}</h2>
+					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
 				</div>
 			</div>
 			<nav class="sections">
@@ -17,7 +17,7 @@
 					<li class="tab" v-for="(sect, index) in sections">
 						<a :href="'/'+url+sect.href" v-on:click="switch_section(sect.name)">
 							{{ sect.name.toUpperCase() }}
-							<span class="count">{{ sect.total }}</span>
+							<span class="count">{{ profile[sect.name] }}</span>
 						</a>
 					</li>
 				</ul>
@@ -42,10 +42,7 @@ import router from '@/router'
 export default {
 	name: 'content',
 	beforeMount() {
-		this.getContent().then(data => {
-			if(data) this.profile = data;
-		});
-		
+		this.getContent();
 		this.user_id = this.$store.state.userInfo.id;
 	},
 	components: {
@@ -62,8 +59,15 @@ export default {
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
 			user_id: 0,
-			first_name: '',
-			last_name: '',
+			profile: {
+				comments: 0,
+				first_name: '',
+				followers: 0,
+				following: 0,
+				last_name: '',
+				library: 0,
+				publications: 0
+			},
 			sections: [
 				{
 					name: 'comments',
@@ -105,8 +109,8 @@ export default {
 		},
 		async getContent() {
 			return await ProfileService.getProfile({ params: { url: this.url }})
-			.then(function(resp) {
-				if(resp.data != undefined && resp.status == 200) return resp.data;
+			.then((resp) => {
+				if(resp.data != undefined && resp.status == 200) this.profile = resp.data;
 			})
 			.catch(function(err) {
 				router.push({ name: 'notfound' });
