@@ -43,6 +43,10 @@ import router from '@/router'
 
 export default {
 	name: 'PageNav',
+	beforeMount() {
+		var stored_pic = this.$store.state.userInfo.picture;
+		if(stored_pic !== undefined) this.picture = stored_pic;
+	},
 	created: function() {  
  		document.title = 'Machine Intelligence Community'
  	},
@@ -55,7 +59,7 @@ export default {
 		return {
 			user: this.$store.state.userInfo.first_name,
 			url: this.$store.state.userInfo.url,
-			picture: this.$store.state.userInfo.picture,
+			picture: '',
 			query: '',
 			menu: [
 				{
