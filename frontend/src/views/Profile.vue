@@ -4,7 +4,8 @@
 		<div class="container">
 			<ProfilePic
 				:token="token"
-				:user_id="user_id">
+				:user_id="user_id"
+				:url="url">
 			</ProfilePic>
 			<div id="about">
 				<div id="left">
@@ -96,16 +97,15 @@ export default {
 		async clear_library() {
 			ProfileService.clearLibrary({ user_id: this.user_id })
 			.then(function(data) {
-				console.log(data);
+				// console.log(data);
 			})
 			.catch(function(err) {
-				console.log(err);
+				// console.log(err);
 			});
 		},
 		async getContent() {
 			return await ProfileService.getProfile({ params: { url: this.url }})
 			.then(function(resp) {
-				console.log(resp.status);
 				if(resp.data != undefined && resp.status == 200) return resp.data;
 			})
 			.catch(function(err) {
@@ -113,7 +113,7 @@ export default {
 			});
 		},
 		switch_section(name) {
-			console.log(this.url);
+			// console.log(this.url);
 			// router.push({ path: '/profile/'+this.url+'/'+name });
 		},
 		save(profile) {

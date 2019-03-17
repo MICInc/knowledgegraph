@@ -4,7 +4,7 @@
 			<img v-if="src.length > 0" :src="src">
 			<div v-else></div>
 		</div>
-		<div v-if="is_myprof" id="upload">
+		<div v-if="editable" id="upload">
 			<label for="upload_picture">Change</label>
 			<input id="upload_picture" type="file" name="image" v-on:change="change($event)" accept="image/*">
 		</div>
@@ -16,14 +16,12 @@ import ProfileService from '@/services/ProfileService'
 
 export default {
 	beforeMount() {
-		// this.can_edit().then((resp) => {
-		// 	this.is_myprof = resp;
-		// });
+		this.a_edit();
 		this.a_picture();
 	},
 	data() {
 		return {
-			is_myprof: true,
+			editable: false,
 			last_modified: undefined,
 			name: '',
 			src: ''
@@ -54,7 +52,7 @@ export default {
 			ProfileService.uploadProfPic({ token: this.token, user_id: this.user_id, name: this.name, src: this.src });
 		},
 		async a_picture() {
-			ProfileService.getProfilePic({ params:{ token: this.token, user_id: this.user_id }})
+			ProfileService.getProfilePic({ params: { url: this.url }})
 			.then((resp) => {
 				if(resp.data.src.length > 0) this.src = resp.data.src;
 			})
@@ -62,8 +60,17 @@ export default {
 
 			});
 		},
+		async a_edit() {
+			ProfileService.canEdit({ params: { token: this.token, user_id: this.user_id, url: this.url }})
+			.then((resp) => {
+				if(resp.data.editable) this.editable = resp.data.editable;
+			})
+			.catch((resp) => {
+				this.editable = false;
+			});
+		}
 	},
-	props: ['token', 'user_id']
+	props: ['token', 'user_id', 'url']
 }
 </script>
 

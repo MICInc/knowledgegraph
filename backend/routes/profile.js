@@ -59,13 +59,23 @@ router.post('/picture', function(req, res) {
 });
 
 router.get('/picture', function(req, res) {
-	var query = { _id: req.query.user_id, token: req.query.token };
+	var query = { url: req.query.url }
 	
 	db.User.findOne(query, function(err, profile) {
 		if(err) console.error(err);
 		if(profile) res.status(200).send({ src: profile.picture.src });
 		else res.status(200).send({ src: '' });
 	});
+});
+
+router.get('/edit', function(req, res) {
+	var query = { _id: req.query.user_id, token: req.query.token };
+
+	db.User.findOne(query, function(err, profile) {
+		if(err) console.error(err);
+		if(profile && profile.url == req.query.url) res.status(200).send({ editable: true });
+		else res.status(200).send({ editable: false })
+	})
 });
 
 
