@@ -84,12 +84,11 @@ router.post('/picture', function(req, res) {
 });
 
 router.get('/picture', function(req, res) {
-	var query = { url: req.query.url }
-	console.log(query);
+	var query = { url: req.query.url };
 	
 	db.User.findOne(query, function(err, profile) {
 		if(err) console.error(err);
-		if(profile) res.status(200).send({ src: profile.picture.src });
+		if(profile && 'picture' in Object.keys(profile)) res.status(200).send({ src: profile.picture.src });
 		else res.status(200).send({ src: '' });
 	});
 });
@@ -130,20 +129,27 @@ router.get('/publications', function(req, res) {
 });
 
 router.post('/follow', function(req, res) {
-	var me = { _id: req.query.user_id, token: req.query.token };
+	var me = { _id: req.body.user_id, token: req.body.token };
 
 	db.User.findOne(me, function(err, profile) {
 		if(profile) {
-			db.User.findOne({ url: req.query.url }, function(err, user) {
+			var follow = { url: req.body.url };
+			db.User.findOne(follow, function(err, user) {
 				profile.following.push(user._id);
+				user.followers.push(me._id);
 
-				db.User.updateOne(me, profile, function(err) {
+				db.User.updateOne(me, profile, function(err) { 
 					if(err) console.error(err);
-					res.status(200).send({ following: profile.following.length });
 				});
-			})
+				db.User.updateOne(follow, user, function(err) {
+					if(err) console.error(err);
+				});
+				res.status(200).send({ followers: user.followers.length });
+			});
 		}
-		res.status(400).send({ following: 0 });
+		else {
+			res.status(400).send({ following: 0 });
+		}
 	});
 });
 

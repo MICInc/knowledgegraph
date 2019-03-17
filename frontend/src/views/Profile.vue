@@ -106,10 +106,8 @@ export default {
 		async clear_library() {
 			ProfileService.clearLibrary({ user_id: this.user_id })
 			.then(function(data) {
-				// console.log(data);
 			})
 			.catch(function(err) {
-				// console.log(err);
 			});
 		},
 		async a_edit() {
@@ -123,7 +121,10 @@ export default {
 			});
 		},
 		async follow(event) {
-			ProfileService.follow({ params: { user_id: this.user_id, token: this.token, url: this.url }});
+			ProfileService.follow({ user_id: this.user_id, token: this.token, url: this.url })
+			.then((resp) => {
+				this.profile.followers = resp.data.following;
+			});
 		},
 		async getContent() {
 			return await ProfileService.getProfile({ params: { url: this.url }})

@@ -22,7 +22,7 @@ export default {
 			return Api().post('/profile/picture', data);
 		},
 		follow(data) {
-			return Api.post('/profile/follow', data);
+			return Api().post('/profile/follow', data);
 		},
 		get_comments(data) {
 			return Api().get('/profile/comments', data);
