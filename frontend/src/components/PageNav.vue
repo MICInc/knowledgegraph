@@ -19,10 +19,12 @@
 					<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
 				</ul>
 			</div>
-			<div class="prof-pic" v-else>
-				<router-link tag="a" :to="'/'+url">
-					<img id="test" v-if="picture.length > 0" :src="picture">
-				</router-link>
+			<div v-else>
+				<div class="prof-pic">
+					<router-link tag="a" :to="'/'+url">
+						<img id="test" v-if="picture.length > 0" :src="picture">
+					</router-link>
+				</div>
 				<ul class="menu">
 					<li v-for="(item, index) in menu">
 						<router-link tag="a" :to="item.href">
@@ -119,6 +121,7 @@ nav ul li a {
 
 .prof-pic {
 	margin: 0;
+	float: left;
 }
 
 .prof-pic img {
@@ -128,6 +131,8 @@ nav ul li a {
 }
 
 .menu {
+	display: flex;
+	justify-content: flex-end;
 	z-index: 1;
 }
 
