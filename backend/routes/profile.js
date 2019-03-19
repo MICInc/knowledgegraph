@@ -88,8 +88,8 @@ router.get('/picture', function(req, res) {
 	
 	db.User.findOne(query, function(err, profile) {
 		if(err) console.error(err);
-
-		if(profile && 'picture' in profile.toObject()) res.status(200).send({ src: profile.picture.src });
+		
+		if(Object.keys(profile.toObject()).includes('picture')) res.status(200).send({ src: profile.picture.src });
 		else res.status(200).send({ src: '' });
 	});
 });

@@ -21,10 +21,10 @@
 			</div>
 			<div v-else>
 				<div class="prof-pic">
-					<router-link tag="a" :to="'/'+url">
+					<a :href="'/'+url">
 						<img v-if="picture.length > 0" :src="picture">
 						<div v-else></div>
-					</router-link>
+					</a>
 				</div>
 				<ul class="menu">
 					<li v-for="(item, index) in menu">

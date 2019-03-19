@@ -13,7 +13,7 @@ var morgan = require('morgan');
 var cors = require('cors');
 var port = process.env.PORT || 7000; //keep this or change as long as greater than 1024
 const ws = require('ws');
-const db = require('./db/database')
+const db = require('./db/database');
 
 // master process
 if(cluster.isMaster)  {
