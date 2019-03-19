@@ -44,11 +44,11 @@ router.post('/signup', function(req, res) {
 	}
 
 	UserAuth.registerUser(req.body, function(err, token, user) {
-		if(!err) {
+		if(err) res.send({ error: 'Registration failed' });
+		else {
 			res.json({ token: token, userInfo: user });
 			// eh.send_verification(email);
-		} 
-		else res.send({ error: 'Registration failed' });
+		}
 	});
 });
 
@@ -56,9 +56,7 @@ router.post('/login', function(req, res, next) {
 	var email = req.body.email;
 	var password = req.body.password;
 
-	if(!(email && password)) {
-		res.send({error: 'Please provide a email and password'});
-	}
+	if(!(email && password)) res.send({error: 'Please provide a email and password'});
 
 	UserAuth.loginUser(email, password, function(err, user) {
 		if (!err) {
