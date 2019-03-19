@@ -4,8 +4,8 @@
 		<div class="container">
 			<form v-on:submit.prevent="handleSubmit">
 				<p>{{error}}</p>
-				<input type="email" placeholder="Email" v-model="formData.email" required>
-				<input type="password" placeholder="Password" v-model="formData.password" required>
+				<input type="email" placeholder="Email" v-model="formData.email" autocomplete="username" required>
+				<input type="password" placeholder="Password" v-model="formData.password" autocomplete="current-password" required>
 				<label>
 					<input type="checkbox" checked="checked" name="remember"> Remember me
 				</label>
