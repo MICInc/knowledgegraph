@@ -6,6 +6,8 @@ var ua = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
 var UserAuth = require('../lib/user-auth');
 
+// This is acutally never hit from /signup. Account creation is executed in index.js
+// But forgot if this is hit with conference sign up.
 router.post('/', function(req, res) {
 	// TODO: should validate email address before querying
 	ua.isEmailTaken(req.body.email.value, function(results) {
@@ -41,17 +43,19 @@ router.get('/edit', function(req, res) {
 	UserAuth.findByURL(req.query.url, function(err, profile) {
 		if(err) console.error(err);
 
+		var callback = function(valid=true) {
+			var editable = valid && profile && profile.url == req.query.url;
+			
+			if(editable) res.status(200).send({ editable: editable });
+			else res.status(200).send({ editable: editable });
+		};
+
 		if(Object.keys(req.query).includes('token')) {
 			UserAuth.verify_token(profile.token, req.query.email, function(err, decoded) {
-				console.log(err != null);
-				if(profile && profile.url == req.query.url) res.status(200).send({ editable: err == null });
-				else res.status(200).send({ editable: err == null })
+				callback(err == null);
 			});
 		}
-		else {
-			if(profile && profile.url == req.query.url) res.status(200).send({ editable: true });
-			else res.status(200).send({ editable: false });
-		}
+		else callback();
 	})
 });
 
