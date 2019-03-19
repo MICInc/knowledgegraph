@@ -106,8 +106,7 @@ router.get('/comments', function(req, res) {
 		}
 
 		UserAuth.is_editable(req.query, profile, function(editable) {
-			if(editable) res.status(200).send({ editable: editable, comments: profile.comments });
-			else res.status(200).send({ editable: editable, comments: [] });
+			res.status(200).send({ editable: editable, comments: profile.comments });
 		});
 	});
 });
@@ -189,8 +188,7 @@ router.get('/followers', function(req, res) {
 		}
 
 		UserAuth.is_editable(req.query, profile, function(editable) {
-			if(editable) res.status(200).send({ editable: editable, followers: profile.followers });
-			else res.status(200).send({ editable: editable, followers: [] });
+			res.status(200).send({ editable: editable, followers: profile.followers });
 		});
 	});
 });
@@ -204,8 +202,7 @@ router.get('/following', function(req, res) {
 		}
 
 		UserAuth.is_editable(req.query, profile, function(editable) {
-			if(editable) res.status(200).send({ editable: editable, following: profile.following });
-			else res.status(200).send({ editable: editable, following: [] });
+			res.status(200).send({ editable: editable, following: profile.following });
 		});
 	});
 });
