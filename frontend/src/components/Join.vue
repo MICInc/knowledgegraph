@@ -13,10 +13,28 @@
 			<span :class="{error: form.error.dob }">
 				<DateSelector v-on:date="set_date($event)"></DateSelector>
 			</span>
-			<input :class="{error: form.error.email }" type="email" placeholder="Email" v-model.trim="profile.email" required>
+			<input 
+				:class="{error: form.error.email }" 
+				type="email" 
+				placeholder="Email" 
+				v-model.trim="profile.email"
+				autocomplete="username"
+				required>
 			<div class="input-row">
-				<input :class="{error: form.error.password }" type="password" placeholder="Password" v-model="profile.password" required>
-				<input :class="{error: form.error.confirm_password }" type="password" placeholder="Confirm password" v-model="profile.confirm_password" required>
+				<input 
+					:class="{error: form.error.password }" 
+					type="password" 
+					placeholder="Password" 
+					v-model="profile.password" 
+					autocomplete="new-password"
+					required>
+				<input 
+					:class="{error: form.error.confirm_password }" 
+					type="password" 
+					placeholder="Confirm password" 
+					v-model="profile.confirm_password" 
+					autocomplete="new-password"
+					required>
 			</div>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
