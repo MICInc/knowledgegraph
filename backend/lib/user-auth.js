@@ -93,7 +93,7 @@ module.exports = {
 							last_name: user.last_name,
 						};
 						user.token = token.sign(user_id, user.email);
-				
+
 						process.nextTick(function() {
 							callback(null, user.token, {
 								id: user._id,
@@ -121,26 +121,30 @@ module.exports = {
 	},
 	findByEmail: function(email, callback) {
 		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
-			if (err) console.error(err);
-
 			process.nextTick(function() {
-				callback(user);
+				callback(err, user);
 			});
 		});
 	},
 	findById: function(id, callback) {
 		db.User.findOne({ _id: filter.filter_xss(id) }, function(err, user) {
-			if(err) console.error(err);
-
 			process.nextTick(function() {
-				callback(user);
+				callback(err, user);
 			});
 		});
 	},
 	findAllById: function(users, callback) {
 		db.User.find({ _id: { $in : users }}, function(err, profiles) {
-			if(err) console.error(err);
-			callback(profiles);
+			process.nextTick(function() {
+				callback(err, profiles);
+			});
+		});
+	},
+	findByURL: function(url, callback) {
+		db.User.findOne({ url: filter.filter_xss(url) }, function(err, user) {
+			process.nextTick(function() {
+				callback(err, user);
+			});
 		});
 	},
 	isEmailTaken: function(email, callback) {
@@ -182,5 +186,8 @@ module.exports = {
 	},
 	resetPassword() {
 		return utils.uniqueID(15);
+	},
+	verify_token(tok, email, callback) {
+		token.verify(tok, email, callback);
 	}
 };

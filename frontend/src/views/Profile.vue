@@ -12,7 +12,7 @@
 				<div id="left">
 					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
 				</div>
-				<div v-if="!editable">
+				<div v-if="!editable && logged_in">
 					<button v-on:click="follow($event)">Follow</button>
 				</div>
 			</div>
@@ -63,6 +63,7 @@ export default {
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
 			user_id: this.$store.state.userInfo.id,
+			logged_in: this.$store.state.isLoggedIn,
 			profile: {
 				comments: 0,
 				first_name: '',

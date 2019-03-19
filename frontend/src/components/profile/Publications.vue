@@ -26,7 +26,8 @@ export default {
 	},
 	methods: {
 		async get_publications() {
-			ProfileService.get_publications({ params: { user_id: this.user_id, token: this.token, url: this.url }})
+			var user = { user_id: this.user_id, token: this.token, url: this.url, email: this.$store.state.userInfo.email };
+			ProfileService.get_publications({ params: user })
 			.then((resp) => {
 				this.publications = resp.data.publications;
 			})

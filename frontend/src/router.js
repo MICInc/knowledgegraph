@@ -178,16 +178,16 @@ export default new Router({
 			path: '/:id',
 			name: 'profile',
 			component: () => import('./views/Profile.vue'),
-			beforeEnter: (to, from, next) => {
-				if (store.state.isLoggedIn) {
-					next()
-				} else {
-					next({
-						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
-					})
-				}
-			},
+			// beforeEnter: (to, from, next) => {
+			// 	if (store.state.isLoggedIn) {
+			// 		next()
+			// 	} else {
+			// 		next({
+			// 			name: 'login',
+			// 			params: { error: 'You need to log in to access this route.' },
+			// 		})
+			// 	}
+			// },
 			children: [
 				{
 					path: 'comments',

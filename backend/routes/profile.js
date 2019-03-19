@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var db = require('../db/database');
 var ua = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
+var UserAuth = require('../lib/user-auth');
 
 router.post('/', function(req, res) {
 	// TODO: should validate email address before querying
@@ -36,8 +37,45 @@ router.get('/', function(req, res) {
 	});
 });
 
+router.get('/edit', function(req, res) {
+	UserAuth.findByURL(req.query.url, function(err, profile) {
+		if(err) console.error(err);
+
+		if(Object.keys(req.query).includes('token')) {
+			UserAuth.verify_token(profile.token, req.query.email, function(err, decoded) {
+				console.log(err != null);
+				if(profile && profile.url == req.query.url) res.status(200).send({ editable: err == null });
+				else res.status(200).send({ editable: err == null })
+			});
+		}
+		else {
+			if(profile && profile.url == req.query.url) res.status(200).send({ editable: true });
+			else res.status(200).send({ editable: false });
+		}
+	})
+});
+
+router.get('/publications', function(req, res) {
+	UserAuth.findByURL(req.query.url, function(err, profile) {
+		if(err) console.error(err);
+
+		// if(Object.keys(req.query).includes('token')) {
+		// 	var decoded = UserAuth.verify_token(profile.token, req.query.email);
+		// }
+
+		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
+		
+		if(profile && profile.url == req.query.url) {
+			db.Content.find({ _id: { $in: profile.publications }}, function(err, publications) {
+				res.status(200).send({ editable: editable, publications: publications });
+			}).select('title url').select('-_id');
+		}
+		else res.status(200).send({ editable: editable, publications: [] })
+	});
+});
+
 router.get('/library', function(req, res) {
-	db.User.findOne({ url: req.query.url }, function(err, profile) {
+	UserAuth.findByURL(req.query.url, function(err, profile) {
 		if(err) console.error(err);
 
 		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
@@ -94,16 +132,6 @@ router.get('/picture', function(req, res) {
 	});
 });
 
-router.get('/edit', function(req, res) {
-	var query = { _id: req.query.user_id, token: req.query.token };
-
-	db.User.findOne(query, function(err, profile) {
-		if(err) console.error(err);
-		if(profile && profile.url == req.query.url) res.status(200).send({ editable: true });
-		else res.status(200).send({ editable: false })
-	})
-});
-
 router.get('/comments', function(req, res) {
 	db.User.findOne({ url: req.query.url }, function(err, profile) {
 		if(err) console.error(err);
@@ -111,21 +139,6 @@ router.get('/comments', function(req, res) {
 		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
 		if(profile && profile.url == req.query.url) res.status(200).send({ editable: editable, comments: profile.comments });
 		else res.status(200).send({ editable: editable, comments: [] })
-	});
-});
-
-router.get('/publications', function(req, res) {
-	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		if(err) console.error(err);
-
-		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
-		
-		if(profile && profile.url == req.query.url) {
-			db.Content.find({ _id: { $in: profile.publications }}, function(err, publications) {
-				res.status(200).send({ editable: editable, publications: publications });
-			}).select('title url').select('-_id');
-		}
-		else res.status(200).send({ editable: editable, publications: [] })
 	});
 });
 
