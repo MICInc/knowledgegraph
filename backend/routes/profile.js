@@ -63,12 +63,13 @@ router.get('/publications', function(req, res) {
 		}
 
 		UserAuth.is_editable(req.query, profile, function(editable) {
-			if(editable) {
-				db.Content.find({ _id: { $in: profile.publications }}, function(err, publications) {
-					res.status(200).send({ editable: editable, publications: publications });
-				}).select('title url').select('-_id');
-			}
-			else res.status(200).send({ editable: editable, publications: [] });
+			db.Content.find({ _id: { $in: profile.publications }}, function(err, publications) {
+				if(err) {
+					console.error(err);
+					res.status(200).send({ editable: false, publications: [] });
+				}
+				else res.status(200).send({ editable: editable, publications: publications });
+			}).select('title url').select('-_id');
 		});
 	});
 });
