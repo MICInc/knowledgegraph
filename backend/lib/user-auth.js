@@ -66,6 +66,7 @@ module.exports = {
 								id: user._id,
 								first_name: user.first_name,
 								last_name: user.last_name,
+								email: user.email,
 								sess_id: module.exports.start_session(user, user.token),
 								url: user.url,
 								picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
@@ -99,6 +100,7 @@ module.exports = {
 								id: user._id,
 								first_name: user.first_name,
 								last_name: user.last_name,
+								email: user.email,
 								sess_id: module.exports.start_session(user, user.token),
 								url: user.url,
 								picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''

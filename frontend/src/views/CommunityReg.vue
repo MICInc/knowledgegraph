@@ -70,7 +70,9 @@ export default {
 				exists: '',
 				name: '',
 				school: ''
-			}
+			},
+			token: this.$store.state.accessToken,
+			email: this.$store.state.userInfo.email
 		}
 	},
 	methods: {
@@ -91,22 +93,17 @@ export default {
 		set_school(name) {
 			this.org.school = name;
 		},
-		submit() {
-			this.a_submit().then((resp) => {
+		async submit() {
+			CommunityService.submitCommunity({ organization: this.org, token: this.token, email: this.email })
+			.then((resp) => {
 				var err = resp.data.error;
 				
-				if(err != undefined && resp.status == 200) {
-					this.form.error = err;
-				} else if (resp.status == 200) {
-					this.form.complete = true;
-				}
+				if(err != undefined && resp.status == 200) this.form.error = err;
+				else if (resp.status == 200) this.form.complete = true;
 			});
 		},
 		update(data) {
 			for(var k in data) this.org[k] = data[k];
-		},
-		async a_submit() {
-			return await CommunityService.submitCommunity(this.org);
 		}
 	}
 }
