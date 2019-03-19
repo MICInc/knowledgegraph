@@ -65,7 +65,7 @@ export default {
 	},
 	methods: {
 		add_content(index) {
-			ContentService.addContent({ id: this.content_id, index: index })
+			ContentService.addContent({ id: this.content_id, index: index, token: this.token, email: this.email })
 			.then((data) => {
 			})
 			.catch(error => {

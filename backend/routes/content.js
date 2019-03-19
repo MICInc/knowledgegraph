@@ -77,21 +77,35 @@ router.post('/', function(req, res, next) {
 });
 
 router.post('/add', function(req, res) {
-	var data = req.body;
-	var query = { _id: data.id };
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(400).send('Invalid post');
+		return;
+	}
 
-	db.Content.findOne(query, function(err, article) {
-		if(article != null) {
-			article.content.splice(data.index, 0, {});
-			
-			for(var i = data.index; i < article.content.length; i++) {
-				article.content[i].index += 1;
-			}
-
-			db.Content.updateOne(query, article, function(err) {
-				if(err) console.error(err);
-			});
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(400).send('Invalid post');
+			return;
 		}
+
+		var data = req.body;
+		var query = { _id: data.id };
+
+		db.Content.findOne(query, function(err, article) {
+			if(article != null) {
+				article.content.splice(data.index, 0, {});
+				
+				for(var i = data.index; i < article.content.length; i++) {
+					article.content[i].index += 1;
+				}
+
+				db.Content.updateOne(query, article, function(err) {
+					if(err) console.error(err);
+				});
+			}
+		});
 	});
 });
 
