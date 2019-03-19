@@ -82,20 +82,37 @@ module.exports = {
 
 			if (user != null) {
 				// Salt password to see if hashes will match with the user's salt
-				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key){
-					if (err) console.error(err);
+				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key) {
+					if(err) console.error(err);
 					
-					if (user.password_hash == key.toString('hex')) {
+					if(user.password_hash == key.toString('hex')) {
+						var user_id = {
+							id: user._id,
+							email: user.email,
+							first_name: user.first_name,
+							last_name: user.last_name,
+						};
+						user.token = token.sign(user_id, user.email);
+				
 						process.nextTick(function() {
-							callback(null, user);
+							callback(null, user.token, {
+								id: user._id,
+								first_name: user.first_name,
+								last_name: user.last_name,
+								sess_id: module.exports.start_session(user, user.token),
+								url: user.url,
+								picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
+							});
 						});
-					} else {
+					}
+					else {
 						process.nextTick(function() {
-							callback({message: 'Password was incorrect'}, null);
+							callback({message: 'Password was incorrect'}, '', null);
 						});
 					}
 				});
-			} else {
+			}
+			else {
 				process.nextTick(function() {
 					callback({message: 'Could not find the user: ' + email}, null);
 				});

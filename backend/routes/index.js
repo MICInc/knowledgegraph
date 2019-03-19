@@ -58,34 +58,9 @@ router.post('/login', function(req, res, next) {
 
 	if(!(email && password)) res.send({error: 'Please provide a email and password'});
 
-	UserAuth.loginUser(email, password, function(err, user) {
-		if (!err) {
-			var signOpt = {
-				issuer: "Machine Intelligence Community",
-				subject: email,
-				audience: "http://machineintelligence.cc",
-				expiresIn: "24h",
-				algorithm: "RS256"
-			};
-			
-			let token = jwt.sign({ email: email }, private_key, signOpt);
-
-			res.json({
-				message: 'User successfully authenticated.',
-				token: token,
-				userInfo: {
-					id: user._id,
-					first_name: user.first_name,
-					last_name: user.last_name,
-					sess_id: UserAuth.start_session(user, token),
-					url: user.url,
-					picture: 'picture' in user.toObject() ? user.picture.src : ''
-				}
-			});
-		} else {
-			console.log(err)
-			res.send({error: err.message})
-		}
+	UserAuth.loginUser(email, password, function(err, token, user) {
+		if(err) res.send({ error: 'Login failed' });
+		else res.json({ token: token, userInfo: user });
 	});
 });
 
