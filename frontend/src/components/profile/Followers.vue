@@ -22,12 +22,13 @@ export default {
 			followers: [],
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
-			user_id: this.$store.state.userInfo.id
+			user_id: this.$store.state.userInfo.id,
+			email: this.$store.state.userInfo.email
 		}
 	},
 	methods: {
 		async get_followers() {
-			ProfileService.get_followers({ params: { user_id: this.user_id, token: this.token, url: this.url }})
+			ProfileService.get_followers({ params: { user_id: this.user_id, token: this.token, url: this.url, email: this.email }})
 			.then((resp) => {
 				this.editable = resp.data.editable;
 				this.followers = resp.data.followers;

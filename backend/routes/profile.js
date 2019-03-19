@@ -107,7 +107,7 @@ router.get('/comments', function(req, res) {
 
 		UserAuth.is_editable(req.query, profile, function(editable) {
 			if(editable) res.status(200).send({ editable: editable, comments: profile.comments });
-			else res.status(200).send({ editable: editable, comments: [] })
+			else res.status(200).send({ editable: editable, comments: [] });
 		});
 	});
 });
@@ -181,22 +181,32 @@ router.post('/follow', function(req, res) {
 });
 
 router.get('/followers', function(req, res) {
-	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		if(err) console.error(err);
+	UserAuth.findByURL(req.query.url, function(err, profile) {
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid request');
+			return;
+		}
 
-		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
-		if(profile && profile.url == req.query.url) res.status(200).send({ editable: editable, followers: profile.followers });
-		else res.status(200).send({ editable: editable, followers: [] })
+		UserAuth.is_editable(req.query, profile, function(editable) {
+			if(editable) res.status(200).send({ editable: editable, followers: profile.followers });
+			else res.status(200).send({ editable: editable, followers: [] });
+		});
 	});
 });
 
 router.get('/following', function(req, res) {
-	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		if(err) console.error(err);
+	UserAuth.findByURL(req.query.url, function(err, profile) {
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid request');
+			return;
+		}
 
-		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
-		if(profile && profile.url == req.query.url) res.status(200).send({ editable: editable, following: profile.following });
-		else res.status(200).send({ editable: editable, following: [] })
+		UserAuth.is_editable(req.query, profile, function(editable) {
+			if(editable) res.status(200).send({ editable: editable, following: profile.following });
+			else res.status(200).send({ editable: editable, following: [] });
+		});
 	});
 });
 

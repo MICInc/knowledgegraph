@@ -31,7 +31,7 @@ export default {
 			return Api().get('/profile/publications', data)
 		},
 		get_followers(data) {
-			return Api().get('/profile/followes', data);
+			return Api().get('/profile/followers', data);
 		},
 		get_following(data) {
 			return Api().get('/profile/following', data);
