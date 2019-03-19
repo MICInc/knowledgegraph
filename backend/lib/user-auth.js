@@ -2,7 +2,11 @@ var db = require('../db/database');
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 var utils = require('./utils');
-var filter = require('./filter')
+var filter = require('./filter');
+var fs = require('fs');
+var jwt = require('jsonwebtoken');
+const private_key = fs.readFileSync('./config/private.pem', 'utf8');
+const public_key = fs.readFileSync('./config/public.pem', 'utf8');
 
 module.exports = {
 	format: function(profile) {
@@ -38,25 +42,43 @@ module.exports = {
 
 		// Hash password
 		crypto.pbkdf2(profile.password, salt, 10000, 64, 'sha512', function(err, key) {
-			if (err) console.error(err);
+			if(err) callback(err, '', null);
+			else {
+				var user = new db.User(module.exports.format(profile));
+				user.salt = salt;
+				user.password_hash = key.toString('hex');
+				var signOpt = {
+					issuer: "Machine Intelligence Community",
+					subject: profile.email,
+					audience: "http://machineintelligence.cc",
+					expiresIn: "24h",
+					algorithm: "RS256"
+				};
 
-			var user = new db.User(module.exports.format(profile));
-			user.salt = salt;
-			user.password_hash = key.toString('hex');
+				user.token = jwt.sign({ email: profile.email }, private_key, signOpt);
 
-			user.collection.dropIndexes(function(err, results) {
-				if(err) {
-					console.log('content.js: '+err);
-				}
-			});
-
-			user.save(function(err, user) {
-				if (err) console.error(err);
-				// Successfully registered user
-				process.nextTick(function() {
-					callback(null, user);
+				user.collection.dropIndexes(function(err, results) {
+					if(err) console.error(err);
 				});
-			});
+
+				user.save(function(err, profile) {
+					if(err) console.error(err);
+					else {
+						// Successfully registered user
+						process.nextTick(function() {
+							callback(null, user.token, {
+									id: user._id,
+									first_name: user.first_name,
+									last_name: user.last_name,
+									sess_id: module.exports.start_session(user, user.token),
+									url: user.url,
+									picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
+								}
+							);
+						});
+					}
+				});
+			}
 		});
 	},
 	loginUser: function(email, password, callback) {

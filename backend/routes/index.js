@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var UserAuth = require('../lib/user-auth');
-var jwt = require('jsonwebtoken');
 const config = require('../config.js');
 var form = require('../lib/form');
 var eh = require('../lib/email_handler');
 var fs = require('fs');
+var jwt = require('jsonwebtoken');
 const private_key = fs.readFileSync('./config/private.pem', 'utf8');
 const public_key = fs.readFileSync('./config/public.pem', 'utf8');
 
@@ -43,35 +43,12 @@ router.post('/signup', function(req, res) {
 		return;
 	}
 
-	UserAuth.registerUser(req.body, function(err, user) {
-		if (!err) {
-			var signOpt = {
-				issuer: "Machine Intelligence Community",
-				subject: email,
-				audience: "http://machineintelligence.cc",
-				expiresIn: "24h",
-				algorithm: "RS256"
-			};
-			
-			let token = jwt.sign({ email: email }, private_key, signOpt);
-
-			res.json({
-				message: 'User successfully created.',
-				token: token,
-				userInfo: {
-					id: user._id,
-					first_name: user.first_name,
-					last_name: user.last_name,
-					sess_id: UserAuth.start_session(user, token),
-					url: user.url,
-					picture: 'picture' in user.toObject() ? user.picture.src : ''
-				}
-			});
-
+	UserAuth.registerUser(req.body, function(err, token, user) {
+		if(!err) {
+			res.json({ token: token, userInfo: user });
 			// eh.send_verification(email);
-		} else {
-			res.send({ error: err.message })
-		}
+		} 
+		else res.send({ error: 'Registration failed' });
 	});
 });
 
