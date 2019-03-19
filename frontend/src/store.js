@@ -22,7 +22,7 @@ export default new Vuex.Store({
 
 		setUserInfo (state, obj) {
 			Vue.set(state, 'userInfo', obj)
-		},
+		}
   },
 
   actions: {
@@ -38,6 +38,10 @@ export default new Vuex.Store({
 			commit('setUserInfo', {})
 			commit('setIsLoggedIn', false)
 		},
+
+		set_user_info ({commit, state}, [userInfo]) {
+			commit('setUserInfo', userInfo)
+		}
 	},
 
 	plugins:[

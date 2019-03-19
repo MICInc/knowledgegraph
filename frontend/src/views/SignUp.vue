@@ -1,21 +1,21 @@
 <template>
 	<div class="signup main">
-		<PageNav></PageNav>
 		<div class="container">
+			<PageNav></PageNav>
 			<Join></Join>
 		</div>
 	</div>
 </template>
 
 <script>
-import PageNav from '@/components/PageNav.vue'
+import PageNav from '@/components/PageNav'
 import Join from '@/components/Join'
 
 export default {
 	name: 'signup',
 	components: {
-		PageNav,
-		Join
+		Join,
+		PageNav
 	}
 }
 </script>

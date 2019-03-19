@@ -6,87 +6,131 @@ var utils = require('../lib/utils');
 var db = require('../db/database');
 var path = require('path');
 var fs = require('fs-extra');
-
+var vote = require('../lib/vote');
+var ua = require('../lib/user-auth');
 const article_storage = './storage/content/article';
 
 router.post('/', function(req, res, next) {
-
 	var data = fc.extract(req);
-	var query = {_id: data._id};
+	var query = { _id: data._id };
 
-	db.Content.find(query, function (err, results) {
-		if(results.length > 0) {
-			var article = results[0];
+	db.Content.findOne(query, function (err, article) {
+		if(article != null) {
 			var index = req.body.data.update_cell;
+			article = fc.update(index, data, article);
 
-			if(data.publish) article['hashtag'] = fc.update_hashtags(article['hashtag'], data['hashtag']);
-
-			var is_null = data['content'] == null;
-			var is_obj = data['content'].constructor === Object;
-			var has_obj = Object.keys(data['content']).length > 0;
-
-			// update cell content
-			if(!is_null && is_obj && has_obj) {
-				// update existing cell else add new cell
-				if(index < article['content'].length) article['content'][index] = data['content'];
-				else article['content'].push(data['content']);
-
-				data['content'] = article['content'];
-			}
-
-			article = new db.Content(data);
-			var updated = article.toObject();
-
-			delete updated._id;
-
-			db.Content.updateOne(query, updated, function(err) {
-				if(err) console.log(err);
+			db.Content.updateOne(query, article, function(err) {
+				if(err) console.error(err);
 				else res.send({ id: data._id.toString(), url: data.url });
 			});
 		}
 		else {
-			// refactor this into format_content()
-			data['content'] = [data['content']];
 			var article = new db.Content(data);
 
-			article.collection.dropIndexes(function(err, results) {
-				if(err) console.log('content.js: '+err);
+			article.collection.dropIndexes(function(err, result) {
+				if(err) console.error('content.js: '+err);
 			});
 
 			article.save()
 			.then(item => {
-				console.log('Saved url: '+data.url);
 				res.send({ id: data._id.toString(), url: data.url });
 			})
 			.catch(err => {
-				console.log(err);
+				console.error(err);
 				res.status(400).send('Save error');
+			});
+
+			var user = { _id: req.body.user_id, token: req.body.token };
+			
+			db.User.findOne(user, function(err, profile) {
+				// only store article id so that forced to get latest url and 
+				// content incase article renamed, which will generate url
+				profile.publications.push(data._id.toString());
+				
+				db.User.updateOne(user, profile, function(err) {
+					if(err) console.error(err);
+				});
 			});
 		}
 	});
-	// next();
 });
 
-router.post('/parse', function(req, res, next) {
+router.post('/add', function(req, res) {
+	var data = req.body;
+	var query = { _id: data.id };
 
-	fh.write(req, res, article_storage);
-	// call pdf parsing code here
+	db.Content.findOne(query, function(err, article) {
+		if(article != null) {
+			article.content.splice(data.index, 0, {});
+			
+			for(var i = data.index; i < article.content.length; i++) {
+				article.content[i].index += 1;
+			}
+
+			db.Content.updateOne(query, article, function(err) {
+				if(err) console.error(err);
+			});
+		}
+	});
+});
+
+router.post('/remove', function(req, res) {
+	var data = req.body;
+	var query = { _id: data.id };
+
+	db.Content.findOne(query, function (err, article) {		
+		if(article != null) {
+			if(data.index < article.content.length) article.content.splice(data.index, 1);
+			
+			for(var i = 0; i < article.content.length; i++) {
+				article.content[i].index -= 1;
+			}
+
+			db.Content.updateOne(query, article, function(err) {
+				if(err) console.error(err);
+				else res.status(200).send('removed cell '+data.index);
+			});
+		}
+	});
 });
 
 router.get('/', function(req, res) {
-	if (req.query.url) {
+	if(req.query.url) {
 		var query = { url: req.query.url };
+		var user_id = req.query.user.length > 0 ? req.query.user : '';
 
-		db.Content.find(query, function(err, results) {
-			if(results.length > 0 && results[0].published) res.send(results);
+		db.Content.findOne(query, function(err, article) {
+
+			if(article != null && article.is_published) {
+				var start = new Date();
+
+				res.status(200).send(fc.filter_results(article));
+				article.view_duration.push({ start: start });
+
+				db.Content.updateOne(query, article, function(err) {
+					if(err) console.error(err);
+				});
+
+				if(user_id.length > 0) {
+					var user = { _id: user_id };
+
+					db.User.findOne(user, function(err, profile) {
+						profile.view_duration.push({ start: start, content: article._id});
+
+						db.User.updateOne(user, profile, function(err) {
+							if(err) console.error(err);
+						});
+					});
+				}
+			}
 			else res.status(404).send('Article not found');
 		});
 	}
-	else if (req.query.id == -1) {
+	else if(req.query.id == -1) {
 		var query = {};
 
 		db.Content.find(query, function(err, results) {
-			if(err) console.log(err);
+			if(err) console.error(err);
 
 			var shuff = utils.shuffle(results);
 			res.send(shuff);
@@ -98,30 +142,76 @@ router.get('/', function(req, res) {
 });
 
 router.get('/img', function(req, res) {
-	console.log('article: '+req.query.content_id+' retrieve image: '+req.query.name);
+	// console.log('article: '+req.query.content_id+' retrieve image: '+req.query.name);
 });
 
-router.post('/remove', function(req, res) {
-	var data = req.body;
-	var query = { _id: data.id };
+router.post('/upvote', function(req, res) {
+	var ballot = fc.verify_vote(req.body);
+	var user = { _id: ballot.profile_id };
+	var content = { _id: ballot.content_id, liked: 1, date: new Date() };
+	vote.vote(user, content, res);
 
-	db.Content.find(query, function (err, results) {
-		var content = results[0]['content'];
+	var user = { _id: ballot.profile_id, token: ballot.token };
+			
+	db.User.findOne(user, function(err, profile) {
+		if(!profile) return;
+
+		profile.library.push(ballot.content_id);
 		
-		if(data.index < content.length) content.splice(data.index, 1);
-
-		results[0]['content'] = content;
-		
-		var article = new db.Content(results[0]);
-		var updated = article.toObject();
-
-		delete updated._id;
-
-		db.Content.updateOne(query, updated, function(err) {
-			if(err) console.log(err);
-			else res.status(200).send('removed cell '+data.index);
+		db.User.updateOne(user, profile, function(err) {
+			if(err) console.error(err);
 		});
 	});
+});
+
+router.post('/downvote', function(req, res) {
+	var ballot = fc.verify_vote(req.body);
+	var user = { _id: ballot.profile_id };
+	var content = { _id: ballot.content_id, liked: -1, date: new Date() };;
+	vote.vote(user, content, res);
+
+	var user = { _id: ballot.profile_id, token: ballot.token };
+			
+	db.User.findOne(user, function(err, profile) {
+		if(!profile) return;
+		
+		var index = profile.library.indexOf(ballot.content_id);
+		if(index !== -1) profile.library.splice(index, 1);
+		
+		db.User.updateOne(user, profile, function(err) {
+			if(err) console.error(err);
+		});
+	});
+});
+
+router.options('/cleanup', function(req, res) {
+	var content_id = { _id: req.body.content_id };
+	var user_id = { _id: req.body.user_id };
+
+	db.Content.findOne(content_id, function(err, article) {
+		if(article != null) {
+			article.view_duration['end'] = new Date();
+
+			db.Content.updateOne(content_id, article, function(err) {
+				if(err) console.error(err);
+			});
+		}
+	});
+
+	db.User.findOne(user_id, function(err, profile) {
+		if(profile != null) {
+			profile.view_duration['end'] = new Date();
+			db.User.updateOne(user_id, profile, function(err) {
+				if(err) console.error(err);
+			});
+		}
+	});
+});
+
+router.post('/parse', function(req, res, next) {
+
+	fh.write(req, res, article_storage);
+	// call pdf parsing code here
 });
 
 module.exports = router;

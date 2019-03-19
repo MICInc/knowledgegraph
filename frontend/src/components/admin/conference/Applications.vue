@@ -1,6 +1,7 @@
 <template>
-	<div id="container">
+	<div class="container">
 		<table>
+			<button v-on:click="checkin()">CHECK-IN</button>
 			<th class="headers" v-for="(key, i) in Object.keys(applications[0])">{{ key }}</th>
 			<tr class="values" v-for="(row, i) in applications">
 				<td v-for="key in Object.keys(row)">{{ row[key] }}</td>
@@ -15,6 +16,11 @@ export default {
 	name: 'Applications',
 	data() {
 		return {
+		}
+	},
+	methods: {
+		checkin() {
+			console.log('checked in');
 		}
 	},
 	props: ['applications']

@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)">
+	<div class="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)">
 		<div id="editbar">
 			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
 			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
@@ -7,12 +7,11 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<Cell v-for="(value, index) in content" 
+		<Cell v-for="(value, index) in cells" 
 			  :id="'content-container-'+index" 
 			  :tabindex="index" 
 			  :key="JSON.stringify(value.id)" 
-			  :ref="'content-'+index" 
-			  :content="content" 
+			  :ref="'content-'+index"
 			  :index="index"
 			   v-on:active_index="set_index($event)" 
 			   v-on:save="save($event)" 
@@ -24,7 +23,7 @@
 </template>
 
 <script>
-import Cell from '@/components/Cell'
+import Cell from '@/components/editor/Cell'
 
 export default {
 	components: {
@@ -34,12 +33,11 @@ export default {
 		return {
 			active_index: -1,
 			cells: [{ id: this.init_id, tag: 'p' }],
-			content: [{ id: this.init_id}],
 			init_id: Math.random(),
 			emit_save: {
 				button: false,
 				cell: undefined,
-				update_cell: -1
+				update_cell: -1,
 			}
 		}
 	},
@@ -52,9 +50,9 @@ export default {
 
 			this.active_index += 1;
 			var cell_id = Math.random();
-			this.content.splice(this.active_index, 0, { id: cell_id });
 			this.cells.splice(this.active_index, 0, { id: cell_id, tag: 'p' });
 			this.focus_eol();
+			this.$emit('add', this.active_index);
 		},
 		focus() {
 			var comp = this.$refs['content-'+this.active_index];
@@ -67,7 +65,7 @@ export default {
 		focus_eol(e=null) {
 			if(e != undefined && e.which == 9) this.active_index += 1;
 
-			if(this.active_index >= 0 && this.active_index < this.content.length) {
+			if(this.active_index >= 0 && this.active_index < this.cells.length) {
 				this.$nextTick(() => {
 					var content = this.$refs['content-'+this.active_index][0];
 					if(this.cells[this.active_index].tag == 'p') content.set_end_contenteditable(content.$refs['p-content']);
@@ -81,20 +79,18 @@ export default {
 		},
 		remove_cell(index) {
 			if(index >= 0) {
-				if(this.cells[index].tag == 'p' && this.active_index == 0) return;
-
 				this.cells.splice(index, 1);
-				this.content.splice(index, 1);
 
 				var prev = index - 1;
 				if(prev >= 0) this.active_index = prev;
 
-				if(this.content.length == 0) {
+				if(this.cells.length == 0) {
 					this.add_content();
 				}
 				else {
 					this.focus();
 				}
+
 				this.$emit('remove', index);
 			}
 		},
@@ -123,5 +119,5 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 </style>

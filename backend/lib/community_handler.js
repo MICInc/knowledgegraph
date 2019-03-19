@@ -17,18 +17,23 @@ module.exports = {
 		community.save()
 		.then(item => {
 			console.log('Saved community');
-			callback(true);
+			callback(200);
 		})
 		.catch(err => {
 			console.log(err);
-			callback(false);
+			callback(400);
 		});
 	},
 	exists: function(community, callback) {
-		db.Community.findOne({name: community}, function(err, org) {
-			var exists = org != null;
-			if(err) handleError(err);
-			callback(exists);
+		module.exports.find(community, function(org) {
+			callback(org != null);
+		});
+	},
+	find: function(community, callback) {
+		db.Community.findOne({ name: community }, function(err, org) {
+			if(err) console.error(err);
+			console.log(org);
+			callback(org);
 		});
 	},
 	get_all: function(query, callback) {

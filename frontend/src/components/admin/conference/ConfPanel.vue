@@ -1,5 +1,5 @@
 <template>
-	<div id="container" v-on:panel="show($event)">
+	<div class="container" v-on:panel="show($event)">
 		<div id="panel-nav" v-on:program_panels="update_panels($event)">
 			<ul v-for="(panel, index) in panels">
 				<button class="conf-button" v-on:click="show(panel.name)" v-bind:class="{display_button: display==panel.name}">{{ panel.name }}</button>

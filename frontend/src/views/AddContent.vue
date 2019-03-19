@@ -1,7 +1,7 @@
 <template>
-	<div class="main" v-on:keydown="prevent_default($event)">
+	<div class="container" v-on:keydown="prevent_default($event)">
 		<PageNav></PageNav>
-		<div class="container">
+		<div id="editor">
 			<div id="publish">
 				<button v-on:click.prevent="publish()">Publish</button>
 				<span id="status" class="save-status">{{ save_status }}</span>
@@ -9,7 +9,12 @@
 			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()" autofocus>
 			<br>
 			<form>
-				<DynamicContent v-on:edit="update_content($event)" v-on:remove="remove_content($event)" :collab="data.content"></DynamicContent>
+				<DynamicContent 
+					v-on:edit="update_content($event)" 
+					v-on:add="add_content($event)" 
+					v-on:remove="remove_content($event)" 
+					:collab="data.content">
+				</DynamicContent>
 			</form>
 		</div>
 	</div>
@@ -18,7 +23,7 @@
 <script>
 import PageNav from '@/components/PageNav';
 import ContentService from '@/services/ContentService.js';
-import DynamicContent from '@/components/DynamicContent';
+import DynamicContent from '@/components/editor/DynamicContent';
 import Path from 'path';
 
 window.onbeforeunload = function() {
@@ -33,6 +38,7 @@ export default {
 	},
 
 	created() {
+		this.authors.push(this.$store.state.userInfo);
 		this.save();
 	},
 	data() {
@@ -42,10 +48,8 @@ export default {
 				date_created: new Date(),
 				cell: undefined,
 				citations: '',
-				content: [],
 				last_modified: undefined,
 				prereq: '',
-				publish: false,
 				subseq: '',
 				title: ''
 			},
@@ -53,10 +57,20 @@ export default {
 			tags: [],
 			upload: [],
 			url: '',
-			user: this.$store.state.userInfo
+			authors: [],
+			token: this.$store.state.accessToken,
+			user_id: this.$store.state.userInfo.id
 		}
 	},
 	methods: {
+		add_content(index) {
+			ContentService.addContent({ id: this.content_id, index: index })
+			.then((data) => {
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		},
 		prevent_default(event) {
 			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
 				event.preventDefault();
@@ -68,25 +82,9 @@ export default {
 				alert('Need a title');
 			}
 			else {
-				this.data.publish = !this.data.publish;
-
-				if(this.data.publish) {
-					this.save_status = 'publishing...';
-				}
-				else {
-					this.save_status = 'unpublishing...';
-				}
-
-				this.save();
-				
-				if(this.data.publish) {
-					this.save_status = 'published';
-				}
-				else {
-					this.save_status = 'unpublished';
-				}
-
-				// this.redirect();
+				this.save_status = 'publishing...';
+				this.save(true);
+				this.save_status = 'published';
 			}
 		},
 		redirect() {
@@ -100,15 +98,21 @@ export default {
 				console.log(error);
 			});
 		},
-		save() {
+		save(publish=false) {
 			this.save_status = 'saving...';
-
+			
 			this.data.last_modified = new Date();
-			var article = { id: this.content_id, user: this.user, data: this.data };
+			var article = { 
+				id: this.content_id, 
+				authors: this.authors, 
+				data: this.data, 
+				publish: publish, 
+				user_id: this.user_id,
+				token: this.token
+			};
 			
 			ContentService.saveContent(article)
 			.then((data) => {
-
 				if(data != undefined) {
 					if(this.content_id.length == 0) {
 						this.content_id = data['data'].id;
@@ -116,12 +120,13 @@ export default {
 					if(this.url != data['data'].url) {
 						this.url = data['data'].url;
 					}
+
+					this.save_status = 'saved';
 				}
 			})
 			.catch(error => {
 				console.log(error);
 			});
-			this.save_status = 'saved';
 		},
 		update_content(emit_save) {
 			this.data.cell = emit_save.cell;
@@ -150,6 +155,9 @@ export default {
 			e.target.value = e.target.value.toUpperCase();
 			this.$set(o, prop, e.target.value);
 			e.target.setSelectionRange(start, start);
+		},
+		async a_publish() {
+			return await ContentService.publish();
 		}
 	},
 	props: ['content'],
@@ -166,11 +174,8 @@ export default {
 	flex-direction: column;
 }
 
-.container {
-	width: 600px;
-	display: inline-block;
-	flex-direction: column;
-	align-items: center;
+#editor {
+	margin-top: 10px;
 }
 
 #publish {

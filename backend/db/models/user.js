@@ -11,6 +11,10 @@ var user_schema = new Schema({
         trim: true,
         sparse: true
     },
+    comments: [{
+        type: String,
+        trim: true
+    }],
     date_joined: {
         type: Date,
         required: true,
@@ -36,9 +40,15 @@ var user_schema = new Schema({
         required: true,
         trim: true
     },
+    followers: [{
+        type: String,
+        sparse: true,
+        trim: true
+    }],
     following: [{
         type: String,
-        sparse: true
+        sparse: true,
+        trim: true
     }],
     grade: {
         type: String,
@@ -55,21 +65,21 @@ var user_schema = new Schema({
         trim: true
     },
     library: [{
-        type: String, // content ids
+        type: String,
         sparse: true
     }],
-    liked_articles: [{
-        type: String, // content ids
-        sparse: true
-    }],
-    liked_papers: [{
-        type: String, // content ids
-        sparse: true
-    }],
+    num_citations: {
+        type: Number
+    },
     password_hash: {
         type: String,
         required: true
     },
+    publications: [{
+        type: String,
+        sparse: true
+    }],
+    picture: {},
     rank: {
         type: Number,
         required: true,
@@ -83,18 +93,20 @@ var user_schema = new Schema({
         type: String,
         sparse: true
     },
+    session_history: [{}],
     subjects: [{
         type: String, // entity ids
         sparse: true
     }],
-    search_history: [{ 
-        type: String,
-        sparse: true
-    }],
+    search_history: [{}],
+    token: {
+        type: String
+    },
     url: {
         type: String,
         required: true
-    }
+    },
+    view_duration: [{}]
 });
 
 var conn = mongoose.createConnection('mongodb://localhost:27017/profile', { useNewUrlParser: true });

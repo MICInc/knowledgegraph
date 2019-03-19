@@ -1,16 +1,12 @@
 <template>
 	<div class="main-conference">
 		<nav v-if="viewSideNav" v-on:click="toggleViewSideNav" id="hidden-nav">
-				<ul>
-						<li>
-								<h3>Menu</h3>
-						</li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#location-info">Location Info</a></li>
-						<li><a href="#our-community">Our Community</a></li>
-						<li><a href="#sponsors">Sponsors</a></li>
-						<li><a href="#committee">Conference Committee</a></li>
-				</ul>
+			<ul>
+				<li>
+					<h3>Menu</h3>
+				</li>
+				<li v-for="(item, index) in menu"><a :href="item.href">{{ item.name }}</a></li>
+			</ul>
 		</nav>
 		<ul v-if="!viewSideNav" v-on:click="toggleViewSideNav" id="sidebar">
 			<li></li>
@@ -23,7 +19,6 @@
 			<LocationInfo></LocationInfo>
 			<OurCommunity></OurCommunity>
 			<Sponsors></Sponsors>
-			<Committee></Committee>
 			<Footer></Footer>
 		</div>
 	</div>
@@ -35,23 +30,47 @@
 	import LocationInfo from '@/components/conference/LocationInfo.vue'
 	import OurCommunity from '@/components/conference/OurCommunity.vue'
 	import Sponsors from '@/components/conference/Sponsors.vue'
-	import Committee from '@/components/conference/Committee.vue'
 	import Footer from '@/components/conference/Footer.vue'
 
 	export default {
-		name: 'oldConference',
+		name: 'oldconf',
 		components: {
 			Jumbo,
 			About,
 			LocationInfo,
 			OurCommunity,
 			Sponsors,
-			Committee,
 			Footer,
 		},
 
 		data () {
 			return {
+				menu: [
+					{
+						name: 'About',
+						href: '#about'
+					},
+					{
+						name: 'Location Info',
+						href: '#location-info'
+					},
+					{
+						name: 'Our Community',
+						href: '#our-community'
+					},
+					{
+						name: 'Sponsors',
+						href: '#sponsors'
+					},
+					{
+						name: 'Conference Committee',
+						href: '#committee'
+					},
+					{
+						name: 'Schedule',
+						href: '/conference/schedule/'+(new Date()).getFullYear()
+					}
+				],
 				viewSideNav: false,
 			}
 		},
@@ -72,7 +91,7 @@
 
 #sidebar {
 	width: 50px;
-	background: #545f99;
+	background: #5d5499;
 	position: fixed;
 	height: 100vh;
 	top: 0;
@@ -93,7 +112,7 @@
 }
 
 #hidden-nav {
-	background: #545f99;
+	background: #5d5499;
 	position: fixed;
 	height: 100vh;
 	width: 250px;
@@ -129,7 +148,7 @@
 }
 
 #hidden-nav ul li a:hover {
-	background: #717cb2;
+	background: #655ba5;
 }
 
 #hidden-nav .cta {

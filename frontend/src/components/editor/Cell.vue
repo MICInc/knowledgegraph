@@ -1,31 +1,33 @@
 <template>
-	<div id="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
+	<div class="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
 		<div class="tag-type" v-show="is_empty">
 			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 		</div>
-		<figure id="figure-content" v-if="'img' == cell.tag" v-on:click="set_active($event)">
-			<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
-			<figcaption class="caption" 
-						v-show="has_caption" 
-						v-on:keyup="caption($event)" 
-						v-on:keydown.delete.stop="remove_caption($event)" 
-						contenteditable>
-				<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
-			</figcaption>
-		</figure>
-		<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
-			<hr>
+		<div class="editor-info">
+			<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
+				<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
+				<figcaption class="caption" 
+							v-show="has_caption" 
+							v-on:keyup="caption($event)" 
+							v-on:keydown.delete.stop="remove_caption($event)" 
+							contenteditable>
+					<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
+				</figcaption>
+			</figure>
+			<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
+				<hr>
+			</div>
+			<p id="p-content"
+			   v-if="'p' == cell.tag" 
+			   class="content" 
+			   ref="p-content"
+			   v-on:keyup="input($event)" 
+			   @mousedown="set_active($event)" 
+			   contenteditable>
+			</p>
 		</div>
-		<p id="p-content"
-		   v-if="'p' == cell.tag" 
-		   class="content" 
-		   ref="p-content"
-		   v-on:keyup="input($event)" 
-		   @mousedown="set_active($event)" 
-		   contenteditable>
-		</p>
 	</div>
 </template>
 
@@ -46,6 +48,7 @@ export default {
 				tag: 'p',
 				text: '',
 			},
+			file_limit: 2, //unit = mb
 			has_caption: true,
 			has_caption_default: true,
 			image_active: false,
@@ -67,7 +70,7 @@ export default {
 			this.$emit('active_index', this.index);
 			this.$emit('focus');
 
-			if(el.files && el.files[0]) {
+			if(el.files && el.files[0] && this.valid_size(el.files[0].size)) {
 				var reader = new FileReader();
 				reader.onload = (e) => {
 					// everything in this scope is async so accessing any of the variables
@@ -140,6 +143,7 @@ export default {
 		},
 		input(event) {
 			var el = event.target;
+			this.removeStyles(el);
 
 			if(el.innerText.length == 0) { 
 				this.is_empty = true;
@@ -148,8 +152,8 @@ export default {
 				this.is_empty = false;
 			}
 			
-			this.cell.html = el.innerHTML;
-			this.cell.text = el.innerText;
+			this.cell.html = this.trim(el.innerHTML);
+			this.cell.text = this.trim(el.innerText);
 			this.cell.last_modified = new Date();
 
 			this.save();
@@ -170,6 +174,17 @@ export default {
 					event.preventDefault();
 
 					this.$emit('remove', this.index);
+				}
+			}
+		},
+		removeStyles(el) {
+			// source: https://stackoverflow.com/questions/9252839/simplest-way-to-remove-all-the-styles-in-a-page
+			el.removeAttribute('style');
+			el.style.color = 'black';
+
+			if(el.childNodes.length > 0) {
+				for(var child in el.childNodes) {
+					if(el.childNodes[child].nodeType == 1) this.removeStyles(el.childNodes[child]);
 				}
 			}
 		},
@@ -221,12 +236,6 @@ export default {
 				range.select();
 			}
 		},
-		shift_enter(event) {
-			// console.log('shift');
-		},
-		show_caption(event) {
-			// console.log(event)
-		},
 		switch_tag(tag, event) {
 			this.$emit('active_index', this.index);
 			this.$emit('tag', {index: this.index, tag: tag});
@@ -242,16 +251,30 @@ export default {
 			this.is_empty = tag != 'hr';
 		},
 		trim(str, all=false) {
-			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r|&nbsp;/g, "");
+			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
+		},
+		valid_size(bytes) {
+			var size_mb = bytes/(Math.pow(10, 6));
+			var valid = size_mb <= this.file_limit; 
+			if(!valid) alert('Image is '+size_mb.toFixed(2)+' MB > 2 MB.');
+			return valid;
 		}
 	},
-	props: ['index', 'content']
+	props: ['index']
 }
 </script>
 
-<style>
+<style scoped>
 *:focus {
     outline: none;
+}
+
+.editor-info {
+	width: 1080px;
+}
+
+.editor-info figure {
+	margin: 0px;
 }
 
 .caption {
@@ -261,7 +284,7 @@ export default {
 }
 
 .content {
-	width: 100%;
+	width: 1080px;
 	-o-transition:.5s;
 	-ms-transition:.5s;
 	-moz-transition:.5s;
@@ -270,6 +293,8 @@ export default {
 	min-height: 1em;
 	overflow:hidden;
 	margin: 5 0px;
+	color: black;
+	padding: 0px;
 }
 
 .content:hover {
@@ -283,8 +308,8 @@ export default {
 .image-content {
 	display: block;
 	margin: auto;
-	max-width: 100%;
-	max-height: 100%;
+	max-width: 1080px;
+	max-height: auto;
 	vertical-align: middle; 
 	border: 1px solid transparent;
 }

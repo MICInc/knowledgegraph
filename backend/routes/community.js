@@ -3,17 +3,21 @@ var router = express.Router();
 var ch = require('../lib/community_handler');
 var form = require('../lib/form');
 
-function handleError(err) {
-	console.log(err);
-}
-
 router.post('/', function(req, res) {
-	var community = req.body.school;
+	var submission = req.body;
+	var result = form.is_complete(submission);
 
-	ch.exists(community, function(err, exists) {
+	if(!result.ok) {
+		res.send({ error: result.errors });
+		return;
+	}
+
+	var community = form.school;
+
+	ch.exists(community, function(exists) {
 		if(exists) res.send({ error: community+' already exists!' });
 		else ch.create(req.body, function(resp) {
-			if(resp == 200) res.status(200);
+			if(resp == 200) res.status(200).send(200);
 			else res.status(400).send('Please try again.');
 		});
 	});

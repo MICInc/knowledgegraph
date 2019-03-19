@@ -1,7 +1,7 @@
 <template>
-	<div id="container" class="main">
+	<div class="container">
 		<PageNav></PageNav>
-		<Console></Console>
+		<Console id="console"></Console>
 	</div>
 </template>
 
@@ -27,9 +27,7 @@ export default {
 </script>
 
 <style scoped>
-.main {
-	display: flex;
-	flex-direction: column;
+#console {
+	margin-top: 10px;
 }
-
 </style>

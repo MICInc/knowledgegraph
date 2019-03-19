@@ -4,6 +4,7 @@ var UserAuth = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
 const config = require('../config.js');
 var form = require('../lib/form');
+var eh = require('../lib/email_handler');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -33,7 +34,6 @@ router.post('/signup', function(req, res) {
 	var passwordConf = profile.confirm_password;
 
 	var result = form.is_complete(profile);
-	console.log(result);
 
 	if(!result.ok) {
 		res.send({ error: result.errors });
@@ -42,7 +42,7 @@ router.post('/signup', function(req, res) {
 
 	UserAuth.registerUser(req.body, function(err, user) {
 		if (!err) {
-			let token = jwt.sign({email: email}, config.secret, {expiresIn: '24h'});
+			let token = jwt.sign({ email: email }, config.secret, { expiresIn: '24h' });
 
 			res.json({
 				message: 'User successfully created.',
@@ -51,11 +51,15 @@ router.post('/signup', function(req, res) {
 					id: user._id,
 					first_name: user.first_name,
 					last_name: user.last_name,
+					sess_id: UserAuth.start_session(user, token),
+					url: user.url,
+					picture: 'picture' in user.toObject() ? user.picture.src : ''
 				}
 			});
 
+			// eh.send_verification(email);
 		} else {
-			res.send({error: err.message})
+			res.send({ error: err.message })
 		}
 	});
 });
@@ -78,14 +82,53 @@ router.post('/login', function(req, res, next) {
 				userInfo: {
 					id: user._id,
 					first_name: user.first_name,
-					last_name: user.last_name
+					last_name: user.last_name,
+					sess_id: UserAuth.start_session(user, token),
+					url: user.url,
+					picture: 'picture' in user.toObject() ? user.picture.src : ''
 				}
 			});
-
 		} else {
 			console.log(err)
 			res.send({error: err.message})
 		}
+	});
+});
+
+router.post('/logout', function(req, res, next) {
+	UserAuth.end_session(req.body);
+});
+
+router.post('/forgot', function(req, res, next) {
+	var email = req.body.email;
+
+	UserAuth.findByEmail(email, function(profile) {
+		if(user != null) {
+			var new_pw = UserAuth.resetPassword();
+
+			let transporter = nodemailer.createTransport({
+				host: '',
+				port: 465,
+				secure: true,
+				auth: {
+					user: '',
+					pass: ''
+				}
+			});
+
+			let mailOptions = {
+				from: '"MIC Team" <tech@machineintelligence.cc>',
+				to: email,
+				subject: 'MIC Password Recovery',
+				text: 'Fuck off - Gordon Ramsay...btw here\'s your new password: '+new_pw,
+				html: '<b>Here\'s your password</b>'
+			}
+
+			transporter.sendMail(mailOptions);
+			
+			res.status(200).send('Please check your email');
+		}
+		else res.status(200).send('Email does not exist');
 	});
 });
 

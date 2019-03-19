@@ -13,9 +13,20 @@ var morgan = require('morgan');
 var cors = require('cors');
 var port = process.env.PORT || 7000; //keep this or change as long as greater than 1024
 const ws = require('ws');
+const db = require('./db/database')
 
 // master process
 if(cluster.isMaster)  {
+	//Load database
+	db.School.estimatedDocumentCount({}, function(err, total) {
+		if(total == 0) {
+			var file = require('./db/schools.json');
+			db.School.create(file, function(err, result) {
+				if(err) console.error(err);
+			});
+		}
+	});
+
 	// Fork workers.
 	for (var i = 0; i < numCPUs; i++) {
 		cluster.fork();
@@ -66,7 +77,7 @@ else {
 	var profile_route = require('./routes/profile');
 	var conf_route = require('./routes/conference');
 	var community_route = require('./routes/community');
-	var size = 10;
+	var size = 2;
 	var unit = 'mb';
 	var upload_limit = size+unit;
 
@@ -74,8 +85,6 @@ else {
 	app.use(bodyParser.urlencoded({limit: upload_limit, extended: true}))
 	app.use(errors);
 	app.use(morgan('tiny'));
-	app.use(bodyParser.urlencoded({ extended: true }));
-	app.use(bodyParser.json());
 	app.use(cors({credentials: true, origin: true}));
 
 	app.use(helmet());
@@ -90,13 +99,17 @@ else {
 
 	app.all('*', function (req, res, next) {
 		origin = req.get('origin');
-		var whitelist = ['http://localhost:8080', 'http://localhost:8081']; // Development whitelist
+
+		// Development whitelist
+		var whitelist = ['http://localhost:8080', 'http://localhost:8081'];
+		
 		corsOptions = {
 			origin: function (origin, callback) {
 					var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
 					callback(null, originIsWhitelisted);
 			}
 		};
+		
 		next();
 	});
 

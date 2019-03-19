@@ -5,30 +5,16 @@ var content_schema = new mongoose.Schema({
 	_id: {
 		type: String
 	},
-	authors: [{
-		type: String,
-		required: true
-	}],
+	authors: [{}],
 	citations: [{
 		type: String
 	}],
-	content:  [{
-	}],
+	content: [{}],
 	date_created: {
 		type: Date,
 		required: true
 	},
-	description: {
-		type: String,
-		trim: true
-	},
-	first_name:  {
-		type: String,
-		required: true,
-		trim: true
-	},
-	hashtag:[],
-	hints: [{
+	hashtag:[{
 		type: String,
 		trim: true
 	}],
@@ -36,20 +22,23 @@ var content_schema = new mongoose.Schema({
 		type: String,
 		trim: true
 	}],
+	is_published: {
+		type: Boolean,
+		required: true
+	},
 	last_modified: {
 		type: Date,
 		required: true
-	},
-	last_name:  {
-		type: String,
-		required: true,
-		trim: true
 	},
 	num_citations: {
 		type: Number,
 		required: true
 	},
 	num_comments: {
+		type: Number,
+		required: true
+	},
+	num_dislikes: {
 		type: Number,
 		required: true
 	},
@@ -72,32 +61,18 @@ var content_schema = new mongoose.Schema({
 		type: String, // content-ids
 		required: true
 	}],
-	published: {
-		type: Boolean,
-		required: true
-	},
-	questions: [{
+	preview: {
 		type: String,
-		required: true,
 		trim: true
-	}],
+	},
+	publication: [{}],
 	saved_by: [{
 		type: String, //user-ids
 		required: true
 	}],
-	solutions: [{
-		type: String,
-		required: true,
-		trim: true
-	}],
 	subseqs: [{
 		type: String, //content-ids
 		required: true
-	}],
-	table_of_contents: [{
-		type: String,
-		required: true,
-		trim: true
 	}],
 	title: {
 		type: String,
@@ -105,9 +80,9 @@ var content_schema = new mongoose.Schema({
 	},
 	url: {
 		type: String,
-		trim: true,
-		required: true
-	}
+		trim: true
+	},
+	view_duration: [{}] //list of date object pairs {start_view, end_view}
 }, Content.options);
 
 module.exports.Content = Content.model.discriminator('Content', content_schema);

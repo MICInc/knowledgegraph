@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import DateSelector from '@/components/DateSelector'
+import DateSelector from '@/components/form/DateSelector'
 import AuthService from '@/services/AuthenticationService'
 import router from '@/router'
 
@@ -70,7 +70,7 @@ export default {
 					this.form.error = err;
 				} else if (response.status == 200) {
 					// Login newly created l=user
-					this.$store.dispatch('login', response.data.token)
+					this.$store.dispatch('login', [response.data.token, response.data.userInfo])
 					router.push({ name: 'home' })	
 				}
 			});

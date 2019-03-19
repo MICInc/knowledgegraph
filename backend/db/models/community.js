@@ -5,17 +5,14 @@ var community_schema = new Schema({
 	advisors: [{ 
 		first_name: {
 			type: String,
-			required: true,
             trim: true
 		},
 		last_name: {
 			type: String,
-			required: true,
             trim: true
 		},
         email: {
             type: String,
-            required: true,
             trim: true
         }
 	}],
@@ -58,17 +55,18 @@ var community_schema = new Schema({
      	misc: [{
             position: {
                 type: String,
-                required: true
+                trim: true
             },
      		first_name: {
-     			type: String
+     			type: String,
+                trim: true
      		},
      		last_name: {
-     			type: String
+     			type: String,
+                trim: true
      		},
             email: {
                 type: String,
-                required: true,
                 trim: true
             }
      	}]
@@ -86,12 +84,10 @@ var community_schema = new Schema({
     }],
     members: [{
     	first_name: {
-    		type: String,
-    		required: true
+    		type: String
     	},
     	last_name: {
-    		type: String,
-    		required: true
+    		type: String
     	}
     }],
     name: {

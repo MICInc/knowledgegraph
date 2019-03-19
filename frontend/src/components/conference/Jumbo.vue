@@ -1,10 +1,10 @@
 <template>
 	<div class="jumbo">
-		<vue-particles color="#545f99"
+		<vue-particles color="#5d5499"
 			:particleOpacity="0.5"
       :particlesNumber="120"
       :particleSize="5"
-      linesColor="#545f99"
+      linesColor="#5d5499"
       :lineOpacity="0.3"
       :moveSpeed="2"
       :hoverEffect="false"
@@ -18,11 +18,13 @@
 						<h1>Machine Intelligence Conference</h1>
 					</div>
 					<div class="sub-heading">
-						<h2>Nov. 3rd, 2018 - 6th Floor of MIT Media Lab </h2>
+						<h2>Sep. 7th, 2019 - 6th Floor of MIT Media Lab </h2>
 					</div>
 				</div>
 			</div>
-			<div class="cta"><a class="cta-button" href="/schedule">View the Schedule</a></div>
+			<div class="cta">
+				<router-link class="cta-button" tag="a" to="/conference">Register</router-link>
+			</div>
 		</div>
 	</div>
 </template>
@@ -48,7 +50,10 @@
 	border-radius: 0px;
 	background: #e38484;
 	color: #fff;
-	font-family: Lato;
+	font-family: 'Avenir', sans-serif;
+	font-weight: bold;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	text-transform: uppercase;
 	font-size: .8em;
 	letter-spacing: 1px;
@@ -58,10 +63,9 @@
 	max-width: 1140px;
 	width: 90%;
 	margin: 0 auto;
-	border: 1px solid #545f99;
 }
 
-	#particles-js {
+#particles-js {
 	position: absolute;
 	z-index: -1;
 	height: 100vh;
@@ -97,7 +101,6 @@
 }
 
 .heading .main-heading {
-	background: #545f99;
 	padding: 30px 20px;
 	margin-bottom: 35px;
 }
@@ -107,12 +110,11 @@
 	letter-spacing: 3px;
 	font-size: 2.2em;
 	font-weight: 400;
-	color: #fff;
+	color: #5d5499;
 	display: inline;
 }
 
 .heading .sub-heading {
-	background: #545f99;
 	padding: 17px;
 }
 
@@ -120,7 +122,7 @@
 	font-size: 1.7em;
 	font-weight: 400;
 	letter-spacing: 1px;
-	color: #fff;
+	color: #5d5499;
 	margin: 0
 }
 

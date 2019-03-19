@@ -1,7 +1,7 @@
 <template>
-	<div class="community">
+	<div class="container">
 		<PageNav></PageNav>
-		<div class="container">
+		<div class="community">
 			<h1>Community Page</h1>
 			<router-link to="/community/start" tag="button">Start a community</router-link>
 			<br>
@@ -27,8 +27,6 @@ export default {
 	beforeMount() {
 		this.get_all().then((data) => {
 			this.communities = data.data;
-			console.log('communities: ');
-			console.log(this.communities);
 		});
 	},
 	data() {
@@ -52,11 +50,6 @@ export default {
 .main {
 	display: flex;
 	flex-direction: column;
-}
-
-.container {
-	flex: 1;
-	width: 1080px;
 }
 
 button {
