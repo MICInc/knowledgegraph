@@ -94,22 +94,6 @@ router.get('/library', function(req, res) {
 	});
 });
 
-router.post('/library/clear', function(req, res) {
-	var user_id = { _id: req.body.user_id };
-
-	db.User.findOne(user_id, function(err, profile) {
-		if(err) console.error(err);
-		else {
-			profile.library = [];
-
-			db.User.updateOne(user_id, profile, function(err) {
-				if(err) console.error(err);
-				else res.status(200).send('cleared');
-			});
-		}
-	});
-});
-
 router.post('/picture', function(req, res) {
 	var user_id = { _id: req.body.user_id };
 

@@ -9,9 +9,6 @@ export default {
 		canEdit(data) {
 			return Api().get('/profile/edit', data);
 		},
-		clearLibrary(data) {
-			return Api().post('/profile/library/clear', data)
-		},
 		getProfilePic(data) {
 			return Api().get('/profile/picture', data);
 		},

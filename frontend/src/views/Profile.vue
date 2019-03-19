@@ -103,13 +103,6 @@ export default {
 		}
 	},
 	methods: {
-		async clear_library() {
-			ProfileService.clearLibrary({ user_id: this.user_id })
-			.then(function(data) {
-			})
-			.catch(function(err) {
-			});
-		},
 		async a_edit() {
 			ProfileService.canEdit({ params: { user_id: this.user_id, token: this.token, url: this.url }})
 			.then((resp) => {
