@@ -137,10 +137,12 @@ router.post('/picture', function(req, res) {
 });
 
 router.get('/picture', function(req, res) {
-	var query = { url: req.query.url };
-	
-	db.User.findOne(query, function(err, profile) {
-		if(err) console.error(err);
+	UserAuth.findByURL(req.query.url, function(err, profile) {
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid request');
+			return;
+		}
 		
 		if(Object.keys(profile.toObject()).includes('picture')) res.status(200).send({ src: profile.picture.src });
 		else res.status(200).send({ src: '' });
