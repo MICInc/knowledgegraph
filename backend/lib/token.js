@@ -33,12 +33,6 @@ module.exports = {
 			algorithms: ["RS256"]
 		}
 
-		// try {
-		// 	return jwt.verify(token, public_key, verifyOpt);
-		// }
-		// catch(err) {
-		// 	return err;
-		// }
 		jwt.verify(token, public_key, verifyOpt, callback);
 	}
 }

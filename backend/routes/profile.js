@@ -41,21 +41,16 @@ router.get('/', function(req, res) {
 
 router.get('/edit', function(req, res) {
 	UserAuth.findByURL(req.query.url, function(err, profile) {
-		if(err) console.error(err);
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid request');
+			return;
+		}
 
-		var callback = function(valid=true) {
-			var editable = valid && profile && profile.url == req.query.url;
-			
+		UserAuth.is_editable(req.query, profile, function(editable) {
 			if(editable) res.status(200).send({ editable: editable });
 			else res.status(200).send({ editable: editable });
-		};
-
-		if(Object.keys(req.query).includes('token')) {
-			UserAuth.verify_token(profile.token, req.query.email, function(err, decoded) {
-				callback(err == null);
-			});
-		}
-		else callback();
+		});
 	})
 });
 
@@ -64,7 +59,9 @@ router.get('/publications', function(req, res) {
 		if(err) console.error(err);
 
 		// if(Object.keys(req.query).includes('token')) {
-		// 	var decoded = UserAuth.verify_token(profile.token, req.query.email);
+		// 	UserAuth.verify_token(profile.token, req.query.email, function(err, decoded) {
+
+		// 	});
 		// }
 
 		var editable = profile._id == req.query.user_id && profile.token == req.query.token;

@@ -189,5 +189,15 @@ module.exports = {
 	},
 	verify_token(tok, email, callback) {
 		token.verify(tok, email, callback);
+	},
+	is_editable(query, profile, callback) {
+		var editable = (profile.url == query.url) && Object.keys(query).includes('token');
+
+		if(editable) {
+			module.exports.verify_token(profile.token, query.email, function(err, decoded) {
+				callback(editable && err == null);
+			});
+		}
+		else callback(editable);
 	}
 };
