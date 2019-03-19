@@ -7,51 +7,72 @@ var db = require('../db/database');
 var path = require('path');
 var fs = require('fs-extra');
 var vote = require('../lib/vote');
-var ua = require('../lib/user-auth');
+var UserAuth = require('../lib/user-auth');
 const article_storage = './storage/content/article';
 
 router.post('/', function(req, res, next) {
-	var data = fc.extract(req);
-	var query = { _id: data._id };
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(400).send('Invalid post');
+		return;
+	}
 
-	db.Content.findOne(query, function (err, article) {
-		if(article != null) {
-			var index = req.body.data.update_cell;
-			article = fc.update(index, data, article);
-
-			db.Content.updateOne(query, article, function(err) {
-				if(err) console.error(err);
-				else res.send({ id: data._id.toString(), url: data.url });
-			});
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid post');
+			return;
 		}
-		else {
-			var article = new db.Content(data);
 
-			article.collection.dropIndexes(function(err, result) {
-				if(err) console.error('content.js: '+err);
-			});
+		var data = fc.extract(req);
+		var query = { _id: data._id };
 
-			article.save()
-			.then(item => {
-				res.send({ id: data._id.toString(), url: data.url });
-			})
-			.catch(err => {
+		db.Content.findOne(query, function (err, article) {
+			if(err) {
 				console.error(err);
-				res.status(400).send('Save error');
-			});
+				res.status(400).send('Bad request');
+				return;
+			}
 
-			var user = { _id: req.body.user_id, token: req.body.token };
-			
-			db.User.findOne(user, function(err, profile) {
-				// only store article id so that forced to get latest url and 
-				// content incase article renamed, which will generate url
-				profile.publications.push(data._id.toString());
-				
-				db.User.updateOne(user, profile, function(err) {
+			if(article != null) {
+				var index = req.body.data.update_cell;
+				article = fc.update(index, data, article);
+
+				db.Content.updateOne(query, article, function(err) {
 					if(err) console.error(err);
+					else res.send({ id: data._id.toString(), url: data.url });
 				});
-			});
-		}
+			}
+			else {
+				var article = new db.Content(data);
+
+				article.collection.dropIndexes(function(err, result) {
+					if(err) console.error('content.js: '+err);
+				});
+
+				article.save()
+				.then(item => {
+					res.send({ id: data._id.toString(), url: data.url });
+				})
+				.catch(err => {
+					console.error(err);
+					res.status(400).send('Save error');
+				});
+
+				var user = { _id: req.body.user_id, token: req.body.token };
+				
+				db.User.findOne(user, function(err, profile) {
+					// only store article id so that forced to get latest url and 
+					// content incase article renamed, which will generate url
+					profile.publications.push(data._id.toString());
+					
+					db.User.updateOne(user, profile, function(err) {
+						if(err) console.error(err);
+					});
+				});
+			}
+		});
 	});
 });
 

@@ -59,7 +59,8 @@ export default {
 			url: '',
 			authors: [],
 			token: this.$store.state.accessToken,
-			user_id: this.$store.state.userInfo.id
+			user_id: this.$store.state.userInfo.id,
+			email: this.$store.state.userInfo.email
 		}
 	},
 	methods: {
@@ -102,13 +103,15 @@ export default {
 			this.save_status = 'saving...';
 			
 			this.data.last_modified = new Date();
+			
 			var article = { 
 				id: this.content_id, 
 				authors: this.authors, 
 				data: this.data, 
 				publish: publish, 
 				user_id: this.user_id,
-				token: this.token
+				token: this.token,
+				email: this.email
 			};
 			
 			ContentService.saveContent(article)
