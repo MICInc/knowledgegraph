@@ -2,7 +2,7 @@
 	<div class="container">
 		<h2>FOLLOWERS</h2>
 		<ul>
-			<li v-for="(follower, index) in followers"><a :href="'/'+follower.url">{{ follower.name }}</a></li>
+			<li v-for="(user, index) in followers"><a :href="'/'+user.url">{{ user.first_name }} {{ user.last_name }}</a></li>
 		</ul>
 	</div>
 </template>
@@ -32,6 +32,7 @@ export default {
 			.then((resp) => {
 				this.editable = resp.data.editable;
 				this.followers = resp.data.followers;
+				console.log(this.followers)
 			})
 			.catch((data) => {
 

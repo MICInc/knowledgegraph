@@ -2,7 +2,7 @@
 	<div class="container">
 		<h2>FOLLOWING</h2>
 		<ul>
-			<li v-for="(follower, index) in following"><a :href="'/'+follower.url">{{ follower.name }}</a></li>
+			<li v-for="(user, index) in following"><a :href="'/'+user.url">{{ user.first_name }} {{ user.last_name }}</a></li>
 		</ul>
 	</div>
 </template>

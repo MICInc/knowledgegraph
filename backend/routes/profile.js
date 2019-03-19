@@ -5,6 +5,7 @@ var db = require('../db/database');
 var ua = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
 var UserAuth = require('../lib/user-auth');
+var sh = require('../lib/search_handler');
 
 // This is acutally never hit from /signup. Account creation is executed in index.js
 // But forgot if this is hit with conference sign up.
@@ -187,8 +188,10 @@ router.get('/followers', function(req, res) {
 			return;
 		}
 
-		UserAuth.is_editable(req.query, profile, function(editable) {
-			res.status(200).send({ editable: editable, followers: profile.followers });
+		sh.find_users(profile.followers, 'first_name last_name url -_id', function(followers) {
+			UserAuth.is_editable(req.query, profile, function(editable) {
+				res.status(200).send({ editable: editable, followers: followers });
+			});
 		});
 	});
 });
@@ -201,8 +204,10 @@ router.get('/following', function(req, res) {
 			return;
 		}
 
-		UserAuth.is_editable(req.query, profile, function(editable) {
-			res.status(200).send({ editable: editable, following: profile.following });
+		sh.find_users(profile.followers, 'first_name last_name url -_id', function(following) {
+			UserAuth.is_editable(req.query, profile, function(editable) {
+				res.status(200).send({ editable: editable, following: following });
+			});
 		});
 	});
 });

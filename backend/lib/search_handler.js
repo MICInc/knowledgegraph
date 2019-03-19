@@ -1,4 +1,5 @@
 var filter = require('./filter');
+var db = require('../db/database');
 
 module.exports = {
 	filter_query: function(query) {
@@ -34,6 +35,11 @@ module.exports = {
 		}
 		
 		return filtered;
+	},
+	find_users: function(users, select, callback) {
+		db.User.find({ _id: { $in : users }}, function(err, profiles) {
+			callback(profiles);
+		}).select(select);
 	},
 	format_query: function(query) {
 		var query = filter.filter_xss(query);
