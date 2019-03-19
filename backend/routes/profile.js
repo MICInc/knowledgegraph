@@ -47,6 +47,9 @@ router.get('/edit', function(req, res) {
 			return;
 		}
 
+		//Note: have to check if editable becaus section tabs cannot receive props
+		// so if user views section tab via direct link, cannot receive prop from main vue component
+		// each tab section needs to query the backend itself and determine if it's editable.
 		UserAuth.is_editable(req.query, profile, function(editable) {
 			if(editable) res.status(200).send({ editable: editable });
 			else res.status(200).send({ editable: editable });
@@ -94,6 +97,21 @@ router.get('/library', function(req, res) {
 	});
 });
 
+router.get('/comments', function(req, res) {
+	UserAuth.findByURL(req.query.url, function(err, profile) {
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid request');
+			return;
+		}
+
+		UserAuth.is_editable(req.query, profile, function(editable) {
+			if(editable) res.status(200).send({ editable: editable, comments: profile.comments });
+			else res.status(200).send({ editable: editable, comments: [] })
+		});
+	});
+});
+
 router.post('/picture', function(req, res) {
 	UserAuth.findByURL(req.body.url, function(err, profile) {
 		if(err) {
@@ -126,16 +144,6 @@ router.get('/picture', function(req, res) {
 		
 		if(Object.keys(profile.toObject()).includes('picture')) res.status(200).send({ src: profile.picture.src });
 		else res.status(200).send({ src: '' });
-	});
-});
-
-router.get('/comments', function(req, res) {
-	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		if(err) console.error(err);
-
-		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
-		if(profile && profile.url == req.query.url) res.status(200).send({ editable: editable, comments: profile.comments });
-		else res.status(200).send({ editable: editable, comments: [] })
 	});
 });
 

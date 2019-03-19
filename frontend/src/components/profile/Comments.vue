@@ -18,6 +18,7 @@ export default {
 	},
 	data() {
 		return {
+			editable: false,
 			comments: [],
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
@@ -28,7 +29,7 @@ export default {
 		async get_comments() {
 			ProfileService.get_comments({ params: { user_id: this.user_id, token: this.token, url: this.url }})
 			.then((resp) => {
-				console.log(resp.data.comments);
+				this.editable = resp.data.editable;
 				this.comments = resp.data.comments;
 			})
 			.catch((data) => {

@@ -18,6 +18,7 @@ export default {
 	},
 	data() {
 		return {
+			editable: false,
 			followers: [],
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
@@ -28,6 +29,7 @@ export default {
 		async get_followers() {
 			ProfileService.get_followers({ params: { user_id: this.user_id, token: this.token, url: this.url }})
 			.then((resp) => {
+				this.editable = resp.data.editable;
 				this.followers = resp.data.followers;
 			})
 			.catch((data) => {

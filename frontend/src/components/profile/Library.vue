@@ -18,6 +18,7 @@ export default {
 	},
 	data() {
 		return {
+			editable: false,
 			library: [],
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
@@ -29,6 +30,7 @@ export default {
 			var user = { user_id: this.user_id, token: this.token, url: this.url, email: this.$store.state.userInfo.email };
 			ProfileService.get_library({ params: user })
 			.then((resp) => {
+				this.editable = resp.data.editable;
 				this.library = resp.data.library;
 			})
 			.catch((data) => {

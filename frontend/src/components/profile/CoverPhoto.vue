@@ -17,6 +17,7 @@ export default {
 			coordY: 0,
 			src: '',
 			name: '',
+			editable: false,
 			last_modified: undefined,
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
