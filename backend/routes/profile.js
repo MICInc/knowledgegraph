@@ -76,16 +76,21 @@ router.get('/publications', function(req, res) {
 
 router.get('/library', function(req, res) {
 	UserAuth.findByURL(req.query.url, function(err, profile) {
-		if(err) console.error(err);
-
-		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
-		
-		if(profile && profile.url == req.query.url) {
-			db.Content.find({ _id: { $in: profile.library }}, function(err, library) {
-				res.status(200).send({ editable: editable, library: library });
-			}).select('title url').select('-_id');
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid request');
+			return;
 		}
-		else res.status(200).send({ editable: editable, library: [] })
+
+		UserAuth.is_editable(req.query, profile, function(editable) {
+			db.Content.find({ _id: { $in: profile.library }}, function(err, library) {
+				if(err) {
+					console.error(err);
+					res.status(200).send({ editable: false, library: [] });
+				}
+				else res.status(200).send({ editable: editable, library: library });
+			}).select('title url').select('-_id');
+		});
 	});
 });
 
