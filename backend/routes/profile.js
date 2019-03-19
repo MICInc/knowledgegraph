@@ -149,28 +149,34 @@ router.get('/picture', function(req, res) {
 	});
 });
 
+// This route is already protected with editable flag when initial profile page is requested.
 router.post('/follow', function(req, res) {
-	var me = { _id: req.body.user_id, token: req.body.token };
-
-	db.User.findOne(me, function(err, profile) {
-		if(profile) {
-			var follow = { url: req.body.url };
-			db.User.findOne(follow, function(err, user) {
-				profile.following.push(user._id);
-				user.followers.push(me._id);
-
-				db.User.updateOne(me, profile, function(err) { 
-					if(err) console.error(err);
-				});
-				db.User.updateOne(follow, user, function(err) {
-					if(err) console.error(err);
-				});
-				res.status(200).send({ followers: user.followers.length });
-			});
-		}
-		else {
+	UserAuth.findById(req.body.user_id, function(err, profile) {
+		if(err) {
+			console.error(err);
 			res.status(400).send({ following: 0 });
+			return;
 		}
+
+		UserAuth.findByURL(req.body.url, function(err, user) {
+			if(err) {
+				console.error(err);
+				res.status(400).send({ following: 0 });
+				return;
+			}
+
+			profile.following.push(user._id);
+			user.followers.push(req.body.user_id);
+
+			db.User.updateOne({ _id: req.body.user_id }, profile, function(err) { 
+				if(err) console.error(err);
+			});
+			db.User.updateOne({ url: req.body.url }, user, function(err) {
+				if(err) console.error(err);
+			});
+
+			res.status(200).send({ followers: user.followers.length });
+		});
 	});
 });
 
