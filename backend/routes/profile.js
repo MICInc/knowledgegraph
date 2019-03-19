@@ -95,18 +95,26 @@ router.get('/library', function(req, res) {
 });
 
 router.post('/picture', function(req, res) {
-	var user_id = { _id: req.body.user_id };
+	UserAuth.findByURL(req.body.url, function(err, profile) {
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid request');
+			return;
+		}
 
-	db.User.findOne(user_id, function(err, profile) {
-		if(err) console.error(err);
-		else {
+		UserAuth.is_editable(req.body, profile, function(editable) {
+			if(!editable) {
+				res.status(400).send('Invalid request');
+				return;
+			}
+
 			profile.picture = { src: req.body.src, name: req.body.name, last_modified: req.body.last_modified };
 
-			db.User.updateOne(user_id, profile, function(err) {
+			db.User.updateOne({ _id: profile._id }, profile, function(err) {
 				if(err) console.error(err);
 				else res.status(200).send('uploaded');
 			});
-		}
+		});
 	});
 });
 

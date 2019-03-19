@@ -22,7 +22,8 @@ export default {
 		return {
 			last_modified: undefined,
 			name: '',
-			src: ''
+			src: '',
+			email: this.$store.state.userInfo.email
 		}
 	},
 	methods: {
@@ -51,7 +52,7 @@ export default {
 			}
 		},
 		save() {
-			ProfileService.uploadProfPic({ token: this.token, user_id: this.user_id, name: this.name, src: this.src });
+			ProfileService.uploadProfPic({ token: this.token, url: this.url, email: this.email, name: this.name, src: this.src });
 		},
 		async a_picture() {
 			ProfileService.getProfilePic({ params: { url: this.url }})
