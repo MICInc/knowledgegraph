@@ -19,7 +19,7 @@ export default {
 	data() {
 		return {
 			comments: [],
-			token: this.$store.state.userInfo.token,
+			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
 			user_id: this.$store.state.userInfo.id
 		}

@@ -56,22 +56,20 @@ router.get('/edit', function(req, res) {
 
 router.get('/publications', function(req, res) {
 	UserAuth.findByURL(req.query.url, function(err, profile) {
-		if(err) console.error(err);
-
-		// if(Object.keys(req.query).includes('token')) {
-		// 	UserAuth.verify_token(profile.token, req.query.email, function(err, decoded) {
-
-		// 	});
-		// }
-
-		var editable = profile._id == req.query.user_id && profile.token == req.query.token;
-		
-		if(profile && profile.url == req.query.url) {
-			db.Content.find({ _id: { $in: profile.publications }}, function(err, publications) {
-				res.status(200).send({ editable: editable, publications: publications });
-			}).select('title url').select('-_id');
+		if(err) {
+			console.error(err);
+			res.status(400).send('Invalid request');
+			return;
 		}
-		else res.status(200).send({ editable: editable, publications: [] })
+
+		UserAuth.is_editable(req.query, profile, function(editable) {
+			if(editable) {
+				db.Content.find({ _id: { $in: profile.publications }}, function(err, publications) {
+					res.status(200).send({ editable: editable, publications: publications });
+				}).select('title url').select('-_id');
+			}
+			else res.status(200).send({ editable: editable, publications: [] });
+		});
 	});
 });
 
