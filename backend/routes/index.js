@@ -5,6 +5,9 @@ var jwt = require('jsonwebtoken');
 const config = require('../config.js');
 var form = require('../lib/form');
 var eh = require('../lib/email_handler');
+var fs = require('fs');
+const private_key = fs.readFileSync('./config/private.pem', 'utf8');
+const public_key = fs.readFileSync('./config/public.pem', 'utf8');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -42,7 +45,15 @@ router.post('/signup', function(req, res) {
 
 	UserAuth.registerUser(req.body, function(err, user) {
 		if (!err) {
-			let token = jwt.sign({ email: email }, config.secret, { expiresIn: '24h' });
+			var signOpt = {
+				issuer: "Machine Intelligence Community",
+				subject: email,
+				audience: "http://machineintelligence.cc",
+				expiresIn: "24h",
+				algorithm: "RS256"
+			};
+			
+			let token = jwt.sign({ email: email }, private_key, signOpt);
 
 			res.json({
 				message: 'User successfully created.',
@@ -74,7 +85,15 @@ router.post('/login', function(req, res, next) {
 
 	UserAuth.loginUser(email, password, function(err, user) {
 		if (!err) {
-			let token = jwt.sign({email: email}, config.secret, {expiresIn: '24h'});
+			var signOpt = {
+				issuer: "Machine Intelligence Community",
+				subject: email,
+				audience: "http://machineintelligence.cc",
+				expiresIn: "24h",
+				algorithm: "RS256"
+			};
+			
+			let token = jwt.sign({ email: email }, private_key, signOpt);
 
 			res.json({
 				message: 'User successfully authenticated.',
