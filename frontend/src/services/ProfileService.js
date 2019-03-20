@@ -9,9 +9,6 @@ export default {
 		canEdit(data) {
 			return Api().get('/profile/edit', data);
 		},
-		clearLibrary(data) {
-			return Api().post('/profile/library/clear', data)
-		},
 		getProfilePic(data) {
 			return Api().get('/profile/picture', data);
 		},
@@ -34,7 +31,7 @@ export default {
 			return Api().get('/profile/publications', data)
 		},
 		get_followers(data) {
-			return Api().get('/profile/followes', data);
+			return Api().get('/profile/followers', data);
 		},
 		get_following(data) {
 			return Api().get('/profile/following', data);

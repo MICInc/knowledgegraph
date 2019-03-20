@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../db/database');
 var sh = require('../lib/search_handler');
 var ch = require('../lib/community_handler');
+var filter = require('../lib/filter');
 
 router.get('/', function(req, res, next){
 	var term = req.query.term;
@@ -58,10 +59,10 @@ router.get('/', function(req, res, next){
 });
 
 router.get('/school', function(req, res) {
-	db.School.find({ name: new RegExp('^'+sh.escape(req.query.name), "i")}, function(err, schools) {
+	db.School.find({ name: new RegExp('^'+filter.alphanumeric(req.query.name), "i")}, function(err, schools) {
 		if(schools) res.status(200).send(schools);
 		else res.status(400).send({});
-	}).select('-_id').select('-__v');
+	}).select('-_id -__v');
 });
 
 module.exports = router;

@@ -45,13 +45,7 @@ module.exports = {
 				user.salt = salt;
 				user.password_hash = key.toString('hex');
 				
-				var user_id = {
-					id: user._id,
-					email: user.email,
-					first_name: user.first_name,
-					last_name: user.last_name,
-				};
-				user.token = token.sign(user_id, user.email);
+				user.token = token.sign({ email: user.email }, user.email);
 
 				user.collection.dropIndexes(function(err, results) {
 					if(err) console.error(err);
@@ -66,6 +60,7 @@ module.exports = {
 								id: user._id,
 								first_name: user.first_name,
 								last_name: user.last_name,
+								email: user.email,
 								sess_id: module.exports.start_session(user, user.token),
 								url: user.url,
 								picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
@@ -86,19 +81,14 @@ module.exports = {
 					if(err) console.error(err);
 					
 					if(user.password_hash == key.toString('hex')) {
-						var user_id = {
-							id: user._id,
-							email: user.email,
-							first_name: user.first_name,
-							last_name: user.last_name,
-						};
-						user.token = token.sign(user_id, user.email);
-				
+						user.token = token.sign({ email: user.email }, user.email);
+
 						process.nextTick(function() {
 							callback(null, user.token, {
 								id: user._id,
 								first_name: user.first_name,
 								last_name: user.last_name,
+								email: user.email,
 								sess_id: module.exports.start_session(user, user.token),
 								url: user.url,
 								picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
@@ -121,26 +111,30 @@ module.exports = {
 	},
 	findByEmail: function(email, callback) {
 		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
-			if (err) console.error(err);
-
 			process.nextTick(function() {
-				callback(user);
+				callback(err, user);
 			});
 		});
 	},
 	findById: function(id, callback) {
 		db.User.findOne({ _id: filter.filter_xss(id) }, function(err, user) {
-			if(err) console.error(err);
-
 			process.nextTick(function() {
-				callback(user);
+				callback(err, user);
 			});
 		});
 	},
 	findAllById: function(users, callback) {
 		db.User.find({ _id: { $in : users }}, function(err, profiles) {
-			if(err) console.error(err);
-			callback(profiles);
+			process.nextTick(function() {
+				callback(err, profiles);
+			});
+		});
+	},
+	findByURL: function(url, callback) {
+		db.User.findOne({ url: filter.filter_xss(url) }, function(err, user) {
+			process.nextTick(function() {
+				callback(err, user);
+			});
 		});
 	},
 	isEmailTaken: function(email, callback) {
@@ -182,5 +176,19 @@ module.exports = {
 	},
 	resetPassword() {
 		return utils.uniqueID(15);
+	},
+	verify_token(t, email, callback) {
+		if(t == null || t.length == 0) callback(new Error('Empty token'), null);
+		else token.verify(t, email, callback);
+	},
+	is_editable(query, profile, callback) {
+		var editable = profile.url == query.url;
+
+		if(editable) {
+			module.exports.verify_token(query.token, query.email, function(err, decoded) {
+				callback(editable && err == null);
+			});
+		}
+		else callback(editable);
 	}
 };

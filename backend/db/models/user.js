@@ -64,10 +64,7 @@ var user_schema = new Schema({
         required: true,
         trim: true
     },
-    library: [{
-        type: String,
-        sparse: true
-    }],
+    library: [{}],
     num_citations: {
         type: Number
     },

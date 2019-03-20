@@ -24,7 +24,7 @@ module.exports = {
 
 		return jwt.sign(payload, private_key, signOpt);
 	},
-	verify: function(token, user) {
+	verify: function(token, user, callback) {
 		verifyOpt = {
 			issuer: "Machine Intelligence Community",
 			subject: user,
@@ -33,6 +33,6 @@ module.exports = {
 			algorithms: ["RS256"]
 		}
 
-		return jwt.verify(token, public_key, verifyOpt);
+		jwt.verify(token, public_key, verifyOpt, callback);
 	}
 }

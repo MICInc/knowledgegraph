@@ -4,10 +4,6 @@ var UserAuth = require('../lib/user-auth');
 const config = require('../config.js');
 var form = require('../lib/form');
 var eh = require('../lib/email_handler');
-var fs = require('fs');
-var jwt = require('jsonwebtoken');
-const private_key = fs.readFileSync('./config/private.pem', 'utf8');
-const public_key = fs.readFileSync('./config/public.pem', 'utf8');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -27,16 +23,7 @@ router.get('/robots.txt', function(req, res, next)
 // https://stackoverflow.com/questions/14709802/exit-after-res-send-in-express-js
 // TODO: update error handling as res.send does not exit method
 router.post('/signup', function(req, res) {
-	var profile = req.body;
-	var first_name = profile.first_name;
-	var last_name = profile.last_name;
-	var dob = profile.dob;
-	var email = profile.email;
-	var gender = profile.gender;
-	var password = profile.password;
-	var passwordConf = profile.confirm_password;
-
-	var result = form.is_complete(profile);
+	var result = form.is_complete(req.body);
 
 	if(!result.ok) {
 		res.send({ error: result.errors });
