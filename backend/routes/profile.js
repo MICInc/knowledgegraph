@@ -41,6 +41,11 @@ router.get('/', function(req, res) {
 });
 
 router.get('/edit', function(req, res) {
+	if(req.query.token == null || req.query.token.length == 0) {
+		console.error('Invalid token');
+		res.status(400).send('Invalid submission');
+	}
+
 	UserAuth.findByURL(req.query.url, function(err, profile) {
 		if(err) {
 			console.error(err);
@@ -48,7 +53,7 @@ router.get('/edit', function(req, res) {
 			return;
 		}
 
-		//Note: have to check if editable becaus section tabs cannot receive props
+		//Note: have to check if editable because section tabs cannot receive props
 		// so if user views section tab via direct link, cannot receive prop from main vue component
 		// each tab section needs to query the backend itself and determine if it's editable.
 		UserAuth.is_editable(req.query, profile, function(editable) {

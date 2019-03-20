@@ -184,7 +184,7 @@ module.exports = {
 		var editable = (profile.url == query.url) && Object.keys(query).includes('token');
 
 		if(editable) {
-			module.exports.verify_token(profile.token, query.email, function(err, decoded) {
+			module.exports.verify_token(query.token, query.email, function(err, decoded) {
 				callback(editable && err == null);
 			});
 		}
