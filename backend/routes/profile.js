@@ -151,7 +151,7 @@ router.get('/picture', function(req, res) {
 
 // This route is already protected with editable flag when initial profile page is requested.
 router.post('/follow', function(req, res) {
-	UserAuth.verify_token(req.body.token, function(err, decoded) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(400).send('Invalid submission');
 		else {
 			UserAuth.findById(req.body.user_id, function(err, profile) {
@@ -209,7 +209,8 @@ router.get('/following', function(req, res) {
 			return;
 		}
 
-		sh.find_users(profile.followers, 'first_name last_name url -_id', function(following) {
+		console.log('following ', profile.following);
+		sh.find_users(profile.following, 'first_name last_name url -_id', function(following) {
 			UserAuth.is_editable(req.query, profile, function(editable) {
 				res.status(200).send({ editable: editable, following: following });
 			});
