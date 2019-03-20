@@ -16,7 +16,7 @@ export default {
 			total: this.likes - this.dislikes,
 			user_id: this.$store.state.userInfo.id,
 			show: this.$store.state.isLoggedIn,
-			token: this.$store.state.userInfo.token
+			token: this.$store.state.accessToken
 		}
 	},
 	computed: {

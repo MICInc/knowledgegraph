@@ -45,13 +45,7 @@ module.exports = {
 				user.salt = salt;
 				user.password_hash = key.toString('hex');
 				
-				var user_id = {
-					id: user._id,
-					email: user.email,
-					first_name: user.first_name,
-					last_name: user.last_name,
-				};
-				user.token = token.sign(user_id, user.email);
+				user.token = token.sign({ email: user.email }, user.email);
 
 				user.collection.dropIndexes(function(err, results) {
 					if(err) console.error(err);
@@ -87,13 +81,7 @@ module.exports = {
 					if(err) console.error(err);
 					
 					if(user.password_hash == key.toString('hex')) {
-						var user_id = {
-							id: user._id,
-							email: user.email,
-							first_name: user.first_name,
-							last_name: user.last_name,
-						};
-						user.token = token.sign(user_id, user.email);
+						user.token = token.sign({ email: user.email }, user.email);
 
 						process.nextTick(function() {
 							callback(null, user.token, {
@@ -189,8 +177,8 @@ module.exports = {
 	resetPassword() {
 		return utils.uniqueID(15);
 	},
-	verify_token(tok, email, callback) {
-		token.verify(tok, email, callback);
+	verify_token(t, email, callback) {
+		token.verify(t, email, callback);
 	},
 	is_editable(query, profile, callback) {
 		var editable = (profile.url == query.url) && Object.keys(query).includes('token');

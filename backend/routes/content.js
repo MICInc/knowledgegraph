@@ -110,22 +110,36 @@ router.post('/add', function(req, res) {
 });
 
 router.post('/remove', function(req, res) {
-	var data = req.body;
-	var query = { _id: data.id };
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(400).send('Invalid post');
+		return;
+	}
 
-	db.Content.findOne(query, function (err, article) {		
-		if(article != null) {
-			if(data.index < article.content.length) article.content.splice(data.index, 1);
-			
-			for(var i = 0; i < article.content.length; i++) {
-				article.content[i].index -= 1;
-			}
-
-			db.Content.updateOne(query, article, function(err) {
-				if(err) console.error(err);
-				else res.status(200).send('removed cell '+data.index);
-			});
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(400).send('Invalid post');
+			return;
 		}
+
+		var data = req.body;
+		var query = { _id: data.id };
+
+		db.Content.findOne(query, function (err, article) {		
+			if(article != null) {
+				if(data.index < article.content.length) article.content.splice(data.index, 1);
+				
+				for(var i = 0; i < article.content.length; i++) {
+					article.content[i].index -= 1;
+				}
+
+				db.Content.updateOne(query, article, function(err) {
+					if(err) console.error(err);
+					else res.status(200).send('removed cell '+data.index);
+				});
+			}
+		});
 	});
 });
 
@@ -181,72 +195,97 @@ router.get('/img', function(req, res) {
 });
 
 router.post('/upvote', function(req, res) {
-	var ballot = fc.verify_vote(req.body);
-	var user = { _id: ballot.profile_id };
-	var content = { _id: ballot.content_id, liked: 1, date: new Date() };
-	vote.vote(user, content, res);
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(400).send('Invalid post');
+		return;
+	}
+	
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(400).send('Invalid post');
+			return;
+		}
 
-	var user = { _id: ballot.profile_id, token: ballot.token };
-			
-	db.User.findOne(user, function(err, profile) {
-		if(!profile) return;
-
-		profile.library.push(ballot.content_id);
-		
-		db.User.updateOne(user, profile, function(err) {
-			if(err) console.error(err);
-		});
+		var ballot = { _id: req.body.content_id, liked: 1, date: new Date() };
+		vote.vote(req.body.profile_id, ballot, res);
 	});
 });
 
 router.post('/downvote', function(req, res) {
-	var ballot = fc.verify_vote(req.body);
-	var user = { _id: ballot.profile_id };
-	var content = { _id: ballot.content_id, liked: -1, date: new Date() };;
-	vote.vote(user, content, res);
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(400).send('Invalid post');
+		return;
+	}
+	
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(400).send('Invalid post');
+			return;
+		}
 
-	var user = { _id: ballot.profile_id, token: ballot.token };
-			
-	db.User.findOne(user, function(err, profile) {
-		if(!profile) return;
-		
-		var index = profile.library.indexOf(ballot.content_id);
-		if(index !== -1) profile.library.splice(index, 1);
-		
-		db.User.updateOne(user, profile, function(err) {
-			if(err) console.error(err);
-		});
+		var ballot = { _id: req.body.content_id, liked: -1, date: new Date() };
+		vote.vote(req.body.profile_id, ballot, res);
 	});
 });
 
 router.options('/cleanup', function(req, res) {
-	var content_id = { _id: req.body.content_id };
-	var user_id = { _id: req.body.user_id };
-
-	db.Content.findOne(content_id, function(err, article) {
-		if(article != null) {
-			article.view_duration['end'] = new Date();
-
-			db.Content.updateOne(content_id, article, function(err) {
-				if(err) console.error(err);
-			});
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(400).send('Invalid post');
+		return;
+	}
+	
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(400).send('Invalid post');
+			return;
 		}
-	});
 
-	db.User.findOne(user_id, function(err, profile) {
-		if(profile != null) {
-			profile.view_duration['end'] = new Date();
-			db.User.updateOne(user_id, profile, function(err) {
-				if(err) console.error(err);
-			});
-		}
+		var content_id = { _id: req.body.content_id };
+		var user_id = { _id: req.body.user_id };
+
+		db.Content.findOne(content_id, function(err, article) {
+			if(article != null) {
+				article.view_duration['end'] = new Date();
+
+				db.Content.updateOne(content_id, article, function(err) {
+					if(err) console.error(err);
+				});
+			}
+		});
+
+		db.User.findOne(user_id, function(err, profile) {
+			if(profile != null) {
+				profile.view_duration['end'] = new Date();
+				db.User.updateOne(user_id, profile, function(err) {
+					if(err) console.error(err);
+				});
+			}
+		});
 	});
 });
 
 router.post('/parse', function(req, res, next) {
-
-	fh.write(req, res, article_storage);
-	// call pdf parsing code here
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(400).send('Invalid post');
+		return;
+	}
+	
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(400).send('Invalid post');
+			return;
+		}
+		fh.write(req, res, article_storage);
+		// call pdf parsing code here
+	});
 });
 
 module.exports = router;
