@@ -209,7 +209,6 @@ router.get('/following', function(req, res) {
 			return;
 		}
 
-		console.log('following ', profile.following);
 		sh.find_users(profile.following, 'first_name last_name url -_id', function(following) {
 			UserAuth.is_editable(req.query, profile, function(editable) {
 				res.status(200).send({ editable: editable, following: following });

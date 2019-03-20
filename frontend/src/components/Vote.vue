@@ -2,8 +2,8 @@
 	<div class='container'>
 		<div id="votes">
 			<span id="total">{{ format_total | commas }}</span>
-			<button v-if="show" v-on:click="upvote()">+</button>
-			<button v-if="show" v-on:click="downvote()">-</button>
+			<button :class="{ selected: sentiment == 1 }" v-if="show" v-on:click="upvote()">+</button>
+			<button :class="{ selected: sentiment == -1 }" v-if="show" v-on:click="downvote()">-</button>
 		</div>
 	</div>
 </template>
@@ -16,7 +16,8 @@ export default {
 			total: this.likes - this.dislikes,
 			user_id: this.$store.state.userInfo.id,
 			show: this.$store.state.isLoggedIn,
-			token: this.$store.state.accessToken
+			token: this.$store.state.accessToken,
+			sentiment: 0
 		}
 	},
 	computed: {
@@ -39,6 +40,8 @@ export default {
 	},
 	methods: {
 		async upvote() {
+			this.sentiment = 1;
+			
 			ContentService.upvote({ content_id: this.content_id, profile_id: this.user_id, token: this.token })
 			.then((data) => {
 				this.total = data.data.total != undefined ? data.data.total : this.total;
@@ -48,6 +51,8 @@ export default {
 			});
 		},
 		async downvote() {
+			this.sentiment = -1;
+
 			ContentService.downvote({ content_id: this.content_id, profile_id: this.user_id, token: this.token })
 			.then((data) => {
 				this.total = data.data.total != undefined ? data.data.total : this.total;
@@ -87,6 +92,10 @@ button {
 }
 
 #votes button:hover {
+	color: #5d5499;
+}
+
+.selected {
 	color: #5d5499;
 }
 
