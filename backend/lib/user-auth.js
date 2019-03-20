@@ -178,10 +178,11 @@ module.exports = {
 		return utils.uniqueID(15);
 	},
 	verify_token(t, email, callback) {
-		token.verify(t, email, callback);
+		if(t == null || t.length == 0) callback(new Error('Empty token'), null);
+		else token.verify(t, email, callback);
 	},
 	is_editable(query, profile, callback) {
-		var editable = (profile.url == query.url) && Object.keys(query).includes('token');
+		var editable = profile.url == query.url;
 
 		if(editable) {
 			module.exports.verify_token(query.token, query.email, function(err, decoded) {

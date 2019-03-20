@@ -41,12 +41,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/edit', function(req, res) {
-	if(req.query.token == null || req.query.token.length == 0) {
-		console.error('Invalid token');
-		res.status(400).send('Invalid submission');
-	}
-
-	UserAuth.findByURL(req.query.url, function(err, profile) {
+	UserAuth.findById(req.query.user_id, function(err, profile) {
 		if(err) {
 			console.error(err);
 			res.status(400).send('Invalid request');
@@ -60,7 +55,7 @@ router.get('/edit', function(req, res) {
 			if(editable) res.status(200).send({ editable: editable });
 			else res.status(200).send({ editable: editable });
 		});
-	})
+	});
 });
 
 router.get('/publications', function(req, res) {
@@ -156,32 +151,37 @@ router.get('/picture', function(req, res) {
 
 // This route is already protected with editable flag when initial profile page is requested.
 router.post('/follow', function(req, res) {
-	UserAuth.findById(req.body.user_id, function(err, profile) {
-		if(err) {
-			console.error(err);
-			res.status(400).send({ following: 0 });
-			return;
+	UserAuth.verify_token(req.body.token, function(err, decoded) {
+		if(err) res.status(400).send('Invalid submission');
+		else {
+			UserAuth.findById(req.body.user_id, function(err, profile) {
+				if(err) {
+					console.error(err);
+					res.status(400).send({ following: 0 });
+					return;
+				}
+
+				UserAuth.findByURL(req.body.url, function(err, user) {
+					if(err) {
+						console.error(err);
+						res.status(400).send({ following: 0 });
+						return;
+					}
+
+					profile.following.push(user._id);
+					user.followers.push(req.body.user_id);
+
+					db.User.updateOne({ _id: req.body.user_id }, profile, function(err) { 
+						if(err) console.error(err);
+					});
+					db.User.updateOne({ url: req.body.url }, user, function(err) {
+						if(err) console.error(err);
+					});
+
+					res.status(200).send({ followers: user.followers.length });
+				});
+			});
 		}
-
-		UserAuth.findByURL(req.body.url, function(err, user) {
-			if(err) {
-				console.error(err);
-				res.status(400).send({ following: 0 });
-				return;
-			}
-
-			profile.following.push(user._id);
-			user.followers.push(req.body.user_id);
-
-			db.User.updateOne({ _id: req.body.user_id }, profile, function(err) { 
-				if(err) console.error(err);
-			});
-			db.User.updateOne({ url: req.body.url }, user, function(err) {
-				if(err) console.error(err);
-			});
-
-			res.status(200).send({ followers: user.followers.length });
-		});
 	});
 });
 
