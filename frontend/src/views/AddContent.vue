@@ -38,7 +38,12 @@ export default {
 	},
 
 	created() {
-		this.authors.push(this.$store.state.userInfo);
+		this.authors.push({	
+			first_name: this.$store.state.userInfo.first_name,
+			last_name: this.$store.state.userInfo.last_name,
+			url: this.$store.state.userInfo.url,
+			id: this.$store.state.userInfo.id
+		});
 		this.save();
 	},
 	data() {
