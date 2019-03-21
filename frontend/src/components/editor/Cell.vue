@@ -42,11 +42,11 @@ export default {
 				index: this.index,
 				date_created: new Date(),
 				last_modified: new Date(),
-				caption: '',
-				html: '',
+				caption: this.caption,
+				html: this.html,
 				name: '',
-				src: '',
-				tag: 'p',
+				src: this.src,
+				tag: this.tag,
 				text: '',
 			},
 			file_limit: 2, //unit = mb
@@ -263,21 +263,57 @@ export default {
 	},
 	props: ['index', 'html', 'tag', 'src', 'caption'], //add hr and captions
 	watch: {
-		html: function(curr, prev) {
-			console.log(curr)
-			this.cell.html = curr;
-			this.$refs['p-content'] = curr;
+		index: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+			}
 		},
-		tag: function(curr, prev) {
-			this.cell.tag = curr;
+		tag: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.cell.tag = curr;
+			}
 		},
-		src: function(curr, prev) {
-			this.cell.src = curr;
-			this.$refs['image-content'] = curr;
+		html: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.$nextTick(function() {
+					var el = document.getElementById('p-content');
+					if(el != null && curr != null && curr.length > 0) {
+						el.innerHTML = curr;
+						this.cell.html = curr;
+					}
+				});
+			}
 		},
-		caption: function(curr, prev) {
-			this.cell.caption = curr;
-			this.$refs['caption-content'] = curr;
+		src: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.$nextTick(function() {
+					var el = document.getElementById('image-content');
+					if(el != null && curr != null) {
+						el.src = curr;
+						this.cell.src = curr;
+					}
+				});
+			}
+		},
+		caption: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.$nextTick(function() {
+					var el = document.getElementById('caption-content');
+					if(el != null && curr != null) {
+						el.innerText = curr;
+						this.cell.caption = curr;
+					}
+				});
+			}
 		}
 	}
 }

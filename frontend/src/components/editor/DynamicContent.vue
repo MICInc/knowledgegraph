@@ -14,8 +14,8 @@
 			  :key="JSON.stringify(value.id)" 
 			  :ref="'content-'+index"
 			  :index="index"
-			  :html="value.html"
 			  :tag="value.tag"
+			  :html="value.html"
 			  :src="value.src"
 			  :caption="value.caption"
 			   v-on:active_index="set_index($event)" 
@@ -29,6 +29,7 @@
 
 <script>
 import Cell from '@/components/editor/Cell'
+import Vue from 'vue'
 
 export default {
 	components: {

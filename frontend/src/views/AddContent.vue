@@ -6,7 +6,14 @@
 				<button v-on:click.prevent="publish()">Publish</button>
 				<span id="status" class="save-status">{{ save_status }}</span>
 			</div>
-			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()" autofocus>
+			<input 
+				type="text" 
+				id="title" 
+				placeholder="TITLE" 
+				v-model.trim="data.title" 
+				@input="uppercase($event, data, 'title')" 
+				v-on:keyup="save()" 
+				autofocus>
 			<br>
 			<form>
 				<DynamicContent
@@ -108,9 +115,9 @@ export default {
 			ContentService.reload({ params: article })
 			.then((data) => {
 				this.reloaded = data.data.content;
+				this.data.title = data.data.title;
 			})
 			.catch((error) => {
-
 			});
 		},
 		remove_content(index) {
