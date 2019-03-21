@@ -8,9 +8,10 @@
 		<div class="editor-info">
 			<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
 				<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
-				<figcaption class="caption" 
+				<figcaption class="caption"
+							ref="caption-content"
 							v-show="has_caption" 
-							v-on:keyup="caption($event)" 
+							v-on:keyup="set_caption($event)" 
 							v-on:keydown.delete.stop="remove_caption($event)" 
 							contenteditable>
 					<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
@@ -101,7 +102,7 @@ export default {
 
 			return window.btoa( binary );
 		},
-		caption(event) {
+		set_caption(event) {
 			var el = event.target;
 			this.cell.caption = el.innerText;
 		},
@@ -260,7 +261,25 @@ export default {
 			return valid;
 		}
 	},
-	props: ['index']
+	props: ['index', 'html', 'tag', 'src', 'caption'], //add hr and captions
+	watch: {
+		html: function(curr, prev) {
+			console.log(curr)
+			this.cell.html = curr;
+			this.$refs['p-content'] = curr;
+		},
+		tag: function(curr, prev) {
+			this.cell.tag = curr;
+		},
+		src: function(curr, prev) {
+			this.cell.src = curr;
+			this.$refs['image-content'] = curr;
+		},
+		caption: function(curr, prev) {
+			this.cell.caption = curr;
+			this.$refs['caption-content'] = curr;
+		}
+	}
 }
 </script>
 

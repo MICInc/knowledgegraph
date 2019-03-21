@@ -9,11 +9,11 @@
 			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()" autofocus>
 			<br>
 			<form>
-				<DynamicContent 
+				<DynamicContent
 					v-on:edit="update_content($event)" 
 					v-on:add="add_content($event)" 
 					v-on:remove="remove_content($event)" 
-					:collab="data.content">
+					:reloaded="reloaded">
 				</DynamicContent>
 			</form>
 		</div>
@@ -38,6 +38,8 @@ export default {
 	},
 
 	created() {
+		if(this.$route.path.split('/').pop() == 'edit') this.reload();
+
 		this.authors.push({	
 			first_name: this.$store.state.userInfo.first_name,
 			last_name: this.$store.state.userInfo.last_name,
@@ -58,6 +60,7 @@ export default {
 				subseq: '',
 				title: ''
 			},
+			reloaded: [],
 			save_status: '',
 			tags: [],
 			upload: [],
@@ -93,6 +96,22 @@ export default {
 		},
 		redirect() {
 			this.$router.push('/content/'+this.url);
+		},
+		reload() {
+			var article = {
+				url: this.$route.params.id,
+				user_id: this.user_id,
+				token: this.token,
+				email: this.email
+			}
+
+			ContentService.reload({ params: article })
+			.then((data) => {
+				this.reloaded = data.data.content;
+			})
+			.catch((error) => {
+
+			});
 		},
 		remove_content(index) {
 			ContentService.removeContent({ id: this.content_id, index: index })

@@ -197,6 +197,33 @@ router.get('/', function(req, res) {
 	}
 });
 
+router.get('/reload', function(req, res) {
+	var data = req.query;
+	var token = data.token;
+
+	if(token == null) {
+		res.status(400).send('Invalid post');
+		return;
+	}
+
+	UserAuth.verify_token(token, req.query.email, function(err, decoded) {
+		if(err) {
+			res.status(400).send('Invalid post');
+			return;
+		}
+
+		db.Content.findOne({ url: data.url }, function(err, article) {	
+			if(err) {
+				console.error(err);
+				return;
+			}
+
+			if(article != null) res.status(200).send(article);
+			else res.status(400);
+		});
+	});
+});
+
 router.get('/img', function(req, res) {
 	// console.log('article: '+req.query.content_id+' retrieve image: '+req.query.name);
 });

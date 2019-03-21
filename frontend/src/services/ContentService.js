@@ -27,5 +27,8 @@ export default {
 		},
 		downvote(data) {
 			return Api().post('/content/downvote', data);
+		},
+		reload(data) {
+			return Api().get('/content/reload', data);
 		}
 }
