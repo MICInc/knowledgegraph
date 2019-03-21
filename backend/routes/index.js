@@ -42,23 +42,6 @@ router.post('/signup', function(req, res) {
 router.post('/login', function(req, res, next) {
 	var email = req.body.email;
 	var password = req.body.password;
-	var whitelist = [
-		'ch3njus@gmail.com', 
-		'devin@machineintelligence.cc', 
-		'ajay@machineintelligence.cc', 
-		'jackie@machineintelligence.cc',
-		'kate@machineintelligence.cc',
-		'nmurthy@mit.edu',
-		'mnadeem@mit.edu',
-		'juliusf@bu.edu',
-		'rexwangcc@gmail.com',
-		'zui@bu.edu',
-		'vram@bu.edu',
-		'vpetsiuk@bu.edu',
-		'timplump@mit.edu',
-		'yutsumi@mit.edu'];
-
-	if(!whitelist.includes(email)) return;
 
 	if(!(email && password)) res.send({error: 'Please provide a email and password'});
 

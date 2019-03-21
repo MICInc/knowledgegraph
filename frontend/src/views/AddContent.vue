@@ -84,7 +84,6 @@ export default {
 			.then((data) => {
 			})
 			.catch(error => {
-				console.log(error);
 			});
 		},
 		prevent_default(event) {
@@ -125,7 +124,6 @@ export default {
 			.then((data) => {
 			})
 			.catch(error => {
-				console.log(error);
 			});
 		},
 		save(publish=false) {
@@ -154,7 +152,6 @@ export default {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
 			});
 		},
 		update_content(emit_save) {
@@ -176,7 +173,6 @@ export default {
 				alert(data.json());
 			})
 			.catch(function(err) {
-				console.log(err);
 			});
 		},
 		uppercase(e, o, prop) {
