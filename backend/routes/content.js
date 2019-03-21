@@ -31,17 +31,24 @@ router.post('/', function(req, res, next) {
 		db.Content.findOne(query, function (err, article) {
 			if(err) {
 				console.error(err);
-				res.status(400).send('Bad request');
+				res.status(400).send({ error: 'Bad request' });
 				return;
 			}
 
 			if(article != null) {
-				var index = req.body.data.update_cell;
-				article = fc.update(index, data, article);
+				db.Content.estimatedDocumentCount({ title: article.title }, function(err, total) {
+					if(total > 1 && req.body.publish) {
+						res.status(200).send({ error: data.title+' already exists' });
+						return;
+					}
 
-				db.Content.updateOne(query, article, function(err) {
-					if(err) console.error(err);
-					else res.send({ id: data._id.toString(), url: data.url });
+					var index = req.body.data.update_cell;
+					article = fc.update(index, data, article);
+
+					db.Content.updateOne(query, article, function(err) {
+						if(err) console.error(err);
+						else res.send({ id: data._id.toString(), url: data.url });
+					});
 				});
 			}
 			else {
