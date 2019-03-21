@@ -84,9 +84,7 @@ export default {
 			}
 		},
 		publish() {
-			if(this.data.title.length == 0) {
-				alert('Need a title');
-			}
+			if(this.data.title.length == 0) alert('Need a title');
 			else {
 				this.save_status = 'publishing...';
 				this.save(true);
@@ -121,18 +119,15 @@ export default {
 			
 			ContentService.saveContent(article)
 			.then((data) => {
+				if(data.data.error != null) alert(data.data.error);
 				if(data != undefined) {
-					if(this.content_id.length == 0) {
-						this.content_id = data['data'].id;
-					}
-					if(this.url != data['data'].url) {
-						this.url = data['data'].url;
-					}
+					if(this.content_id.length == 0) this.content_id = data['data'].id;
+					if(this.url != data['data'].url) this.url = data['data'].url;
 
 					this.save_status = 'saved';
 				}
 			})
-			.catch(error => {
+			.catch((error) => {
 				console.log(error);
 			});
 		},

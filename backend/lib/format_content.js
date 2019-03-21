@@ -46,6 +46,12 @@ module.exports = {
 			"url": module.exports.generate_url(title)
 		};
 	},
+	check_title: function(id, title, callback) {
+		db.Content.find({ title: title }, function(err, results) {
+			if(err) console.error(err);
+			// if(results.length == 0) 
+		});
+	},
 	compress_html: function(cell) {
 		return cell;
 	},
