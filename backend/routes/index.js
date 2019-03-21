@@ -55,7 +55,8 @@ router.post('/login', function(req, res, next) {
 		'zui@bu.edu',
 		'vram@bu.edu',
 		'vpetsiuk@bu.edu',
-		'timplump@mit.edu'];
+		'timplump@mit.edu',
+		'yutsumi@mit.edu'];
 
 	if(!whitelist.includes(email)) return;
 
