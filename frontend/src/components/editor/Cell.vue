@@ -165,8 +165,9 @@ export default {
 		},
 		remove_cell(event) {
 			if(this.index > -1) {
-				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
-				var remove_img = this.cell.tag == 'img' && (this.trim(this.cell.caption).length == 0 || this.image_active);
+				var null_p = this.cell.text != null;
+				var remove_p = this.cell.tag == 'p' && !null_p && this.trim(this.cell.text).length == 0;
+				var remove_img = this.cell.tag == 'img' && (this.cell.caption != null && this.trim(this.cell.caption).length == 0 || this.image_active);
 				var remove_hr = this.cell.tag == 'hr';
 
 				if(remove_p || remove_img || remove_hr) {
@@ -252,7 +253,9 @@ export default {
 			this.is_empty = tag != 'hr';
 		},
 		trim(str, all=false) {
-			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
+			if(typeof str !== 'string' && !(str instanceof String) && (typeof str == 'undefined')) return '';
+			else all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
+
 		},
 		valid_size(bytes) {
 			var size_mb = bytes/(Math.pow(10, 6));
