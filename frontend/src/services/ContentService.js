@@ -30,5 +30,8 @@ export default {
 		},
 		reload(data) {
 			return Api().get('/content/reload', data);
+		},
+		canEdit(data) {
+			return Api().get('/content/edit', data);
 		}
 }

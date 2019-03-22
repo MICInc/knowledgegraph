@@ -7,6 +7,11 @@ const token = require('./token');
 
 module.exports = {
 	format: function(profile) {
+		/*
+			user_type: 0 (general)
+					   1 (moderator)
+					   2 (admin)
+		*/
 		return {
 			id: mongoose.Types.ObjectId(),
 			affiliation: filter.filter_xss(profile.affiliation),
@@ -29,7 +34,8 @@ module.exports = {
 			school: filter.filter_xss(profile.school),
 			search_history: [],
 			subjects: [],
-			url: (profile.first_name+'-'+profile.last_name).toLowerCase()
+			url: (profile.first_name+'-'+profile.last_name).toLowerCase(),
+			user_type: 0
 		}
 	},
 	// TODO: Update module.exports to match model - replace defaults
@@ -138,8 +144,8 @@ module.exports = {
 		});
 	},
 	isEmailTaken: function(email, callback) {
-		module.exports.findByEmail(filter.filter_xss(email), function(user) {
-			callback(user != null);
+		module.exports.findByEmail(filter.filter_xss(email), function(err, user) {
+			callback(err, user != null);
 		});
 	},
 	start_session: function(user, token) {
@@ -181,8 +187,8 @@ module.exports = {
 		if(t == null || t.length == 0) callback(new Error('Empty token'), null);
 		else token.verify(t, email, callback);
 	},
-	is_editable(query, profile, callback) {
-		var editable = profile.url == query.url;
+	is_editable(query, page, callback) {
+		var editable = page.url == query.url;
 
 		if(editable) {
 			module.exports.verify_token(query.token, query.email, function(err, decoded) {

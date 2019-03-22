@@ -45,7 +45,7 @@ import router from '@/router'
 export default {
 	name: 'content',
 	beforeMount() {
-		this.a_edit();
+		this.edit();
 		this.getContent();
 	},
 	components: {
@@ -103,7 +103,7 @@ export default {
 		}
 	},
 	methods: {
-		async a_edit() {
+		async edit() {
 			ProfileService.canEdit({ params: { user_id: this.user_id, token: this.token, url: this.url }})
 			.then((resp) => {
 				if(resp.data.editable) this.editable = resp.data.editable;

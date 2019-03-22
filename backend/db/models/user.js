@@ -103,6 +103,10 @@ var user_schema = new Schema({
         type: String,
         required: true
     },
+    user_type: {
+        type: Number,
+        required: true
+    },
     view_duration: [{}]
 });
 

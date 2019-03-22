@@ -36,7 +36,7 @@ router.post('/', function(req, res, next) {
 			}
 
 			if(article != null) {
-				db.Content.estimatedDocumentCount({ title: article.title }, function(err, total) {
+				db.Content.countDocuments({ title: article.title }, function(err, total) {
 					if(total > 1 && req.body.publish) {
 						res.status(200).send({ error: data.title+' already exists' });
 						return;
@@ -49,7 +49,7 @@ router.post('/', function(req, res, next) {
 						if(err) console.error(err);
 						else res.send({ id: data._id.toString(), url: data.url });
 					});
-				});
+				}).select();
 			}
 			else {
 				var article = new db.Content(data);
@@ -151,9 +151,11 @@ router.post('/remove', function(req, res) {
 router.get('/', function(req, res) {
 	if(req.query.url) {
 		var query = { url: req.query.url };
-		var user_id = req.query.user.length > 0 ? req.query.user : '';
+		var user_id = req.query.user_id.length > 0 ? req.query.user_id : '';
 
 		db.Content.findOne(query, function(err, article) {
+			console.log(article != null);
+			console.log(article.is_published);
 
 			if(article != null && article.is_published) {
 				var start = new Date();
@@ -193,6 +195,28 @@ router.get('/', function(req, res) {
 	else {
 		// return recommended content
 	}
+});
+
+router.get('/edit', function(req, res) {
+	UserAuth.findById(req.query.user_id, function(err, profile) {
+		if(err) {
+			res.status(400).send('Invalid request');
+			return;
+		}
+
+		db.Content.findOne({ url: req.query.url }, function(err, article) {
+			if(!profile.publications.includes(article._id)) {
+				res.status(200).send({ editable: false });
+				return;
+			}
+
+			// req.query.url == article.url should be true in is_editable since the above block did not return
+			UserAuth.is_editable(req.query, article, function(editable) {
+				if(editable) res.status(200).send({ editable: editable });
+				else res.status(200).send({ editable: editable });
+			});
+		});
+	});
 });
 
 router.get('/reload', function(req, res) {
