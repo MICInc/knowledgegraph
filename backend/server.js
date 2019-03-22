@@ -77,6 +77,7 @@ else {
 	var profile_route = require('./routes/profile');
 	var conf_route = require('./routes/conference');
 	var community_route = require('./routes/community');
+	var admin_route = require('./routes/admin');
 	var size = 2;
 	var unit = 'mb';
 	var upload_limit = size+unit;
@@ -96,6 +97,7 @@ else {
 	app.use('/search', search_route);
 	app.use('/conference', conf_route);
 	app.use('/community', community_route);
+	app.use('/admin', admin_route);
 
 	app.all('*', function (req, res, next) {
 		origin = req.get('origin');
