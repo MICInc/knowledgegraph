@@ -7,22 +7,30 @@
 		</div>
 		<div class="editor-info">
 			<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
-				<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
-				<figcaption class="caption" 
-							v-show="has_caption" 
-							v-on:keyup="caption($event)" 
-							v-on:keydown.delete.stop="remove_caption($event)" 
-							contenteditable>
+				<img 
+					:id="'image-content-'+cell.index"
+					:ref="'image-content-'+cell.index"
+					class="image-content" 
+					:src="cell.src" 
+					v-on:keydown.enter.stop="show_caption($event)">
+				<figcaption 
+					class="caption"
+					:id="'caption-content-'+cell.index"
+					:ref="'caption-content-'+cell.index"
+					v-show="has_caption" 
+					v-on:keyup="set_caption($event)" 
+					v-on:keydown.delete.stop="remove_caption($event)" 
+					contenteditable>
 					<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
 				</figcaption>
 			</figure>
 			<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 				<hr>
 			</div>
-			<p id="p-content"
+			<p :id="'p-content-'+cell.index"
 			   v-if="'p' == cell.tag" 
 			   class="content" 
-			   ref="p-content"
+			   :ref="'p-content-'+cell.index"
 			   v-on:keyup="input($event)" 
 			   @mousedown="set_active($event)" 
 			   contenteditable>
@@ -41,11 +49,11 @@ export default {
 				index: this.index,
 				date_created: new Date(),
 				last_modified: new Date(),
-				caption: '',
-				html: '',
+				caption: this.caption,
+				html: this.html,
 				name: '',
-				src: '',
-				tag: 'p',
+				src: this.src,
+				tag: this.tag,
 				text: '',
 			},
 			file_limit: 2, //unit = mb
@@ -101,7 +109,7 @@ export default {
 
 			return window.btoa( binary );
 		},
-		caption(event) {
+		set_caption(event) {
 			var el = event.target;
 			this.cell.caption = el.innerText;
 		},
@@ -151,9 +159,9 @@ export default {
 			else {
 				this.is_empty = false;
 			}
-			
-			this.cell.html = this.trim(el.innerHTML);
-			this.cell.text = this.trim(el.innerText);
+
+			this.cell.html = el.innerHTML;
+			this.cell.text = el.innerText;
 			this.cell.last_modified = new Date();
 
 			this.save();
@@ -164,8 +172,9 @@ export default {
 		},
 		remove_cell(event) {
 			if(this.index > -1) {
-				var remove_p = this.cell.tag == 'p' && this.trim(this.cell.text).length == 0;
-				var remove_img = this.cell.tag == 'img' && (this.trim(this.cell.caption).length == 0 || this.image_active);
+				var null_p = this.cell.text != null;
+				var remove_p = this.cell.tag == 'p' && !null_p && this.trim(this.cell.text).length == 0;
+				var remove_img = this.cell.tag == 'img' && (this.cell.caption != null && this.trim(this.cell.caption).length == 0 || this.image_active);
 				var remove_hr = this.cell.tag == 'hr';
 
 				if(remove_p || remove_img || remove_hr) {
@@ -251,7 +260,9 @@ export default {
 			this.is_empty = tag != 'hr';
 		},
 		trim(str, all=false) {
-			return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
+			if(typeof str !== 'string' && !(str instanceof String) && (typeof str == 'undefined')) return '';
+			else all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
+
 		},
 		valid_size(bytes) {
 			var size_mb = bytes/(Math.pow(10, 6));
@@ -260,7 +271,66 @@ export default {
 			return valid;
 		}
 	},
-	props: ['index']
+	props: ['index', 'html', 'tag', 'src', 'caption'], //add hr and captions
+	watch: {
+		index: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.index = curr;
+			}
+		},
+		tag: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.cell.tag = curr;
+			}
+		},
+		html: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.$nextTick(function() {
+					this.is_empty = this.cell.tag != 'p';
+					var el = document.getElementById('p-content-'+this.index);
+
+					if(el != null && curr != null && curr.length > 0) {
+						el.innerHTML = curr;
+						this.cell.html = curr;
+					}
+				});
+			}
+		},
+		src: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.$nextTick(function() {
+					this.is_empty = this.cell.tag != 'img';
+					var el = document.getElementById('image-content-'+this.index);
+
+					if(el != null && curr != null) {
+						el.src = curr;
+						this.cell.src = curr;
+					}
+				});
+			}
+		},
+		caption: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.$nextTick(function() {
+					var el = document.getElementById('caption-content-'+this.index);
+					if(el != null && curr != null) {
+						el.innerText = curr;
+						this.cell.caption = curr;
+					}
+				});
+			}
+		}
+	}
 }
 </script>
 

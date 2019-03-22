@@ -145,6 +145,7 @@ module.exports = {
 		return title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : '';
 	},
 	preview(text, limit=151) {
+		if(text == null) return '';
 		if(text.length >= limit) return text.substring(0, limit).trim()+'...';
 		return text;
 	},

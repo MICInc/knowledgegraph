@@ -6,14 +6,21 @@
 				<button v-on:click.prevent="publish()">Publish</button>
 				<span id="status" class="save-status">{{ save_status }}</span>
 			</div>
-			<input type="text" id="title" placeholder="TITLE" v-model.trim="data.title" @input="uppercase($event, data, 'title')" v-on:keyup="save()" autofocus>
+			<input 
+				type="text" 
+				id="title" 
+				placeholder="TITLE" 
+				v-model.trim="data.title" 
+				@input="uppercase($event, data, 'title')" 
+				v-on:keyup="save()" 
+				autofocus>
 			<br>
 			<form>
-				<DynamicContent 
+				<DynamicContent
 					v-on:edit="update_content($event)" 
 					v-on:add="add_content($event)" 
 					v-on:remove="remove_content($event)" 
-					:collab="data.content">
+					:reloaded="reloaded">
 				</DynamicContent>
 			</form>
 		</div>
@@ -44,11 +51,12 @@ export default {
 			url: this.$store.state.userInfo.url,
 			id: this.$store.state.userInfo.id
 		});
-		this.save();
+
+		if(this.$route.path.split('/').pop() == 'edit') this.reload();
+		else this.save();
 	},
 	data() {
 		return {
-			content_id: '',
 			data: {
 				date_created: new Date(),
 				cell: undefined,
@@ -58,6 +66,7 @@ export default {
 				subseq: '',
 				title: ''
 			},
+			reloaded: [],
 			save_status: '',
 			tags: [],
 			upload: [],
@@ -65,7 +74,8 @@ export default {
 			authors: [],
 			token: this.$store.state.accessToken,
 			user_id: this.$store.state.userInfo.id,
-			email: this.$store.state.userInfo.email
+			email: this.$store.state.userInfo.email,
+			content_id: '',
 		}
 	},
 	methods: {
@@ -74,7 +84,6 @@ export default {
 			.then((data) => {
 			})
 			.catch(error => {
-				console.log(error);
 			});
 		},
 		prevent_default(event) {
@@ -94,12 +103,35 @@ export default {
 		redirect() {
 			this.$router.push('/content/'+this.url);
 		},
+		reload() {
+			var article = {
+				url: this.$route.params.id,
+				user_id: this.user_id,
+				token: this.token,
+				email: this.email
+			}
+			
+			ContentService.reload({ params: article })
+			.then((data) => {
+				this.content_id = data.data._id;
+				this.reloaded = data.data.content;
+				this.data.title = data.data.title;
+			})
+			.catch((error) => {
+			});
+		},
 		remove_content(index) {
-			ContentService.removeContent({ id: this.content_id, index: index })
+			var cell = { 
+				id: this.content_id, 
+				index: index, 
+				token: this.token, 
+				email: this.email
+			};
+
+			ContentService.removeContent(cell)
 			.then((data) => {
 			})
 			.catch(error => {
-				console.log(error);
 			});
 		},
 		save(publish=false) {
@@ -128,7 +160,6 @@ export default {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
 			});
 		},
 		update_content(emit_save) {
@@ -150,7 +181,6 @@ export default {
 				alert(data.json());
 			})
 			.catch(function(err) {
-				console.log(err);
 			});
 		},
 		uppercase(e, o, prop) {

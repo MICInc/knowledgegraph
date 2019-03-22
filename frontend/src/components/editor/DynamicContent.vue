@@ -7,12 +7,17 @@
 			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
 			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
 		</div>
-		<Cell v-for="(value, index) in cells" 
+		<!-- can remove id, tabindex, key, and ref...maybe idk -->
+		<Cell v-for="(value, index) in cells"
 			  :id="'content-container-'+index" 
 			  :tabindex="index" 
 			  :key="JSON.stringify(value.id)" 
 			  :ref="'content-'+index"
 			  :index="index"
+			  :tag="value.tag"
+			  :html="value.html"
+			  :src="value.src"
+			  :caption="value.caption"
 			   v-on:active_index="set_index($event)" 
 			   v-on:save="save($event)" 
 			   v-on:tag="switch_tag($event)" 
@@ -24,6 +29,7 @@
 
 <script>
 import Cell from '@/components/editor/Cell'
+import Vue from 'vue'
 
 export default {
 	components: {
@@ -32,7 +38,7 @@ export default {
 	data() {
 		return {
 			active_index: -1,
-			cells: [{ id: this.init_id, tag: 'p' }],
+			cells: [{ id: this.init_id, html: '', tag: 'p', caption: '', src: '' }],
 			init_id: Math.random(),
 			emit_save: {
 				button: false,
@@ -114,6 +120,12 @@ export default {
 
 			this.emit_save.button = true;
 			this.save();
+		}
+	},
+	props: ['reloaded'],
+	watch: {
+		reloaded: function(curr, prev) {
+			this.cells = curr;
 		}
 	}
 }

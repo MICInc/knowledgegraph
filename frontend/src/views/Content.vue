@@ -3,6 +3,7 @@
 		<PageNav></PageNav>
 		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
+			<router-link tag="a" :to="'/add/'+url+'/edit'">edit</router-link>
 			<Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id" :abbrev="false"></Vote>
 			<label>citations </label>
 			<span>{{ content.num_citations }}</span>
@@ -71,6 +72,7 @@ export default {
 		async get_content() {
 			return await ContentService.getContent({ params: { user: this.user, url: this.url } })
 			.then(function(data) {
+				console.log(data.data);
 				return data.data;
 			})
 			.catch(function(error) {
