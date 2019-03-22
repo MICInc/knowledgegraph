@@ -187,8 +187,8 @@ module.exports = {
 		if(t == null || t.length == 0) callback(new Error('Empty token'), null);
 		else token.verify(t, email, callback);
 	},
-	is_editable(query, profile, callback) {
-		var editable = profile.url == query.url;
+	is_editable(query, page, callback) {
+		var editable = page.url == query.url;
 
 		if(editable) {
 			module.exports.verify_token(query.token, query.email, function(err, decoded) {

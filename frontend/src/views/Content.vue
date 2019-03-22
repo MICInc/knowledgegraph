@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
-			<router-link tag="a" :to="'/add/'+url+'/edit'">edit</router-link>
+			<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">edit</router-link>
 			<Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id" :abbrev="false"></Vote>
 			<label>citations </label>
 			<span>{{ content.num_citations }}</span>
@@ -44,15 +44,8 @@ export default {
 		// window.addEventListener('beforeunload', this.cleanup);
 	},
 	beforeMount() {
-		// window.addEventListener('beforeunload', this.cleanup);
-		if(this.$store.state.isLoggedIn) this.user = this.$store.state.userInfo.id;
-
-		this.get_content().then(data => {
-			if(data) {
-				this.content_id = data.id;
-				this.content = data;
-			}
-		});
+		this.edit();
+		this.get_content();
 	},
 	components: {
 		PageNav,
@@ -65,29 +58,36 @@ export default {
 			content_id: '',
 			url: this.$route.params.id,
 			content: {},
-			user: ''
+			user_id: this.$store.state.userInfo.id,
+			token: this.$store.state.accessToken,
+			editable: false
 		}
 	},
 	methods: {
-		async get_content() {
-			return await ContentService.getContent({ params: { user: this.user, url: this.url } })
-			.then(function(data) {
-				console.log(data.data);
-				return data.data;
+		async edit() {
+			ContentService.canEdit({ params: { user_id: this.user_id, token: this.token, url: this.url }})
+			.then((resp) => {
+				if(resp.data.editable) this.editable = resp.data.editable;
 			})
-			.catch(function(error) {
+			.catch((error) => {
+				this.editable = false;
+			});
+		},
+		async get_content() {
+			ContentService.getContent({ params: { user_id: this.user_id, url: this.url } })
+			.then((data) => {
+				if(data.data) {
+					this.content_id = data.data.id;
+					this.content = data.data;
+				}
+			})
+			.catch((error) => {
 				console.log('Page not found');
 			});
 		},
 		check_content() {
 			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
-		},
-		// cleanup() {
-		// 	ContentService.cleanup({ 
-		// 		user: this.$store.state.userInfo != null ? this.$store.state.userInfo.id : '',
-		// 		content_id: this.content_id
-		// 	});
-		// }
+		}
 	}
 }
 </script>
