@@ -144,8 +144,8 @@ module.exports = {
 		});
 	},
 	isEmailTaken: function(email, callback) {
-		module.exports.findByEmail(filter.filter_xss(email), function(user) {
-			callback(user != null);
+		module.exports.findByEmail(filter.filter_xss(email), function(err, user) {
+			callback(err, user != null);
 		});
 	},
 	start_session: function(user, token) {

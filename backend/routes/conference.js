@@ -3,15 +3,13 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db/database');
 var file_handler = require('../lib/file_handler');
-var ua = require('../lib/user-auth');
+var UserAuth = require('../lib/user-auth');
 var ah = require('../lib/application_handler');
 var fh = require('../lib/feedback_handler');
 
 router.post('/register', function(req, res) {
-	ua.isEmailTaken(req.body.email, function(user) {
-		ah.save(req.body, function(status) {
-			res.send(status);
-		});
+	ah.save(req.body, function(status) {
+		res.send(status);
 	});
 });
 

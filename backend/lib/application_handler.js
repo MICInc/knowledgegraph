@@ -16,11 +16,11 @@ module.exports = {
 
 		conf.save()
 		.then(item => {
-			callback(true);
+			callback({ status: true });
 		})
 		.catch(err => {
 			console.log(err);
-			callback(false);
+			callback({ status: false, error: 'Internal error'});
 		});
 	},
 	flatten_demographic_and_resp: function(applications) {
