@@ -7,6 +7,11 @@ const token = require('./token');
 
 module.exports = {
 	format: function(profile) {
+		/*
+			user_type: 0 (general)
+					   1 (moderator)
+					   2 (admin)
+		*/
 		return {
 			id: mongoose.Types.ObjectId(),
 			affiliation: filter.filter_xss(profile.affiliation),
@@ -29,7 +34,8 @@ module.exports = {
 			school: filter.filter_xss(profile.school),
 			search_history: [],
 			subjects: [],
-			url: (profile.first_name+'-'+profile.last_name).toLowerCase()
+			url: (profile.first_name+'-'+profile.last_name).toLowerCase(),
+			user_type: 0
 		}
 	},
 	// TODO: Update module.exports to match model - replace defaults
