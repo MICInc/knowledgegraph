@@ -7,23 +7,30 @@
 		</div>
 		<div class="editor-info">
 			<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
-				<img ref="image-content" class="image-content" :src="cell.src" v-on:keydown.enter.stop="show_caption($event)">
-				<figcaption class="caption"
-							ref="caption-content"
-							v-show="has_caption" 
-							v-on:keyup="set_caption($event)" 
-							v-on:keydown.delete.stop="remove_caption($event)" 
-							contenteditable>
+				<img 
+					:id="'image-content-'+cell.index"
+					:ref="'image-content-'+cell.index"
+					class="image-content" 
+					:src="cell.src" 
+					v-on:keydown.enter.stop="show_caption($event)">
+				<figcaption 
+					class="caption"
+					:id="'caption-content-'+cell.index"
+					:ref="'caption-content-'+cell.index"
+					v-show="has_caption" 
+					v-on:keyup="set_caption($event)" 
+					v-on:keydown.delete.stop="remove_caption($event)" 
+					contenteditable>
 					<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
 				</figcaption>
 			</figure>
 			<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
 				<hr>
 			</div>
-			<p id="p-content"
+			<p :id="'p-content-'+cell.index"
 			   v-if="'p' == cell.tag" 
 			   class="content" 
-			   ref="p-content"
+			   :ref="'p-content-'+cell.index"
 			   v-on:keyup="input($event)" 
 			   @mousedown="set_active($event)" 
 			   contenteditable>
@@ -152,9 +159,9 @@ export default {
 			else {
 				this.is_empty = false;
 			}
-			
-			this.cell.html = this.trim(el.innerHTML);
-			this.cell.text = this.trim(el.innerText);
+
+			this.cell.html = el.innerHTML;
+			this.cell.text = el.innerText;
 			this.cell.last_modified = new Date();
 
 			this.save();
@@ -270,6 +277,7 @@ export default {
 			deep: true,
 			immediate: true,
 			handler(curr, prev) {
+				this.index = curr;
 			}
 		},
 		tag: {
@@ -284,7 +292,9 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.$nextTick(function() {
-					var el = document.getElementById('p-content');
+					this.is_empty = this.cell.tag != 'p';
+					var el = document.getElementById('p-content-'+this.index);
+
 					if(el != null && curr != null && curr.length > 0) {
 						el.innerHTML = curr;
 						this.cell.html = curr;
@@ -297,7 +307,9 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.$nextTick(function() {
-					var el = document.getElementById('image-content');
+					this.is_empty = this.cell.tag != 'img';
+					var el = document.getElementById('image-content-'+this.index);
+
 					if(el != null && curr != null) {
 						el.src = curr;
 						this.cell.src = curr;
@@ -310,7 +322,7 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.$nextTick(function() {
-					var el = document.getElementById('caption-content');
+					var el = document.getElementById('caption-content-'+this.index);
 					if(el != null && curr != null) {
 						el.innerText = curr;
 						this.cell.caption = curr;

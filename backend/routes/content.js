@@ -118,7 +118,6 @@ router.post('/add', function(req, res) {
 
 router.post('/remove', function(req, res) {
 	var token = req.body.token;
-	
 	if(token == null) {
 		res.status(400).send('Invalid post');
 		return;
@@ -129,14 +128,13 @@ router.post('/remove', function(req, res) {
 			res.status(400).send('Invalid post');
 			return;
 		}
-
 		var data = req.body;
 		var query = { _id: data.id };
 
-		db.Content.findOne(query, function (err, article) {		
+		db.Content.findOne(query, function (err, article) {	
 			if(article != null) {
 				if(data.index < article.content.length) article.content.splice(data.index, 1);
-				
+
 				for(var i = 0; i < article.content.length; i++) {
 					article.content[i].index -= 1;
 				}

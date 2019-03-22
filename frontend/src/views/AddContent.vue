@@ -45,19 +45,18 @@ export default {
 	},
 
 	created() {
-		if(this.$route.path.split('/').pop() == 'edit') this.reload();
-
 		this.authors.push({	
 			first_name: this.$store.state.userInfo.first_name,
 			last_name: this.$store.state.userInfo.last_name,
 			url: this.$store.state.userInfo.url,
 			id: this.$store.state.userInfo.id
 		});
-		this.save();
+
+		if(this.$route.path.split('/').pop() == 'edit') this.reload();
+		else this.save();
 	},
 	data() {
 		return {
-			content_id: '',
 			data: {
 				date_created: new Date(),
 				cell: undefined,
@@ -75,7 +74,8 @@ export default {
 			authors: [],
 			token: this.$store.state.accessToken,
 			user_id: this.$store.state.userInfo.id,
-			email: this.$store.state.userInfo.email
+			email: this.$store.state.userInfo.email,
+			content_id: '',
 		}
 	},
 	methods: {
@@ -110,9 +110,10 @@ export default {
 				token: this.token,
 				email: this.email
 			}
-
+			
 			ContentService.reload({ params: article })
 			.then((data) => {
+				this.content_id = data.data._id;
 				this.reloaded = data.data.content;
 				this.data.title = data.data.title;
 			})
@@ -120,7 +121,14 @@ export default {
 			});
 		},
 		remove_content(index) {
-			ContentService.removeContent({ id: this.content_id, index: index })
+			var cell = { 
+				id: this.content_id, 
+				index: index, 
+				token: this.token, 
+				email: this.email
+			};
+
+			ContentService.removeContent(cell)
 			.then((data) => {
 			})
 			.catch(error => {

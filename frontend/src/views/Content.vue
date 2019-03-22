@@ -72,6 +72,7 @@ export default {
 		async get_content() {
 			return await ContentService.getContent({ params: { user: this.user, url: this.url } })
 			.then(function(data) {
+				console.log(data.data);
 				return data.data;
 			})
 			.catch(function(error) {
