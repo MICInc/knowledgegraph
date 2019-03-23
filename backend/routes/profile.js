@@ -93,7 +93,7 @@ router.get('/library', function(req, res) {
 					res.status(200).send({ editable: false, library: [] });
 				}
 				else res.status(200).send({ editable: editable, library: library });
-			}).select('title url').select('-_id');
+			}).select('title url preview year').select('-_id');
 		});
 	});
 });
