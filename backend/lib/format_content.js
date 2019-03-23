@@ -43,7 +43,8 @@ module.exports = {
 			"save_by": [],
 			"subseqs": [],
 			"title": title,
-			"url": module.exports.generate_url(title)
+			"url": module.exports.generate_url(title),
+			"year": data.date_created.split('-')[0]
 		};
 	},
 	check_title: function(id, title, callback) {

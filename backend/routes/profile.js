@@ -73,7 +73,7 @@ router.get('/publications', function(req, res) {
 					res.status(200).send({ editable: false, publications: [] });
 				}
 				else res.status(200).send({ editable: editable, publications: publications });
-			}).select('title url').select('-_id');
+			}).select('title url preview year').select('-_id');
 		});
 	});
 });
