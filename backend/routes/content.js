@@ -162,6 +162,7 @@ router.get('/', function(req, res) {
 
 				res.status(200).send(fc.filter_results(article));
 				article.view_duration.push({ start: start });
+				article.num_views += 1;
 
 				db.Content.updateOne(query, article, function(err) {
 					if(err) console.error(err);

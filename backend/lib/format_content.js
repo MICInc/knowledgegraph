@@ -37,6 +37,7 @@ module.exports = {
 			"num_likes": 0,
 			"num_saves": 0,
 			"num_shares": 0,
+			"num_views": 0,
 			"prereqs": [],
 			"preview": '',
 			"publication": {},
