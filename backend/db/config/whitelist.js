@@ -12,5 +12,6 @@ module.exports = [
 	'vpetsiuk@bu.edu',
 	'vram@bu.edu',
 	'zui@bu.edu',
-	'yutsumi@mit.edu'
+	'yutsumi@mit.edu',
+	'g.aridor@columbia.edu'
 ]

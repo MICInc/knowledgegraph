@@ -68,6 +68,23 @@ else {
 
 	app.use(session(sess));
 
+	app.all('*', function (req, res, next) {
+		origin = req.get('origin');
+		console.log(origin);
+
+		// Development whitelist
+		var whitelist = ['http://localhost:80'];
+		
+		corsOptions = {
+			origin: function (origin, callback) {
+					if(whitelist.indexOf(origin) !== -1) callback(null, true);
+					else callback(new Error('Not allowed by CORS'));
+			}
+		};
+
+		next();
+	});
+
 	var errors = require('./routes/errors');
 	var index_route = require('./routes/index');
 	var mic_route = require('./routes/mic');
@@ -81,11 +98,12 @@ else {
 	var unit = 'mb';
 	var upload_limit = size+unit;
 
+
 	app.use(bodyParser.json({limit: upload_limit, extended: true}))
 	app.use(bodyParser.urlencoded({limit: upload_limit, extended: true}))
 	app.use(errors);
 	app.use(morgan('tiny'));
-	app.use(cors({credentials: true, origin: true}));
+	// app.use(cors({credentials: true, origin: true}));
 
 	app.use(helmet());
 	app.use(helmet.xssFilter({ setOnOldIE: true }));
@@ -97,22 +115,6 @@ else {
 	app.use('/conference', conf_route);
 	app.use('/community', community_route);
 	app.use('/admin', admin_route);
-
-	app.all('*', function (req, res, next) {
-		origin = req.get('origin');
-
-		// Development whitelist
-		var whitelist = ['http://localhost:8080', 'http://localhost:8081'];
-		
-		corsOptions = {
-			origin: function (origin, callback) {
-					var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-					callback(null, originIsWhitelisted);
-			}
-		};
-		
-		next();
-	});
 
 	var server = app.listen(port);
 	
