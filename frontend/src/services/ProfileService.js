@@ -4,36 +4,36 @@ export default {
 		// take a object with an id property identifying the user
 		// default id = 0 (not a user or not logged in)
 		getProfile(data) {
-			return Api().get('/profile', data)
+			return Api().get('/api/profile', data)
 		},
 		canEdit(data) {
-			return Api().get('/profile/edit', data);
+			return Api().get('/api/profile/edit', data);
 		},
 		getProfilePic(data) {
-			return Api().get('/profile/picture', data);
+			return Api().get('/api/profile/picture', data);
 		},
 		saveProfile(data) {
-			return Api().post('/profile', data);
+			return Api().post('/api/profile', data);
 		},
 		uploadProfPic(data) {
-			return Api().post('/profile/picture', data);
+			return Api().post('/api/profile/picture', data);
 		},
 		follow(data) {
-			return Api().post('/profile/follow', data);
+			return Api().post('/api/profile/follow', data);
 		},
 		get_comments(data) {
-			return Api().get('/profile/comments', data);
+			return Api().get('/api/profile/comments', data);
 		},
 		get_library(data) {
-			return Api().get('/profile/library', data)
+			return Api().get('/api/profile/library', data)
 		},
 		get_publications(data) {
-			return Api().get('/profile/publications', data)
+			return Api().get('/api/profile/publications', data)
 		},
 		get_followers(data) {
-			return Api().get('/profile/followers', data);
+			return Api().get('/api/profile/followers', data);
 		},
 		get_following(data) {
-			return Api().get('/profile/following', data);
+			return Api().get('/api/profile/following', data);
 		}
 }

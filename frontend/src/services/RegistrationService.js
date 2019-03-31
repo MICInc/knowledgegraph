@@ -2,9 +2,9 @@ import Api from '@/services/Api'
 
 export default {
 	register(data) {
-		return Api().post('/conference/register', data);
+		return Api().post('/api/conference/register', data);
 	},
 	getRegistrations() {
-		return Api().get('/conference/register')
+		return Api().get('/api/conference/register')
 	}
 }

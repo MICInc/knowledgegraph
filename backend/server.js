@@ -13,9 +13,15 @@ var cors = require('cors');
 var port = process.env.PORT || 7000; //keep this or change as long as greater than 1024
 const ws = require('ws');
 const db = require('./db/database');
+var https = require('https');
+var http = require('http');
+const privateKey  = fs.readFileSync('ssl/mic.key', 'utf8');
+const certificate = fs.readFileSync('ssl/mic.crt', 'utf8');
+app.use(cors());
 
 // master process
 if(cluster.isMaster)  {
+
 	//Load database
 	db.School.estimatedDocumentCount({}, function(err, total) {
 		if(total == 0) {
@@ -68,23 +74,6 @@ else {
 
 	app.use(session(sess));
 
-	app.all('*', function (req, res, next) {
-		origin = req.get('origin');
-		console.log(origin);
-
-		// Development whitelist
-		var whitelist = ['http://localhost:80'];
-		
-		corsOptions = {
-			origin: function (origin, callback) {
-					if(whitelist.indexOf(origin) !== -1) callback(null, true);
-					else callback(new Error('Not allowed by CORS'));
-			}
-		};
-
-		next();
-	});
-
 	var errors = require('./routes/errors');
 	var index_route = require('./routes/index');
 	var mic_route = require('./routes/mic');
@@ -103,20 +92,22 @@ else {
 	app.use(bodyParser.urlencoded({limit: upload_limit, extended: true}))
 	app.use(errors);
 	app.use(morgan('tiny'));
-	// app.use(cors({credentials: true, origin: true}));
-
 	app.use(helmet());
 	app.use(helmet.xssFilter({ setOnOldIE: true }));
-	app.use('/', index_route);
-	app.use('/mic', mic_route);
-	app.use('/content', content_route);
-	app.use('/profile', profile_route);
-	app.use('/search', search_route);
-	app.use('/conference', conf_route);
-	app.use('/community', community_route);
-	app.use('/admin', admin_route);
-
-	var server = app.listen(port);
+	app.use('/api', index_route);
+	app.use('/api/mic', mic_route);
+	app.use('/api/content', content_route);
+	app.use('/api/profile', profile_route);
+	app.use('/api/search', search_route);
+	app.use('/api/conference', conf_route);
+	app.use('/api/community', community_route);
+	app.use('/api/admin', admin_route);
 	
-	console.log('Listening on port ' + port);
+	var httpServer = http.createServer(app);
+	var httpsServer = https.createServer({key: privateKey, cert: certificate}, app);
+	httpServer.listen(port);
+	httpsServer.listen(8443);
+	
+	console.log('HTTP listening on port ' + port);
+	console.log('HTTPS listening on port ' + 8443);
 }
