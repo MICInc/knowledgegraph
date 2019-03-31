@@ -2,7 +2,7 @@
 	<div class='container'>
 		<div class="result">
 			<div>
-				<router-link class="result-header" v-bind:to="'/'+item.url">{{ item.first_name+' '+item.last_name }}</router-link>
+				<a :href="'/'+item.url">{{ item.first_name+' '+item.last_name }}</a>
 			</div>
 		</div>
 	</div>

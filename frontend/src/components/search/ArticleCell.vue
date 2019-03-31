@@ -5,7 +5,7 @@
 				<Vote :likes="item.likes" :dislikes="item.dislikes" :content_id="item.id" :abbrev="true"></Vote>
 			</div>
 			<div class="vote">
-				<router-link class="result-header" v-bind:to="'/content/'+item.url">{{ item.title }}</router-link>
+				<a :href="'/content/'+item.url">{{ item.title }}</a>
 			</div>
 		</div>
 	</div>

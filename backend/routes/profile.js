@@ -73,7 +73,7 @@ router.get('/publications', function(req, res) {
 					res.status(200).send({ editable: false, publications: [] });
 				}
 				else res.status(200).send({ editable: editable, publications: publications });
-			}).select('title url').select('-_id');
+			}).select('title url preview year num_views').select('-_id');
 		});
 	});
 });
@@ -93,7 +93,7 @@ router.get('/library', function(req, res) {
 					res.status(200).send({ editable: false, library: [] });
 				}
 				else res.status(200).send({ editable: editable, library: library });
-			}).select('title url').select('-_id');
+			}).select('title url preview year num_views').select('-_id');
 		});
 	});
 });

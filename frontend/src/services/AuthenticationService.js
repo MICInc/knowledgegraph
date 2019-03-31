@@ -3,17 +3,17 @@ import Api from '@/services/Api'
 export default {
 
 		loginUser (data) {
-			return Api().post('/login', data)
+			return Api().post('/api/login', data)
 		},
 
 		signUpUser (data) {
-			return Api().post('/signup', data)
+			return Api().post('/api/signup', data)
 		},
 
 		logoutUser(data) {
-			return Api().post('/logout', data)
+			return Api().post('/api/logout', data)
 		},
 		forgotLogin(data) {
-			return Api().post('/forgot', data)
+			return Api().post('/api/forgot', data)
 		}
 }

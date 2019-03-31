@@ -54,6 +54,10 @@ var content_schema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
+	num_views: {
+		type: Number,
+		required: true
+	},
 	original_url: {
 		type: String
 	},
@@ -82,7 +86,11 @@ var content_schema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
-	view_duration: [{}] //list of date object pairs {start_view, end_view}
+	view_duration: [{}], //list of date object pairs {start_view, end_view},
+	year: {
+		type: Number,
+		required: true
+	}
 }, Content.options);
 
 module.exports.Content = Content.model.discriminator('Content', content_schema);
