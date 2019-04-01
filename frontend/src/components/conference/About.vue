@@ -13,7 +13,7 @@
 			</div>
 			<div class="about-mic">
 				<h3>The Machine Intelligence Community - MIC</h3>
-				<p>The idea behind the Machine Intelligence Community originated from the MIT Machine Learning Reading Group. The reading group started with students looking for an environment to learn about research advances in machine learning. The Machine Intelligence Community currently has branches at MIT, Boston University, Harvard, and Tufts.</p>
+				<p>The idea behind the Machine Intelligence Community originated from the MIT Machine Learning Reading Group. The reading group started with students looking for an environment to learn about research advances in machine learning. The Machine Intelligence Community currently has branches at MIT, Boston University, Harvard University, and SRM Institute of Science and Technology.</p>
 				<p>The Machine Intelligence Community has a set of core values it stands to uphold. All Machine Intelligence Community organizations must uphold these values.</p>
 				<p><strong>1. Openness.</strong> The Machine Intelligence Community is inclusive and diverse.</p>
 				<p><strong>2. Education.</strong> We aim to provide surface area for intellectual engagement. Our primary focus is teaching members and the community at-large about machine intelligence.</p>

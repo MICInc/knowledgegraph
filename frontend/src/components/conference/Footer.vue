@@ -30,7 +30,7 @@
 			return {
 				year: (new Date()).getFullYear(),
 				social: [
-					{ mouse: false, hover: '/img/social-media-icons/facebook-icon-hover.png', href: 'https://www.facebook.com/events/339954023078301/', img: '/img/social-media-icons/facebook-icon.png' },
+					{ mouse: false, hover: '/img/social-media-icons/facebook-icon-hover.png', href: 'https://www.facebook.com/miconference', img: '/img/social-media-icons/facebook-icon.png' },
 					{ mouse: false, hover: '/img/social-media-icons/twitter-icon-hover.png', href: 'https://twitter.com/mic_conf', img: '/img/social-media-icons/twitter-icon.png' },
 					{ mouse: false, hover: '/img/social-media-icons/youtube-icon-hover.png', href: 'https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg', img: '/img/social-media-icons/youtube-icon.png' },
 					{ mouse: false, hover: '/img/social-media-icons/reddit-icon-hover.png', href: 'https://www.reddit.com/user/MICInc', img: '/img/social-media-icons/reddit-icon.png' }

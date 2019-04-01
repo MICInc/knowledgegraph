@@ -23,8 +23,7 @@ router.get('/robots.txt', function(req, res, next)
 // https://stackoverflow.com/questions/14709802/exit-after-res-send-in-express-js
 // TODO: update error handling as res.send does not exit method
 router.post('/signup', function(req, res) {
-	if(!require('../db/config/whitelist').includes(req.body.email)) return;
-
+	
 	var result = form.is_complete(req.body);
 
 	if(!result.ok) {
@@ -35,6 +34,10 @@ router.post('/signup', function(req, res) {
 	UserAuth.registerUser(req.body, function(err, token, user) {
 		if(err) res.send({ error: 'Registration failed' });
 		else {
+			if(!require('../db/config/whitelist').includes(req.body.email)) {
+				res.json({ token: token, userInfo: user });
+				return;
+			}
 			res.json({ token: token, userInfo: user });
 			// eh.send_verification(email);
 		}

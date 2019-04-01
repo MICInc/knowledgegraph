@@ -45,8 +45,7 @@
 				</select><br>
 				<label>Please list any food you're allergic to:</label><br>
 				<input v-model.trim="conf_resp.food_allergens"></input><br>
-				<label>Opt-in to share your resume with sponsors</label><br>
-				<input type="file" name="resume" multiple v-on:change="add_file($event, 0)"><br>
+				<label>Opt-in to <a href="https://www.dropbox.com/request/UEtnUpmQ5AHMOw8PmrvN" target="_blank">share</a> your skill sheet with sponsors</label><br>
 				<label>How did you hear about our conference?</label><br>
 				<textarea v-model.trim="conf_resp.q1"></textarea><br>
 				<label>What future do you see for machine intelligence that others don't? (max 200 characters)</label><br>
@@ -98,7 +97,6 @@ export default {
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
 				complete: false,
-				data: new FormData(),
 				error: {
 					affiliation: false,
 					confirm_pw: false,
@@ -169,7 +167,7 @@ export default {
 			var filename = file.name;
 
 			this.conf_resp.resume = filename;
-			this.form.data.append('resume', file, filename);
+			this.profile.resume.append('resume', file, filename);
 		},
 		is_string(data) {
 			return (typeof data === 'string' || data instanceof String);
