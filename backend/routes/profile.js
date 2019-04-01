@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../db/database');
-var ua = require('../lib/user-auth');
 var jwt = require('jsonwebtoken');
 var UserAuth = require('../lib/user-auth');
 var sh = require('../lib/search_handler');
@@ -11,9 +10,9 @@ var sh = require('../lib/search_handler');
 // But forgot if this is hit with conference sign up.
 router.post('/', function(req, res) {
 	// TODO: should validate email address before querying
-	ua.isEmailTaken(req.body.email.value, function(results) {
+	UserAuth.isEmailTaken(req.body.email.value, function(results) {
 		if(results.length == 0) {
-			ua.registerUser(req.body, function(user_id) {
+			UserAuth.registerUser(req.body, function(user_id) {
 				res.send(user_id);
 			});
 		}

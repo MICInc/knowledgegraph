@@ -38,6 +38,13 @@
 					img: '/img/mic-schools/harvard-logo.png',
 					desc: 'We are a community of undergraduates at Harvard aiming to promote and foster interest in machine learning and artificial intelligence. We host technical workshops on advanced topics in machine learning, work on challenging real-world problems, discuss the current state of the field, and - most importantly - attempt to create a friendly and collaborative environment both for aspiring machine learning researchers and also for people who have just taken their first step into the fascinating and mysterious world of artificial intelligence. We seek to equip everyone with knowledge in machine learning and artificial intelligence and prepare them to face the new wave of the future.',
 					alt: 'Harvard Logo'
+				},
+				{
+					name: 'SRM Institute of Science and Technology MIC',
+					href: '',
+					img: '/img/mic-schools/srm-logo.png',
+					desc: '',
+					alt: 'SRM Logo'
 				}]
 			}
 		}
