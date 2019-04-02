@@ -18,6 +18,7 @@
 			<About></About>
 			<LocationInfo></LocationInfo>
 			<OurCommunity></OurCommunity>
+			<Committee></Committee>
 			<Sponsors></Sponsors>
 			<Footer></Footer>
 		</div>
@@ -30,6 +31,7 @@
 	import LocationInfo from '@/components/conference/LocationInfo.vue'
 	import OurCommunity from '@/components/conference/OurCommunity.vue'
 	import Sponsors from '@/components/conference/Sponsors.vue'
+	import Committee from '@/components/conference/Committee.vue'
 	import Footer from '@/components/conference/Footer.vue'
 
 	export default {
@@ -40,6 +42,7 @@
 			LocationInfo,
 			OurCommunity,
 			Sponsors,
+			Committee,
 			Footer,
 		},
 
@@ -61,11 +64,11 @@
 					{
 						name: 'Sponsors',
 						href: '#sponsors'
-					}//,
-					// {
-					// 	name: 'Conference Committee',
-					// 	href: '#committee'
-					// },
+					},
+					{
+						name: 'Conference Committee',
+						href: '#committee'
+					},
 					// {
 					// 	name: 'Schedule',
 					// 	href: '/conference/schedule/'+(new Date()).getFullYear()
