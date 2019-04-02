@@ -38,7 +38,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -59,7 +59,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -74,7 +74,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -89,7 +89,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -104,7 +104,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -119,7 +119,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -154,13 +154,13 @@ export default new Router({
 			path: '/search',
 			name: 'search',
 			component: () => import('./views/Search.vue'),
-			beforeEnter: (to, from, next) => { //remove this protected route in production May 31t, 2019
+			beforeEnter: (to, from, next) => { //remove this protected route in production May 31st, 2019
 				if (store.state.isLoggedIn) {
 					next()
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -168,7 +168,12 @@ export default new Router({
 		{
 			path: '/signup',
 			name: 'signup',
-			component: () => import('./views/SignUp.vue'),
+			component: () => import('./views/SignUp.vue')
+		},
+		{
+			path: '/terms',
+			name: 'terms',
+			component: () => import('./views/Terms.vue')
 		},
 		{
 			path: '/:id',
