@@ -29,19 +29,29 @@ export default new Router({
 			}
 		},
 		{
+			path: '/about/cookies',
+			name: 'cookies',
+			component: () => import('./views/about/Cookies.vue')
+		},
+		{
+			path: '/about/data',
+			name: 'terms',
+			component: () => import('./views/about/Data.vue')
+		},
+		{
+			path: '/about/privacy',
+			name: 'terms',
+			component: () => import('./views/about/Privacy.vue')
+		},
+		{
+			path: '/about/terms',
+			name: 'terms',
+			component: () => import('./views/about/Terms.vue')
+		},
+		{
 			path: '/about',
 			name: 'about',
-			component: () => import('./views/About.vue'),
-			beforeEnter: (to, from, next) => {
-				if (store.state.isLoggedIn) {
-					next()
-				} else {
-					next({
-						name: 'login',
-						params: { error: 'You need to log in to access this route.' }
-					})
-				}
-			}
+			component: () => import('./views/about/About.vue')
 		},
 		{
 			path: '/add',
@@ -169,11 +179,6 @@ export default new Router({
 			path: '/signup',
 			name: 'signup',
 			component: () => import('./views/SignUp.vue')
-		},
-		{
-			path: '/terms',
-			name: 'terms',
-			component: () => import('./views/Terms.vue')
 		},
 		{
 			path: '/:id',

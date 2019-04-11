@@ -36,6 +36,7 @@
 					autocomplete="new-password"
 					required>
 			</div>
+			<Disclaimer></Disclaimer>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
 	</div>
@@ -44,12 +45,14 @@
 <script>
 import DateSelector from '@/components/form/DateSelector'
 import AuthService from '@/services/AuthenticationService'
+import Disclaimer from '@/components/form/Disclaimer'
 import router from '@/router'
 
 export default {
 	name: 'join',
 	components: {
-		DateSelector
+		DateSelector,
+		Disclaimer
 	},
 	data () {
 		return {
