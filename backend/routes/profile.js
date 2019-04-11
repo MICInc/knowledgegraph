@@ -216,4 +216,34 @@ router.get('/following', function(req, res) {
 	});
 });
 
+router.post('/change_email', function(req, res) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		if(err) res.status(400).send('Unsuccessful email change');
+		else {
+			UserAuth.findById(req.body.user_id, function(err, profile) {
+				if(err) {
+					console.error(err);
+					res.status(400).send({ following: 0 });
+					return;
+				}
+			});
+		}
+	});
+});
+
+router.post('/change_password', function(req, res) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		if(err) res.status(400).send('Unsuccessful password change');
+		else {
+			UserAuth.findById(req.body.user_id, function(err, profile) {
+				if(err) {
+					console.error(err);
+					res.status(400).send({ following: 0 });
+					return;
+				}
+			});
+		}
+	});
+});
+
 module.exports = router;

@@ -35,12 +35,12 @@ export default new Router({
 		},
 		{
 			path: '/about/data',
-			name: 'terms',
+			name: 'data',
 			component: () => import('./views/about/Data.vue')
 		},
 		{
 			path: '/about/privacy',
-			name: 'terms',
+			name: 'privacy',
 			component: () => import('./views/about/Privacy.vue')
 		},
 		{

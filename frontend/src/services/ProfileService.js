@@ -35,5 +35,11 @@ export default {
 		},
 		get_following(data) {
 			return Api().get('/api/profile/following', data);
+		},
+		change_password(data) {
+			return Api().post('/api/profile/change_password', data);
+		},
+		change_email(data) {
+			return Api().post('/api/profile/change_email', data);
 		}
 }
