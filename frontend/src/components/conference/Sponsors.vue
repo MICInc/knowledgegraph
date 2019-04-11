@@ -5,7 +5,11 @@
 				<h2>Thank You to Our Sponsors</h2>
 			</div>
 			<div class="sponsor-grid">
-				<div class="sponsor-tile"><a href="https://www.intel.com/" target="_blank" rel="noopener noreferrer"><img class="tier-one" src="/img/sponsors/intel-ai-logo.png" alt="Intel Logo"/></a></div>
+				<div class="sponsor-tile">
+					<a v-for="(s, index) in sponsors" :href="s.href">
+						<img :class="s.tier" :src="s.src" :alt="s.alt"/>
+					</a>
+				</div>
 			</div>
 		<div class="become-sponsor"><a class="cta-button" href="mailto:sponsors@machineintelligence.cc">Become A Sponsor</a></div>
 		</div>
@@ -15,6 +19,23 @@
 <script>
 	export default {
 		name: 'About',
+		data() {
+			return {
+				sponsors: [{
+						href: 'https://www.intel.com/',
+						tier: 'tier-one',
+						src: '/img/sponsors/intel-ai-logo.png',
+						alt: 'Intel Logo'
+					},
+					{
+						href: 'http://www.bu.edu/spark/',
+						tier: 'tier-one',
+						src: '/img/sponsors/spark-logo.png',
+						alt: 'BU Spark!'
+					}
+				]
+			}
+		}
 	}
 </script>
 
@@ -77,20 +98,20 @@
 	padding: 50px;
 }
 
-.sponsor-grid .sponsor-tile {
-	padding: 0 50px 20px 50px;
+.sponsor-grid .sponsor-tile a {
+	margin: 0 50px 20px 50px;
 }
 
 .sponsor-grid .sponsor-tile img.tier-one {
-	width: 170px;
+	height: 80px;
 }
 
 .sponsor-grid .sponsor-tile img.tier-two {
-	width: 150px;
+	height: 100px;
 }
 
 .sponsor-grid .sponsor-tile img.tier-three {
-	width: 130px;
+	height: 120px;
 }
 
 .become-sponsor {
