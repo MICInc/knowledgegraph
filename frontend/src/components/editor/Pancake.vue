@@ -17,7 +17,7 @@ export default {
 	methods: {
 		change() {
 			this.open = !this.open;
-			this.$emit('pancake', this.open);
+			this.$emit('change', this.open);
 		}
 	}
 }
