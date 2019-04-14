@@ -1,43 +1,46 @@
 <template>
 	<div class="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
 		<Pancake
+			class="pancake"
 			v-on:change="expand($event)">
 		</Pancake>
-		<div class="tag-type" v-show="is_empty">
-			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
-			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
-			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
-		</div>
-		<div class="editor-info">
-			<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
-				<img 
-					:id="'image-content-'+cell.index"
-					:ref="'image-content-'+cell.index"
-					class="image-content" 
-					:src="cell.src" 
-					v-on:keydown.enter.stop="show_caption($event)">
-				<figcaption 
-					class="caption"
-					:id="'caption-content-'+cell.index"
-					:ref="'caption-content-'+cell.index"
-					v-show="has_caption" 
-					v-on:keyup="set_caption($event)" 
-					v-on:keydown.delete.stop="remove_caption($event)" 
-					contenteditable>
-					<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
-				</figcaption>
-			</figure>
-			<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
-				<hr>
+		<div class="content-row">
+			<div class="tag-type" v-show="is_empty">
+				<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
+				<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
+				<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 			</div>
-			<p :id="'p-content-'+cell.index"
-			   v-if="'p' == cell.tag" 
-			   class="content" 
-			   :ref="'p-content-'+cell.index"
-			   v-on:keyup="input($event)" 
-			   @mousedown="set_active($event)" 
-			   contenteditable>
-			</p>
+			<div class="editor-info">
+				<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
+					<img 
+						:id="'image-content-'+cell.index"
+						:ref="'image-content-'+cell.index"
+						class="image-content" 
+						:src="cell.src" 
+						v-on:keydown.enter.stop="show_caption($event)">
+					<figcaption 
+						class="caption"
+						:id="'caption-content-'+cell.index"
+						:ref="'caption-content-'+cell.index"
+						v-show="has_caption" 
+						v-on:keyup="set_caption($event)" 
+						v-on:keydown.delete.stop="remove_caption($event)" 
+						contenteditable>
+						<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
+					</figcaption>
+				</figure>
+				<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
+					<hr>
+				</div>
+				<p :id="'p-content-'+cell.index"
+				   v-if="'p' == cell.tag" 
+				   class="content" 
+				   :ref="'p-content-'+cell.index"
+				   v-on:keyup="input($event)" 
+				   @mousedown="set_active($event)" 
+				   contenteditable>
+				</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -395,5 +398,16 @@ export default {
 	max-height: auto;
 	vertical-align: middle; 
 	border: 1px solid transparent;
+}
+
+.pancake {
+	margin: 17px 0;
+	width: 20px;
+	float: left;
+}
+
+.content-row {
+	float: left;
+	width: 90%;
 }
 </style>

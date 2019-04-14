@@ -27,7 +27,7 @@ export default {
 .bar1, .bar2, .bar3 {
 	width: 14px;
 	height: 2px;
-	background-color: #333;
+	background-color: #636363;
 	margin: 2px 0;
 	transition: 0.4s;
 }
