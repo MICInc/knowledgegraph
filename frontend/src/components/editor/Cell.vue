@@ -129,6 +129,7 @@ export default {
 		},
 		close_menu() {
 			this.$nextTick(() => {
+				this.is_empty = false;
 				var menu = this.$refs['pancake-'+this.index];
 				menu.change();
 			});
@@ -190,16 +191,14 @@ export default {
 		},
 		remove_cell(event) {
 			if(this.index > -1) {
-				var null_p = this.cell.text != null;
+				var null_p = this.cell.text == null;
 				var remove_p = this.cell.tag == 'p' && !null_p && this.trim(this.cell.text).length == 0;
 				var remove_img = this.cell.tag == 'img' && (this.cell.caption != null && this.trim(this.cell.caption).length == 0 || this.image_active);
 				var remove_hr = this.cell.tag == 'hr';
 
 				if(remove_p || remove_img || remove_hr) {
 					// remove focus from all elements else will also accidentally delete other content
-					// document.activeElement.blur();
 					event.preventDefault();
-
 					this.$emit('remove', this.index);
 				}
 			}
@@ -264,23 +263,22 @@ export default {
 			}
 		},
 		switch_tag(tag, event) {
-			this.$emit('active_index', this.index);
-			this.$emit('tag', {index: this.index, tag: tag});
-			this.$emit('focus');
-			this.close_menu();
-
 			this.cell.html = '';
 			this.cell.name = '';
 			this.cell.src = '';
 			this.cell.tag = tag;
 			this.cell.text = '';
 			this.cell.last_modified = new Date();
+
+			this.$emit('active_index', this.index);
+			this.$emit('tag', {index: this.index, tag: tag});
+			this.$emit('focus');
+			this.close_menu();
 			this.save();
 		},
 		trim(str, all=false) {
 			if(typeof str !== 'string' && !(str instanceof String) && (typeof str == 'undefined')) return '';
-			else all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
-
+			else return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
 		},
 		valid_size(bytes) {
 			var size_mb = bytes/(Math.pow(10, 6));
