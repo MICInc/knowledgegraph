@@ -1,5 +1,5 @@
 <template>
-	<div :class="{ expand: open }" v-on:click.prevent="change()">
+	<div :class="{ default: !open,  expand: open }" v-on:click.prevent="change()">
 		<div class="bar1"></div>
 		<div class="bar2"></div>
 		<div class="bar3"></div>
@@ -24,10 +24,14 @@ export default {
 </script>
 
 <style scoped>
+.default {
+	cursor: pointer;
+}
+
 .bar1, .bar2, .bar3 {
 	width: 14px;
 	height: 2px;
-	background-color: #636363;
+	background-color: #b7b7b7;
 	margin: 2px 0;
 	transition: 0.4s;
 }
