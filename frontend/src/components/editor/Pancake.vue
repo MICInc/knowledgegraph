@@ -1,5 +1,7 @@
 <template>
-		<div :class="{ default: true, expand: open }" v-on:click.prevent="change()">
+		<div 
+			:class="{ default: true, expand: open }" 
+			v-on:click.prevent="toggle()">
 			<div class="bar1"></div>
 			<div class="bar2"></div>
 			<div class="bar3"></div>
@@ -17,17 +19,19 @@ export default {
 	methods: {
 		change() {
 			this.open = !this.open;
+		},
+		toggle() {
+			this.change();
 			this.$emit('change', this.open);
 		}
 	},
-	props: ['close'],
+	props: ['index'],
 	watch: {
-		close: {
+		index: {
 			deep: true,
 			immediate: true,
 			handler(curr, prev) {
-				this.open = false;
-				console.log(this.open);
+				this.index = curr;
 			}
 		}
 	}

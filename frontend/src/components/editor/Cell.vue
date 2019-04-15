@@ -2,8 +2,9 @@
 	<div class="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
 		<div class="content-row">
 			<Pancake
+				:ref="'pancake-'+index"
+				:index="index"
 				class="pancake"
-				:close="close"
 				v-on:change="expand($event)">
 			</Pancake>
 			<div class="tag-type" v-if="is_empty">
@@ -72,8 +73,7 @@ export default {
 			has_caption: true,
 			has_caption_default: true,
 			image_active: false,
-			is_empty: false,
-			close: false
+			is_empty: false
 		}
 	},
 	methods: {
@@ -90,6 +90,7 @@ export default {
 			this.$emit('tag', {index: this.index, tag: 'img', 'focus': false});
 			this.$emit('active_index', this.index);
 			this.$emit('focus');
+			this.close_menu();
 
 			if(el.files && el.files[0] && this.valid_size(el.files[0].size)) {
 				var reader = new FileReader();
@@ -125,6 +126,12 @@ export default {
 		set_caption(event) {
 			var el = event.target;
 			this.cell.caption = el.innerText;
+		},
+		close_menu() {
+			this.$nextTick(() => {
+				var menu = this.$refs['pancake-'+this.index];
+				menu.change();
+			});
 		},
 		cursor_position(collapse=true) {
 			var sel = document.getSelection();
@@ -260,6 +267,7 @@ export default {
 			this.$emit('active_index', this.index);
 			this.$emit('tag', {index: this.index, tag: tag});
 			this.$emit('focus');
+			this.close_menu();
 
 			this.cell.html = '';
 			this.cell.name = '';
@@ -288,7 +296,6 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.index = curr;
-				this.close = true;
 			}
 		},
 		tag: {
@@ -296,7 +303,6 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.cell.tag = curr;
-				this.close = true;
 			}
 		},
 		html: {
