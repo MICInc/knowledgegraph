@@ -5,12 +5,12 @@
 			v-on:change="expand($event)">
 		</Pancake>
 		<div class="content-row">
-			<div class="tag-type" v-show="is_empty">
+			<div class="tag-type" v-if="is_empty">
 				<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
 				<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 			</div>
-			<div class="editor-info">
+			<div v-else class="editor-info">
 				<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
 					<img 
 						:id="'image-content-'+cell.index"
@@ -71,7 +71,7 @@ export default {
 			has_caption: true,
 			has_caption_default: true,
 			image_active: false,
-			is_empty: true
+			is_empty: false
 		}
 	},
 	methods: {
@@ -120,11 +120,6 @@ export default {
 
 			return window.btoa( binary );
 		},
-		expand(state) {
-			this.is_empty = state;
-			if(state) this.cell.tag = '';
-			else this.cell.tag = 'p';
-		},
 		set_caption(event) {
 			var el = event.target;
 			this.cell.caption = el.innerText;
@@ -143,6 +138,11 @@ export default {
 				fig_ref.style.border = '';
 				this.image_active = false;
 			}
+		},
+		expand(state) {
+			this.is_empty = state;
+			if(state) this.cell.tag = '';
+			else this.cell.tag = 'p';
 		},
 		focus_next(event) {
 			event.preventDefault();
@@ -168,13 +168,6 @@ export default {
 		input(event) {
 			var el = event.target;
 			this.removeStyles(el);
-
-			if(el.innerText.length == 0) { 
-				this.is_empty = true;
-			}
-			else {
-				this.is_empty = false;
-			}
 
 			this.cell.html = el.innerHTML;
 			this.cell.text = el.innerText;
@@ -273,7 +266,6 @@ export default {
 			this.cell.text = '';
 			this.cell.last_modified = new Date();
 			this.save();
-			this.is_empty = tag != 'hr';
 		},
 		trim(str, all=false) {
 			if(typeof str !== 'string' && !(str instanceof String) && (typeof str == 'undefined')) return '';
@@ -308,7 +300,6 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.$nextTick(function() {
-					this.is_empty = this.cell.tag != 'p';
 					var el = document.getElementById('p-content-'+this.index);
 
 					if(el != null && curr != null && curr.length > 0) {
@@ -323,7 +314,6 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.$nextTick(function() {
-					this.is_empty = this.cell.tag != 'img';
 					var el = document.getElementById('image-content-'+this.index);
 
 					if(el != null && curr != null) {
