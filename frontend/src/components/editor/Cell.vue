@@ -3,6 +3,7 @@
 		<div class="content-row">
 			<Pancake
 				class="pancake"
+				:close="close"
 				v-on:change="expand($event)">
 			</Pancake>
 			<div class="tag-type" v-if="is_empty">
@@ -71,7 +72,8 @@ export default {
 			has_caption: true,
 			has_caption_default: true,
 			image_active: false,
-			is_empty: false
+			is_empty: false,
+			close: false
 		}
 	},
 	methods: {
@@ -286,6 +288,7 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.index = curr;
+				this.close = true;
 			}
 		},
 		tag: {
@@ -293,6 +296,7 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.cell.tag = curr;
+				this.close = true;
 			}
 		},
 		html: {

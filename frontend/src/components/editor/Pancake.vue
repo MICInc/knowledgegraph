@@ -1,9 +1,9 @@
 <template>
-	<div :class="{ default: !open,  expand: open }" v-on:click.prevent="change()">
-		<div class="bar1"></div>
-		<div class="bar2"></div>
-		<div class="bar3"></div>
-	</div>
+		<div :class="{ default: true, expand: open }" v-on:click.prevent="change()">
+			<div class="bar1"></div>
+			<div class="bar2"></div>
+			<div class="bar3"></div>
+		</div>
 </template>
 
 <script>
@@ -18,6 +18,17 @@ export default {
 		change() {
 			this.open = !this.open;
 			this.$emit('change', this.open);
+		}
+	},
+	props: ['close'],
+	watch: {
+		close: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.open = false;
+				console.log(this.open);
+			}
 		}
 	}
 }
