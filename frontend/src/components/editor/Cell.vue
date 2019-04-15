@@ -10,7 +10,7 @@
 				<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 			</div>
-			<div v-else class="editor-info">
+			<div class="editor-info">
 				<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
 					<img 
 						:id="'image-content-'+cell.index"
