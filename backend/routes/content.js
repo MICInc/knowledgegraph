@@ -14,14 +14,15 @@ router.post('/', function(req, res, next) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
+			// call force logout here!
 			console.error(err);
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -87,13 +88,13 @@ router.post('/add', function(req, res) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -119,13 +120,13 @@ router.post('/add', function(req, res) {
 router.post('/remove', function(req, res) {
 	var token = req.body.token;
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 		var data = req.body;
@@ -225,13 +226,13 @@ router.get('/reload', function(req, res) {
 	var token = data.token;
 
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, req.query.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -255,13 +256,13 @@ router.post('/upvote', function(req, res) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 	
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -274,13 +275,13 @@ router.post('/downvote', function(req, res) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 	
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -293,13 +294,13 @@ router.options('/cleanup', function(req, res) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 	
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -331,13 +332,13 @@ router.post('/parse', function(req, res, next) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 	
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 		fh.write(req, res, article_storage);

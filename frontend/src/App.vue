@@ -5,8 +5,25 @@
 </template>
 
 <script>
+import AuthenticationService from '@/services/AuthenticationService';
+import router from '@/router';
 
 export default {
+	created() {
+		AuthenticationService.check_session({ token: this.$store.state.accessToken, email: this.$store.state.userInfo.email})
+		.then((resp) => {
+		})
+		.catch((error) => {
+			var status = error.response.status;
+			if(status == 401) {
+				this.$store.dispatch('logout').then((response) => {
+					router.push({ name: 'home' })
+				}).catch((err) => {
+					router.push({ name: 'home' })
+				})
+			}
+		});
+	}
 }
 </script>
 

@@ -17,5 +17,8 @@ export default {
 		},
 		forgotLogin(data) {
 			return Api().post('/api/index/forgot', data)
+		},
+		check_session(data) {
+			return Api().post('/api/index/session', data);
 		}
 }

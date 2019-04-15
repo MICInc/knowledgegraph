@@ -31,6 +31,7 @@
 import PageNav from '@/components/PageNav';
 import ContentService from '@/services/ContentService.js';
 import DynamicContent from '@/components/editor/DynamicContent';
+import router from '@/router';
 import Path from 'path';
 
 window.onbeforeunload = function() {
@@ -160,6 +161,14 @@ export default {
 				}
 			})
 			.catch((error) => {
+				var status = error.response.status;
+				if(status == 401) {
+					this.$store.dispatch('logout').then((response) => {
+						router.push({ name: 'home' })
+					}).catch((err) => {
+						router.push({ name: 'home' })
+					})
+				}
 			});
 		},
 		update_content(emit_save) {
