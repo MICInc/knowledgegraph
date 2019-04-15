@@ -99,4 +99,14 @@ router.post('/forgot', function(req, res, next) {
 	});
 });
 
+router.post('/date', function(req, res, next) {
+	var year = req.body.year;
+	var month = req.body.month;
+	var day = req.body.day;
+	var date = new Date(`${year}-${month}-${day}`);
+
+	if(Boolean(+date) && date.getDate() == day) res.status(200).send({ error: false });
+	else res.status(400).send({ error: true });
+});
+
 module.exports = router;

@@ -1,7 +1,9 @@
 import Api from '@/services/Api'
 
 export default {
-
+		check_date(data) {
+			return Api().post('/api/index/date', data);
+		},
 		loginUser (data) {
 			return Api().post('/api/index/login', data)
 		},
