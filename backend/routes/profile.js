@@ -151,7 +151,7 @@ router.get('/picture', function(req, res) {
 // This route is already protected with editable flag when initial profile page is requested.
 router.post('/follow', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
-		if(err) res.status(400).send('Invalid submission');
+		if(err) res.status(401).send('unauthorized');
 		else {
 			UserAuth.findById(req.body.user_id, function(err, profile) {
 				if(err) {
@@ -218,7 +218,7 @@ router.get('/following', function(req, res) {
 
 router.post('/change_email', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
-		if(err) res.status(400).send('Unsuccessful email change');
+		if(err) res.status(401).send('unauthorized');
 		else {
 			UserAuth.findById(req.body.user_id, function(err, profile) {
 				if(err) {
@@ -233,7 +233,7 @@ router.post('/change_email', function(req, res) {
 
 router.post('/change_password', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
-		if(err) res.status(400).send('Unsuccessful password change');
+		if(err) res.status(401).send('unauthorized');
 		else {
 			UserAuth.findById(req.body.user_id, function(err, profile) {
 				if(err) {
