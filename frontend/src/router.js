@@ -176,6 +176,11 @@ export default new Router({
 			}
 		},
 		{
+			path: '/settings',
+			name: 'settings',
+			component: () => import('./views/Setting.vue')
+		},
+		{
 			path: '/signup',
 			name: 'signup',
 			component: () => import('./views/SignUp.vue')

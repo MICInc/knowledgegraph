@@ -26,13 +26,15 @@
 						<div v-else></div>
 					</a>
 				</div>
-				<ul class="menu">
-					<li v-for="(item, index) in menu">
-						<router-link tag="a" :to="item.href">
-							<b>{{ item.name }}</b>
-						</router-link>
-					</li>
-				</ul>
+				<div class="menu">
+					<ul class="dropdown">
+						<li v-for="(item, index) in menu">
+							<router-link tag="a" :to="item.href">
+								<b>{{ item.name }}</b>
+							</router-link>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</nav>
 	</header>
@@ -62,6 +64,10 @@ export default {
 			picture: '',
 			query: '',
 			menu: [
+				{
+					href: '/settings',
+					name: 'SETTINGS'
+				},
 				{
 					href: '/logout',
 					name: 'LOGOUT'
@@ -124,6 +130,28 @@ nav ul li a {
 	font-size: 14px;
 }
 
+.menu {
+	margin: auto;
+	justify-content: flex-end;
+	display: inline-block;
+	min-width: 80px;
+	height: 100%;
+}
+
+.menu:hover .dropdown {
+	display: block;
+}
+
+.dropdown {
+	margin-top: 40px;
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+}
+
 .prof-pic {
 	margin: 0 10px;
 	float: left;
@@ -145,11 +173,6 @@ nav ul li a {
 	border: solid;
 	border-width: 1px;
 	border-color: #e0e0e0;
-}
-
-.menu {
-	display: flex;
-	justify-content: flex-end;
 }
 
 input.search {

@@ -1,6 +1,5 @@
 <template>
-		<div 
-			:class="{ default: true, expand: open }" 
+		<div :class="{ default: true, expand: open }" 
 			v-on:click.prevent="toggle()">
 			<div class="bar1"></div>
 			<div class="bar2"></div>

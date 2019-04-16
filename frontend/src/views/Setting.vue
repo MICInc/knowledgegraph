@@ -1,5 +1,6 @@
 <template>
 	<div class="container">
+		<PageNav></PageNav>
 		<h3>Settings</h3>
 		<router-view></router-view>
 	</div>
@@ -21,7 +22,7 @@ export default {
 	data() {
 		return {
 			new_pw: '',
-			new_pw_confirm: ''
+			new_pw_confirm: '',
 			new_email: '',
 			token: this.$store.state.accessToken,
 			user_id: this.$store.state.userInfo.id,
