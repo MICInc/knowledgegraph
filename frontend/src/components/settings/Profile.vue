@@ -28,7 +28,12 @@ export default {
 	},
 	methods: {
 		update() {
-			this.$emit('profile', { first_name: this.first_name, last_name: this.last_name, email: this.email });
+			this.$emit('profile', { 
+				username: this.username, 
+				first_name: this.first_name, 
+				last_name: this.last_name, 
+				email: this.email
+			});
 		}
 	}
 }

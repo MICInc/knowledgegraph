@@ -41,5 +41,8 @@ export default {
 		},
 		change_email(data) {
 			return Api().post('/api/profile/change_email', data);
+		},
+		deactivate(data) {
+			return Api().post('/api/profile/deactivate', data);
 		}
 }
