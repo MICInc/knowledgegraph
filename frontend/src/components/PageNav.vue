@@ -20,18 +20,16 @@
 				</ul>
 			</div>
 			<div v-else>
-				<div class="prof-pic">
-					<a :href="'/'+url">
-						<img v-if="picture.length > 0" :src="picture">
-						<div v-else></div>
-					</a>
-				</div>
 				<div class="menu">
+					<div class="prof-pic">
+						<a :href="'/'+url">
+							<img v-if="picture.length > 0" :src="picture">
+							<div v-else></div>
+						</a>
+					</div>
 					<ul class="dropdown">
 						<li v-for="(item, index) in menu">
-							<router-link tag="a" :to="item.href">
-								<b>{{ item.name }}</b>
-							</router-link>
+							<router-link tag="a" :to="item.href">{{ item.name }}</router-link>
 						</li>
 					</ul>
 				</div>
@@ -66,11 +64,11 @@ export default {
 			menu: [
 				{
 					href: '/settings',
-					name: 'SETTINGS'
+					name: 'Settings'
 				},
 				{
 					href: '/logout',
-					name: 'LOGOUT'
+					name: 'Logout'
 				}
 			]
 		}
@@ -94,7 +92,6 @@ header {
 	position: fixed;
 	top: 0;
 	min-width: 1080px;
-	overflow: hidden;
 	background: #fff;
 	margin: 0 auto;
 }
@@ -134,7 +131,7 @@ nav ul li a {
 	margin: auto;
 	justify-content: flex-end;
 	display: inline-block;
-	min-width: 80px;
+	min-width: 38px;
 	height: 100%;
 }
 
@@ -147,10 +144,33 @@ nav ul li a {
 	display: none;
 	position: absolute;
 	background-color: #f1f1f1;
-	min-width: 160px;
+	min-width: 100px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
+	z-index: 1000;
 }
+
+.dropdown li {
+	margin: 0px;
+	width: 100%;
+	padding: 10px;
+}
+
+.dropdown li:hover {
+	background-color: #dedede;
+	width: 100%;
+	margin: 0px;
+}
+
+.dropdown li a {
+	margin: auto;
+	width: 100%;
+	justify-content: flex-end;
+	display: inline-block;
+	font-size: .8em;
+	color: black;
+	text-align: center;
+}
+
 
 .prof-pic {
 	margin: 0 10px;
