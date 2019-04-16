@@ -1,7 +1,8 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<h3>Settings</h3>
+		<Profile></Profile>
+		<Password></Password>
 		<router-view></router-view>
 	</div>
 </template>

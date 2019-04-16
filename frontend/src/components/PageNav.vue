@@ -168,8 +168,7 @@ nav ul li a {
 .dropdown li a:hover {
 	width: 100%;
 	height: 100%;
-	background-color: #371e59;
-	color: white;
+	background-color: #f4f4f4;
 	margin: 0;
 }
 

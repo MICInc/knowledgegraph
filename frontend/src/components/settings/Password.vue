@@ -1,10 +1,10 @@
 <template>
 	<div class="container">
-		<h3>Password</h3>
+		<h4>Password</h4>
 		<form>
-			<input v-model="curr_pw" type="text" placeholder="Current password">
-			<input v-model="new_pw" type="text" placeholder="New password">
-			<input v-model="confirm_pw" type="text" placeholder="Confirm password">
+			<input v-model="curr_pw" type="text" placeholder="Current password"><br>
+			<input v-model="new_pw" type="text" placeholder="New password"><br>
+			<input v-model="confirm_pw" type="text" placeholder="Confirm password"><br>
 			<button type="submit">Save</button>
 		</form>
 	</div>
@@ -31,4 +31,7 @@ export default {
 </script>
 
 <style scoped>
+input {
+	border: 0;
+}
 </style>

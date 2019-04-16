@@ -2,9 +2,9 @@
 	<div class="container">
 		<h3>Profile</h3>
 		<form>
-			<input v-model="first_name" type="text" placeholder="First name">
-			<input v-model="last_name" type="text" placeholder="Last name">
-			<input v-model="email" type="text" placeholder="Email">
+			<input v-model="first_name" type="text" placeholder="First name"><br>
+			<input v-model="last_name" type="text" placeholder="Last name"><br>
+			<input v-model="email" type="text" placeholder="Email"><br>
 			<button type="submit">Save</button>
 		</form>
 	</div>
@@ -31,4 +31,7 @@ export default {
 </script>
 
 <style scoped>
+input {
+	border: 0;
+}
 </style>
