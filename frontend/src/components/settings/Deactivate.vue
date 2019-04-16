@@ -24,6 +24,7 @@ export default {
 	methods: {
 		deactivate() {
 			alert('You are about to deactivate.');
+			this.$emit('deactivate', { password: this.password, confirm: this.confirm });
 		}
 	}
 }

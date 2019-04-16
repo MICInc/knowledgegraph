@@ -220,10 +220,10 @@ router.post('/change_email', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
 		else {
-			UserAuth.findById(req.body.user_id, function(err, profile) {
+			UserAuth.findByEmail(req.body.email, function(err, profile) {
 				if(err) {
 					console.error(err);
-					res.status(400).send({ following: 0 });
+					res.status(400).send('Invalid request');
 					return;
 				}
 			});
@@ -235,12 +235,31 @@ router.post('/change_password', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
 		else {
-			UserAuth.findById(req.body.user_id, function(err, profile) {
+			UserAuth.findByEmail(req.body.email, function(err, profile) {
 				if(err) {
 					console.error(err);
-					res.status(400).send({ following: 0 });
+					res.status(400).send('Invalid request');
 					return;
 				}
+			});
+		}
+	});
+});
+
+router.post('/deactivate', function(req, res) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		else {
+			UserAuth.findByEmail(req.body.email, function(err, profile) {
+				if(err) {
+					console.error(err);
+					res.status(400).send('Invalid request');
+					return;
+				}
+
+				UserAuth.deactivate(email, function(status) {
+					res.status(200).send('deactivated');
+				});
 			});
 		}
 	});

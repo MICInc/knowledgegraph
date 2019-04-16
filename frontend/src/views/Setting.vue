@@ -26,7 +26,6 @@ export default {
 	data() {
 		return {
 			token: this.$store.state.accessToken,
-			user_id: this.$store.state.userInfo.id,
 			email: this.$store.state.userInfo.email
 		}
 	},
@@ -56,7 +55,10 @@ export default {
 			});
 		},
 		deactivate(data) {
-			ProfileService.deactivate()
+			ProfileService.deactivate({ 
+				token: this.token,
+				email: this.email,
+				data: data })
 			.then((resp) => {
 				if(resp.err) alert('Could not deactivate');
 			})

@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var user_schema = new Schema({
+    active: {
+        type: Boolean,
+        required: true
+    },
     affiliation: {
         type: String,
         sparse: true

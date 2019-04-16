@@ -196,5 +196,19 @@ module.exports = {
 			});
 		}
 		else callback(editable);
+	},
+	deactivate(email, callback) {
+		db.User.findOne(email, function(err, profile) {
+			if(!err) {
+				profile.active = false;
+				db.User.updateOne(email, profile, function(err) {
+					if(err) console.error(err);
+				});
+				
+				callback(true);
+				return;
+			}
+			callback(false);
+		});
 	}
 };
