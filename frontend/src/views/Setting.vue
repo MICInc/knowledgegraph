@@ -3,6 +3,7 @@
 		<PageNav></PageNav>
 		<Profile></Profile>
 		<Password></Password>
+		<Deactivate></Deactivate>
 		<router-view></router-view>
 	</div>
 </template>
@@ -12,13 +13,15 @@ import PageNav from '@/components/PageNav'
 import ProfileService from '@/services/ProfileService'
 import Password from '@/components/settings/Password'
 import Profile from '@/components/settings/Profile'
+import Deactivate from '@/components/settings/Deactivate'
 
 export default {
 	name: 'settings',
 	components: {
 		PageNav,
 		Profile,
-		Password
+		Password,
+		Deactivate
 	},
 	data() {
 		return {
