@@ -5,9 +5,10 @@
 			<h2>{{ content.title }}</h2>
 			<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">edit</router-link>
 			<Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id" :abbrev="false"></Vote>
-			<a href="/report">report</a>
 			<label>citations </label>
-			<span>{{ content.num_citations }}</span>
+			<span>{{ content.num_citations }}</span><br>
+			<button type="button" v-on:click="report_abuse()">...</button><br>
+			<Modal v-show="isModalVisible" v-on:close="close_report()"></Modal>
 			<h3 id="authors">Authors</h3>
 			<span class='authors' v-for='author in content.authors'><a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a></span>
 			<div v-for="c in content.publication">
@@ -38,6 +39,7 @@ import ContentService from '@/services/ContentService'
 import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
 import Vote from '@/components/Vote'
+import Modal from '@/components/form/Modal'
 
 export default {
 	name: 'Content',
@@ -52,7 +54,8 @@ export default {
 		PageNav,
 		Footer,
 		NotFoundMsg,
-		Vote
+		Vote,
+		Modal
 	},
 	data () {
 		return {
@@ -61,7 +64,8 @@ export default {
 			content: {},
 			user_id: this.$store.state.userInfo.id,
 			token: this.$store.state.accessToken,
-			editable: false
+			editable: false,
+			isModalVisible: false
 		}
 	},
 	methods: {
@@ -88,6 +92,13 @@ export default {
 		},
 		check_content() {
 			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
+		},
+		report_abuse() {
+			this.isModalVisible = true;
+		},
+		close_report() {
+			console.log('here');
+			this.isModalVisible = false;
 		}
 	}
 }

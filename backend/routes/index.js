@@ -109,4 +109,9 @@ router.post('/date', function(req, res, next) {
 	else res.status(400).send({ error: true });
 });
 
+router.post('/session', function(req, res, next) {
+	console.log(req.body);
+	res.status(200).send('ok');
+});
+
 module.exports = router;
