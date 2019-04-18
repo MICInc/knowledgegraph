@@ -346,4 +346,10 @@ router.post('/parse', function(req, res, next) {
 	});
 });
 
+router.post('/report', function(req, res, next) {
+	var date = new Date();
+	console.log(req.body);
+	res.status(200).send(true)
+});
+
 module.exports = router;

@@ -97,7 +97,6 @@ export default {
 			this.isModalVisible = true;
 		},
 		close_report() {
-			console.log('here');
 			this.isModalVisible = false;
 		}
 	}

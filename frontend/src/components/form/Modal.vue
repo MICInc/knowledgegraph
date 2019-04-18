@@ -3,16 +3,17 @@
 		<div class="modal-backdrop" @click="close()">
 			<div class="modal" @click.stop>
 				<div class="modal-body">
-					<form class="form">
-						<p class="instructions">Thank you, {{me.first_name}} {{me.last_name}} for reporting this content. The Machine Intelligence Community appreciates your diligence. Please let us know the nature of this content and we will address it immediately.</p>
-						<input type="radio" name="copyright" :value="true" v-model="type.copyright"> Copyright Infringement<br>
-						<input type="radio" name="disinfo" :value="true" v-model="type.disinformation"> Disinformation<br>
-						<input type="radio" name="hate" :value="true" v-model="type.hate"> Hate Speech<br>
-						<input type="radio" name="offtopic" :value="true" v-model="type.offtopic"> Off Topic<br>
-						<input type="radio" name="spam" :value="true" v-model="type.spam"> Spam<br>
-						<input class="details" autofocus wrap="off" :placeholder="placeholder" v-model="details"><br>
+					<form class="form" v-if="show">
+						<p class="instructions">Please describe the nature of this report:</p>
+						<input type="radio" name="copyright" :value="true" v-model="abuse.copyright"> Copyright Infringement<br>
+						<input type="radio" name="disinfo" :value="true" v-model="abuse.disinformation"> Disinformation<br>
+						<input type="radio" name="hate" :value="true" v-model="abuse.hate"> Hate Speech<br>
+						<input type="radio" name="offtopic" :value="true" v-model="abuse.offtopic"> Off Topic<br>
+						<input type="radio" name="spam" :value="true" v-model="abuse.spam"> Spam<br>
+						<input class="details" autofocus wrap="off" :placeholder="placeholder" v-model="details" required><br>
 						<button v-on:click.prevent="report()">Submit</button>
 					</form>
+					<span v-else>Thank you, {{me.first_name}} {{me.last_name}} for reporting this content. The Machine Intelligence Community appreciates your diligence. Please let us know the nature of this content and we will address it immediately.</span>
 				</div>
 			</div>
 		</div>
@@ -30,26 +31,40 @@ export default {
 			me: this.$store.state.userInfo,
 			details: '',
 			placeholder: 'Describe the nature of the content',
-			type: {
+			abuse: {
 				copyright: false,
 				disinformation: false,
 				hate: false,
 				offtopic: false,
 				spam: false
-			}
+			},
+			show: true
 		}
 	},
 	methods: {
+		check() {
+
+		},
 		close() {
 			this.$emit('close');
 		},
 		report() {
-			ContentService.report({ url: this.url, me: this.me })
-			.then((resp) => {
+			ContentService.report({ 
+				url: this.url, 
+				first_name: this.me.first_name,
+				last_name: this.me.last_name,
+				email: this.me.email,
+				abuse: this.abuse,
+				details: this.details
 
 			})
+			.then((resp) => {
+				console.log(resp.data);
+				this.show = false;
+			})
 			.catch((error) => {
-
+				console.log(error);
+				this.show = false;
 			});
 		}
 	},
