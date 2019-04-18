@@ -8,7 +8,12 @@
 			<label>citations </label>
 			<span>{{ content.num_citations }}</span><br>
 			<button type="button" v-on:click="report_abuse()">...</button><br>
-			<Modal v-show="isModalVisible" v-on:close="close_report()"></Modal>
+			<Modal
+				:url="url"
+				:content_id="content_id"
+				v-show="isModalVisible" 
+				v-on:close="close_report()">
+			</Modal>
 			<h3 id="authors">Authors</h3>
 			<span class='authors' v-for='author in content.authors'><a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a></span>
 			<div v-for="c in content.publication">

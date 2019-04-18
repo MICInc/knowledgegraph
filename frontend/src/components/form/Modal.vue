@@ -27,7 +27,6 @@ export default {
 	name: 'modal',
 	data() {
 		return {
-			url: this.$route.query.page,
 			me: this.$store.state.userInfo,
 			details: '',
 			placeholder: 'Describe the nature of the content',
@@ -42,18 +41,20 @@ export default {
 		}
 	},
 	methods: {
-		check() {
-
-		},
 		close() {
+			this.show = true;
+			this.reset();
 			this.$emit('close');
 		},
 		report() {
 			ContentService.report({ 
-				url: this.url, 
-				first_name: this.me.first_name,
-				last_name: this.me.last_name,
-				email: this.me.email,
+				url: this.url,
+				content_id: this.content_id,
+				user: {
+					first_name: this.me.first_name,
+					last_name: this.me.last_name,
+					email: this.me.email
+				},
 				abuse: this.abuse,
 				details: this.details
 
@@ -61,14 +62,26 @@ export default {
 			.then((resp) => {
 				console.log(resp.data);
 				this.show = false;
+				this.reset();
 			})
 			.catch((error) => {
 				console.log(error);
 				this.show = false;
+				this.reset();
 			});
+		},
+		reset() {
+			this.details = '';
+			this.abuse = {
+				copyright: false,
+				disinformation: false,
+				hate: false,
+				offtopic: false,
+				spam: false
+			};
 		}
 	},
-	props: []
+	props: ['url', 'content_id']
 }
 </script>
 

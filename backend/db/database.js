@@ -8,6 +8,7 @@ var Conference = require('./models/conference.js');
 var Feedback = require('./models/feedback.js');
 var Search = require('./models/search.js');
 var School = require('./models/school.js');
+var Abuse = require('./models/abuse.js');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -30,3 +31,4 @@ module.exports.Conference = Conference;
 module.exports.Feedback = Feedback;
 module.exports.Search = Search;
 module.exports.School = School;
+module.exports.Abuse = Abuse;

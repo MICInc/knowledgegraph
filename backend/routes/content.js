@@ -155,8 +155,6 @@ router.get('/', function(req, res) {
 		var user_id = req.query.user_id.length > 0 ? req.query.user_id : '';
 
 		db.Content.findOne(query, function(err, article) {
-			console.log(article != null);
-			console.log(article.is_published);
 
 			if(article != null && article.is_published) {
 				var start = new Date();
@@ -347,9 +345,22 @@ router.post('/parse', function(req, res, next) {
 });
 
 router.post('/report', function(req, res, next) {
-	var date = new Date();
-	console.log(req.body);
-	res.status(200).send(true)
+	var data = req.body;
+	data['date'] = new Date();
+	var report = new db.Abuse(data);
+
+	report.collection.dropIndexes(function(err, result) {
+		if(err) console.error(err);
+	});
+
+	report.save()
+	.then(item => {
+		res.status(200).send(true);
+	})
+	.catch(err => {
+		console.error(err);
+		res.status(400).send(false);
+	});
 });
 
 module.exports = router;
