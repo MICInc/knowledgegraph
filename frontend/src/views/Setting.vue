@@ -51,7 +51,6 @@ export default {
 				if(resp.err) alert('Profile change unsuccessful');
 				this.$store.commit('setEmail', resp.data.email);
 				this.$store.commit('setURL', resp.data.url);
-				console.log(this.$store.state.userInfo);
 			})
 			.catch((error) => {
 				console.log(error);

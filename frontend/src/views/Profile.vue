@@ -57,13 +57,27 @@ export default {
 		Publications,
 		ProfilePic
 	},
+	computed: {
+		token() {
+			return this.$store.state.accessToken;
+		},
+		url() {
+			return this.$route.params.id;
+		},
+		user_id() {
+			return this.$store.state.userInfo.id;
+		},
+		logged_in() {
+			return this.$store.state.isLoggedIn;
+		}
+	},
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
 			editable: false,
-			token: this.$store.state.accessToken,
-			url: this.$route.params.id,
-			user_id: this.$store.state.userInfo.id,
-			logged_in: this.$store.state.isLoggedIn,
+			// token: this.$store.state.accessToken,
+			// url: this.$route.params.id,
+			// user_id: this.$store.state.userInfo.id,
+			// logged_in: this.$store.state.isLoggedIn,
 			profile: {
 				comments: 0,
 				first_name: '',
