@@ -5,6 +5,7 @@
 			<h2>{{ content.title }}</h2>
 			<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">edit</router-link>
 			<Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id" :abbrev="false"></Vote>
+			<a href="/report">report</a>
 			<label>citations </label>
 			<span>{{ content.num_citations }}</span>
 			<h3 id="authors">Authors</h3>
