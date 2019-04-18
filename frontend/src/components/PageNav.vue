@@ -44,18 +44,17 @@ import router from '@/router'
 export default {
 	name: 'PageNav',
 	beforeMount() {
-		var stored_pic = this.$store.state.userInfo.picture;
-		if(stored_pic !== undefined) this.picture = stored_pic;
+		if(this.stored_pic !== undefined) this.picture = this.stored_pic;
 	},
 	created: function() {  
  		document.title = 'Machine Intelligence Community'
  	},
  	computed: {
-		isLoggedIn () {
+		isLoggedIn() {
 			return this.$store.state.isLoggedIn
 		},
-		first_name() {
-			return this.$store.state.userInfo.first_name
+		stored_pic() {
+			return this.$store.state.userInfo.picture;
 		},
 		url() {
 			return this.$store.state.userInfo.url
