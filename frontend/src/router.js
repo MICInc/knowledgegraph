@@ -161,11 +161,6 @@ export default new Router({
 			component: () => import('./views/Logout.vue')
 		},
 		{
-			path: '/report',
-			name: 'report',
-			component: () => import('./views/ReportAbuse')
-		},
-		{
 			path: '/search',
 			name: 'search',
 			component: () => import('./views/Search.vue'),
