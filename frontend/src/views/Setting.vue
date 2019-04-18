@@ -2,7 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<Profile v-on:profile="update_profile($event)"></Profile>
-		<Password v-on:password="change_password($event)"></Password>
+		<Password v-on:password="update_password($event)"></Password>
 		<Deactivate v-on:deactivate="deactivate($event)"></Deactivate>
 		<router-view></router-view>
 	</div>
@@ -30,8 +30,8 @@ export default {
 		}
 	},
 	methods: {
-		change_password(data) {
-			ProfileService.change_password({
+		update_password(data) {
+			ProfileService.update_password({
 				token: this.token, 
 				email: this.email,
 				data: data })
@@ -42,16 +42,19 @@ export default {
 
 			});
 		},
-		change_profile(data) {
-			ProfileService.change_email({
+		update_profile(data) {
+			ProfileService.update_profile({
 				token: this.token, 
 				email: this.email, 
 				data: data })
 			.then((resp) => {
-				if(resp.err) alert('Email change unsuccessful');
+				if(resp.err) alert('Profile change unsuccessful');
+				this.$store.commit('setEmail', resp.data.email);
+				this.$store.commit('setURL', resp.data.url);
+				console.log(this.$store.state.userInfo);
 			})
-			.catch((resp) => {
-
+			.catch((error) => {
+				console.log(error);
 			});
 		},
 		deactivate(data) {

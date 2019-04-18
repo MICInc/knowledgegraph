@@ -36,11 +36,11 @@ export default {
 		get_following(data) {
 			return Api().get('/api/profile/following', data);
 		},
-		change_password(data) {
-			return Api().post('/api/profile/change_password', data);
+		update_password(data) {
+			return Api().post('/api/profile/update_password', data);
 		},
-		change_email(data) {
-			return Api().post('/api/profile/change_email', data);
+		update_profile(data) {
+			return Api().post('/api/profile/update_profile', data);
 		},
 		deactivate(data) {
 			return Api().post('/api/profile/deactivate', data);

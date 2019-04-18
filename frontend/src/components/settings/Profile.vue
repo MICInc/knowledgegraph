@@ -8,7 +8,7 @@
 			<input v-model="last_name" type="text" placeholder="Last name"><br>
 			<input v-model="email" type="text" placeholder="Email"><br>
 			<span class="field-desc">Email will not be publicly displayed.</span><br>
-			<button type="submit">Save</button>
+			<button type="submit" v-on:click.prevent="update()">Save</button>
 		</form>
 	</div>
 </template>

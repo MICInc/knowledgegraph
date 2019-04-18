@@ -216,7 +216,7 @@ router.get('/following', function(req, res) {
 	});
 });
 
-router.post('/change_email', function(req, res) {
+router.post('/update_profile', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
 		else {
@@ -226,12 +226,23 @@ router.post('/change_email', function(req, res) {
 					res.status(400).send('Invalid request');
 					return;
 				}
+				var data = req.body.data;
+
+				if(data.email.length > 0) profile.email = data.email;
+				if(data.first_name.length > 0) profile.first_name = data.first_name;
+				if(data.last_name.length > 0) profile.last_name = data.last_name;
+				if(data.username.length > 0) profile.url = data.username;
+
+				db.User.updateOne({ _id: profile._id }, profile, function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ email: profile.email, url: profile.url });
+				});
 			});
 		}
 	});
 });
 
-router.post('/change_password', function(req, res) {
+router.post('/update_password', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
 		else {

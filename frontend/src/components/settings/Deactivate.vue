@@ -5,7 +5,7 @@
 		<form>
 			<input v-model="password" type="text" placeholder="Current password"><br>
 			<input v-model="confirm" type="text" placeholder="Confirm password"><br>
-			<button type="submit" v-on:click.prevent="deactivate">Deactivate</button>
+			<button type="submit" v-on:click.prevent="deactivate()">Deactivate</button>
 		</form>
 	</div>
 </template>

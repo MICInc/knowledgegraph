@@ -22,6 +22,14 @@ export default new Vuex.Store({
 
 		setUserInfo (state, obj) {
 			Vue.set(state, 'userInfo', obj)
+		},
+
+		setEmail(state, email) {
+			state.userInfo.email = email;
+		},
+
+		setURL(state, url) {
+			state.userInfo.url = url;
 		}
   },
 

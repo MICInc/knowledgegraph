@@ -5,7 +5,7 @@
 			<input v-model="current" type="text" placeholder="Current password"><br>
 			<input v-model="new_pw" type="text" placeholder="New password"><br>
 			<input v-model="confirm_pw" type="text" placeholder="Confirm password"><br>
-			<button type="submit" v-on:click.prevent="update">Save</button>
+			<button type="submit" v-on:click.prevent="update()">Save</button>
 		</form>
 	</div>
 </template>

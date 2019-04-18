@@ -53,12 +53,16 @@ export default {
  	computed: {
 		isLoggedIn () {
 			return this.$store.state.isLoggedIn
+		},
+		first_name() {
+			return this.$store.state.userInfo.first_name
+		},
+		url() {
+			return this.$store.state.userInfo.url
 		}
 	},
 	data () {
 		return {
-			user: this.$store.state.userInfo.first_name,
-			url: this.$store.state.userInfo.url,
 			picture: '',
 			query: '',
 			menu: [

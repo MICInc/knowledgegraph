@@ -29,7 +29,7 @@ export default {
 		return {
 			me: this.$store.state.userInfo,
 			details: '',
-			placeholder: 'Describe the nature of the content',
+			placeholder: 'Please detail the issue.',
 			abuse: {
 				copyright: false,
 				disinformation: false,

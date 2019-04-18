@@ -13,6 +13,7 @@ module.exports = {
 					   2 (admin)
 		*/
 		return {
+			active: true,
 			id: mongoose.Types.ObjectId(),
 			affiliation: filter.filter_xss(profile.affiliation),
 			bio: "",
