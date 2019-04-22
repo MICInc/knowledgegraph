@@ -1,7 +1,9 @@
 <template>
 	<div class="container">
 		<h3>Profile</h3>
-		<!-- <span>{{}}</span> -->
+		<FadeBlock
+			:message="message">
+		</FadeBlock>
 		<form autocomplete="off">
 			<input v-model="username" type="text" placeholder="Username"><br>
 			<span class="field-desc">https://machineintelligence.cc/{{username}}</span><br>
@@ -16,15 +18,20 @@
 
 <script>
 import router from '@/router'
+import FadeBlock from '@/components/form/FadeBlock'
 
 export default {
 	name: 'password',
+	components: {
+		FadeBlock
+	},
 	data() {
 		return {
 			first_name: '',
 			last_name: '',
 			email: '',
-			username: ''
+			username: '',
+			message: 'MESSAGE'
 		}
 	},
 	methods: {
