@@ -246,12 +246,23 @@ router.post('/update_password', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
 		else {
-			UserAuth.findByEmail(req.body.email, function(err, profile) {
+			var data = req.body.data;
+			if(data.new_pw == data.conf_pw) {
+				res.status(400).send('Passwords did not match');
+				return;
+			}
+
+			UserAuth.findByEmail(data.email, function(err, profile) {
 				if(err) {
 					console.error(err);
 					res.status(400).send('Invalid request');
 					return;
 				}
+
+				UserAuth.update_password(data.email, data.curr_pw, data.new_pw, data.conf_pw, function(ok) {
+					if(ok) res.status(200).send(ok);
+					else res.status(400).send(ok);
+				});
 			});
 		}
 	});

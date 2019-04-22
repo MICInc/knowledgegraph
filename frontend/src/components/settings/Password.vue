@@ -1,10 +1,10 @@
 <template>
 	<div class="container">
 		<h4>Password</h4>
-		<form>
-			<input v-model="current" type="text" placeholder="Current password"><br>
-			<input v-model="new_pw" type="text" placeholder="New password"><br>
-			<input v-model="confirm_pw" type="text" placeholder="Confirm password"><br>
+		<form autocomplete="off">
+			<input v-model="current" type="password" placeholder="Current password" autocomplete="off"><br>
+			<input v-model="new_pw" type="password" placeholder="New password" autocomplete="off"><br>
+			<input v-model="confirm_pw" type="password" placeholder="Confirm password" autocomplete="off"><br>
 			<button type="submit" v-on:click.prevent="update()">Save</button>
 		</form>
 	</div>

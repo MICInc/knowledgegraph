@@ -2,8 +2,8 @@
 	<div class="container">
 		<h3>Deactivate account</h3>
 		<span class="desc">This will disable your account. You will no longer show up in search results and your account will no longer be visible. Your account can be reactivated by logging in.</span>
-		<form>
-			<input v-model="password" type="text" placeholder="Current password"><br>
+		<form autocomplete="off">
+			<input v-model="password" type="text" placeholder="Current password" autocomplete="current-password"><br>
 			<input v-model="confirm" type="text" placeholder="Confirm password"><br>
 			<button type="submit" v-on:click.prevent="deactivate()">Deactivate</button>
 		</form>

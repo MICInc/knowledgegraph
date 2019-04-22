@@ -1,8 +1,9 @@
 <template>
 	<div class="container">
 		<h3>Profile</h3>
-		<form>
-			<input v-model="username" type="text" :placeholder="username"><br>
+		<!-- <span>{{}}</span> -->
+		<form autocomplete="off">
+			<input v-model="username" type="text" placeholder="Username"><br>
 			<span class="field-desc">https://machineintelligence.cc/{{username}}</span><br>
 			<input v-model="first_name" type="text" placeholder="First name"><br>
 			<input v-model="last_name" type="text" placeholder="Last name"><br>

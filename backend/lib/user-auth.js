@@ -211,5 +211,40 @@ module.exports = {
 			}
 			callback(false);
 		});
+	},
+	update_password(email, curr_pw, new_pw, conf_pw, callback) {
+		if(new_pw != conf_pw) {
+			callback('Not saved');
+			return;
+		}
+
+		db.User.findOne(email, function(err, profile) {
+			if(err) console.error(err);
+
+			// check current password
+			crypto.pbkdf2(curr_pw, user.salt, 10000, 64, 'sha512', function(err, key) {
+				if(err) console.error(err);
+				
+				if(profile.password_hash == key.toString('hex')) {
+					crypto.pbkdf2(new_pw, user.salt, 10000, 64, 'sha512', function(err, new_key) {
+						if(err) console.error(err);
+
+						profile.password_hash = new_key.toString('hex');
+						db.User.updateOne(email, profile, function(err) {
+							if(err) {
+								console.error(err);
+								callback(false);
+							}
+							else callback(true);
+						});
+					});
+				}
+				else {
+					process.nextTick(function() {
+						callback({message: 'Password was incorrect'}, '', null);
+					});
+				}
+			});
+		});
 	}
 };

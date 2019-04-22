@@ -1,7 +1,8 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<Profile v-on:profile="update_profile($event)"></Profile>
+		<Profile v-on:profile="update_profile($event)">		
+		</Profile>
 		<Password v-on:password="update_password($event)"></Password>
 		<Deactivate v-on:deactivate="deactivate($event)"></Deactivate>
 		<router-view></router-view>
@@ -37,6 +38,7 @@ export default {
 				data: data })
 			.then((resp) => {
 				if(resp.err) alert('Password change unsuccessful');
+				console.log(resp.data);
 			})
 			.catch((resp) => {
 
