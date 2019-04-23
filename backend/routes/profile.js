@@ -219,31 +219,26 @@ router.get('/following', function(req, res) {
 router.post('/update_email', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
+		if(data.email.length == 0) res.status(400).send('Invalid email');
 		else {
 			UserAuth.findByEmail(req.body.email, function(err, profile) {
 				if(err) {
 					console.error(err);
-					res.status(400).send('Invalid request');
+					res.status(400).send('Invalid email');
 					return;
 				}
-				var data = req.body.data;
-				UserAuth.get_token(data.email, function(new_token) {
-					if(data.email.length > 0) profile.email = data.email;
-					if(data.first_name.length > 0) profile.first_name = data.first_name;
-					if(data.last_name.length > 0) profile.last_name = data.last_name;
-					if(data.username.length > 0) profile.url = data.username;
 
+				var data = req.body.data;
+
+				//should implement filter for valid emails and then call here
+
+				UserAuth.get_token(data.email, function(new_token) {
+					profile.email = data.email;
 					profile.token = new_token;
 
 					db.User.updateOne({ _id: profile._id }, profile, function(err) {
 						if(err) console.error(err);
-						else res.status(200).send({ 
-							first_name: profile.first_name,
-							last_name: profile.last_name,
-							email: profile.email, 
-							url: profile.url,
-							token: new_token
-						});
+						else res.status(200).send({ email: profile.email, token: profile.token });
 					});
 				});
 			});
@@ -254,21 +249,27 @@ router.post('/update_email', function(req, res) {
 router.post('/update_url', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
-		else {}
+		else {
+			//check that this url is unique
+		}
 	});
 });
 
 router.post('/update_first_name', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
-		else {}
+		else {
+
+		}
 	});
 });
 
 router.post('/update_last_name', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
-		else {}
+		else {
+			
+		}
 	});
 });
 
