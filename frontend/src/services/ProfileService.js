@@ -39,8 +39,17 @@ export default {
 		update_password(data) {
 			return Api().post('/api/profile/update_password', data);
 		},
-		update_profile(data) {
-			return Api().post('/api/profile/update_profile', data);
+		update_url(data) {
+			return Api().post('/api/profile/update_url', data);
+		},
+		update_first_name(data) {
+			return Api().post('/api/profile/update_first_name', data);
+		},
+		update_last_name(data) {
+			return Api().post('/api/profile/update_last_name', data);
+		},
+		update_email(data) {
+			return Api().post('/api/profile/update_email', data);
 		},
 		deactivate(data) {
 			return Api().post('/api/profile/deactivate', data);

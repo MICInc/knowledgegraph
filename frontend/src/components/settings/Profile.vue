@@ -1,14 +1,9 @@
 <template>
 	<div class="container">
-		<div class="setting-profile-header">
-			<h3>Profile</h3>
-			<FadeBlock
-				:message="message">
-			</FadeBlock>
-		</div>
+		<h3>Profile</h3>
 		<form autocomplete="off">
-			<input v-model="username" type="text" placeholder="Username"><br>
-			<span class="field-desc">https://machineintelligence.cc/{{username}}</span><br>
+			<input v-model="url" type="text" placeholder="Username"><br>
+			<span class="field-desc">https://machineintelligence.cc/{{ url }}</span><br>
 			<input v-model="first_name" type="text" placeholder="First name"><br>
 			<input v-model="last_name" type="text" placeholder="Last name"><br>
 			<input v-model="email" type="text" placeholder="Email"><br>
@@ -20,45 +15,35 @@
 
 <script>
 import router from '@/router'
-import FadeBlock from '@/components/form/FadeBlock'
 
 export default {
 	name: 'password',
-	components: {
-		FadeBlock
-	},
-	computed: {
-		message() {
-			return ;
-		}
-	},
 	data() {
 		return {
+			url: '',
 			first_name: '',
 			last_name: '',
-			email: '',
-			username: ''
+			email: ''
 		}
 	},
 	methods: {
 		update() {
-			this.$emit('profile', { 
-				username: this.username, 
-				first_name: this.first_name, 
-				last_name: this.last_name, 
-				email: this.email
-			});
-		}
-	},
-	props: ['profile'],
-	watch: {
-		profile: {
-			deep: true,
-			immediate: true,
-			handler(curr, prev) {
-				if(curr != null) this.message = "Profile updated";
-				console.log(curr);
-			}
+			if(this.url.length > 0) this.update_url();
+			if(this.first_name.length > 0) this.update_first_name();
+			if(this.last_name.length > 0) this.update_last_name();
+			if(this.email.length > 0) this.update_email();
+		},
+		update_url() {
+			this.$emit('url', { url: this.url });
+		},
+		update_first_name() {
+			this.$emit('first_name', { first_name: this.first_name });
+		},
+		update_last_name() {
+			this.$emit('last_name', { last_name: this.last_name });
+		},
+		update_email() {
+			this.$emit('email', { email: this.email });
 		}
 	}
 }

@@ -198,6 +198,9 @@ module.exports = {
 		}
 		else callback(editable);
 	},
+	get_token(email, callback) {
+		callback(token.sign({ email: email }, email));
+	},
 	deactivate(email, callback) {
 		db.User.findOne(email, function(err, profile) {
 			if(!err) {
@@ -214,28 +217,44 @@ module.exports = {
 	},
 	update_password(email, curr_pw, new_pw, conf_pw, callback) {
 		if(new_pw != conf_pw) {
-			callback('Not saved');
+			callback('Passwords did not match', false);
 			return;
 		}
 
 		db.User.findOne(email, function(err, profile) {
-			if(err) console.error(err);
+			if(err) {
+				callback('User does not exist', false);
+				return;
+			}
 
 			// check current password
-			crypto.pbkdf2(curr_pw, user.salt, 10000, 64, 'sha512', function(err, key) {
-				if(err) console.error(err);
+			crypto.pbkdf2(curr_pw, profile.salt, 10000, 64, 'sha512', function(err, key) {
+				if(err) {
+					console.error(err);
+					callback('Unexpected error', false);
+					return;
+				}
 				
 				if(profile.password_hash == key.toString('hex')) {
-					crypto.pbkdf2(new_pw, user.salt, 10000, 64, 'sha512', function(err, new_key) {
-						if(err) console.error(err);
+					var salt = crypto.randomBytes(64).toString('base64');
 
+					crypto.pbkdf2(new_pw, salt, 10000, 64, 'sha512', function(err, new_key) {
+						if(err) {
+							console.error(err);
+							callback('Unexpected error', false);
+							return;
+						}
+
+						profile.salt = salt;
 						profile.password_hash = new_key.toString('hex');
+
 						db.User.updateOne(email, profile, function(err) {
 							if(err) {
 								console.error(err);
-								callback(false);
+								callback('Unexpected error', false);
+								return;
 							}
-							else callback(true);
+							callback('Updated', true);
 						});
 					});
 				}

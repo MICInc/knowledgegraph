@@ -1,9 +1,11 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<Profile 
-			:profile="profile"
-			v-on:profile="update_profile($event)">		
+		<Profile
+			v-on:url="update_url($event)"
+			v-on:first_name="update_first_name($event)"
+			v-on:last_name="update_last_name($event)"
+			v-on:email="update_email($event)">
 		</Profile>
 		<Password v-on:password="update_password($event)"></Password>
 		<Deactivate v-on:deactivate="deactivate($event)"></Deactivate>
@@ -17,6 +19,7 @@ import ProfileService from '@/services/ProfileService'
 import Password from '@/components/settings/Password'
 import Profile from '@/components/settings/Profile'
 import Deactivate from '@/components/settings/Deactivate'
+import FadeBlock from '@/components/form/FadeBlock'
 
 export default {
 	name: 'settings',
@@ -24,42 +27,91 @@ export default {
 		PageNav,
 		Profile,
 		Password,
-		Deactivate
+		Deactivate,
+		FadeBlock
 	},
 	data() {
 		return {
 			token: this.$store.state.accessToken,
 			email: this.$store.state.userInfo.email,
-			profile: undefined
+			resp_msg: ''
 		}
 	},
 	methods: {
+		update_url(data) {
+			ProfileService.update_url({
+				token: this.token, 
+				email: this.email, 
+				data: data })
+			.then((resp) => {
+				var data = resp.data;
+				if(data.url.length > 0) this.$store.commit('setURL', data.url);
+
+				alert('Profile URL updated');
+			})
+			.catch((error) => {
+				alert(error);
+			});
+		},
+		update_first_name(data) {
+			ProfileService.update_first_name({
+				token: this.token, 
+				email: this.email, 
+				data: data })
+			.then((resp) => {
+				var data = resp.data;
+				if(data.first_name.length > 0) this.$store.commit('setFirstName', data.first_name);
+
+				alert('First name updated');
+			})
+			.catch((error) => {
+				alert(error);
+			});
+		},
+		update_last_name(data) {
+			ProfileService.update_last_name({
+				token: this.token, 
+				email: this.email, 
+				data: data })
+			.then((resp) => {
+				var data = resp.data;
+				if(data.last_name.length > 0) this.$store.commit('setLastName', data.last_name);
+
+				alert('Last name updated');
+			})
+			.catch((error) => {
+				alert(error);
+			});
+		},
+		update_email(data) {
+			ProfileService.update_email({
+				token: this.token, 
+				email: this.email, 
+				data: data })
+			.then((resp) => {
+				var data = resp.data;
+
+				if(data.email.length > 0) this.$store.commit('setEmail', data.email);
+				if(data.token.length > 0) this.$store.commit('setAccessToken', data.token);
+
+				console.log(data.token);
+
+				alert('Email updated');
+			})
+			.catch((error) => {
+				alert(error);
+			});
+		},
 		update_password(data) {
 			ProfileService.update_password({
 				token: this.token, 
 				email: this.email,
 				data: data })
 			.then((resp) => {
-				if(resp.err) alert('Password change unsuccessful');
-				console.log(resp.data);
-			})
-			.catch((resp) => {
-
-			});
-		},
-		update_profile(data) {
-			ProfileService.update_profile({
-				token: this.token, 
-				email: this.email, 
-				data: data })
-			.then((resp) => {
-				if(resp.err) alert('Profile change unsuccessful');
-				this.$store.commit('setEmail', resp.data.email);
-				this.$store.commit('setURL', resp.data.url);
-				this.profile = resp.data;
+				alert('Updated password');
 			})
 			.catch((error) => {
-				console.log(error);
+				alert(error);
 			});
 		},
 		deactivate(data) {
@@ -68,7 +120,7 @@ export default {
 				email: this.email,
 				data: data })
 			.then((resp) => {
-				if(resp.err) alert('Could not deactivate');
+				alert('Deactivated account');
 			})
 			.catch((error) => {
 				alert(error);
