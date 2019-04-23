@@ -255,9 +255,22 @@ router.post('/update_url', function(req, res) {
 
 	UserAuth.verify_token(token, email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
-		if(email.length == 0) res.status(400).send('Invalid email');
+		if(url.length == 0) res.status(400).send('Invalid URL');
 		else {
 			//check that this url is unique
+			UserAuth.findByUR(url, function(err, profile) {
+				if(profile != null) {
+					res.status(400).send('URL in use')
+					return;
+				}
+
+				profile.url = url;
+
+				db.User.updateOne({ _id: profile._id }, profile, function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ url: profile.url });
+				});
+			});
 		}
 	});
 });
@@ -271,7 +284,14 @@ router.post('/update_first_name', function(req, res) {
 		if(err) res.status(401).send('unauthorized');
 		if(first_name.length == 0) res.status(400).send('Invalid email');
 		else {
+			UserAuth.findByEmail(email, function(err, profile) {
+				profile.first_name = first_name;
 
+				db.User.updateOne({ _id: profile._id }, profile, function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ first_name: profile.first_name });
+				});
+			});
 		}
 	});
 });
@@ -284,7 +304,14 @@ router.post('/update_last_name', function(req, res) {
 	UserAuth.verify_token(token, email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
 		else {
+			UserAuth.findByEmail(email, function(err, profile) {
+				profile.last_name = last_name;
 
+				db.User.updateOne({ _id: profile._id }, profile, function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ last_name: profile.last_name });
+				});
+			});
 		}
 	});
 });
