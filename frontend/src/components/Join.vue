@@ -151,8 +151,8 @@ label, a {
 }
 
 button {
-	background: #502984;
-	color: #FFF;
+	background: transparent;
+	color: #502984;
 	display: flex;
 	align-items: center;
 	vertical-align: middle;
@@ -163,8 +163,7 @@ button {
 }
 
 button:hover {
-	background: #331a54;
-	color: #FFF;
+	border-color: #502984;
 }
 
 </style>

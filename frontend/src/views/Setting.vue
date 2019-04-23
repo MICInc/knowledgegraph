@@ -1,7 +1,9 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<Profile v-on:profile="update_profile($event)">		
+		<Profile 
+			:profile="profile"
+			v-on:profile="update_profile($event)">		
 		</Profile>
 		<Password v-on:password="update_password($event)"></Password>
 		<Deactivate v-on:deactivate="deactivate($event)"></Deactivate>
@@ -27,7 +29,8 @@ export default {
 	data() {
 		return {
 			token: this.$store.state.accessToken,
-			email: this.$store.state.userInfo.email
+			email: this.$store.state.userInfo.email,
+			profile: undefined
 		}
 	},
 	methods: {
@@ -53,6 +56,7 @@ export default {
 				if(resp.err) alert('Profile change unsuccessful');
 				this.$store.commit('setEmail', resp.data.email);
 				this.$store.commit('setURL', resp.data.url);
+				this.profile = resp.data;
 			})
 			.catch((error) => {
 				console.log(error);

@@ -47,7 +47,7 @@ body {
 }
 
 button {
-	border: none;
+	border-radius: 4px;
 	box-shadow: none;
 	outline: none;
 	background-color: transparent;
@@ -56,6 +56,7 @@ button {
 button:hover {
 	cursor: pointer;
 	color: #56277a;
+	border-color: #56277a;
 }
 
 textarea, input {

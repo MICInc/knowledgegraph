@@ -235,7 +235,12 @@ router.post('/update_profile', function(req, res) {
 
 				db.User.updateOne({ _id: profile._id }, profile, function(err) {
 					if(err) console.error(err);
-					else res.status(200).send({ email: profile.email, url: profile.url });
+					else res.status(200).send({ 
+						first_name: profile.first_name,
+						last_name: profile.last_name,
+						email: profile.email, 
+						url: profile.url 
+					});
 				});
 			});
 		}
