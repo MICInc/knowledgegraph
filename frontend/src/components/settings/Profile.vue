@@ -73,7 +73,9 @@ input {
 	font-size: 0.7em;
 }
 
-.profile-settings-header h3 {
-	float: left;
+button {
+	height: 25px;
+	width: 25%;
+	font-size: 0.8em;
 }
 </style>

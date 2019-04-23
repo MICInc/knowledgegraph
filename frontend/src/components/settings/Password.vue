@@ -34,4 +34,10 @@ export default {
 input {
 	border: 0;
 }
+
+button {
+	height: 25px;
+	width: 25%;
+	font-size: 0.8em;
+}
 </style>

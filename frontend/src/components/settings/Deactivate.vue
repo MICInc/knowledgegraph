@@ -38,4 +38,10 @@ input {
 .desc {
 	font-size: .9em;
 }
+
+button {
+	height: 25px;
+	width: 25%;
+	font-size: 0.8em;
+}
 </style>
