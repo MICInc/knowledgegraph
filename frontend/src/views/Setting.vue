@@ -33,8 +33,7 @@ export default {
 	data() {
 		return {
 			token: this.$store.state.accessToken,
-			email: this.$store.state.userInfo.email,
-			resp_msg: ''
+			email: this.$store.state.userInfo.email
 		}
 	},
 	methods: {
@@ -87,14 +86,12 @@ export default {
 			ProfileService.update_email({
 				token: this.token, 
 				email: this.email, 
-				data: data })
+				data: data.email })
 			.then((resp) => {
 				var data = resp.data;
 
 				if(data.email.length > 0) this.$store.commit('setEmail', data.email);
 				if(data.token.length > 0) this.$store.commit('setAccessToken', data.token);
-
-				console.log(data.token);
 
 				alert('Email updated');
 			})
