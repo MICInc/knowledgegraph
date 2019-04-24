@@ -5,7 +5,8 @@
 				<img src="/img/mic-logo-nav.png"" alt="MIC Conference Logo" />
 			</router-link>
 		</span>
-		<input 
+		<input
+			v-if="isLoggedIn"
 			class="search" 
 			type="search"
 			name="q"
