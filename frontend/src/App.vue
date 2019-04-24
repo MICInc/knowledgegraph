@@ -81,6 +81,9 @@ textarea, input {
 	resize: none;
 	font-size: 1em;
 	border: none;
+	font-family: 'Avenir', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 textarea:focus, input:focus {
