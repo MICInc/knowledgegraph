@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<div class="beta-center">
 			<h2>Thanks for joining...</h2>
-			<p>for the Machine Intelligence Community! We are currently privately beta testing. Please follow our social media for our official release date. This account will remain in our system until then.</p>
+			<p>the Machine Intelligence Community! We are currently privately beta testing. Please follow our social media for our official release date. This account will remain in our system until then.</p>
 			<SocialLinks></SocialLinks>
 		</div>
 	</div>
