@@ -222,9 +222,9 @@ label {
 }
 
 input {
-	border: transparent;
 	width: 600px;
 }
+
 ul {
 	margin-bottom: 10px;
 }
@@ -246,26 +246,9 @@ ul li input {
 	margin-right: 10px;
 }
 
-button {
-	background: transparent;
-	color: #502984;
-	display: flex;
-	align-items: center;
-	vertical-align: middle;
-	display: inline-block;
-	width: 50%;
-	height: 40px;
-	font-size: 1em;
-}
-
-button:hover {
-	border-color: #502984;
-}
-
 textarea {
 	width: calc(100% - 10px);
 	min-height: 75px;
-	border: transparent;
 }
 
 .birthday select {

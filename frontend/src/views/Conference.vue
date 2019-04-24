@@ -62,20 +62,4 @@ export default {
 	width: 1080px;
 }
 
-button {
-	background: transparent;
-	color: #502984;
-	display: flex;
-	align-items: center;
-	vertical-align: middle;
-	display: inline-block;
-	width: 30%;
-	height: 40px;
-	font-size: 1em;
-}
-
-button:hover {
-	border-color: #502984;
-}
-
 </style>

@@ -59,7 +59,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .error {
 	border: solid;
 	border-width: 0.5px;
