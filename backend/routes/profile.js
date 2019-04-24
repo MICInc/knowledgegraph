@@ -279,6 +279,7 @@ router.post('/update_first_name', function(req, res) {
 	var email = req.body.email;
 	var token = req.body.token;
 	var first_name = req.body.first_name;
+	console.log(req.body);
 
 	UserAuth.verify_token(token, email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');

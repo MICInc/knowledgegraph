@@ -24,7 +24,6 @@ router.get('/robots.txt', function(req, res, next)
 // TODO: update error handling as res.send does not exit method
 router.post('/signup', function(req, res) {	
 	var result = form.is_complete(req.body);
-	if(!require('../db/config/whitelist').includes(req.body.email)) return;
 
 	if(!result.ok) {
 		res.send({ error: result.errors });
@@ -34,18 +33,14 @@ router.post('/signup', function(req, res) {
 	UserAuth.registerUser(req.body, function(err, token, user) {
 		if(err) res.send({ error: 'Registration failed' });
 		else {
-			if(!require('../db/config/whitelist').includes(req.body.email)) {
-				res.json({ token: token, userInfo: user });
-				return;
-			}
-			res.json({ token: token, userInfo: user });
+			if(require('../db/config/whitelist').includes(req.body.email)) res.json({ token: token, userInfo: user });
+			else res.json({ok: true})
 			// eh.send_verification(email);
 		}
 	});
 });
 
 router.post('/login', function(req, res, next) {
-	console.log('here');
 	if(!require('../db/config/whitelist').includes(req.body.email)) return;
 
 	var email = req.body.email;

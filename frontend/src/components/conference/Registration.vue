@@ -193,18 +193,17 @@ export default {
 			return await AuthService.signUpUser(this.profile);
 		},
 		submit() {
-			this.signup().then((response) => {
-				var err = response.data.error;
+			this.signup().then((resp) => {
+				var err = resp.data.error;
 				
-				if(err != undefined && response.status == 200) {
+				if(err != undefined && resp.status == 200) {
 					this.form.error = err;
 				} 
-				else if(response.status == 200) {
+				else if(resp.status == 200) {
 					var reg = { email: this.profile.email, reimbursements: this.reimburse, conf_resp: this.conf_resp };
 			
 					RegistrationService.register(reg)
 					.then((data) => {
-						console.log('is complete: '+data.data);
 						this.form.complete = data.data;
 					})
 					.catch((error) => {
