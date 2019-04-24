@@ -87,6 +87,13 @@ textarea:focus, input:focus {
 	border-style:none
 }
 
+select {
+}
+
+select::-ms-expand {
+    display: none;
+}
+
 ul {
 	list-style: none;
 	margin: 0;
