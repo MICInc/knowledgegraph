@@ -31,31 +31,31 @@ export default {
 				{
 					header: 'What MIC collects',
 					info: 'We collect basic user demographic information so we can get a picture of who our users are, where they come from, what they know. All this information gives us a better idea of the impact we have towards our mission to democratize machine intelligence. Below is a list of things we need to know:',
-					list: ['affiliation', 'bio', 'comments', 'date joined', 'date of birth', 'email', 'ethnicity', 'your name', 'users you follow', 'users following you', 'school grade', 'content published on our platform', 'school', 'research interests', 'search history', 'view duration']
+					list: ['Affiliation', 'Profile information', 'Profile image', 'Browser information', 'Session activity', 'Comments', 'Date joined', 'Date of birth', 'Email', 'Ethnicity', 'Your name', 'Users you follow', 'Users following you', 'Education', 'User-derived content', 'Research interests', 'Search history', 'View duration', 'IP address']
 				},
 				{
 					header: 'How MIC uses your data', 
-					info: 'fdsfdsfdsfdsfdsfds',
+					info: 'The main goal of the MIC platform is to encourage community-driven content as a public good to further democratize machine intelligence knowledge. To do this, we need to understand user behavior - what research topics are you interested, what topics are generally well understood, what topics are growing the fastest? capturing these metrics allows us to improve the platform and user experience to further encourage our community to materialize knowledge space.',
 					list: []
 				},
 				{
 					header: 'Third Parties',
-					info: 'fdsfdsfdsfdsfdsfds',
+					info: 'MIC does not distribute any data to third parties.',
 					list: []
 				},
 				{
 					header: 'Tracking & Cookies',
-					info: 'fdsfdsfdsfdsfdsfds',
+					info: 'MIC does not track users or use cookies.',
 					list: []
 				},
 				{
 					header: 'Modifying or Deleting Personal Information',
-					info: 'fdsfdsfdsfdsfdsfds',
+					info: 'Users can delete their accounts and modify personal information.',
 					list: []
 				},
 				{
 					header: 'Changes to Policy',
-					info: 'fdsfdsfdsfdsfdsfds',
+					info: 'MIC periodically updates the Data Policy. Users will be notified about significant changes.',
 					list: []
 				},
 			]
