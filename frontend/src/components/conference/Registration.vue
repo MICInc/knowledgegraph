@@ -25,11 +25,11 @@
 						<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 					</select><br>
 					<label>Where can we contact you?</label><br>
-					<input :class="{ error: form.error.email }" type="text" value="email" placeholder="email" v-model.trim="profile.email"><br>
+					<input :class="{ error: form.error.email }" type="text" value="email" placeholder="email" autocomplete="email" v-model.trim="profile.email"><br>
 					<label>Password</label><br>
-					<input :class="{ error: form.error.password }" type="password" value="password" placeholder="password" v-model="profile.password"><br>
+					<input :class="{ error: form.error.password }" type="password" value="password" placeholder="password" autocomplete="new-password" v-model="profile.password"><br>
 					<label>Confirm password</label><br>
-					<input :class="{ error: form.error.confirm_pw }" type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password"><br>
+					<input :class="{ error: form.error.confirm_pw }" type="password" value="password" placeholder="confirm password" autocomplete="new-password" v-model="profile.confirm_password"><br>
 				</span>
 				<label :class="{ error_font: form.error.affiliation }">Affiliation</label><br>
 				<ul>
