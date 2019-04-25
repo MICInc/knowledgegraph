@@ -1,11 +1,11 @@
 <template>
-	<div id="signup-form">
+	<div id="container">
 		<div v-if="!form.complete">
-			<div>
-				An account will also be created for you by registering for the conference.
-			</div>
 			<form v-show="form.show" enctype="multipart/form-data">
 				<button v-on:click.prevent="reveal_form">Hide form</button><br>
+				<div class="top-message">
+					An account will also be created for you by registering for the conference.
+				</div>
 				<span v-if="!$store.state.isLoggedIn">
 					<label>What's your first name?</label><br>
 					<input :class="{ error: form.error.first_name }" type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
@@ -52,7 +52,8 @@
 				<textarea v-model.trim="conf_resp.q2" maxlength="200"></textarea><br>
 				<label>What do you want out of this conference and anything else we should know? (max. 200 characters)</label><br>
 				<textarea v-model.trim="conf_resp.q3" maxlength="200"></textarea><br>
-				<button v-on:click.prevent="submit">Submit</button><button v-on:click.prevent="reveal_form">Hide form</button>
+				<Disclaimer></Disclaimer>
+				<button v-on:click.prevent="submit">Submit</button>
 			</form>
 		</div>
 		<div v-if="form.complete">
@@ -70,6 +71,7 @@ import RegistrationService from '@/services/RegistrationService.js'
 import DateSelector from '@/components/form/DateSelector'
 import SchoolField from '@/components/form/SchoolField'
 import SocialLinks from '@/components/form/SocialLinks'
+import Disclaimer from '@/components/form/Disclaimer'
 
 var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
@@ -79,6 +81,7 @@ export default {
 	name: 'signup_form',
 	components: {
 		DateSelector,
+		Disclaimer,
 		SchoolField,
 		SocialLinks
 	},
@@ -221,10 +224,6 @@ export default {
 
 <style scoped>
 
-#signup-form {
-	margin-top: 20px;
-}
-
 label {
 	font-size: 13px;
 	font-weight: 600;
@@ -245,14 +244,6 @@ ul li {
 ul li input {
 	margin: 5px 10px 0 0;
 	width: 10px;
-}
-
-.action-buttons {
-	margin-top: 10px;
-}
-
-.action-buttons button {
-	margin-right: 10px;
 }
 
 textarea {

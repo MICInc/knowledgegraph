@@ -29,11 +29,6 @@ export default new Router({
 			}
 		},
 		{
-			path: '/about/cookies',
-			name: 'cookies',
-			component: () => import('./views/about/Cookies.vue')
-		},
-		{
 			path: '/about/data',
 			name: 'data',
 			component: () => import('./views/about/Data.vue')

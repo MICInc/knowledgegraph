@@ -1,6 +1,6 @@
 <template>
 	<div class="disclaimer">
-		By clicking Submit, you agree to our <a :href="terms">Terms</a>, <a :href="data">Data Policy</a> and <a :href="cookies">Cookies Policy</a>.
+		By clicking Submit, you agree to Machine Intelligence Community's <a :href="terms">Terms</a> and <a :href="data">Data Policy</a>.
 	</div>
 </template>
 
@@ -11,7 +11,6 @@ export default {
 		return {
 			terms: '/about/terms',
 			data: '/about/data',
-			cookies: '/about/cookies'
 		}
 	}
 }

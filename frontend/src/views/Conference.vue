@@ -5,9 +5,9 @@
 			<h1>Machine Intelligence Conference 2019</h1>
 			<Registration v-if="form.registration" v-on:reveal="show_registration()"></Registration>
 			<Feedback v-if="form.feedback" v-on:reveal="show_feedback()"></Feedback>
-			<div v-if="!form.registration && !form.feedback" class="action-buttons">
-				<button v-on:click.prevent="show_registration">REGISTER</button>
-				<button v-on:click.prevent="show_feedback">FEEDBACK</button>
+			<div v-if="!form.registration && !form.feedback">
+				<button v-on:click.prevent="show_registration">Register</button>
+				<button v-on:click.prevent="show_feedback">Feedback</button>
 			</div>
 		</div>
 		<router-view></router-view>
@@ -50,8 +50,14 @@ export default {
 }
 </script>
 
-<style scoped>
-	
+<style>
+
+button {
+	width: 25%;
+	height: 40px;
+	font-size: 1em;
+}
+
 .main {
 	display: flex;
 	flex-direction: column;
@@ -60,6 +66,10 @@ export default {
 .container {
 	flex: 1;
 	width: 1080px;
+}
+
+.top-message {
+	margin-bottom: 10px;
 }
 
 </style>

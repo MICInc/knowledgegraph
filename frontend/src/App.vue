@@ -47,6 +47,7 @@ body {
 }
 
 button {
+	margin: 20px 0px;
 	border-radius: 4px;
 	box-shadow: none;
 	outline: none;
