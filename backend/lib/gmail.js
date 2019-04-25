@@ -1,8 +1,6 @@
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
-var cred = require('../config/gmail/admin/credentials.json');
-var utils = require('./utils');
 
 // If modifying these scopes, delete token.json.
 // const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -17,34 +15,7 @@ var SCOPES = [
 // time.
 const TOKEN_PATH = 'token.json';
 
-module.exports = {
-	send: function(from, email, subject, message, html, service='gmail') {
-		var transporter = nodemailer.createTransport({
-			// service: service,
-			host: "smtp.gmail.com",
-			auth: cred.conf_email
-		});
-
-		var options = {
-			from: from,
-			to: email,
-			subject: subject,
-			text: message,
-			html: html
-		};
-
-		transporter.sendMail(options, function(error, info) {
-			if(error) console.error(error);
-			else console.log('Sent!');
-		});
-	},
-	send_verification(to) {
-		var link = utils.generate_verification_URL();
-		var message = 'Verify your email at this link: '+link+'.';
-		var html = 'Verify your email at this <a href=\"'+link+'\">link</a>.';
-		module.exports.send('MIC Conference Committee', to, 'Account verification', message, html);
-	},
-	function makeBody(to, from, subject, message) {
+function makeBody(to, from, subject, message) {
     var str = ["Content-Type: text/plain; charset=\"UTF-8\"\n",
         "MIME-Version: 1.0\n",
         "Content-Transfer-Encoding: 7bit\n",
@@ -54,7 +25,7 @@ module.exports = {
         message
     ].join('');
 
-    var encodedMail = new Buffer.from(str, 'utf8').toString("base64").replace(/\+/g, '-').replace(/\//g, '_');
+    var encodedMail = new Buffer(str).toString("base64").replace(/\+/g, '-').replace(/\//g, '_');
         return encodedMail;
 }
 
@@ -68,9 +39,7 @@ function sendMessage(auth) {
             raw: raw
         }
     }, function(err, response) {
-      console.log(err);
-      console.log(response);
-        // res.send(err || response)
+        res.send(err || response)
     });
 }
 
@@ -130,4 +99,26 @@ function getNewToken(oAuth2Client, callback) {
     });
   });
 }
-}
+
+/**
+ * Lists the labels in the user's account.
+ *
+ * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ */
+// function listLabels(auth) {
+//   const gmail = google.gmail({version: 'v1', auth});
+//   gmail.users.labels.list({
+//     userId: 'me',
+//   }, (err, res) => {
+//     if (err) return console.log('The API returned an error: ' + err);
+//     const labels = res.data.labels;
+//     if (labels.length) {
+//       console.log('Labels:');
+//       labels.forEach((label) => {
+//         console.log(`- ${label.name}`);
+//       });
+//     } else {
+//       console.log('No labels found.');
+//     }
+//   });
+// }

@@ -29,9 +29,11 @@ module.exports = {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for (var i = 0; i < length; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    for (var i = 0; i < length; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
+  },
+  generate_verification_URL: function(length=8) {
+    return 'https://machineintelligence.cc/verify/'+module.exports.uniqueID(length);
   }
 }

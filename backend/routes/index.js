@@ -3,7 +3,7 @@ var router = express.Router();
 var UserAuth = require('../lib/user-auth');
 const config = require('../config.js');
 var form = require('../lib/form');
-var eh = require('../lib/email_handler');
+var email = require('../lib/email_handler');
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -31,11 +31,11 @@ router.post('/signup', function(req, res) {
 	}
 
 	UserAuth.registerUser(req.body, function(err, token, user) {
-		if(err) res.send({ error: 'Registration failed' });
+		if(err) res.send({ error: err });
 		else {
 			if(require('../db/config/whitelist').includes(req.body.email)) res.json({ token: token, userInfo: user });
 			else res.json({ok: true})
-			// eh.send_verification(email);
+			email.send_verification(req.body.email);
 		}
 	});
 });
@@ -104,6 +104,12 @@ router.post('/date', function(req, res, next) {
 router.post('/session', function(req, res, next) {
 	console.log(req.body);
 	res.status(200).send('ok');
+});
+
+router.get('/verify', function(req, res, next) {
+	console.log(req.body);
+	UserAuth.verify_email_url(req.body, function() {
+	});
 });
 
 module.exports = router;

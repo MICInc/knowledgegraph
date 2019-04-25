@@ -41,41 +41,48 @@ module.exports = {
 	},
 	// TODO: Update module.exports to match model - replace defaults
 	registerUser: function(profile, callback) {
-		// Username and Email are unique
-		var salt = crypto.randomBytes(64).toString('base64');
-
-		// Hash password
-		crypto.pbkdf2(profile.password, salt, 10000, 64, 'sha512', function(err, key) {
-			if(err) callback(err, '', null);
-			else {
-				var user = new db.User(module.exports.format(profile));
-				user.salt = salt;
-				user.password_hash = key.toString('hex');
-				
-				user.token = token.sign({ email: user.email }, user.email);
-
-				user.collection.dropIndexes(function(err, results) {
-					if(err) console.error(err);
-				});
-
-				user.save(function(err, profile) {
-					if(err) console.error(err);
-					else {
-						// Successfully registered user
-						process.nextTick(function() {
-							callback(null, user.token, {
-								id: user._id,
-								first_name: user.first_name,
-								last_name: user.last_name,
-								email: user.email,
-								sess_id: module.exports.start_session(user, user.token),
-								url: user.url,
-								picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
-							});
-						});
-					}
-				});
+		module.exports.isEmailTaken(profile.email, function(err, available) {
+			if(available) {
+				callback('Email already in use', '', {});
+				return;
 			}
+
+			// Username and Email are unique
+			var salt = crypto.randomBytes(64).toString('base64');
+
+			// Hash password
+			crypto.pbkdf2(profile.password, salt, 10000, 64, 'sha512', function(err, key) {
+				if(err) callback(err, '', null);
+				else {
+					var user = new db.User(module.exports.format(profile));
+					user.salt = salt;
+					user.password_hash = key.toString('hex');
+					
+					user.token = token.sign({ email: user.email }, user.email);
+
+					user.collection.dropIndexes(function(err, results) {
+						if(err) console.error(err);
+					});
+
+					user.save(function(err, profile) {
+						if(err) console.error(err);
+						else {
+							// Successfully registered user
+							process.nextTick(function() {
+								callback(null, user.token, {
+									id: user._id,
+									first_name: user.first_name,
+									last_name: user.last_name,
+									email: user.email,
+									sess_id: module.exports.start_session(user, user.token),
+									url: user.url,
+									picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
+								});
+							});
+						}
+					});
+				}
+			});
 		});
 	},
 	loginUser: function(email, password, callback) {
@@ -265,5 +272,8 @@ module.exports = {
 				}
 			});
 		});
+	},
+	verify_email_url(hash, callback) {
+
 	}
 };
