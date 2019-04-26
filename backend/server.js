@@ -1,8 +1,8 @@
+const importer = require('./import');
 var numCPUs	= require('os').cpus().length;
 var express	= require('express');
 var app	= express();
 var bodyParser = require('body-parser');
-var path = require('path');
 var fs = require('fs');
 var favicon	= require('serve-favicon');
 var helmet = require('helmet');
@@ -46,6 +46,10 @@ if(cluster.isMaster)  {
 	cluster.on('exit', function(worker, code, signal) {
 		console.log(worker.process.pid + ' died');
 	});
+
+	//Set up gmail token
+	var email_handler = require('./lib/email_handler');
+	email_handler.send(to='admin@machineintelligence.cc', subject='Launched', message='server listening on port '+port);
 } 
 else {
 	// Session middleware
