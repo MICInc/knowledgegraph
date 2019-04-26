@@ -186,6 +186,11 @@ export default new Router({
 			component: () => import('./views/SignUp.vue')
 		},
 		{
+			path: '/verify',
+			name: 'verify',
+			component: () => import('./views/auth/Verify')
+		},
+		{
 			path: '/:id',
 			name: 'profile',
 			component: () => import('./views/Profile.vue'),

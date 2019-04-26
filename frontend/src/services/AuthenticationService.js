@@ -18,5 +18,8 @@ export default {
 		},
 		check_session(data) {
 			return Api().post('/api/index/session', data);
+		},
+		verify_account(data) {
+			return Api().post('/api/index/verify', data);
 		}
 }
