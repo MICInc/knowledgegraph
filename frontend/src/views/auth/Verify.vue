@@ -18,8 +18,14 @@ export default {
 		this.verify();
 	},
 	methods: {
-		async verify() {
-			
+		async verify() {			
+			AuthenticationService.verify({ code: this.$route.query.c })
+			.then((resp) => {
+				console.log(resp.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 		}
 	}
 }

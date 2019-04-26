@@ -103,13 +103,14 @@ router.post('/date', function(req, res, next) {
 });
 
 router.post('/session', function(req, res, next) {
-	console.log(req.body);
+	console.log('TODO: Check session token expiration date and force logout');
 	res.status(200).send('ok');
 });
 
-router.get('/verify', function(req, res, next) {
+router.post('/verify', function(req, res, next) {
 	console.log(req.body);
 	UserAuth.verify_email_url(req.body, function() {
+		res.status(200).send({ status: true });
 	});
 });
 
