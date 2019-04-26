@@ -7,11 +7,9 @@ export default {
 		loginUser (data) {
 			return Api().post('/api/index/login', data)
 		},
-
 		signUpUser (data) {
 			return Api().post('/api/index/signup', data)
 		},
-
 		logoutUser(data) {
 			return Api().post('/api/index/logout', data)
 		},

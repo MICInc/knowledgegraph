@@ -1,5 +1,6 @@
 module.exports = [
 	'ch3njus@gmail.com',
+	'justin@machineintelligence.cc',
 	'devin@machineintelligence.cc',
 	'ajay@machineintelligence.cc',
 	'jackie@machineintelligence.cc',

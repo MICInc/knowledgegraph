@@ -1,8 +1,8 @@
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
-const credentials = abs_path('config/gmail/admin/credentials.json');
-const TOKEN_PATH = abs_path('config/gmail/admin/token.json');
+const credentials = abs_path('config/gmail/noreply/credentials.json');
+const TOKEN_PATH = abs_path('config/gmail/noreply/token.json');
 var utils = require('./utils');
 
 // If modifying these scopes, delete token.json.
@@ -19,10 +19,10 @@ var SCOPES = [
 // time.
 
 module.exports = {
-	send: function(from='admin@machineintelligence.cc', to='conference@machineintelligence.cc', subject='No reply', message='MIC') {
+	send: function(from, to, subject, message) {
 		// Load client secrets from a local file.
 		fs.readFile(credentials, (err, content) => {
-			if (err) return console.log('Error loading client secret file:', err);
+			if (err) console.error('Error loading client secret file:', err);
 			// Authorize a client with credentials, then call the Gmail API.
 			var mail = {
 				from: from,
@@ -53,7 +53,7 @@ module.exports = {
 		});
 	},
 	makeBody: function (to, from, subject, message) {
-		var str = ["Content-Type: text/plain; charset=\"UTF-8\"\n",
+		var str = ["Content-Type: text/html; charset=\"UTF-8\"\n",
 			"MIME-Version: 1.0\n",
 			"Content-Transfer-Encoding: 7bit\n",
 			"to: ", to, "\n",

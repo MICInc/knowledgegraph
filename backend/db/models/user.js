@@ -111,6 +111,20 @@ var user_schema = new Schema({
         type: Number,
         required: true
     },
+    verification: {
+        code: {
+            type: String,
+            required: true
+        },
+        date: {
+            type: String,
+            required: true
+        },
+        status: {
+            type: Boolean,
+            required: true
+        }
+    },
     view_duration: [{}]
 });
 

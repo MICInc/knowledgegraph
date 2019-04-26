@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var utils = require('./utils');
 var filter = require('./filter');
 const token = require('./token');
+const email = require('./email_handler');
 
 module.exports = {
 	format: function(profile) {
@@ -36,7 +37,8 @@ module.exports = {
 			search_history: [],
 			subjects: [],
 			url: (profile.first_name+'-'+profile.last_name).toLowerCase(),
-			user_type: 0
+			user_type: 0,
+			verification: { code: utils.uniqueID(16), date: new Date(), status: false }
 		}
 	},
 	// TODO: Update module.exports to match model - replace defaults
@@ -47,7 +49,6 @@ module.exports = {
 				return;
 			}
 
-			// Username and Email are unique
 			var salt = crypto.randomBytes(64).toString('base64');
 
 			// Hash password
@@ -67,6 +68,17 @@ module.exports = {
 					user.save(function(err, profile) {
 						if(err) console.error(err);
 						else {
+							var subject = 'Welcome to MIC';
+							var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
+							var message = 'Please verify your email address '+ver_url+'.';
+							
+							email.send(
+								from='noreply@machineintelligence.cc', 
+								to=user.email, 
+								subject=subject, 
+								message=message
+							);
+
 							// Successfully registered user
 							process.nextTick(function() {
 								callback(null, user.token, {

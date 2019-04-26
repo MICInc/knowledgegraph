@@ -35,7 +35,8 @@ router.post('/signup', function(req, res) {
 		else {
 			if(require('../db/config/whitelist').includes(req.body.email)) res.json({ token: token, userInfo: user });
 			else res.json({ok: true})
-			email.send_verification(req.body.email);
+			// email.send_verification(from, req.body.email, subject, message, callback
+				// req.body.email);
 		}
 	});
 });
