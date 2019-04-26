@@ -108,9 +108,9 @@ router.post('/session', function(req, res, next) {
 });
 
 router.post('/verify', function(req, res, next) {
-	console.log(req.body);
-	UserAuth.verify_email_url(req.body, function() {
-		res.status(200).send({ status: true });
+	UserAuth.verify_email_url(req.body.code, function(ok) {
+		var status = ok ? 200 : 400;
+		res.status(status).send({ status: ok });
 	});
 });
 

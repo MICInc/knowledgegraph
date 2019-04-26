@@ -285,7 +285,29 @@ module.exports = {
 			});
 		});
 	},
-	verify_email_url(hash, callback) {
+	verify_email_url(code, callback) {
+		db.User.find({ verification: { code: code, status: false }}, function(err, user) {
+			if(err) {
+				console.error(err);
+				callback(false);
+				return;
+			}
 
+			var diff = Math.abs((new Date()).getTime() - user.verification.date.getTime());
+			var days = Math.ceil(diff / (1000 * 3600 * 24));
+			
+			if(days >= 2) {
+				callback(false);
+				return;
+			}
+			
+			callback(true);
+			user.verification.status = true;
+			user.verification.code = '';
+
+			db.User.updateOne({_id: user._id }, user, function(err) {
+				if(err) console.error(err);
+			});
+		});
 	}
 };
