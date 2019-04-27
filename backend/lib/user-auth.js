@@ -328,11 +328,12 @@ module.exports = {
 		db.User.find({ email: email_addr }, function(err, user) {
 			if(err) {
 				console.log(err);
-				callback(false, '', {});
+				callback(false);
 				return;
 			}
 
-			user.verification = { code: utils.uniqueID(16), date: new Date(), status: false };
+			var code = utils.uniqueID(16)
+			user.verification = { code: code, date: new Date(), status: false };
 
 			db.User.updateOne({ _id: user._id }, user, function(err) {
 				if(err) console.error(err);
@@ -347,6 +348,8 @@ module.exports = {
 					subject=subject, 
 					message=message
 				);
+
+				callback(true);
 			});
 		});
 	}

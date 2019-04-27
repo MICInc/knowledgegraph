@@ -114,8 +114,8 @@ router.post('/verify', function(req, res, next) {
 });
 
 router.post('/resend_verify', function(req, res, next) {
-	UserAuth.resend_verify_email(req.body.code, function(ok, token, user) {
-		res.status(ok ? 200 : 400).send({ token: token, userInfo: user });
+	UserAuth.resend_verify_email(req.body.code, function(ok) {
+		res.status(ok ? 200 : 400).send({ status: ok });
 	});
 });
 
