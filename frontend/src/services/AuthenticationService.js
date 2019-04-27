@@ -21,5 +21,8 @@ export default {
 		},
 		verify(data) {
 			return Api().post('/api/index/verify', data);
+		},
+		resend_verification(data) {
+			return Api().post('/api/index/resend_verify', data);
 		}
 }

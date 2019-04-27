@@ -322,5 +322,18 @@ module.exports = {
 				});
 			});
 		});
+	},
+	resend_verify_email(email_addr, callback) {
+		var subject = 'Welcome to MIC';
+		var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
+		var message = 'Please verify your email address '+ver_url+'.';
+		
+		email.send(
+			from='noreply@machineintelligence.cc', 
+			to=user.email, 
+			subject=subject, 
+			message=message
+		);
+
 	}
 };
