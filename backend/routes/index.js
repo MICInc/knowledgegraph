@@ -103,8 +103,25 @@ router.post('/date', function(req, res, next) {
 });
 
 router.post('/session', function(req, res, next) {
-	console.log('TODO: Check session token expiration date and force logout');
-	// res.status(ok ? 200 : 400).send({ status: ok });
+	var token = req.body.token;
+	var user_email = req.body.email;
+	
+	if(token == null) {
+		res.status(401).send({ valid: false });
+		return;
+	}
+
+	UserAuth.verify_token({ token: token, email: user_email }, function(err, decoded) {
+		if(err) {
+			res.status(401).send({ valid: false });
+			return;
+		}
+
+		User.findByEmail({ email: user_email }, function(ok, token, user) {
+			if(ok) res.status(200).send({ token: token, userInfo: user });
+			else res.status(400).send({ token: '', userInfo: {} });
+		});
+	});
 });
 
 router.post('/verify', function(req, res, next) {

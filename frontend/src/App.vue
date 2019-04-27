@@ -12,6 +12,8 @@ export default {
 	created() {
 		AuthenticationService.check_session({ token: this.$store.state.accessToken, email: this.$store.state.userInfo.email})
 		.then((resp) => {
+			this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
+			router.push({ name: 'home' });	
 		})
 		.catch((error) => {
 			var status = error.response.status;
