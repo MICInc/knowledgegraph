@@ -1,7 +1,8 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<h3>Verify</h3>
+		<h3>Verification page</h3>
+		<p v-if="verified">Thanks for verifying your account.</p>
 	</div>
 </template>
 
@@ -17,11 +18,20 @@ export default {
 	beforeMount() {
 		this.verify();
 	},
+	data() {
+		return {
+			verified: false
+		}
+	},
 	methods: {
 		async verify() {			
 			AuthenticationService.verify({ code: this.$route.query.c })
 			.then((resp) => {
-				console.log(resp.data);
+				if(resp.data != null) {
+					this.verified = true;
+					this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
+					router.push({ name: 'home' });
+				}
 			})
 			.catch((error) => {
 				console.log(error);

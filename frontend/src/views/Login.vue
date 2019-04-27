@@ -36,18 +36,16 @@ export default {
 	},
 	methods: {
 		handleSubmit() {
-			this.loginUser().then((response) => {
-				if (response.data.error != undefined && response.status == 200) {
-					this.error = response.data.error
-
-				} else if (response.status == 200) {
-					this.$store.dispatch('login', [response.data.token, response.data.userInfo])
-					router.push({ name: 'home' })
-									
-				} else {
-					alert("Something went wrong.")
-					console.log(response)
+			this.loginUser()
+			.then((response) => {
+				if (response.data.error != undefined) this.error = response.data.error;
+				else { 
+					this.$store.dispatch('login', [response.data.token, response.data.userInfo]);
+					router.push({ name: 'home' });				
 				}
+			})
+			.catch((error) => {
+				console.error(error);
 			});
 		},
 		async loginUser() {

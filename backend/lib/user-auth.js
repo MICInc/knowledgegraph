@@ -286,27 +286,40 @@ module.exports = {
 		});
 	},
 	verify_email_url(code, callback) {
-		db.User.find({ verification: { code: code, status: false }}, function(err, user) {
-			if(err) {
+		db.User.find({ 'verification.code': code, 'verification.status': false }, function(err, user) {
+			if(err || user.length != 1) {
 				console.error(err);
-				callback(false);
+				callback(false, '', {});
 				return;
 			}
+
+			user = user[0];
 
 			var diff = Math.abs((new Date()).getTime() - user.verification.date.getTime());
 			var days = Math.ceil(diff / (1000 * 3600 * 24));
-			
+
 			if(days >= 2) {
-				callback(false);
+				callback(false, '', {});
 				return;
 			}
 			
-			callback(true);
 			user.verification.status = true;
 			user.verification.code = '';
+			user.token = token.sign({ email: user.email }, user.email);
 
 			db.User.updateOne({_id: user._id }, user, function(err) {
 				if(err) console.error(err);
+				else process.nextTick(function() {
+					callback(true, user.token, {
+						id: user._id,
+						first_name: user.first_name,
+						last_name: user.last_name,
+						email: user.email,
+						sess_id: module.exports.start_session(user, user.token),
+						url: user.url,
+						picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
+					});
+				});
 			});
 		});
 	}
