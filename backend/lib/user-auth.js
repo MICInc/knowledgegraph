@@ -5,6 +5,7 @@ var utils = require('./utils');
 var filter = require('./filter');
 const token = require('./token');
 const email = require('./email_handler');
+const EXPIRE_DAYS = 48;
 
 module.exports = {
 	format: function(profile) {
@@ -70,7 +71,7 @@ module.exports = {
 						else {
 							var subject = 'Welcome to MIC';
 							var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
-							var message = 'Please verify your email address '+ver_url+'.';
+							var message = 'Please verify your email address '+ver_url+'. This token expires in '+EXPIRE_DAYS+' hours.';
 							
 							email.send(
 								from='noreply@machineintelligence.cc', 
@@ -296,7 +297,7 @@ module.exports = {
 			user = user[0];
 
 			var diff = Math.abs((new Date()).getTime() - user.verification.date.getTime());
-			var days = Math.ceil(diff / (1000 * 3600 * 24));
+			var days = Math.ceil(diff / (1000 * 3600 * EXPIRE_DAYS));
 
 			if(days >= 2) {
 				callback(false, '', {});
@@ -324,16 +325,29 @@ module.exports = {
 		});
 	},
 	resend_verify_email(email_addr, callback) {
-		var subject = 'Welcome to MIC';
-		var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
-		var message = 'Please verify your email address '+ver_url+'.';
-		
-		email.send(
-			from='noreply@machineintelligence.cc', 
-			to=user.email, 
-			subject=subject, 
-			message=message
-		);
+		db.User.find({ email: email_addr }, function(err, user) {
+			if(err) {
+				console.log(err);
+				callback(false, '', {});
+				return;
+			}
 
+			user.verification = { code: utils.uniqueID(16), date: new Date(), status: false };
+
+			db.User.updateOne({ _id: user._id }, user, function(err) {
+				if(err) console.error(err);
+
+				var subject = 'Welcome to MIC';
+				var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
+				var message = 'Please verify your email address '+ver_url+'. This token expires in '+EXPIRE_DAYS+' hours.';
+				
+				email.send(
+					from='noreply@machineintelligence.cc', 
+					to=user.email, 
+					subject=subject, 
+					message=message
+				);
+			});
+		});
 	}
 };
