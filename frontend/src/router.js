@@ -153,7 +153,17 @@ export default new Router({
 		{
 			path: '/logout',
 			name: 'logout',
-			component: () => import('./views/Logout.vue')
+			component: () => import('./views/Logout.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' }
+					})
+				}
+			}
 		},
 		{
 			path: '/non-beta',
@@ -178,7 +188,17 @@ export default new Router({
 		{
 			path: '/settings',
 			name: 'settings',
-			component: () => import('./views/Setting.vue')
+			component: () => import('./views/Setting.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' }
+					})
+				}
+			}
 		},
 		{
 			path: '/signup',

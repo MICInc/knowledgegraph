@@ -19,10 +19,13 @@ export default {
 		check_session(data) {
 			return Api().post('/api/index/session', data);
 		},
-		verify(data) {
-			return Api().post('/api/index/verify', data);
+		verify_email(data) {
+			return Api().post('/api/index/verify_email', data);
 		},
 		resend_verification(data) {
 			return Api().post('/api/index/resend_verify', data);
+		},
+		verify_token(data) {
+			return Api().post('/api/index/verify_token', data);
 		}
 }

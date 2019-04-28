@@ -12,6 +12,7 @@ export default {
 	name: 'logout',
 	beforeMount(){
 		AuthService.logoutUser(this.$store.state.userInfo);
+		
 		this.$store.dispatch('logout').then((response) => {
 			router.push({ name: 'home' })
 		}).catch((err) => {

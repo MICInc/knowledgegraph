@@ -36,7 +36,7 @@ export default {
 	},
 	methods: {
 		async verify() {			
-			AuthenticationService.verify({ code: this.$route.query.c })
+			AuthenticationService.verify_email({ code: this.$route.query.c })
 			.then((resp) => {
 				if(resp.data != null) {
 					this.verified = true;

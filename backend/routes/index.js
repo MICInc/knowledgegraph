@@ -124,7 +124,7 @@ router.post('/session', function(req, res, next) {
 	});
 });
 
-router.post('/verify', function(req, res, next) {
+router.post('/verify_email', function(req, res, next) {
 	UserAuth.verify_email_url(req.body.code, function(ok, token, user) {
 		res.status(ok ? 200 : 400).send({ token: token, userInfo: user });
 	});
