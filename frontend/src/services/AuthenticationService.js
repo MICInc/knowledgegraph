@@ -13,8 +13,8 @@ export default {
 		logoutUser(data) {
 			return Api().post('/api/index/logout', data)
 		},
-		forgotLogin(data) {
-			return Api().post('/api/index/forgot', data)
+		retrieve_login(data) {
+			return Api().post('/api/index/retrieve_login', data)
 		},
 		check_session(data) {
 			return Api().post('/api/index/session', data);

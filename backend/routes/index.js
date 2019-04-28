@@ -4,6 +4,7 @@ var UserAuth = require('../lib/user-auth');
 const config = require('../config.js');
 var form = require('../lib/form');
 var email = require('../lib/email_handler');
+var from = 'noreply@machineintelligence.cc';
 
 router.get('/', function(req, res, next) {
 	var subjectId = 'all';
@@ -34,9 +35,11 @@ router.post('/signup', function(req, res) {
 		if(err) res.send({ error: err });
 		else {
 			if(require('../db/config/whitelist').includes(req.body.email)) res.json({ token: token, userInfo: user });
-			else res.json({ok: true})
-			// email.send_verification(from, req.body.email, subject, message, callback
-				// req.body.email);
+			else res.json({ ok: true });
+
+			UserAuth.send_verify_email(user.email, function(ok) {
+				res.status(ok ? 200 : 400).send({ status: ok });
+			});
 		}
 	});
 });
@@ -62,32 +65,14 @@ router.post('/logout', function(req, res, next) {
 	UserAuth.end_session(req.body);
 });
 
-router.post('/forgot', function(req, res, next) {
+router.post('/retrieve_login', function(req, res, next) {
 	var email = req.body.email;
 
 	UserAuth.findByEmail(email, function(profile) {
 		if(user != null) {
-			var new_pw = UserAuth.resetPassword();
-
-			let transporter = nodemailer.createTransport({
-				host: '',
-				port: 465,
-				secure: true,
-				auth: {
-					user: '',
-					pass: ''
-				}
+			UserAuth.send_verify_email(email, function(ok) {
+				res.status(ok ? 200 : 400).send({ status: ok });
 			});
-
-			let mailOptions = {
-				from: '"MIC Team" <tech@machineintelligence.cc>',
-				to: email,
-				subject: 'MIC Password Recovery',
-				text: 'Fuck off - Gordon Ramsay...btw here\'s your new password: '+new_pw,
-				html: '<b>Here\'s your password</b>'
-			}
-
-			transporter.sendMail(mailOptions);
 			
 			res.status(200).send('Please check your email');
 		}
@@ -134,7 +119,7 @@ router.post('/verify_email', function(req, res, next) {
 });
 
 router.post('/resend_verify', function(req, res, next) {
-	UserAuth.resend_verify_email(req.body.code, function(ok) {
+	UserAuth.send_verify_email(req.body.email, function(ok) {
 		res.status(ok ? 200 : 400).send({ status: ok });
 	});
 });

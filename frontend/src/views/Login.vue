@@ -43,6 +43,7 @@ export default {
 			})
 			.catch((error) => {
 				this.error = error.response.data.error;
+				if(error.response.status == 401) router.push({ name: 'verify' });
 			});
 		},
 		async loginUser() {

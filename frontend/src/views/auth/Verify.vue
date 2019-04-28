@@ -1,17 +1,23 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<div v-if="verified">
-			<h3>Account verified</h3>
-			<p>Thanks for verifying your account.</p>
-		</div>
-		<div v-else class="resubmit">
-			<h3>Account could not be verified</h3>
-			<p>Resend email verification.</p>
-			<form>
-				<input type="email" placeholder="Email" v-model="email"><br>
-				<button type="submit">Submit</button>
-			</form>
+		<div class="body-verify">
+			<div v-if="verified">
+				<h3>Account verified</h3>
+				<p>Thanks for verifying your account.</p>
+			</div>
+			<div v-else class="resubmit">
+				<h3>Account could not be verified</h3>
+				<div v-if="!sent">
+					<form>
+						<input type="email" placeholder="Email" v-model="email"><br>
+						<button type="submit">Resend verifcation</button>
+					</form>
+				</div>
+				<div v-else>
+					<p>Email verification sent!</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -31,7 +37,8 @@ export default {
 	data() {
 		return {
 			email: '',
-			verified: false
+			verified: false,
+			sent: false
 		}
 	},
 	methods: {
@@ -54,16 +61,15 @@ export default {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
+				if(error.response.status == 400) this.verified = false;
 			});
 		},
 		async resend() {
 			AuthenticationService.resend_verification({ email: this.email })
 			.then((resp) => {
-				console.log(resp);
+
 			})
 			.catch((error) => {
-				console.error(error);
 			});
 		}
 	}
@@ -78,4 +84,39 @@ export default {
 .resubmit form input {
 	width: 50%;
 }
+
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+.body-verify {
+	margin: auto;
+	display: flex;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+	width: 300px;
+}
+
+input {
+	margin: 5px 0;
+	padding: 5px;
+	border: none;
+}
+
+label, a {
+	font-size: 12px;
+}
+
+.input-row {
+	display: flex;
+	align-items: center;
+}
+
+button {
+	width: 100%;
+	height: 40px;
+}
+
 </style>

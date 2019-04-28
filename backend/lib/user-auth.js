@@ -333,7 +333,7 @@ module.exports = {
 			});
 		});
 	},
-	resend_verify_email(email_addr, callback) {
+	send_verify_email(email_addr, callback) {
 		db.User.find({ email: email_addr }, function(err, user) {
 			if(err) {
 				console.log(err);
