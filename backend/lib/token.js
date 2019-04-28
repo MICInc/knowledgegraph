@@ -18,7 +18,7 @@ module.exports = {
 			issuer: "Machine Intelligence Community",
 			subject: user,
 			audience: "http://machineintelligence.cc",
-			expiresIn: "60s",//"24h",
+			expiresIn: "24h",
 			algorithm: "RS256"
 		}
 
@@ -29,7 +29,7 @@ module.exports = {
 			issuer: "Machine Intelligence Community",
 			subject: user,
 			audience: "http://machineintelligence.cc",
-			expiresIn: "60s", //"24h",
+			expiresIn: "24h",
 			algorithms: ["RS256"]
 		}
 

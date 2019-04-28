@@ -28,12 +28,18 @@ import Footer from '@/components/Footer'
 
 export default {
 	name: 'home',
+	beforeMount() {
+		this.getContent().then(data => {
+			for(let k in data){
+				this.content.push(data[k]);
+			}
+		});
+	},
 	components: {
 		LinkedContent,
 		PageNav,
 		Footer
 	},
-
 	data () {
 		return {
 			user: {
@@ -42,7 +48,6 @@ export default {
 			content:[]
 		}
 	},
-
 	methods: {
 		async getContent() {
 			return await ContentService.getContent({ params: this.user })
@@ -50,14 +55,6 @@ export default {
 				return data.data;
 			});
 		}
-	},
-
-	beforeMount() {
-		this.getContent().then(data => {
-			for(let k in data){
-				this.content.push(data[k]);
-			}
-		});
 	}
 }
 </script>
