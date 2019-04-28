@@ -111,7 +111,7 @@ router.post('/session', function(req, res, next) {
 		return;
 	}
 
-	UserAuth.verify_token({ token: token, email: user_email }, function(err, decoded) {
+	UserAuth.verify_token(token, user_email, function(err, decoded) {
 		if(err) {
 			res.status(401).send({ valid: false });
 			return;
