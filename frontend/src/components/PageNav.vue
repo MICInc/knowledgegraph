@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import router from '@/router'
+import AuthMixin from '@/mixins/AuthMixin';
+import router from '@/router';
 
 export default {
 	name: 'PageNav',
@@ -81,7 +82,8 @@ export default {
 		search() {
 			router.push({path: '/search', query: {term: this.query} });
 		}
-	}
+	},
+	mixin:[AuthMixin]
 }
 </script>
 

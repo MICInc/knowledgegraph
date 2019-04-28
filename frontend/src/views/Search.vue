@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import PageNav from '@/components/PageNav.vue'
-import SearchService from '@/services/SearchService'
-import ArticleCell from '@/components/search/ArticleCell'
-import ProfileCell from '@/components/search/ProfileCell'
+import PageNav from '@/components/PageNav.vue';
+import SearchService from '@/services/SearchService';
+import ArticleCell from '@/components/search/ArticleCell';
+import ProfileCell from '@/components/search/ProfileCell';
 
 export default {
 	name: 'search',

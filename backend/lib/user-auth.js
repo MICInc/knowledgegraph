@@ -209,8 +209,6 @@ module.exports = {
 		else token.verify(t, email, callback);
 	},
 	is_editable(query, page, callback) {
-		console.log(query);
-		console.log(page);
 		var editable = page.url == query.url;
 
 		if(editable) {

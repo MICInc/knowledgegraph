@@ -14,9 +14,9 @@
 
 
 <script>
-import PageNav from '@/components/PageNav'
-import CommunityService from '@/services/CommunityService'
-import Footer from '@/components/Footer'
+import PageNav from '@/components/PageNav';
+import CommunityService from '@/services/CommunityService';
+import Footer from '@/components/Footer';
 
 export default {
 	name: 'community',

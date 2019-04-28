@@ -8,7 +8,7 @@
 <script>
 import PageNav from '@/components/PageNav';
 import Console from '@/components/admin/Console';
-import AdminService from '@/services/AdminService'
+import AdminService from '@/services/AdminService';
 
 export default {
 	name: 'admin-console',

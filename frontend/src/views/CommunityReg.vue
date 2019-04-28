@@ -31,12 +31,12 @@
 
 <script>
 import CommunityService from '@/services/CommunityService';
-import PageNav from '@/components/PageNav'
-import ReadMe from '@/components/community/registration/ReadMe'
-import School from '@/components/community/registration/School'
-import Organization from '@/components/community/registration/Organization'
-import Executives from '@/components/community/registration/Executives'
-import Advisors from '@/components/community/registration/Advisors'
+import PageNav from '@/components/PageNav';
+import ReadMe from '@/components/community/registration/ReadMe';
+import School from '@/components/community/registration/School';
+import Organization from '@/components/community/registration/Organization';
+import Executives from '@/components/community/registration/Executives';
+import Advisors from '@/components/community/registration/Advisors';
 
 export default {
 	name: 'community-reg',

@@ -21,8 +21,6 @@ import Profile from '@/components/settings/Profile'
 import Deactivate from '@/components/settings/Deactivate'
 import FadeBlock from '@/components/form/FadeBlock'
 import AuthenticationService from '@/services/AuthenticationService'
-import AuthMixin from '@/mixins/AuthMixin'
-import router from '@/router'
 
 export default {
 	name: 'settings',
@@ -126,8 +124,7 @@ export default {
 				alert(error);
 			});
 		}
-	},
-	mixins: [AuthMixin]
+	}
 }
 </script>
 
