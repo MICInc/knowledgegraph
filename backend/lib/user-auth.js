@@ -100,9 +100,18 @@ module.exports = {
 	},
 	loginUser: function(email, password, callback) {
 		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
-			if (err) console.error(err);
+			if(err) {
+				console.error(err);
+				callback({ msg: 'Login failed', code: 400 }, '', {});
+				return;
+			}
 
-			if (user != null) {
+			if(!user.verification.status) {
+				callback({ msg: 'Email has not been verified', code: 401 }, '', {});
+				return;
+			}
+
+			if(user != null) {
 				// Salt password to see if hashes will match with the user's salt
 				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key) {
 					if(err) console.error(err);
@@ -124,7 +133,7 @@ module.exports = {
 					}
 					else {
 						process.nextTick(function() {
-							callback({message: 'Password was incorrect'}, '', null);
+							callback({ msg: 'Password was incorrect', code: 400 }, '', null);
 						});
 					}
 				});

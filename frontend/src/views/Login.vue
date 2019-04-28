@@ -37,15 +37,12 @@ export default {
 	methods: {
 		handleSubmit() {
 			this.loginUser()
-			.then((response) => {
-				if (response.data.error != undefined) this.error = response.data.error;
-				else { 
-					this.$store.dispatch('login', [response.data.token, response.data.userInfo]);
-					router.push({ name: 'home' });				
-				}
+			.then((resp) => {
+				this.$store.dispatch('login', [response.data.token, response.data.userInfo]);
+				router.push({ name: 'home' });
 			})
 			.catch((error) => {
-				console.error(error);
+				this.error = error.response.data.error;
 			});
 		},
 		async loginUser() {
