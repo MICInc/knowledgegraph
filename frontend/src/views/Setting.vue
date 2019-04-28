@@ -20,6 +20,9 @@ import Password from '@/components/settings/Password'
 import Profile from '@/components/settings/Profile'
 import Deactivate from '@/components/settings/Deactivate'
 import FadeBlock from '@/components/form/FadeBlock'
+import AuthenticationService from '@/services/AuthenticationService'
+import AuthMixin from '@/mixins/AuthMixin'
+import router from '@/router'
 
 export default {
 	name: 'settings',
@@ -41,7 +44,7 @@ export default {
 			ProfileService.update_url({
 				token: this.token, 
 				email: this.email, 
-				data: data })
+				url: data.url })
 			.then((resp) => {
 				var data = resp.data;
 				if(data.url.length > 0) this.$store.commit('setURL', data.url);
@@ -56,7 +59,7 @@ export default {
 			ProfileService.update_first_name({
 				token: this.token, 
 				email: this.email, 
-				data: data })
+				first_name: data.first_name })
 			.then((resp) => {
 				var data = resp.data;
 				if(data.first_name.length > 0) this.$store.commit('setFirstName', data.first_name);
@@ -71,7 +74,7 @@ export default {
 			ProfileService.update_last_name({
 				token: this.token, 
 				email: this.email, 
-				data: data })
+				last_name: data.last_name })
 			.then((resp) => {
 				var data = resp.data;
 				if(data.last_name.length > 0) this.$store.commit('setLastName', data.last_name);
@@ -123,7 +126,8 @@ export default {
 				alert(error);
 			});
 		}
-	}
+	},
+	mixins: [AuthMixin]
 }
 </script>
 

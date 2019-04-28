@@ -117,7 +117,7 @@ router.post('/session', function(req, res, next) {
 			return;
 		}
 
-		User.findByEmail({ email: user_email }, function(ok, token, user) {
+		UserAuth.findByEmail({ email: user_email }, function(ok, token, user) {
 			if(ok) res.status(200).send({ token: token, userInfo: user });
 			else res.status(400).send({ token: '', userInfo: {} });
 		});
@@ -133,6 +133,28 @@ router.post('/verify_email', function(req, res, next) {
 router.post('/resend_verify', function(req, res, next) {
 	UserAuth.resend_verify_email(req.body.code, function(ok) {
 		res.status(ok ? 200 : 400).send({ status: ok });
+	});
+});
+
+router.post('/verify_token', function(req, res, next) {
+	var token = req.body.token;
+	var user_email = req.body.email;
+	
+	if(token == null) {
+		res.status(401).send({ valid: false });
+		return;
+	}
+
+	UserAuth.verify_token(token, user_email, function(err, decoded) {
+		if(err) {
+			res.status(401).send({ valid: false });
+			return;
+		}
+
+		UserAuth.findByEmail({ email: user_email }, function(ok, token, user) {
+			if(ok) res.status(200).send({ token: token, userInfo: user });
+			else res.status(400).send({ token: '', userInfo: {} });
+		});
 	});
 });
 
