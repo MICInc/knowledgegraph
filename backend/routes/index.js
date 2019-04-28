@@ -139,7 +139,7 @@ router.post('/resend_verify', function(req, res, next) {
 router.post('/verify_token', function(req, res, next) {
 	var token = req.body.token;
 	var user_email = req.body.email;
-	
+
 	if(token == null) {
 		res.status(401).send({ valid: false });
 		return;
@@ -151,9 +151,9 @@ router.post('/verify_token', function(req, res, next) {
 			return;
 		}
 
-		UserAuth.findByEmail({ email: user_email }, function(ok, token, user) {
+		UserAuth.findByEmail(user_email, function(ok, user) {
 			if(ok) res.status(200).send({ token: token, userInfo: user });
-			else res.status(400).send({ token: '', userInfo: {} });
+			else res.status(401).send({ token: '', userInfo: {} });
 		});
 	});
 });

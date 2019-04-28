@@ -17,7 +17,7 @@ export default {
 			router.push({ name: 'home' })
 		}).catch((err) => {
 			router.push({ name: 'home' })
-		})
+		});
 	},
 }
 </script>

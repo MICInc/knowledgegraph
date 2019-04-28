@@ -37,6 +37,7 @@ import School from '@/components/community/registration/School';
 import Organization from '@/components/community/registration/Organization';
 import Executives from '@/components/community/registration/Executives';
 import Advisors from '@/components/community/registration/Advisors';
+import AuthMixin from '@/mixins/AuthMixin';
 
 export default {
 	name: 'community-reg',
@@ -105,7 +106,8 @@ export default {
 		update(data) {
 			for(var k in data) this.org[k] = data[k];
 		}
-	}
+	},
+	mixins: [AuthMixin]
 }
 </script>
 <style scoped>

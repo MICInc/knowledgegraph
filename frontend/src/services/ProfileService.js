@@ -7,7 +7,7 @@ export default {
 			return Api().get('/api/profile', data)
 		},
 		canEdit(data) {
-			return Api().get('/api/profile/edit', data);
+			return Api().post('/api/profile/edit', data);
 		},
 		getProfilePic(data) {
 			return Api().get('/api/profile/picture', data);

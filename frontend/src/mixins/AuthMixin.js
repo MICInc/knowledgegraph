@@ -5,9 +5,8 @@ export default {
 	created() {
 		AuthenticationService.verify_token({ email: this.email, token: this.token })
 		.then((resp) => {
-		})
-		.catch((error) => {
-			if(error.response.status == 401) {
+			if(resp.status == 401) {
+				console.log('invalid token');
 				AuthenticationService.logoutUser(this.$store.state.userInfo);
 
 				this.$store.dispatch('logout')
@@ -18,6 +17,10 @@ export default {
 					router.push({ name: 'home' })
 				});
 			}
+
+			if(resp.status == 400) router.push({ name: 'home' })
+		})
+		.catch((error) => {
 		});
 	},
 	data() {

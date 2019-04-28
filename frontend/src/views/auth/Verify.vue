@@ -43,6 +43,15 @@ export default {
 					this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
 					router.push({ name: 'home' });
 				}
+				else {
+					AuthenticationService.logoutUser(this.$store.state.userInfo);
+		
+					this.$store.dispatch('logout')
+					.then((resp) => {
+					})
+					.catch((err) => {
+					});
+				}
 			})
 			.catch((error) => {
 				console.log(error);

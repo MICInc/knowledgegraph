@@ -31,6 +31,7 @@
 import PageNav from '@/components/PageNav';
 import ContentService from '@/services/ContentService.js';
 import DynamicContent from '@/components/editor/DynamicContent';
+import AuthMixin from '@/mixins/AuthMixin';
 import router from '@/router';
 import Path from 'path';
 
@@ -202,6 +203,7 @@ export default {
 			return await ContentService.publish();
 		}
 	},
+	mixins: [AuthMixin],
 	props: ['content'],
 	ready: function() {
 		Vue.util.on(window, 'beforeunload', this.save, false);

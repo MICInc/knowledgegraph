@@ -118,7 +118,7 @@ export default {
 	},
 	methods: {
 		async edit() {
-			ProfileService.canEdit({ params: { user_id: this.user_id, token: this.token, url: this.url }})
+			ProfileService.canEdit({ user_id: this.user_id, token: this.token, url: this.url })
 			.then((resp) => {
 				if(resp.data.editable) this.editable = resp.data.editable;
 			})

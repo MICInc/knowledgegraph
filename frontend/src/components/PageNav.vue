@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import AuthMixin from '@/mixins/AuthMixin';
 import router from '@/router';
 
 export default {
@@ -49,7 +48,7 @@ export default {
 		if(this.stored_pic !== undefined) this.picture = this.stored_pic;
 	},
 	created: function() {  
- 		document.title = 'Machine Intelligence Community'
+ 		document.title = 'Machine Intelligence Community';
  	},
  	computed: {
 		isLoggedIn() {
@@ -64,6 +63,8 @@ export default {
 	},
 	data () {
 		return {
+			token: this.$store.state.accessToken,
+			email: this.$store.state.userInfo.email,
 			picture: '',
 			query: '',
 			menu: [
@@ -82,8 +83,7 @@ export default {
 		search() {
 			router.push({path: '/search', query: {term: this.query} });
 		}
-	},
-	mixin:[AuthMixin]
+	}
 }
 </script>
 

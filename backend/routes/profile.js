@@ -39,20 +39,36 @@ router.get('/', function(req, res) {
 	});
 });
 
-router.get('/edit', function(req, res) {
-	UserAuth.findById(req.query.user_id, function(err, profile) {
+router.post('/edit', function(req, res) {
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(401).send({ status: false });
+		return;
+	}
+
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
+			// call force logout here!
 			console.error(err);
-			res.status(400).send('Invalid request');
+			res.status(401).send({ status: false });
 			return;
 		}
 
-		//Note: have to check if editable because section tabs cannot receive props
-		// so if user views section tab via direct link, cannot receive prop from main vue component
-		// each tab section needs to query the backend itself and determine if it's editable.
-		UserAuth.is_editable(req.query, profile, function(editable) {
-			if(editable) res.status(200).send({ editable: editable });
-			else res.status(200).send({ editable: editable });
+		UserAuth.findById({ _id: req.body.user_id }, function(err, profile) {
+			if(profile == null) {
+				console.error(err);
+				res.status(400).send({ status: false });
+				return;
+			}
+
+			//Note: have to check if editable because section tabs cannot receive props
+			// so if user views section tab via direct link, cannot receive prop from main vue component
+			// each tab section needs to query the backend itself and determine if it's editable.
+			UserAuth.is_editable(req.body, profile, function(editable) {
+				if(editable) res.status(200).send({ editable: editable });
+				else res.status(200).send({ editable: editable });
+			});
 		});
 	});
 });
