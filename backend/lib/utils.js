@@ -33,7 +33,7 @@ module.exports = {
 
     return text;
   },
-  generate_verification_URL: function(innerText='link', hash='', length=8, html=true) {
+  generate_verification_URL: function(innerText='link', hash='', length=128, html=true) {
     if(hash.length == 0) module.exports.uniqueID(length);
     var href = 'https://machineintelligence.cc/verify?c='+hash;
     return html ? '<a href=\"'+href+'\">'+innerText+'</a>' : href;
