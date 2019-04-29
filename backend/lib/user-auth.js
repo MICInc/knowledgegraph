@@ -106,6 +106,7 @@ module.exports = {
 				return;
 			}
 
+			// Remove error messages?
 			if(!user.verification.status) {
 				callback({ msg: 'Email has not been verified', code: 401 }, '', {});
 				return;
@@ -116,6 +117,7 @@ module.exports = {
 				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key) {
 					if(err) console.error(err);
 					
+					// Want a constant time string comparison
 					if(user.password_hash == key.toString('hex')) {
 						user.token = token.sign({ email: user.email }, user.email);
 
@@ -341,7 +343,7 @@ module.exports = {
 				return;
 			}
 
-			var code = utils.uniqueID(16)
+			var code = utils.uniqueID(128)
 			user.verification = { code: code, date: new Date(), status: false };
 
 			db.User.updateOne({ _id: user._id }, user, function(err) {
