@@ -34,11 +34,9 @@ router.post('/signup', function(req, res) {
 	UserAuth.registerUser(req.body, function(err, token, user) {
 		if(err) res.send({ error: err });
 		else {
-			if(require('../db/config/whitelist').includes(req.body.email)) res.json({ token: token, userInfo: user });
-			else res.json({ ok: true });
-
 			UserAuth.send_verify_email(user.email, function(ok) {
-				res.status(ok ? 200 : 400).send({ status: ok });
+				if(require('../db/config/whitelist').includes(req.body.email)) res.status(ok ? 200 : 400).json({ status: ok, token: token, userInfo: user });
+				else res.status(ok ? 200 : 400).json({ status: ok });
 			});
 		}
 	});
@@ -56,8 +54,6 @@ router.post('/login', function(req, res, next) {
 	if(!(email && password)) res.status(200).send({ error: 'Please provide a email and password' });
 
 	UserAuth.loginUser(email, password, function(err, token, user) {
-		console.log(token)
-		console.log(user);
 		if(err != null && (err.code == 400 || err.code == 401)) res.status(err.code).send({ error: err.msg });
 		else res.json({ token: token, userInfo: user });
 	});
@@ -72,13 +68,11 @@ router.post('/retrieve_login', function(req, res, next) {
 
 	UserAuth.findByEmail(email, function(profile) {
 		if(user != null) {
-			UserAuth.send_verify_email(email, function(ok) {
-				res.status(ok ? 200 : 400).send({ status: ok });
+			UserAuth.reset_password(email, function(ok) {
+				res.status(200).send({ status: 'Please check your email'});
 			});
-			
-			res.status(200).send('Please check your email');
 		}
-		else res.status(200).send('Email does not exist');
+		else res.status(200).send({ status: 'Invalid email'});
 	});
 });
 

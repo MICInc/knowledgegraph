@@ -212,9 +212,6 @@ module.exports = {
 			}
 		});
 	},
-	resetPassword() {
-		return utils.uniqueID(15);
-	},
 	verify_token(t, email, callback) {
 		if(t == null || t.length == 0) callback(new Error('Empty token'), null);
 		else token.verify(t, email, callback);
@@ -338,7 +335,7 @@ module.exports = {
 	send_verify_email(email_addr, callback) {
 		db.User.find({ email: email_addr }, function(err, user) {
 			if(err) {
-				console.log(err);
+				console.error(err);
 				callback(false);
 				return;
 			}
@@ -362,6 +359,43 @@ module.exports = {
 				);
 
 				callback(true);
+			});
+		});
+	},
+	reset_login(email, callback) {
+		db.User.find({ email: email }, function(err, user) {
+			if(err) {
+				console.error(err);
+				callback(false);
+				return;
+			}
+
+			var password = utils.uniqueID(64);
+			user.salt = crypto.randomBytes(64).toString('base64');
+
+			// Hash password
+			crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key) {
+				if(err) callback(err, '', null);
+				else {
+					user.password_hash = key.toString('hex');
+
+					db.User.updateOne({ _id: user._id }, user, function(err) {
+						if(err) console.error(err);
+
+						var subject = 'MIC Password Reset';
+						var message = 'Your new password: '+password+'<br>Please login and change your password.<br><br>'
+									+'The Machine Intelligence Community Team';
+						
+						email.send(
+							from='noreply@machineintelligence.cc', 
+							to=user.email, 
+							subject=subject, 
+							message=message
+						);
+
+						callback(true);
+					});
+				}
 			});
 		});
 	}
