@@ -4,7 +4,7 @@
 		<div>
 			<h3>Forgot login</h3>
 			<div v-if="!sent">
-				<form v-on:submit.prevent="retrieveLogin">
+				<form v-on:submit.prevent="retrieve_login">
 					<input type="email" placeholder="Email" v-model="email" required>
 					<button type="submit">Submit</button>
 				</form>
@@ -33,7 +33,7 @@ export default {
 		}
 	},
 	methods: {
-		retrieveLogin() {
+		retrieve_login() {
 			AuthenticationService.retrieve_login({ email: this.email })
 			.then((resp) => {
 				this.send = true;

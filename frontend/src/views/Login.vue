@@ -38,12 +38,14 @@ export default {
 		handleSubmit() {
 			this.loginUser()
 			.then((resp) => {
-				this.$store.dispatch('login', [response.data.token, response.data.userInfo]);
+				this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
 				router.push({ name: 'home' });
 			})
 			.catch((error) => {
-				this.error = error.response.data.error;
-				if(error.response.status == 401) router.push({ name: 'verify' });
+				if(error.response != null) {
+					this.error = error.response.data.error;
+					if(error.response.status == 401) router.push({ name: 'verify' });
+				}
 			});
 		},
 		async loginUser() {

@@ -349,7 +349,8 @@ module.exports = {
 
 				var subject = 'Welcome to MIC';
 				var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
-				var message = 'Please verify your email address '+ver_url+'. This token expires in '+EXPIRE_DAYS+' hours.';
+				var message = 'Please verify your email address '+ver_url+'. This token expires in '+EXPIRE_DAYS+' hours.<br><br>'
+							+'The Machine Intelligence Community Team';
 				
 				email.send(
 					from='noreply@machineintelligence.cc', 

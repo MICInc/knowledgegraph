@@ -9,7 +9,7 @@
 			<div v-else class="resubmit">
 				<h3>Account could not be verified</h3>
 				<div v-if="!sent">
-					<form>
+					<form v-on:submit.prevent="resend">
 						<input type="email" placeholder="Email" v-model="email"><br>
 						<button type="submit">Resend verifcation</button>
 					</form>
@@ -67,7 +67,7 @@ export default {
 		async resend() {
 			AuthenticationService.resend_verification({ email: this.email })
 			.then((resp) => {
-
+				this.sent = true;
 			})
 			.catch((error) => {
 			});
