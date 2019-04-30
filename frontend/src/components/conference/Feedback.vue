@@ -1,11 +1,11 @@
 <template>
 	<div id="feedback-form">
 		<div v-if="!form.complete">
-			<div id="top-message">
-				Thanks for attending our 2019 Machine Intelligence Conference! Your feedback will help further our mission to democratize machine intelligence.
-			</div>
 			<form v-show="form.show">
 				<button v-on:click.prevent="reveal_form()">Hide form</button><br>
+				<div class="top-message">
+					Thanks for attending our 2019 Machine Intelligence Conference! Your feedback will help further our mission to democratize machine intelligence.
+				</div>
 				<label>Overall how was the event?</label><br>
 				<span v-for="(value, index) in form.overall">
 					<input class="overall_button" v-model="feedback.overall" type="radio" name="overall" :value="value"/>
@@ -19,7 +19,8 @@
 				<textarea v-model="feedback.liked"></textarea><br>
 				<label>What changes could MIConf make to further democratize machine intelligence?</label><br>
 				<textarea v-model="feedback.changes"></textarea><br>
-				<button v-on:click.prevent="submit">Submit</button><button v-on:click.prevent="reveal_form()">Hide form</button>
+				<Disclaimer></Disclaimer>
+				<button v-on:click.prevent="submit">Submit</button>
 			</form>
 		</div>
 		<div v-if="form.complete">
@@ -30,8 +31,12 @@
 
 <script>
 import FeedbackService from '@/services/FeedbackService';
+import Disclaimer from '@/components/form/Disclaimer';
 
 export default {
+	components: {
+		Disclaimer
+	},
 	data() {
 		return {
 			form: {
@@ -63,24 +68,7 @@ export default {
 }
 </script>
 
-<style>
-button {
-	background: #502984;
-	color: #FFF;
-	display: flex;
-	align-items: center;
-	vertical-align: middle;
-	display: inline-block;
-	width: 30%;
-	height: 40px;
-	font-size: 1em;
-}
-
-button:hover {
-	background: #331a54;
-	color: #FFF;
-}
-
+<style scoped>
 textarea {
 	width: calc(600px - 10px);
 	min-height: 75px;
@@ -97,9 +85,5 @@ textarea {
 
 #panels {
 	diplay: block;
-}
-
-#top-message {
-	margin-bottom: 1em;
 }
 </style>

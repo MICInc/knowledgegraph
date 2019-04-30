@@ -36,17 +36,15 @@ export default {
 	},
 	methods: {
 		handleSubmit() {
-			this.loginUser().then((response) => {
-				if (response.data.error != undefined && response.status == 200) {
-					this.error = response.data.error
-
-				} else if (response.status == 200) {
-					this.$store.dispatch('login', [response.data.token, response.data.userInfo])
-					router.push({ name: 'home' })
-									
-				} else {
-					alert("Something went wrong.")
-					console.log(response)
+			this.loginUser()
+			.then((resp) => {
+				this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
+				router.push({ name: 'home' });
+			})
+			.catch((error) => {
+				if(error.response != null) {
+					this.error = error.response.data.error;
+					if(error.response.status == 401) router.push({ name: 'verify' });
 				}
 			});
 		},
@@ -97,8 +95,8 @@ label, a {
 }
 
 button {
-	background: #502984;
-	color: #FFF;
+	background: transparent;
+	color: #502984;
 	display: flex;
 	align-items: center;
 	vertical-align: middle;
@@ -109,8 +107,7 @@ button {
 }
 
 button:hover {
-	background: #331a54;
-	color: #FFF;
+	border-color: #502984;
 }
 
 </style>

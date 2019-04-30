@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var user_schema = new Schema({
+    active: {
+        type: Boolean,
+        required: true
+    },
     affiliation: {
         type: String,
         sparse: true
@@ -106,6 +110,20 @@ var user_schema = new Schema({
     user_type: {
         type: Number,
         required: true
+    },
+    verification: {
+        code: {
+            type: String,
+            required: true
+        },
+        date: {
+            type: Date,
+            required: true
+        },
+        status: {
+            type: Boolean,
+            required: true
+        }
     },
     view_duration: [{}]
 });

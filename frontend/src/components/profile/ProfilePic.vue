@@ -18,12 +18,18 @@ export default {
 	beforeMount() {
 		this.a_picture();
 	},
+	computed: {
+		email() {
+			return this.$store.state.userInfo.email;
+		},
+		src() {
+			return this.$store.state.userInfo.picture;
+		}
+	},
 	data() {
 		return {
 			last_modified: undefined,
-			name: '',
-			src: '',
-			email: this.$store.state.userInfo.email
+			name: ''
 		}
 	},
 	methods: {
@@ -39,7 +45,6 @@ export default {
 				
 					if(src.length > 0) {
 						this.name = el.files[0].name;
-						this.src = src;
 						this.last_modified = new Date();
 						this.save();
 						

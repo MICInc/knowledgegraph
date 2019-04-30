@@ -1,47 +1,60 @@
 <template>
 	<div class="container" v-on:keydown.delete.stop="remove_cell($event)" v-on:keydown.tab="focus_next($event)">
-		<div class="tag-type" v-show="is_empty">
-			<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
-			<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
-			<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
-		</div>
-		<div class="editor-info">
-			<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
-				<img 
-					:id="'image-content-'+cell.index"
-					:ref="'image-content-'+cell.index"
-					class="image-content" 
-					:src="cell.src" 
-					v-on:keydown.enter.stop="show_caption($event)">
-				<figcaption 
-					class="caption"
-					:id="'caption-content-'+cell.index"
-					:ref="'caption-content-'+cell.index"
-					v-show="has_caption" 
-					v-on:keyup="set_caption($event)" 
-					v-on:keydown.delete.stop="remove_caption($event)" 
-					contenteditable>
-					<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
-				</figcaption>
-			</figure>
-			<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
-				<hr>
+		<div class="content-row">
+			<Pancake
+				:ref="'pancake-'+index"
+				:index="index"
+				class="pancake"
+				v-on:change="expand($event)">
+			</Pancake>
+			<div class="tag-type" v-if="is_empty">
+				<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
+				<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
+				<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 			</div>
-			<p :id="'p-content-'+cell.index"
-			   v-if="'p' == cell.tag" 
-			   class="content" 
-			   :ref="'p-content-'+cell.index"
-			   v-on:keyup="input($event)" 
-			   @mousedown="set_active($event)" 
-			   contenteditable>
-			</p>
+			<div class="editor-info">
+				<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
+					<img 
+						:id="'image-content-'+cell.index"
+						:ref="'image-content-'+cell.index"
+						class="image-content" 
+						:src="cell.src" 
+						v-on:keydown.enter.stop="show_caption($event)">
+					<figcaption 
+						class="caption"
+						:id="'caption-content-'+cell.index"
+						:ref="'caption-content-'+cell.index"
+						v-show="has_caption" 
+						v-on:keyup="set_caption($event)" 
+						v-on:keydown.delete.stop="remove_caption($event)" 
+						contenteditable>
+						<span v-show="has_caption_default" v-on:click="hide_on_click($event)">Add a caption</span>
+					</figcaption>
+				</figure>
+				<div class="content-hr" v-if="'hr' == cell.tag" ref="hr-content" v-on:click="set_active($event)">
+					<hr>
+				</div>
+				<p :id="'p-content-'+cell.index"
+				   v-if="'p' == cell.tag" 
+				   class="content" 
+				   :ref="'p-content-'+cell.index"
+				   v-on:keyup="input($event)" 
+				   @mousedown="set_active($event)" 
+				   contenteditable>
+				</p>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import Pancake from './Pancake'
 
 export default {
+	name: 'cell',
+	components: {
+		Pancake
+	},
 	data() {
 		return {
 			cell: {
@@ -60,7 +73,7 @@ export default {
 			has_caption: true,
 			has_caption_default: true,
 			image_active: false,
-			is_empty: true
+			is_empty: false
 		}
 	},
 	methods: {
@@ -77,6 +90,7 @@ export default {
 			this.$emit('tag', {index: this.index, tag: 'img', 'focus': false});
 			this.$emit('active_index', this.index);
 			this.$emit('focus');
+			this.close_menu();
 
 			if(el.files && el.files[0] && this.valid_size(el.files[0].size)) {
 				var reader = new FileReader();
@@ -113,6 +127,13 @@ export default {
 			var el = event.target;
 			this.cell.caption = el.innerText;
 		},
+		close_menu() {
+			this.$nextTick(() => {
+				this.is_empty = false;
+				var menu = this.$refs['pancake-'+this.index];
+				menu.change();
+			});
+		},
 		cursor_position(collapse=true) {
 			var sel = document.getSelection();
 			sel.modify("extend", "backward", "paragraphboundary");
@@ -127,6 +148,11 @@ export default {
 				fig_ref.style.border = '';
 				this.image_active = false;
 			}
+		},
+		expand(state) {
+			this.is_empty = state;
+			if(state) this.cell.tag = '';
+			else this.cell.tag = 'p';
 		},
 		focus_next(event) {
 			event.preventDefault();
@@ -153,13 +179,6 @@ export default {
 			var el = event.target;
 			this.removeStyles(el);
 
-			if(el.innerText.length == 0) { 
-				this.is_empty = true;
-			}
-			else {
-				this.is_empty = false;
-			}
-
 			this.cell.html = el.innerHTML;
 			this.cell.text = el.innerText;
 			this.cell.last_modified = new Date();
@@ -172,16 +191,14 @@ export default {
 		},
 		remove_cell(event) {
 			if(this.index > -1) {
-				var null_p = this.cell.text != null;
+				var null_p = this.cell.text == null;
 				var remove_p = this.cell.tag == 'p' && !null_p && this.trim(this.cell.text).length == 0;
 				var remove_img = this.cell.tag == 'img' && (this.cell.caption != null && this.trim(this.cell.caption).length == 0 || this.image_active);
 				var remove_hr = this.cell.tag == 'hr';
 
 				if(remove_p || remove_img || remove_hr) {
 					// remove focus from all elements else will also accidentally delete other content
-					// document.activeElement.blur();
 					event.preventDefault();
-
 					this.$emit('remove', this.index);
 				}
 			}
@@ -246,23 +263,22 @@ export default {
 			}
 		},
 		switch_tag(tag, event) {
-			this.$emit('active_index', this.index);
-			this.$emit('tag', {index: this.index, tag: tag});
-			this.$emit('focus');
-
 			this.cell.html = '';
 			this.cell.name = '';
 			this.cell.src = '';
 			this.cell.tag = tag;
 			this.cell.text = '';
 			this.cell.last_modified = new Date();
+
+			this.$emit('active_index', this.index);
+			this.$emit('tag', {index: this.index, tag: tag});
+			this.$emit('focus');
+			this.close_menu();
 			this.save();
-			this.is_empty = tag != 'hr';
 		},
 		trim(str, all=false) {
 			if(typeof str !== 'string' && !(str instanceof String) && (typeof str == 'undefined')) return '';
-			else all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
-
+			else return all ? str.replace(/\s/g, "") : str.replace(/\n|\r/g, "");
 		},
 		valid_size(bytes) {
 			var size_mb = bytes/(Math.pow(10, 6));
@@ -292,7 +308,6 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.$nextTick(function() {
-					this.is_empty = this.cell.tag != 'p';
 					var el = document.getElementById('p-content-'+this.index);
 
 					if(el != null && curr != null && curr.length > 0) {
@@ -307,7 +322,6 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.$nextTick(function() {
-					this.is_empty = this.cell.tag != 'img';
 					var el = document.getElementById('image-content-'+this.index);
 
 					if(el != null && curr != null) {
@@ -354,7 +368,7 @@ export default {
 }
 
 .content {
-	width: 1080px;
+	width: 1060px;
 	-o-transition:.5s;
 	-ms-transition:.5s;
 	-moz-transition:.5s;
@@ -382,5 +396,16 @@ export default {
 	max-height: auto;
 	vertical-align: middle; 
 	border: 1px solid transparent;
+}
+
+.pancake {
+	margin: 17px 0;
+	width: 20px;
+	float: left;
+}
+
+.content-row {
+	float: left;
+	width: 90%;
 }
 </style>

@@ -20,7 +20,7 @@ router.post('/', function(req, res) {
 		UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 			if(err) {
 				console.error(err);
-				res.status(400).send('Invalid submission');
+				res.status(401).send('unauthorized');
 				return;
 			}
 

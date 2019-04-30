@@ -39,20 +39,36 @@ router.get('/', function(req, res) {
 	});
 });
 
-router.get('/edit', function(req, res) {
-	UserAuth.findById(req.query.user_id, function(err, profile) {
+router.post('/edit', function(req, res) {
+	var token = req.body.token;
+	
+	if(token == null) {
+		res.status(401).send({ status: false });
+		return;
+	}
+
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
+			// call force logout here!
 			console.error(err);
-			res.status(400).send('Invalid request');
+			res.status(401).send({ status: false });
 			return;
 		}
 
-		//Note: have to check if editable because section tabs cannot receive props
-		// so if user views section tab via direct link, cannot receive prop from main vue component
-		// each tab section needs to query the backend itself and determine if it's editable.
-		UserAuth.is_editable(req.query, profile, function(editable) {
-			if(editable) res.status(200).send({ editable: editable });
-			else res.status(200).send({ editable: editable });
+		UserAuth.findById({ _id: req.body.user_id }, function(err, profile) {
+			if(profile == null) {
+				console.error(err);
+				res.status(400).send({ status: false });
+				return;
+			}
+
+			//Note: have to check if editable because section tabs cannot receive props
+			// so if user views section tab via direct link, cannot receive prop from main vue component
+			// each tab section needs to query the backend itself and determine if it's editable.
+			UserAuth.is_editable(req.body, profile, function(editable) {
+				if(editable) res.status(200).send({ editable: editable });
+				else res.status(200).send({ editable: editable });
+			});
 		});
 	});
 });
@@ -151,7 +167,7 @@ router.get('/picture', function(req, res) {
 // This route is already protected with editable flag when initial profile page is requested.
 router.post('/follow', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
-		if(err) res.status(400).send('Invalid submission');
+		if(err) res.status(401).send('unauthorized');
 		else {
 			UserAuth.findById(req.body.user_id, function(err, profile) {
 				if(err) {
@@ -213,6 +229,141 @@ router.get('/following', function(req, res) {
 				res.status(200).send({ editable: editable, following: following });
 			});
 		});
+	});
+});
+
+router.post('/update_email', function(req, res) {
+	var new_email = req.body.data;
+	var email = req.body.email;
+	var token = req.body.token;
+
+	UserAuth.verify_token(token, email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		if(email.length == 0) res.status(400).send('Invalid email');
+		else {
+			UserAuth.findByEmail(email, function(err, profile) {
+				if(err) {
+					console.error(err);
+					res.status(400).send('Invalid email');
+					return;
+				}
+
+				//should implement filter for valid emails and then call here
+
+				UserAuth.get_token(email, function(new_token) {
+					profile.email = new_email;
+					profile.token = new_token;
+
+					db.User.updateOne({ _id: profile._id }, profile, function(err) {
+						if(err) console.error(err);
+						else res.status(200).send({ email: profile.email, token: profile.token });
+					});
+				});
+			});
+		}
+	});
+});
+
+router.post('/update_url', function(req, res) {
+	var email = req.body.email;
+	var token = req.body.token;
+	var url = req.body.url;
+
+	UserAuth.verify_token(token, email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		if(url.length == 0) res.status(400).send('Invalid URL');
+		else {
+			console.log(url);
+			//check that this url is unique
+			UserAuth.findByEmail(email, function(err, profile) {
+				if(profile == null) {
+					res.status(400).send('URL in use')
+					return;
+				}
+
+				profile.url = url;
+
+				db.User.updateOne({ _id: profile._id }, profile, function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ url: profile.url });
+				});
+			});
+		}
+	});
+});
+
+router.post('/update_first_name', function(req, res) {
+	var email = req.body.email;
+	var token = req.body.token;
+	var first_name = req.body.first_name;
+	console.log(req.body);
+
+	UserAuth.verify_token(token, email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		if(first_name.length == 0) res.status(400).send('Invalid email');
+		else {
+			UserAuth.findByEmail(email, function(err, profile) {
+				profile.first_name = first_name;
+
+				db.User.updateOne({ _id: profile._id }, profile, function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ first_name: profile.first_name });
+				});
+			});
+		}
+	});
+});
+
+router.post('/update_last_name', function(req, res) {
+	var email = req.body.email;
+	var token = req.body.token;
+	var last_name = req.body.last_name;
+
+	UserAuth.verify_token(token, email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		else {
+			UserAuth.findByEmail(email, function(err, profile) {
+				profile.last_name = last_name;
+
+				db.User.updateOne({ _id: profile._id }, profile, function(err) {
+					if(err) console.error(err);
+					else res.status(200).send({ last_name: profile.last_name });
+				});
+			});
+		}
+	});
+});
+
+router.post('/update_password', function(req, res) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		else {
+			var data = req.body.data;
+
+			UserAuth.update_password(data.email, data.curr_pw, data.new_pw, data.conf_pw, function(err, ok) {
+				if(ok) res.status(200).send(ok);
+				else res.status(400).send(err);
+			});
+		}
+	});
+});
+
+router.post('/deactivate', function(req, res) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		else {
+			UserAuth.findByEmail(req.body.email, function(err, profile) {
+				if(err) {
+					console.error(err);
+					res.status(400).send('Invalid request');
+					return;
+				}
+
+				UserAuth.deactivate(email, function(status) {
+					res.status(200).send('deactivated');
+				});
+			});
+		}
 	});
 });
 

@@ -14,14 +14,15 @@ router.post('/', function(req, res, next) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
+			// call force logout here!
 			console.error(err);
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -87,13 +88,13 @@ router.post('/add', function(req, res) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -119,13 +120,13 @@ router.post('/add', function(req, res) {
 router.post('/remove', function(req, res) {
 	var token = req.body.token;
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 		var data = req.body;
@@ -154,8 +155,6 @@ router.get('/', function(req, res) {
 		var user_id = req.query.user_id.length > 0 ? req.query.user_id : '';
 
 		db.Content.findOne(query, function(err, article) {
-			console.log(article != null);
-			console.log(article.is_published);
 
 			if(article != null && article.is_published) {
 				var start = new Date();
@@ -225,13 +224,13 @@ router.get('/reload', function(req, res) {
 	var token = data.token;
 
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, req.query.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -255,13 +254,13 @@ router.post('/upvote', function(req, res) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 	
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -274,13 +273,13 @@ router.post('/downvote', function(req, res) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 	
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -293,13 +292,13 @@ router.options('/cleanup', function(req, res) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 	
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
@@ -331,17 +330,36 @@ router.post('/parse', function(req, res, next) {
 	var token = req.body.token;
 	
 	if(token == null) {
-		res.status(400).send('Invalid post');
+		res.status(401).send('unauthorized');
 		return;
 	}
 	
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
-			res.status(400).send('Invalid post');
+			res.status(401).send('unauthorized');
 			return;
 		}
 		fh.write(req, res, article_storage);
 		// call pdf parsing code here
+	});
+});
+
+router.post('/report', function(req, res, next) {
+	var data = req.body;
+	data['date'] = new Date();
+	var report = new db.Abuse(data);
+
+	report.collection.dropIndexes(function(err, result) {
+		if(err) console.error(err);
+	});
+
+	report.save()
+	.then(item => {
+		res.status(200).send(true);
+	})
+	.catch(err => {
+		console.error(err);
+		res.status(400).send(false);
 	});
 });
 

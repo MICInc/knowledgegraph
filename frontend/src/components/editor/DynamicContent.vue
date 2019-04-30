@@ -74,7 +74,11 @@ export default {
 			if(this.active_index >= 0 && this.active_index < this.cells.length) {
 				this.$nextTick(() => {
 					var content = this.$refs['content-'+this.active_index][0];
-					if(this.cells[this.active_index].tag == 'p') content.set_end_contenteditable(content.$refs['p-content']);
+
+					if(this.cells[this.active_index].tag == 'p') {
+						var el = content.$refs['p-content-'+this.active_index]
+						content.set_end_contenteditable(el);
+					}
 				});
 			}
 		},

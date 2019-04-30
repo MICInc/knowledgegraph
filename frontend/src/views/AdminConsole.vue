@@ -8,7 +8,8 @@
 <script>
 import PageNav from '@/components/PageNav';
 import Console from '@/components/admin/Console';
-import AdminService from '@/services/AdminService'
+import AdminService from '@/services/AdminService';
+import AuthMixin from '@/mixins/AuthMixin';
 
 export default {
 	name: 'admin-console',
@@ -29,7 +30,8 @@ export default {
 		return {
 			accessible: false
 		}
-	}
+	},
+	mixins: [AuthMixin]
 }
 </script>
 

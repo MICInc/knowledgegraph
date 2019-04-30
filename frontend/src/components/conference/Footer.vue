@@ -6,17 +6,8 @@
 						<div class="logo"><img src="/img/mic-logo.png" alt="MIC Conference Logo" /></div>
 					</div>
 					<div class="bottom">
-						<p class="copyright">© Copyright {{year}}</p><a class="code-of-conduct" href="http://confcodeofconduct.com/"> Conference Code of Conduct</a>
-						<div>
-							<template  v-for="(value, index) in social">
-								<a class="social-links" :href="value.href">
-									<img class="social-icon" 
-										 :src="social[index].mouse ? value.img: value.hover" 
-										 @mouseover="social[index].mouse = true" 
-										 @onmouseout="social[index].mouse = false">
-								</a>
-							</template>
-						</div>
+						<p class="copyright">© Copyright {{ year }}</p><a class="code-of-conduct" href="http://confcodeofconduct.com/"> Conference Code of Conduct</a>
+						<SocialLinks></SocialLinks>
 					</div>
 				</div>
 			</div>
@@ -24,20 +15,18 @@
 </template>
 
 <script>
-	export default {
-		name: 'Footer',
-		data() {
-			return {
-				year: (new Date()).getFullYear(),
-				social: [
-					{ mouse: false, hover: '/img/social-media-icons/facebook-icon-hover.png', href: 'https://www.facebook.com/miconference', img: '/img/social-media-icons/facebook-icon.png' },
-					{ mouse: false, hover: '/img/social-media-icons/twitter-icon-hover.png', href: 'https://twitter.com/mic_conf', img: '/img/social-media-icons/twitter-icon.png' },
-					{ mouse: false, hover: '/img/social-media-icons/youtube-icon-hover.png', href: 'https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg', img: '/img/social-media-icons/youtube-icon.png' },
-					{ mouse: false, hover: '/img/social-media-icons/reddit-icon-hover.png', href: 'https://www.reddit.com/user/MICInc', img: '/img/social-media-icons/reddit-icon.png' }
-				]
-			}
+import SocialLinks from '@/components/form/SocialLinks'
+export default {
+	name: 'Footer',
+	components: {
+		SocialLinks
+	},
+	data() {
+		return {
+			year: (new Date()).getFullYear(),
 		}
 	}
+}
 </script>
 
 <style scoped>
@@ -114,16 +103,6 @@ footer .bottom a.code-of-conduct {
 
 footer .bottom .cta {
 	display: flex;
-}
-
-.social-links {
-	margin-right: 10px;
-}
-
-.social-icon {
-	margin-left: 0;
-	width: 40px;
-	margin-left: 5px;
 }
 
 </style>

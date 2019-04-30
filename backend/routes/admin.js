@@ -9,19 +9,19 @@ router.post('/', function(req, res) {
 	var email = data.email;
 	
 	if(token == null || email == null) {
-		res.status(400).send('Access denied');
+		res.status(401).send('unauthorized');
 		return;
 	}
 
 	UserAuth.verify_token(token, email, function(err, decoded) {
 		if(err) {
 			console.error(err);
-			res.status(400).send('Access denied');
+			res.status(401).send('unauthorized');
 			return;
 		}
 
 		admin.verify_access_level(email, function(err, ok) {
-			if(err || !ok) res.status(400).send('Access denied');
+			if(err || !ok) res.status(401).send('unauthorized');
 			else res.status(200).send({ status: ok });
 		});
 	});

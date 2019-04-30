@@ -2,17 +2,23 @@
 	<div class='container'>
 		<PageNav></PageNav>
 		<div>
-			<form v-on:submit.prevent="retrieveLogin">
-				<input type="email" placeholder="Email" v-model="email" required>
-				<button type="submit">Submit</button>
-			</form>
+			<h3>Forgot login</h3>
+			<div v-if="!sent">
+				<form v-on:submit.prevent="retrieve_login">
+					<input type="email" placeholder="Email" v-model="email" required>
+					<button type="submit">Submit</button>
+				</form>
+			</div>
+			<div v-else>
+				Login credentials sent! Please check your email.
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 import PageNav from '@/components/PageNav'
-import AuthService from '@/services/AuthenticationService'
+import AuthenticationService from '@/services/AuthenticationService'
 import router from '@/router'
 
 export default {
@@ -22,13 +28,16 @@ export default {
 	},
 	data() {
 		return {
-			email: ''
+			email: '',
+			sent: false
 		}
 	},
 	methods: {
-		retrieveLogin() {
-			AuthService.forgotLogin({ email: this.email });
-			router.push({ name: 'login' })
+		retrieve_login() {
+			AuthenticationService.retrieve_login({ email: this.email })
+			.then((resp) => {
+				this.send = true;
+			})
 		}
 	}
 }
@@ -51,7 +60,6 @@ form {
 	display: flex;
 	flex-direction: column;
 	width: 300px;
-	margin: 80px 0 0 0;
 }
 
 input {
@@ -70,19 +78,6 @@ label, a {
 }
 
 button {
-	background: #502984;
-	color: #FFF;
-	display: flex;
-	align-items: center;
-	vertical-align: middle;
-	display: inline-block;
-	width: 100%;
 	height: 40px;
-	font-size: 1em;
-}
-
-button:hover {
-	background: #331a54;
-	color: #FFF;
 }
 </style>

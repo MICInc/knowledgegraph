@@ -7,7 +7,7 @@ export default {
 			return Api().get('/api/profile', data)
 		},
 		canEdit(data) {
-			return Api().get('/api/profile/edit', data);
+			return Api().post('/api/profile/edit', data);
 		},
 		getProfilePic(data) {
 			return Api().get('/api/profile/picture', data);
@@ -35,5 +35,23 @@ export default {
 		},
 		get_following(data) {
 			return Api().get('/api/profile/following', data);
+		},
+		update_password(data) {
+			return Api().post('/api/profile/update_password', data);
+		},
+		update_url(data) {
+			return Api().post('/api/profile/update_url', data);
+		},
+		update_first_name(data) {
+			return Api().post('/api/profile/update_first_name', data);
+		},
+		update_last_name(data) {
+			return Api().post('/api/profile/update_last_name', data);
+		},
+		update_email(data) {
+			return Api().post('/api/profile/update_email', data);
+		},
+		deactivate(data) {
+			return Api().post('/api/profile/deactivate', data);
 		}
 }

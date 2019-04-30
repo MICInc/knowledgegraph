@@ -17,7 +17,8 @@
 			<Jumbo></Jumbo>
 			<About></About>
 			<LocationInfo></LocationInfo>
-			<OurCommunity></OurCommunity>
+			<Community></Community>
+			<Committee></Committee>
 			<Sponsors></Sponsors>
 			<Footer></Footer>
 		</div>
@@ -28,8 +29,9 @@
 	import Jumbo from '@/components/conference/Jumbo.vue'
 	import About from '@/components/conference/About.vue'
 	import LocationInfo from '@/components/conference/LocationInfo.vue'
-	import OurCommunity from '@/components/conference/OurCommunity.vue'
+	import Community from '@/components/conference/Community.vue'
 	import Sponsors from '@/components/conference/Sponsors.vue'
+	import Committee from '@/components/conference/Committee.vue'
 	import Footer from '@/components/conference/Footer.vue'
 
 	export default {
@@ -38,8 +40,9 @@
 			Jumbo,
 			About,
 			LocationInfo,
-			OurCommunity,
+			Community,
 			Sponsors,
+			Committee,
 			Footer,
 		},
 
@@ -61,11 +64,11 @@
 					{
 						name: 'Sponsors',
 						href: '#sponsors'
-					}//,
-					// {
-					// 	name: 'Conference Committee',
-					// 	href: '#committee'
-					// },
+					},
+					{
+						name: 'Conference Committee',
+						href: '#committee'
+					},
 					// {
 					// 	name: 'Schedule',
 					// 	href: '/conference/schedule/'+(new Date()).getFullYear()

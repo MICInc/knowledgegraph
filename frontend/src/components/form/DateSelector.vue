@@ -20,6 +20,8 @@ var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
 }
 
+import AuthenticationService from '@/services/AuthenticationService'
+
 export default {
 	name: 'DateSelector',
 	data() {
@@ -35,10 +37,12 @@ export default {
 	},
 	methods: {
 		emit() {
-			const date = new Date(`${this.year}-${this.month}-${this.day}`);
 			if(this.year > 0 && this.month > 0 && this.day > 0) {
-				if(Boolean(+date) && date.getDate() == this.day) this.$emit('date', date);
-				else this.error = true;
+				AuthenticationService.check_date({ year: this.year, month: this.month, day: this.day })
+				.then((resp) => {
+					var error = resp.data.error;
+					if(!error) this.$emit('date', new Date(`${this.year}-${this.month}-${this.day}`));
+				});
 			}
 		}
 	}

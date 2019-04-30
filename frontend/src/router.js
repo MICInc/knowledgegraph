@@ -29,19 +29,24 @@ export default new Router({
 			}
 		},
 		{
+			path: '/about/data',
+			name: 'data',
+			component: () => import('./views/about/Data.vue')
+		},
+		{
+			path: '/about/privacy',
+			name: 'privacy',
+			component: () => import('./views/about/Privacy.vue')
+		},
+		{
+			path: '/about/terms',
+			name: 'terms',
+			component: () => import('./views/about/Terms.vue')
+		},
+		{
 			path: '/about',
 			name: 'about',
-			component: () => import('./views/About.vue'),
-			beforeEnter: (to, from, next) => {
-				if (store.state.isLoggedIn) {
-					next()
-				} else {
-					next({
-						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
-					})
-				}
-			}
+			component: () => import('./views/about/About.vue')
 		},
 		{
 			path: '/add',
@@ -59,7 +64,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -74,7 +79,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -89,7 +94,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -104,7 +109,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -119,7 +124,7 @@ export default new Router({
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -148,19 +153,49 @@ export default new Router({
 		{
 			path: '/logout',
 			name: 'logout',
-			component: () => import('./views/Logout.vue')
-		},
-		{
-			path: '/search',
-			name: 'search',
-			component: () => import('./views/Search.vue'),
-			beforeEnter: (to, from, next) => { //remove this protected route in production May 31t, 2019
+			component: () => import('./views/Logout.vue'),
+			beforeEnter: (to, from, next) => {
 				if (store.state.isLoggedIn) {
 					next()
 				} else {
 					next({
 						name: 'login',
-						params: { error: 'You need to log in to access this route.' },
+						params: { error: 'You need to log in to access this route.' }
+					})
+				}
+			}
+		},
+		{
+			path: '/non-beta',
+			name: 'non-beta',
+			component: () => import('./views/NonBeta.vue')
+		},
+		{
+			path: '/search',
+			name: 'search',
+			component: () => import('./views/Search.vue'),
+			beforeEnter: (to, from, next) => { //remove this protected route in production May 31st, 2019
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' }
+					})
+				}
+			}
+		},
+		{
+			path: '/settings',
+			name: 'settings',
+			component: () => import('./views/Setting.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' }
 					})
 				}
 			}
@@ -168,7 +203,12 @@ export default new Router({
 		{
 			path: '/signup',
 			name: 'signup',
-			component: () => import('./views/SignUp.vue'),
+			component: () => import('./views/SignUp.vue')
+		},
+		{
+			path: '/verify',
+			name: 'verify',
+			component: () => import('./views/auth/Verify')
 		},
 		{
 			path: '/:id',

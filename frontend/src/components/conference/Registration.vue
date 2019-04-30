@@ -1,11 +1,11 @@
 <template>
-	<div id="signup-form">
+	<div id="container">
 		<div v-if="!form.complete">
-			<div>
-				An account will also be created for you by registering for the conference.
-			</div>
 			<form v-show="form.show" enctype="multipart/form-data">
 				<button v-on:click.prevent="reveal_form">Hide form</button><br>
+				<div class="top-message">
+					An account will also be created for you by registering for the conference.
+				</div>
 				<span v-if="!$store.state.isLoggedIn">
 					<label>What's your first name?</label><br>
 					<input :class="{ error: form.error.first_name }" type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
@@ -25,11 +25,11 @@
 						<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 					</select><br>
 					<label>Where can we contact you?</label><br>
-					<input :class="{ error: form.error.email }" type="text" value="email" placeholder="email" v-model.trim="profile.email"><br>
+					<input :class="{ error: form.error.email }" type="text" value="email" placeholder="email" autocomplete="email" v-model.trim="profile.email"><br>
 					<label>Password</label><br>
-					<input :class="{ error: form.error.password }" type="password" value="password" placeholder="password" v-model="profile.password"><br>
+					<input :class="{ error: form.error.password }" type="password" value="password" placeholder="password" autocomplete="new-password" v-model="profile.password"><br>
 					<label>Confirm password</label><br>
-					<input :class="{ error: form.error.confirm_pw }" type="password" value="password" placeholder="confirm password" v-model="profile.confirm_password"><br>
+					<input :class="{ error: form.error.confirm_pw }" type="password" value="password" placeholder="confirm password" autocomplete="new-password" v-model="profile.confirm_password"><br>
 				</span>
 				<label :class="{ error_font: form.error.affiliation }">Affiliation</label><br>
 				<ul>
@@ -39,7 +39,7 @@
 				</ul>
 				<label>What school do you attend?</label><br>
 				<SchoolField v-on:school="update($event)"></SchoolField>
-				<label>What grade will you be in Fall of 2018? (e.g. 2nd Year Undergraduate)</label><br>
+				<label>What grade will you be in Fall of {{ year }}? (e.g. 2nd Year Undergraduate)</label><br>
 				<select :class="{ error: form.error.grade }" name="grade" v-model="profile.grade">
 					<option v-for="grade in form.academic_year">{{ grade }}</option>
 				</select><br>
@@ -52,16 +52,14 @@
 				<textarea v-model.trim="conf_resp.q2" maxlength="200"></textarea><br>
 				<label>What do you want out of this conference and anything else we should know? (max. 200 characters)</label><br>
 				<textarea v-model.trim="conf_resp.q3" maxlength="200"></textarea><br>
-				<button v-on:click.prevent="submit">Submit</button><button v-on:click.prevent="reveal_form">Hide form</button>
+				<Disclaimer></Disclaimer>
+				<button v-on:click.prevent="submit">Submit</button>
 			</form>
 		</div>
 		<div v-if="form.complete">
 			Thanks for submititng your application for our conference!<br>
-			Please check your email for the signup confirmation link.<br>
 			Stay updated with the Machine Intelligence Community<br>
-			<a href="https://www.facebook.com/miconference/">Facebook</a>
-			<a href="https://twitter.com/mic_conf">Twitter</a>
-			<a href="https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg">YouTube</a>
+			<SocialLinks></SocialLinks>
 		</div>
 	</div>
 </template>
@@ -70,9 +68,10 @@
 import axios from 'axios'
 import AuthService from '@/services/AuthenticationService'
 import RegistrationService from '@/services/RegistrationService.js'
-import ContentService from '@/services/ContentService.js'
 import DateSelector from '@/components/form/DateSelector'
 import SchoolField from '@/components/form/SchoolField'
+import SocialLinks from '@/components/form/SocialLinks'
+import Disclaimer from '@/components/form/Disclaimer'
 
 var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
@@ -82,7 +81,9 @@ export default {
 	name: 'signup_form',
 	components: {
 		DateSelector,
-		SchoolField
+		Disclaimer,
+		SchoolField,
+		SocialLinks
 	},
 	data() {
 		return {
@@ -158,7 +159,14 @@ export default {
 				}],
 				total: '0'
 			},
-			user_id: ''
+			social: [
+				{ mouse: false, hover: '/img/social-media-icons/facebook-icon-hover.png', href: 'https://www.facebook.com/miconference', img: '/img/social-media-icons/facebook-icon.png' },
+				{ mouse: false, hover: '/img/social-media-icons/twitter-icon-hover.png', href: 'https://twitter.com/mic_conf', img: '/img/social-media-icons/twitter-icon.png' },
+				{ mouse: false, hover: '/img/social-media-icons/youtube-icon-hover.png', href: 'https://www.youtube.com/channel/UCEkwg51OD930FsyTx7bV0Pg', img: '/img/social-media-icons/youtube-icon.png' },
+				{ mouse: false, hover: '/img/social-media-icons/reddit-icon-hover.png', href: 'https://www.reddit.com/user/MICInc', img: '/img/social-media-icons/reddit-icon.png' }
+			],
+			user_id: '',
+			year: (new Date()).getFullYear()
 		}
 	},
 	methods: {
@@ -188,17 +196,21 @@ export default {
 			return await AuthService.signUpUser(this.profile);
 		},
 		submit() {
-			this.signup().then((response) => {
-				var err = response.data.error;
+			this.signup().then((resp) => {
+				var err = resp.data.error;
 				
-				if(err != undefined && response.status == 200) {
+				if(err != undefined && resp.status == 200) {
 					this.form.error = err;
 				} 
-				else if(response.status == 200) {
+				else if(resp.status == 200) {
 					var reg = { email: this.profile.email, reimbursements: this.reimburse, conf_resp: this.conf_resp };
 			
-					RegistrationService.register(reg).then((data) => {
+					RegistrationService.register(reg)
+					.then((data) => {
 						this.form.complete = data.data;
+					})
+					.catch((error) => {
+
 					});
 				}
 			});
@@ -212,19 +224,15 @@ export default {
 
 <style scoped>
 
-#signup-form {
-	margin-top: 20px;
-}
-
 label {
 	font-size: 13px;
 	font-weight: 600;
 }
 
 input {
-	border: transparent;
 	width: 600px;
 }
+
 ul {
 	margin-bottom: 10px;
 }
@@ -238,35 +246,9 @@ ul li input {
 	width: 10px;
 }
 
-.action-buttons {
-	margin-top: 10px;
-}
-
-.action-buttons button {
-	margin-right: 10px;
-}
-
-button {
-	background: #502984;
-	color: #FFF;
-	display: flex;
-	align-items: center;
-	vertical-align: middle;
-	display: inline-block;
-	width: 50%;
-	height: 40px;
-	font-size: 1em;
-}
-
-button:hover {
-	background: #331a54;
-	color: #FFF;
-}
-
 textarea {
 	width: calc(100% - 10px);
 	min-height: 75px;
-	border: transparent;
 }
 
 .birthday select {
@@ -277,6 +259,16 @@ textarea {
 	border: solid;
 	border-width: 0.5px;
 	border-color: red;
+}
+
+.social-links {
+	margin-right: 10px;
+}
+
+.social-icon {
+	margin-left: 0;
+	width: 40px;
+	margin-left: 5px;
 }
 
 </style>

@@ -1,19 +1,19 @@
+const importer = require('./import');
 var numCPUs	= require('os').cpus().length;
 var express	= require('express');
 var app	= express();
 var bodyParser = require('body-parser');
-var path = require('path');
 var fs = require('fs');
 var favicon	= require('serve-favicon');
 var helmet = require('helmet');
 var cluster = require('cluster');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 var morgan = require('morgan');
 var cors = require('cors');
 var port = process.env.PORT || 7000; //keep this or change as long as greater than 1024
 const ws = require('ws');
 const db = require('./db/database');
-var https = require('https');
 
 // master process
 if(cluster.isMaster)  {
@@ -33,7 +33,7 @@ if(cluster.isMaster)  {
 	}
 
 	cluster.on('online', function(worker, code, signal) {
-		console.log(worker.process.pid + ' online at port '+port);
+		console.log(worker.process.pid + ' online');
 	});
 
 	process.on('SIGHUP', function() {
@@ -46,6 +46,19 @@ if(cluster.isMaster)  {
 	cluster.on('exit', function(worker, code, signal) {
 		console.log(worker.process.pid + ' died');
 	});
+
+	//Set up gmail token
+	var email_handler = require('./lib/email_handler');
+	var email = 'noreply@machineintelligence.cc';
+	email_handler.send(
+		from=email, 
+		to=email, 
+		subject='Launched', 
+		message='server listening on port '+port,
+		function(err) {
+			console.error(err);
+		}
+	);
 } 
 else {
 	// Session middleware
@@ -99,35 +112,7 @@ else {
 	app.use('/api/community', community_route);
 	app.use('/api/admin', admin_route);
 
-	app.all('*', function (req, res, next) {
-		origin = req.get('origin');
-
-		// Development whitelist
-		var whitelist = ['http://localhost:8080', 'http://localhost:8081'];
-		
-		corsOptions = {
-			origin: function (origin, callback) {
-					var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-					callback(null, originIsWhitelisted);
-			}
-		};
-		
-		next();
-	});
-
-	/*
-	Steps for generating ssh private key and SSL cert:
-	1. openssl req -newkey rsa:2048 -new -nodes -keyout key.pem -out csr.pem
-	2. openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out server.crt
-	*/
-	var privateKey = fs.readFileSync('./ssl/key.pem');
-	var serverCert = fs.readFileSync('./ssl/server.crt');
-
-	const options = {
-		key: privateKey,
-		cert: serverCert,
-		passphrase: "y:_+\7d0]*!',/^>hpuLD6>/_.2?1+?64Z|>8A@4}7@1,}5S/4C>36~/%=cO"
-	};
-
-	https.createServer(options, app).listen(port);
+	var server = app.listen(port);
+	
+	console.log('Listening on port ' + port);
 }

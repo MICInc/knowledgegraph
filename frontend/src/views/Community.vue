@@ -14,9 +14,9 @@
 
 
 <script>
-import PageNav from '@/components/PageNav'
-import CommunityService from '@/services/CommunityService'
-import Footer from '@/components/Footer'
+import PageNav from '@/components/PageNav';
+import CommunityService from '@/services/CommunityService';
+import Footer from '@/components/Footer';
 
 export default {
 	name: 'community',
@@ -50,23 +50,6 @@ export default {
 .main {
 	display: flex;
 	flex-direction: column;
-}
-
-button {
-	background: #502984;
-	color: #FFF;
-	display: flex;
-	align-items: center;
-	vertical-align: middle;
-	display: inline-block;
-	width: 30%;
-	height: 40px;
-	font-size: 1em;
-}
-
-button:hover {
-	background: #331a54;
-	color: #FFF;
 }
 
 </style>

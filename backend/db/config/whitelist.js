@@ -1,5 +1,6 @@
 module.exports = [
 	'ch3njus@gmail.com',
+	'justin@machineintelligence.cc',
 	'devin@machineintelligence.cc',
 	'ajay@machineintelligence.cc',
 	'jackie@machineintelligence.cc',
@@ -13,5 +14,7 @@ module.exports = [
 	'vram@bu.edu',
 	'zui@bu.edu',
 	'yutsumi@mit.edu',
-	'g.aridor@columbia.edu'
+	'g.aridor@columbia.edu',
+	'dpz@bu.edu',
+	'luciav@bu.edu'
 ]

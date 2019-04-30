@@ -4,3 +4,7 @@
 node_modules/
 backend/storage/
 backend/ssl/
+backend/config/gmail
+*/credentials.json
+*/token.json
+

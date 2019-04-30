@@ -23,7 +23,9 @@
 		data() {
 			return {
 				committee: [
-					{name: 'Justin Chen', title: 'Head Coordinator'}
+					{ name: 'Justin Chen', title: 'Head Coordinator' },
+					{ name: 'Lucia Vilallonga', title: 'Director of Diversity' },
+					{ name: 'Daniel Zhou', title: 'Director of Programs' }
 				]
 			}
 		}

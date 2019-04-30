@@ -1,7 +1,7 @@
 <template>
-	<div class="about">
+	<div class="container">
 		<PageNav></PageNav>
-		<div class="container">
+		<div>
 			<h1>Mission statement</h1>
 			<p>{{ mission.statement }}</p>
 			<h1>Board of Directors</h1>

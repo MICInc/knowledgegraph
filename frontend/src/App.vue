@@ -5,8 +5,16 @@
 </template>
 
 <script>
+import AuthenticationService from '@/services/AuthenticationService';
+import router from '@/router';
 
 export default {
+	data() {
+		return {
+			token: this.$store.state.accessToken,
+			email: this.$store.state.userInfo.email
+		}
+	}
 }
 </script>
 
@@ -30,15 +38,31 @@ body {
 }
 
 button {
-	border: none;
+	margin: 20px 0px;
+	border-radius: 4px;
 	box-shadow: none;
 	outline: none;
-	background-color: transparent;
+	background: transparent;
+	color: #502984;
+	align-items: center;
+	vertical-align: middle;
+	display: inline-block;
+	font-size: 1em;
+	border-width: 1px;
+	border-style: solid;
+	transition: border-color .5s ease-in-out;
+	-webkit-transition: border-color .5s ease-in-out;
+	-moz-transition: border-color .5s ease-in-out;
 }
 
 button:hover {
 	cursor: pointer;
-	color: #56277a;
+	border-color: #3d0784;
+	border-width: 1px;
+	border-style: solid;
+	transition: border-color .5s ease-in-out;
+	-webkit-transition: border-color .5s ease-in-out;
+	-moz-transition: border-color .5s ease-in-out;
 }
 
 textarea, input {
@@ -48,10 +72,21 @@ textarea, input {
 	margin: 10px 0;
 	resize: none;
 	font-size: 1em;
+	border: none;
+	font-family: 'Avenir', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 textarea:focus, input:focus {
-	outline: none;
+	border-style:none
+}
+
+select {
+}
+
+select::-ms-expand {
+    display: none;
 }
 
 ul {

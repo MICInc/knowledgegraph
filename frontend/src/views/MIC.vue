@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import PageNav from '@/components/PageNav.vue'
-import CommunityService from '@/services/CommunityService'
+import PageNav from '@/components/PageNav.vue';
+import CommunityService from '@/services/CommunityService';
 
 export default {
 	name: 'mic-container',

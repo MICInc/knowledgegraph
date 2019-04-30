@@ -33,5 +33,8 @@ export default {
 		},
 		canEdit(data) {
 			return Api().get('/api/content/edit', data);
+		},
+		report(data) {
+			return Api().post('/api/content/report', data);
 		}
 }

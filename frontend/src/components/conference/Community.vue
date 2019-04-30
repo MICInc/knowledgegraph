@@ -6,7 +6,9 @@
 			</div>
 			<div class="school-grid">
 				<div class="school-tile">
-					<a class="school-tile shield" v-for="(c, index) in community" :href=c.href><img :src='c.img' :alt='c.alt'></a>
+					<a class="school-tile shield" v-for="(c, index) in community" :href="c.href">
+						<img :src="c.img" :alt="c.alt">
+					</a>
 				</div>
 			</div>
 		</div>

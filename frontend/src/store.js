@@ -22,6 +22,26 @@ export default new Vuex.Store({
 
 		setUserInfo (state, obj) {
 			Vue.set(state, 'userInfo', obj)
+		},
+
+		setEmail(state, email) {
+			state.userInfo.email = email;
+		},
+
+		setFirstName(state, name) {
+			state.userInfo.first_name = name;
+		},
+
+		setLastName(state, name) {
+			state.userInfo.last_name = name;
+		},
+
+		setSessionID(state, sess) {
+			state.userInfo.sess_id = sess;
+		},
+
+		setURL(state, url) {
+			state.userInfo.url = url;
 		}
   },
 

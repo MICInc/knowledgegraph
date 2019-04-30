@@ -36,20 +36,27 @@
 					autocomplete="new-password"
 					required>
 			</div>
+			<Disclaimer></Disclaimer>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
+		<div v-if="form.submitted">
+			Check your email so we know it's you.<br>
+			If you didn't receive the verification email, please check your spam folder. Or, click <a href="">here</a> to resend it.
+		</div>
 	</div>
 </template>
 
 <script>
 import DateSelector from '@/components/form/DateSelector'
 import AuthService from '@/services/AuthenticationService'
+import Disclaimer from '@/components/form/Disclaimer'
 import router from '@/router'
 
 export default {
 	name: 'join',
 	components: {
-		DateSelector
+		DateSelector,
+		Disclaimer
 	},
 	data () {
 		return {
@@ -63,7 +70,8 @@ export default {
 					password: false,
 					confirm_password: false
 				},
-				gender: ['Female', 'Male', 'Non-binary']
+				gender: ['Female', 'Male', 'Non-binary'],
+				submitted: false
 			},
 			profile: {
 				confirm_password: '',
@@ -88,8 +96,8 @@ export default {
 					this.form.error = err;
 				} else if (response.status == 200) {
 					// Login newly created l=user
-					this.$store.dispatch('login', [response.data.token, response.data.userInfo])
-					router.push({ name: 'home' })	
+					// this.$store.dispatch('login', [response.data.token, response.data.userInfo]);
+					this.form.submitted = true;
 				}
 			});
 		},
@@ -148,8 +156,8 @@ label, a {
 }
 
 button {
-	background: #502984;
-	color: #FFF;
+	background: transparent;
+	color: #502984;
 	display: flex;
 	align-items: center;
 	vertical-align: middle;
@@ -160,8 +168,7 @@ button {
 }
 
 button:hover {
-	background: #331a54;
-	color: #FFF;
+	border-color: #502984;
 }
 
 </style>
