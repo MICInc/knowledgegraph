@@ -273,9 +273,10 @@ router.post('/update_url', function(req, res) {
 		if(err) res.status(401).send('unauthorized');
 		if(url.length == 0) res.status(400).send('Invalid URL');
 		else {
+			console.log(url);
 			//check that this url is unique
-			UserAuth.findByUR(url, function(err, profile) {
-				if(profile != null) {
+			UserAuth.findByEmail(email, function(err, profile) {
+				if(profile == null) {
 					res.status(400).send('URL in use')
 					return;
 				}

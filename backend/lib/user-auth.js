@@ -6,6 +6,7 @@ var filter = require('./filter');
 const token = require('./token');
 const email = require('./email_handler');
 const EXPIRE_DAYS = 48;
+const VERI_LENG = 64;
 
 module.exports = {
 	format: function(profile) {
@@ -39,7 +40,7 @@ module.exports = {
 			subjects: [],
 			url: (profile.first_name+'-'+profile.last_name).toLowerCase(),
 			user_type: 0,
-			verification: { code: utils.uniqueID(16), date: new Date(), status: false }
+			verification: { code: utils.uniqueID(VERI_LENG), date: new Date(), status: false }
 		}
 	},
 	// TODO: Update module.exports to match model - replace defaults
@@ -50,10 +51,10 @@ module.exports = {
 				return;
 			}
 
-			var salt = crypto.randomBytes(64).toString('base64');
+			var salt = crypto.randomBytes(VERI_LENG).toString('base64');
 
 			// Hash password
-			crypto.pbkdf2(profile.password, salt, 10000, 64, 'sha512', function(err, key) {
+			crypto.pbkdf2(profile.password, salt, 10000, VERI_LENG, 'sha512', function(err, key) {
 				if(err) callback(err, '', null);
 				else {
 					var user = new db.User(module.exports.format(profile));
@@ -114,7 +115,7 @@ module.exports = {
 
 			if(user != null) {
 				// Salt password to see if hashes will match with the user's salt
-				crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key) {
+				crypto.pbkdf2(password, user.salt, 10000, VERI_LENG, 'sha512', function(err, key) {
 					if(err) console.error(err);
 					
 					// Want a constant time string comparison
@@ -256,7 +257,7 @@ module.exports = {
 			}
 
 			// check current password
-			crypto.pbkdf2(curr_pw, profile.salt, 10000, 64, 'sha512', function(err, key) {
+			crypto.pbkdf2(curr_pw, profile.salt, 10000, VERI_LENG, 'sha512', function(err, key) {
 				if(err) {
 					console.error(err);
 					callback('Unexpected error', false);
@@ -264,9 +265,9 @@ module.exports = {
 				}
 				
 				if(profile.password_hash == key.toString('hex')) {
-					var salt = crypto.randomBytes(64).toString('base64');
+					var salt = crypto.randomBytes(VERI_LENG).toString('base64');
 
-					crypto.pbkdf2(new_pw, salt, 10000, 64, 'sha512', function(err, new_key) {
+					crypto.pbkdf2(new_pw, salt, 10000, VERI_LENG, 'sha512', function(err, new_key) {
 						if(err) {
 							console.error(err);
 							callback('Unexpected error', false);
@@ -370,11 +371,11 @@ module.exports = {
 				return;
 			}
 
-			var password = utils.uniqueID(64);
-			user.salt = crypto.randomBytes(64).toString('base64');
+			var password = utils.uniqueID(VERI_LENG);
+			user.salt = crypto.randomBytes(VERI_LENG).toString('base64');
 
 			// Hash password
-			crypto.pbkdf2(password, user.salt, 10000, 64, 'sha512', function(err, key) {
+			crypto.pbkdf2(password, user.salt, 10000, VERI_LENG, 'sha512', function(err, key) {
 				if(err) callback(err, '', null);
 				else {
 					user.password_hash = key.toString('hex');
