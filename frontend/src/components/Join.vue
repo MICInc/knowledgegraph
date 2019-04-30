@@ -39,6 +39,10 @@
 			<Disclaimer></Disclaimer>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
+		<div v-if="form.submitted">
+			Check your email so we know it's you.<br>
+			If you didn't receive the verification email, please check your spam folder. Or, click <a href="">here</a> to resend it.
+		</div>
 	</div>
 </template>
 
@@ -66,7 +70,8 @@ export default {
 					password: false,
 					confirm_password: false
 				},
-				gender: ['Female', 'Male', 'Non-binary']
+				gender: ['Female', 'Male', 'Non-binary'],
+				submitted: false
 			},
 			profile: {
 				confirm_password: '',
@@ -92,7 +97,7 @@ export default {
 				} else if (response.status == 200) {
 					// Login newly created l=user
 					// this.$store.dispatch('login', [response.data.token, response.data.userInfo]);
-					router.push({ name: 'non-beta' });	
+					this.form.submitted = true;
 				}
 			});
 		},

@@ -48,7 +48,7 @@ export default {
 				if(resp.data != null) {
 					this.verified = true;
 					this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
-					router.push({ name: 'home' });
+					router.push({ name: 'non-beta' });
 				}
 				else {
 					AuthenticationService.logoutUser(this.$store.state.userInfo);
