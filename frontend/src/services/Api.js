@@ -3,7 +3,7 @@ import store from '@/store'
 
 export default () => {
     return axios.create({
-        // baseURL: `https://machineintelligence/`,
+        // baseURL: `https://machineintelligence.cc/`,
         baseURL: `http://localhost:7000/`,
         withCredentials: true,
         headers: {

@@ -46,3 +46,8 @@ Find and view specific property of a document. First parameter is query. Second 
 ```
 db.users.find({ email: 'ch3njus@gmail.com'}, { user_type: 1 })
 ```
+
+To remove a record via Mongo shell
+```
+db.users.remove({ email: 'justin@machineintelligence.cc'})
+```

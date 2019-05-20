@@ -22,6 +22,12 @@
 		data() {
 			return {
 				sponsors: [{
+						href: '',
+						tier: 'tier-two',
+						src: '/img/sponsors/ibm-logo.png',
+						alt: 'IBM'
+					},
+					{
 						href: 'https://www.intel.com/',
 						tier: 'tier-one',
 						src: '/img/sponsors/intel-ai-logo.png',
