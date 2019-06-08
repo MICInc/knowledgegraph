@@ -49,16 +49,16 @@ if(cluster.isMaster)  {
 
 	//Set up gmail token
 	var email_handler = require('./lib/email_handler');
-	var email = 'noreply@machineintelligence.cc';
-	email_handler.send(
-		from=email, 
-		to=email, 
-		subject='Launched', 
-		message='server listening on port '+port,
-		function(err) {
-			console.error(err);
-		}
-	);
+	// var email = 'noreply@machineintelligence.cc';
+	// email_handler.send(
+	// 	from=email, 
+	// 	to=email, 
+	// 	subject='Launched', 
+	// 	message='server listening on port '+port,
+	// 	function(err) {
+	// 		console.error(err);
+	// 	}
+	// );
 } 
 else {
 	// Session middleware

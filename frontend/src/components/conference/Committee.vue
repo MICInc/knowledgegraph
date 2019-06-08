@@ -25,7 +25,8 @@
 				committee: [
 					{ name: 'Justin Chen', title: 'Head Coordinator' },
 					{ name: 'Lucia Vilallonga', title: 'Director of Diversity' },
-					{ name: 'Daniel Zhou', title: 'Director of Programs' }
+					{ name: 'Daniel Zhou', title: 'Director of Programs' },
+					{ name: 'Justin Kwong', title: 'Director of Communications'}
 				]
 			}
 		}

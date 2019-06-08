@@ -4,9 +4,11 @@
 		<div class="container" v-if="check_content()">
 			<h2>{{ content.title }}</h2>
 			<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">edit</router-link>
-			<Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id" :abbrev="false"></Vote>
-			<label>citations </label>
-			<span>{{ content.num_citations }}</span><br>
+			<!-- <Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id" :abbrev="false"></Vote> -->
+			<!-- <label>citations </label> -->
+			<!-- <span>{{ content.num_citations }}</span><br> -->
+			<Prereq></Prereq>
+			<Subseq></Subseq>
 			<button type="button" v-on:click="report_abuse()">...</button><br>
 			<Modal
 				:url="url"
@@ -45,6 +47,8 @@ import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
 import Vote from '@/components/Vote'
 import Modal from '@/components/form/Modal'
+import Prereq from '@/components/form/Prereq'
+import Subseq from '@/components/form/Subseq'
 
 export default {
 	name: 'Content',
@@ -60,7 +64,9 @@ export default {
 		Footer,
 		NotFoundMsg,
 		Vote,
-		Modal
+		Modal,
+		Prereq,
+		Subseq
 	},
 	data () {
 		return {
