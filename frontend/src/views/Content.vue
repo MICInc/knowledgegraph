@@ -11,8 +11,10 @@
 			<span class='author' v-for='author in content.authors'>
 				<a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a>
 			</span><br>
-			<Prereq></Prereq>
-			<Subseq></Subseq>
+			<div class="prereq-subseq-box">
+				<Prereq></Prereq>
+				<Subseq></Subseq>
+			</div>
 			<Abuse
 				:url="url"
 				:content_id="content_id"
@@ -185,6 +187,9 @@ button {
 .modal {
 	display: table-cell;
 	vertical-align: middle;
+}
+
+.prereq-subseq-box {
 }
 
 #bibtex {
