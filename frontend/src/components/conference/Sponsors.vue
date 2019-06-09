@@ -22,7 +22,7 @@
 		data() {
 			return {
 				sponsors: [{
-						href: '',
+						href: 'https://mitibmwatsonailab.mit.edu/',
 						tier: 'tier-two',
 						src: '/img/sponsors/ibm-logo.png',
 						alt: 'IBM'

@@ -1,22 +1,25 @@
 <template>
 	<div class='container'>
 		<div class="result">
-			<div class="vote">
+			<!-- <div class="vote">
 				<Vote :likes="item.likes" :dislikes="item.dislikes" :content_id="item.id" :abbrev="true"></Vote>
-			</div>
-			<div class="vote">
-				<a :href="'/content/'+item.url">{{ item.title }}</a>
+			</div> -->
+			<div class="item">
+				<a :href="'/content/'+item.url">{{ item.title }}</a><br>
+				<span>{{ item.preview }}</span><br>
+				<span class="search-article-meta">modified: {{ (new Date(item.last_modified)).toDateString() }}</span>
+				<span class="search-article-meta">created: {{ (new Date(item.date_created)).toDateString() }}</span>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import Vote from '@/components/Vote'
+// import Vote from '@/components/Vote'
 export default {
 	name: 'ArticleCell',
 	components: {
-		Vote
+		// Vote
 	},
 	data() {
 		return {
@@ -49,11 +52,16 @@ export default {
 	display: inline-block;
 }
 
-.vote {
-	width: 50px;
-	height: 50px;
+.item {
+	width: auto;
+	height: auto;
 	margin: 0px;
 	padding: 0px;
 	display: inline-block;
+}
+
+.search-article-meta {
+	font-size: 0.8em;
+	margin-right: 1em;
 }
 </style>

@@ -48,7 +48,7 @@ if(cluster.isMaster)  {
 	});
 
 	//Set up gmail token
-	var email_handler = require('./lib/email_handler');
+	// var email_handler = require('./lib/email_handler');
 	// var email = 'noreply@machineintelligence.cc';
 	// email_handler.send(
 	// 	from=email, 

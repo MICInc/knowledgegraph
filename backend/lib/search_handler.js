@@ -7,7 +7,7 @@ module.exports = {
 	},
 	filter_results: function(content) {
 		var filtered = [];
-
+		
 		for(var i in content) {
 			filtered.push({ 
 				id: content[i]._id,
@@ -15,8 +15,8 @@ module.exports = {
 				authors: content[i].authors,
 				preview: content[i].preview,
 				url: content[i].url,
-				likes: content[i].num_likes,
-				dislikes: content[i].num_dislikes,
+				last_modified: content[i].last_modified,
+				date_created: content[i].date_created
 			});
 		}
 		
