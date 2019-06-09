@@ -115,6 +115,9 @@ export default {
 </script>
 
 <style scoped>
+button {
+	border: none;
+}
 
 .article-info {
 	width: 1080px;
