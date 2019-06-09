@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<h3>Subsequent</h3>
+		<h4>Subsequent</h4>
 	</div>
 </template>
 

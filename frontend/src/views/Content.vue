@@ -2,22 +2,29 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container" v-if="check_content()">
+			<div class="article-control-bar">
+				<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">Edit</router-link>
+				<button class="modal" type="button" v-on:click="share()">Share</button>
+				<button class="modal" type="button" v-on:click="report_abuse()">...</button>
+			</div>
 			<h2>{{ content.title }}</h2>
-			<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">edit</router-link>
-			<!-- <Vote :likes="content.num_likes" :dislikes="content.num_dislikes" :content_id="content_id" :abbrev="false"></Vote> -->
-			<!-- <label>citations </label> -->
-			<!-- <span>{{ content.num_citations }}</span><br> -->
+			<span class='author' v-for='author in content.authors'>
+				<a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a>
+			</span><br>
 			<Prereq></Prereq>
 			<Subseq></Subseq>
-			<button type="button" v-on:click="report_abuse()">...</button><br>
-			<Modal
+			<Abuse
 				:url="url"
 				:content_id="content_id"
-				v-show="isModalVisible" 
+				v-show="isAbuseModalVisible" 
 				v-on:close="close_report()">
-			</Modal>
-			<h3 id="authors">Authors</h3>
-			<span class='authors' v-for='author in content.authors'><a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a></span>
+			</Abuse>
+			<Share
+				:url="url"
+				:content_id="content_id"
+				v-show="isShareModalVisible" 
+				v-on:close="close_share()">
+			</Share>
 			<div v-for="c in content.publication">
 				<div class="article-info">
 					<figure v-if="c.tag == 'img'">
@@ -46,7 +53,8 @@ import ContentService from '@/services/ContentService'
 import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
 import Vote from '@/components/Vote'
-import Modal from '@/components/form/Modal'
+import Abuse from '@/components/form/AbuseModal'
+import Share from '@/components/form/ShareModal'
 import Prereq from '@/components/form/Prereq'
 import Subseq from '@/components/form/Subseq'
 
@@ -64,7 +72,8 @@ export default {
 		Footer,
 		NotFoundMsg,
 		Vote,
-		Modal,
+		Abuse,
+		Share,
 		Prereq,
 		Subseq
 	},
@@ -76,7 +85,8 @@ export default {
 			user_id: this.$store.state.userInfo.id,
 			token: this.$store.state.accessToken,
 			editable: false,
-			isModalVisible: false
+			isShareModalVisible: false,
+			isAbuseModalVisible: false,
 		}
 	},
 	methods: {
@@ -104,11 +114,17 @@ export default {
 		check_content() {
 			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
 		},
+		share() {
+			this.isShareModalVisible = true;
+		},
 		report_abuse() {
-			this.isModalVisible = true;
+			this.isAbuseModalVisible = true;
 		},
 		close_report() {
-			this.isModalVisible = false;
+			this.isAbuseModalVisible = false;
+		},
+		close_share() {
+			this.isShareModalVisible = false;
 		}
 	}
 }
@@ -117,6 +133,10 @@ export default {
 <style scoped>
 button {
 	border: none;
+}
+
+.article-control-bar {
+	border-bottom: 1px solid #dedede;
 }
 
 .article-info {
@@ -146,16 +166,25 @@ button {
 
 #authors {
 	font-size: 0.85em;
-	margin-bottom: 0px;
+	font-weight: bold;
+	margin-bottom: 0;
+	padding-bottom: 0;
 }
 
-.authors {
+.author {
+	margin-top: 0;
+	padding: 0;
 	font-size: 0.85em;
 }
 
 .edit {
 	font-size: 0.85em;
-	font-weight: bold;
+	background-color: yellow;
+}
+
+.modal {
+	display: table-cell;
+	vertical-align: middle;
 }
 
 #bibtex {

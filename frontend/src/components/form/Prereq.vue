@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<h3>Prerequisites</h3>
+		<h4>Prerequisites</h4>
 	</div>
 </template>
 
