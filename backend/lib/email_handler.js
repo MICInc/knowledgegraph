@@ -37,6 +37,8 @@ module.exports = {
 				message: message
 			}
 
+			console.log(mail);
+
 			module.exports.authorize(JSON.parse(content), mail, module.exports.sendMessage);
 		});
 	},
@@ -58,7 +60,7 @@ module.exports = {
 			callback(oAuth2Client, mail);
 		});
 	},
-	makeBody: function (to, from, subject, message) {
+	makeBody: function (from, to, subject, message) {
 		var str = ["Content-Type: text/html; charset=\"UTF-8\"\n",
 			"MIME-Version: 1.0\n",
 			"Content-Transfer-Encoding: 7bit\n",
