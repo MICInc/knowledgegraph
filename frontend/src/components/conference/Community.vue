@@ -109,8 +109,8 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin: 50px 0 0 0;
-	/*background-color: #000;*/
+	margin: 25px 0 0 0;
+	padding: 0 2em;
 }
 
 .school-tile .shield img {
