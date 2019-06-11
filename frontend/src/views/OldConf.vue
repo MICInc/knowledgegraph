@@ -16,7 +16,6 @@
 		<div class="content-wrapper">
 			<Jumbo></Jumbo>
 			<About></About>
-			<LocationInfo></LocationInfo>
 			<Community></Community>
 			<Committee></Committee>
 			<Sponsors></Sponsors>

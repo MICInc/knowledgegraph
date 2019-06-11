@@ -18,7 +18,8 @@
 						<h1>Machine Intelligence Conference</h1>
 					</div>
 					<div class="sub-heading">
-						<h2>Sep. 7th, 2019 - 1st Floor of Boston University's Center for Integrated Life Sciences & Engineering</h2>
+						<h2>Sep. 7th, 2019</h2><br>
+						<h2>1st Floor of Boston University's Center for Integrated Life Sciences & Engineering</h2>
 					</div>
 				</div>
 			</div>

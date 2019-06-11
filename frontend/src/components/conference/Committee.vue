@@ -6,12 +6,17 @@
 			</div>
 			<div class="columns">
 				<div class="left">
-					<div class="members" v-for="(member, index) in committee">
+					<div class="members" v-for="(member, index) in committee.slice(0,committee.length/2)">
 						<div class="title">{{ member.title }}</div>
 						<div class="names">{{ member.name }}</div>
 					</div>
 				</div>
-				<!-- <div class="right"></div> -->
+				<div class="right">
+					<div class="members" v-for="(member, index) in committee.slice(committee.length/2)">
+						<div class="title">{{ member.title }}</div>
+						<div class="names">{{ member.name }}</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -26,7 +31,7 @@
 					{ name: 'Justin Chen', title: 'Head Coordinator' },
 					{ name: 'Lucia Vilallonga', title: 'Director of Diversity' },
 					{ name: 'Daniel Zhou', title: 'Director of Programs' },
-					{ name: 'Justin Kwong', title: 'Director of Communications'}
+					{ name: 'Justin Kwong', title: 'Volunteer'}
 				]
 			}
 		}
