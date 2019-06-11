@@ -208,7 +208,13 @@ export default {
 					this.form.error = err;
 				} 
 				else if(resp.status == 200) {
-					var reg = { email: this.profile.email, reimbursements: this.reimburse, conf_resp: this.conf_resp };
+					var reg = { 
+						email: this.profile.email, 
+						first_name: this.profile.first_name,
+						last_name: this.profile.last_name,
+						reimbursements: this.reimburse, 
+						conf_resp: this.conf_resp 
+					};
 			
 					RegistrationService.register(reg)
 					.then((data) => {

@@ -70,12 +70,12 @@ module.exports = {
 					user.save(function(err, profile) {
 						if(err) console.error(err);
 						else {
-							var subject = 'Welcome to MIC';
+							var subject = email.welcome.subject;
 							var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
 							var message = 'Please verify your email address '+ver_url+'. This email expires in '+EXPIRE_DAYS+' hours.';
 							
 							email.send(
-								from='noreply@machineintelligence.cc', 
+								from=email.welcome.email, 
 								to=user.email, 
 								subject=subject, 
 								message=message
@@ -347,13 +347,13 @@ module.exports = {
 			db.User.updateOne({ _id: user._id }, user, function(err) {
 				if(err) console.error(err);
 
-				var subject = 'Welcome to MIC';
+				var subject = email.welcome.subject;
 				var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
 				var message = 'Please verify your email address '+ver_url+'. This token expires in '+EXPIRE_DAYS+' hours.<br><br>'
 							+'The Machine Intelligence Community Team';
 				
 				email.send(
-					from='noreply@machineintelligence.cc', 
+					from=email.welcome.email, 
 					to=user.email, 
 					subject=subject, 
 					message=message
@@ -383,12 +383,11 @@ module.exports = {
 					db.User.updateOne({ _id: user._id }, user, function(err) {
 						if(err) console.error(err);
 
-						var subject = 'MIC Password Reset';
-						var message = 'Your new password: '+password+'<br>Please login and change your password.<br><br>'
-									+'The Machine Intelligence Community Team';
+						var subject = email.pw_reset.subject;
+						var message = 'Your new password: ${password}<br>Please login and change your password.<br><br>The Machine Intelligence Community Team'
 						
 						email.send(
-							from='noreply@machineintelligence.cc', 
+							from=email.pw_reset.email, 
 							to=user.email, 
 							subject=subject, 
 							message=message

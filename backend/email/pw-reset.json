@@ -1,0 +1,5 @@
+{
+	"email": "no-reply@machineintelligence.cc",
+	"subject": "MIC Password Reset",
+	"message": "Your new password: ${password}<br>Please login and change your password.<br><br>The Machine Intelligence Community Team"
+}

@@ -1,0 +1,5 @@
+{
+	"email": "no-reply@machineintelligence.cc",
+	"subject": "Machine Intelligence Conference",
+	"message": "Hi ${name},\nThank you for registering for Machine Intelligence Conference ${year}. Follow Machine Intelligence Community on social media."
+}

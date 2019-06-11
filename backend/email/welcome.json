@@ -1,0 +1,5 @@
+{
+	"email": "no-reply@machineintelligence.cc",
+	"subject": "Welcome to MIC",
+	"message": "Please verify your email address ${ver_url}. This email expires in ${EXPIRE_DAYS} hours."
+}

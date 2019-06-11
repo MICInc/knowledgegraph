@@ -3,6 +3,9 @@ const readline = require('readline');
 const {google} = require('googleapis');
 const credentials = abs_path('config/gmail/noreply/credentials.json');
 const TOKEN_PATH = abs_path('config/gmail/noreply/token.json');
+var conf = require('../email/conference.json');
+var welcome = require('../email/welcome.json');
+var pw_reset = require('../email/pw-reset.json');
 var utils = require('./utils');
 
 // If modifying these scopes, delete token.json.
@@ -19,6 +22,9 @@ var SCOPES = [
 // time.
 
 module.exports = {
+	welcome: welcome,
+	pw: pw_reset,
+	conf: conf,
 	send: function(from, to, subject, message) {
 		// Load client secrets from a local file.
 		fs.readFile(credentials, (err, content) => {
