@@ -37,7 +37,12 @@
 						<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation">{{ affiliation }}
 					</li>
 				</ul>
-				<label>What school do you attend?</label><br>
+				<span v-if="profile.affiliation==='MIC Alum'">
+					<label>What school did you attend?</label><br>
+				</span>
+				<span v-else>
+					<label>What school do you attend?</label><br>
+				</span>
 				<SchoolField v-on:school="update($event)"></SchoolField>
 				<label>What grade will you be in Fall of {{ year }}? (e.g. 2nd Year Undergraduate)</label><br>
 				<select :class="{ error: form.error.grade }" name="grade" v-model="profile.grade">
@@ -94,7 +99,7 @@ export default {
 				q3: ''
 			},
 			form: {
-				affiliation: ['MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
+				affiliation: ['MIC Alum', 'MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
 				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
 					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
 				complete: false,
