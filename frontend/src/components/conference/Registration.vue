@@ -24,7 +24,8 @@
 					<select :class="{ error: form.error.ethnicity.ok }" name="ethnicity" v-model="profile.ethnicity">
 						<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 					</select><br>
-					<label>Where can we contact you?</label><br>
+					<label>Where can we contact you?</label>
+					<span class="error-msg" v-if="form.error.email.ok">{{form.error.email.desc}}</span><br>
 					<input :class="{ error: form.error.email.ok }" type="text" value="email" placeholder="email" autocomplete="email" v-model.trim="profile.email"><br>
 					<label>Password</label><br>
 					<input :class="{ error: form.error.password.ok }" type="password" value="password" placeholder="password" autocomplete="new-password" v-model="profile.password"><br>
@@ -238,6 +239,7 @@ export default {
 label {
 	font-size: 13px;
 	font-weight: 600;
+	margin-right: 1em;
 }
 
 input {
@@ -270,6 +272,12 @@ textarea {
 	border: solid;
 	border-width: 0.5px;
 	border-color: red;
+}
+
+.error-msg {
+	color: red;
+	font-size: 13px;
+	font-weight: 600;
 }
 
 .social-links {
