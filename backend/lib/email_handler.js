@@ -59,11 +59,13 @@ module.exports = {
 			callback(oAuth2Client, mail);
 		});
 	},
-	format_message: function(recipient) {
-		text = conf.message;
+	format_message: function(recipient, text) {
 		text = text.replace('${name}', recipient);
 		text = text.replace('${year}', (new Date()).getFullYear());
 		return text.replace('${sig}', utils.base64(signature));
+	},
+	verify_acct: function(name, ver_url, exp_days) {
+		return module.exports.format_message(name, welcome.message).replace('${ver_url}', ver_url).replace('${exp_days}', exp_days);
 	},
 	makeBody: function (from, to, subject, message) {
 		var str = ["Content-Type: text/html; charset=\"UTF-8\"\n",

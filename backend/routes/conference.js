@@ -10,7 +10,7 @@ const email = require('../lib/email_handler');
 
 router.post('/register', function(req, res) {
 	ah.save(req.body, function(status) {
-		message = email.format_message(req.body.first_name);
+		message = email.format_message(req.body.first_name, email.conf.message);
 
 		email.send(from=email.conf.email, 
 			to=req.body.email, 

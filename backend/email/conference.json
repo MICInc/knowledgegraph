@@ -1,5 +1,5 @@
 {
 	"email": "no-reply@machineintelligence.cc",
 	"subject": "Machine Intelligence Conference",
-	"message": "Hi ${name},<br><br>Thank you for registering for Machine Intelligence Conference ${year}. Follow Machine Intelligence Community on social media.<br><br><img src=\"data:image/png;base64,${sig}\"/>"
+	"message": "Hi ${name},<br><br>Thank you for registering for Machine Intelligence Conference ${year}. Follow Machine Intelligence Community on social media.<br><br>Machine Intelligence Community Team<br><img src=\"data:image/png;base64,${sig}\"/>"
 }

@@ -70,14 +70,13 @@ module.exports = {
 					user.save(function(err, profile) {
 						if(err) console.error(err);
 						else {
-							var subject = email.welcome.subject;
 							var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
-							var message = 'Please verify your email address '+ver_url+'. This email expires in '+EXPIRE_DAYS+' hours.';
-							
+							message = email.verify_acct(user.first_name, ver_url, EXPIRE_DAYS);
+				
 							email.send(
 								from=email.welcome.email, 
 								to=user.email, 
-								subject=subject, 
+								subject=email.welcome.subject, 
 								message=message
 							);
 
@@ -347,15 +346,13 @@ module.exports = {
 			db.User.updateOne({ _id: user._id }, user, function(err) {
 				if(err) console.error(err);
 
-				var subject = email.welcome.subject;
 				var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
-				var message = 'Please verify your email address '+ver_url+'. This token expires in '+EXPIRE_DAYS+' hours.<br><br>'
-							+'The Machine Intelligence Community Team';
+				message = email.verify_acct(user.first_name, ver_url, EXPIRE_DAYS);
 				
 				email.send(
 					from=email.welcome.email, 
 					to=user.email, 
-					subject=subject, 
+					subject=email.welcome.subject, 
 					message=message
 				);
 
