@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 module.exports = {
   indexOf: function(array, key, target) {
     // target (String) object id
@@ -37,5 +39,8 @@ module.exports = {
     if(hash.length == 0) module.exports.uniqueID(length);
     var href = 'https://machineintelligence.cc/verify?c='+hash;
     return html ? '<a href=\"'+href+'\">'+innerText+'</a>' : href;
+  },
+  base64(file) {
+    return fs.readFileSync(file, { encoding: 'base64' }); 
   }
 }

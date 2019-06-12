@@ -10,13 +10,12 @@ const email = require('../lib/email_handler');
 
 router.post('/register', function(req, res) {
 	ah.save(req.body, function(status) {
-		year = (new Date()).getFullYear()
-		name = req.body.first_name+' '+req.body.last_name
+		message = email.format_message(req.body.first_name);
 
 		email.send(from=email.conf.email, 
 			to=req.body.email, 
-			subject=email.conf.subject+' '+year, 
-			message=email.conf.message);
+			subject=email.conf.subject+' '+(new Date()).getFullYear(), 
+			message=message);
 
 		res.send(status);
 	});

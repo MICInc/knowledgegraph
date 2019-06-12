@@ -7,6 +7,7 @@ var conf = require('../email/conference.json');
 var welcome = require('../email/welcome.json');
 var pw_reset = require('../email/pw-reset.json');
 var utils = require('./utils');
+const signature = abs_path('email/mic_email_sig.png');
 
 // If modifying these scopes, delete token.json.
 // const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -57,6 +58,12 @@ module.exports = {
 			oAuth2Client.setCredentials(JSON.parse(token));
 			callback(oAuth2Client, mail);
 		});
+	},
+	format_message: function(recipient) {
+		text = conf.message;
+		text = text.replace('${name}', recipient);
+		text = text.replace('${year}', (new Date()).getFullYear());
+		return text.replace('${sig}', utils.base64(signature));
 	},
 	makeBody: function (from, to, subject, message) {
 		var str = ["Content-Type: text/html; charset=\"UTF-8\"\n",

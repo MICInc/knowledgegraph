@@ -207,6 +207,7 @@ export default {
 
 				if(err != undefined && resp.status == 200) {
 					this.form.error = err;
+					alert('Please check over your application.');
 				} 
 				else if(resp.status == 200) {
 					var reg = { 
