@@ -61,8 +61,7 @@ module.exports = {
 	},
 	format_message: function(recipient, text) {
 		text = text.replace('${name}', recipient);
-		text = text.replace('${year}', (new Date()).getFullYear());
-		return text.replace('${sig}', utils.base64(signature));
+		return text.replace('${year}', (new Date()).getFullYear());
 	},
 	verify_acct: function(name, ver_url, exp_days) {
 		return module.exports.format_message(name, welcome.message).replace('${ver_url}', ver_url).replace('${exp_days}', exp_days);
@@ -84,11 +83,28 @@ module.exports = {
 		const gmail = google.gmail({version: 'v1', auth});
 		var raw = module.exports.makeBody(mail.from, mail.to, mail.subject, mail.message);
 
+		// gmail.users.settings.sendAs.update({
+		// 	auth: auth,
+		// 	userId: 'me',
+		// 	fields: 'signature',
+		// 	sendAsEmail: welcome.email,
+		// 	resource: {
+		// 		signature: '<img src="data:image/png;base64,'+utils.base64(signature)+'"/>' 
+		// 	}
+		// }, function (err, resp) {
+		// 	if(err) {
+		// 		console.log(err);
+		// 	} 
+		// 	else {
+		// 		console.log(resp);
+		// 	}
+		// });
+
 		gmail.users.messages.send({
 			auth: auth,
 			userId: 'me',
 			resource: {
-				raw: raw
+				raw: raw,
 			}
 		}, 
 		function(err, response) {
