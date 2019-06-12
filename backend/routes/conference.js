@@ -12,6 +12,7 @@ router.post('/register', function(req, res) {
 	ah.save(req.body, function(status) {
 		year = (new Date()).getFullYear()
 		name = req.body.first_name+' '+req.body.last_name
+
 		email.send(from=email.conf.email, 
 			to=req.body.email, 
 			subject=email.conf.subject+' '+year, 

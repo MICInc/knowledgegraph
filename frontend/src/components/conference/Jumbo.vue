@@ -20,7 +20,7 @@
 					<div class="sub-heading">
 						<h2>Sep. 7th, 2019</h2><br>
 						<h2>Boston University's Center for Integrated Life Sciences & Engineering and</h2>
-						<h2>Hariri Institute for Computing and Computational Science & Engineering</h2>
+						<h2>Software & Application Innovation Lab</h2>
 					</div>
 				</div>
 			</div>

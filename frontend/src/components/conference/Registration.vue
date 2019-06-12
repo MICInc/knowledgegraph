@@ -8,28 +8,28 @@
 				</div>
 				<span v-if="!$store.state.isLoggedIn">
 					<label>What's your first name?</label><br>
-					<input :class="{ error: form.error.first_name }" type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
+					<input :class="{ error: form.error.first_name.ok }" type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
 					<label>What's your last name?</label><br>
-					<input :class="{ error: form.error.last_name }" type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
+					<input :class="{ error: form.error.last_name.ok }" type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
 					<label v-if="profile.first_name.length > 0 && profile.last_name.length > 0">Hey {{ profile.first_name }} {{ profile.last_name }}, nice to meet you.</label>
 					<div class="birthday">
 						<label :class="{ error_font: form.error.dob }">Birthday</label>
 						<DateSelector v-on:date="set_dob($event)"></DateSelector>
 					</div>
 					<label>Gender</label><br>
-					<select :class="{ error: form.error.gender }" name="gender" v-model="profile.gender">
+					<select :class="{ error: form.error.gender.ok }" name="gender" v-model="profile.gender">
 						<option v-for="gender in form.gender">{{ gender }}</option>
 					</select><br>
 					<label>What is your ethnicity?</label><br>
-					<select :class="{ error: form.error.ethnicity }" name="ethnicity" v-model="profile.ethnicity">
+					<select :class="{ error: form.error.ethnicity.ok }" name="ethnicity" v-model="profile.ethnicity">
 						<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 					</select><br>
 					<label>Where can we contact you?</label><br>
-					<input :class="{ error: form.error.email }" type="text" value="email" placeholder="email" autocomplete="email" v-model.trim="profile.email"><br>
+					<input :class="{ error: form.error.email.ok }" type="text" value="email" placeholder="email" autocomplete="email" v-model.trim="profile.email"><br>
 					<label>Password</label><br>
-					<input :class="{ error: form.error.password }" type="password" value="password" placeholder="password" autocomplete="new-password" v-model="profile.password"><br>
+					<input :class="{ error: form.error.password.ok }" type="password" value="password" placeholder="password" autocomplete="new-password" v-model="profile.password"><br>
 					<label>Confirm password</label><br>
-					<input :class="{ error: form.error.confirm_pw }" type="password" value="password" placeholder="confirm password" autocomplete="new-password" v-model="profile.confirm_password"><br>
+					<input :class="{ error: form.error.confirm_pw.ok }" type="password" value="password" placeholder="confirm password" autocomplete="new-password" v-model="profile.confirm_pw"><br>
 				</span>
 				<label :class="{ error_font: form.error.affiliation }">Affiliation</label><br>
 				<ul>
@@ -45,7 +45,7 @@
 				</span>
 				<SchoolField v-on:school="update($event)"></SchoolField>
 				<label>What grade will you be in Fall of {{ year }}? (e.g. 2nd Year Undergraduate)</label><br>
-				<select :class="{ error: form.error.grade }" name="grade" v-model="profile.grade">
+				<select :class="{ error: form.error.grade.ok }" name="grade" v-model="profile.grade">
 					<option v-for="grade in form.academic_year">{{ grade }}</option>
 				</select><br>
 				<label>Please list any food you're allergic to:</label><br>
@@ -104,17 +104,17 @@ export default {
 					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
 				complete: false,
 				error: {
-					affiliation: false,
-					confirm_pw: false,
-					dob: false,
-					email: false,
-					ethnicity: false,
-					first_name: false,
-					gender: false,
-					grade: false,
-					last_name: false,
-					password: false,
-					school: false
+					affiliation: { ok: false, desc: ''},
+					confirm_pw: { ok: false, desc: ''},
+					dob: { ok: false, desc: ''},
+					email: { ok: false, desc: ''},
+					ethnicity: { ok: false, desc: ''},
+					first_name: { ok: false, desc: ''},
+					gender: { ok: false, desc: ''},
+					grade: { ok: false, desc: ''},
+					last_name: { ok: false, desc: ''},
+					password: { ok: false, desc: ''},
+					school: { ok: false, desc: ''}
 				},
 				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
 				gender: ['Female', 'Male', 'Non-binary'],
@@ -126,7 +126,7 @@ export default {
 			},
 			profile: {
 				affiliation: '',
-				confirm_password: '',
+				confirm_pw: '',
 				dob: undefined,
 				email: '',
 				ethnicity: '',
@@ -203,7 +203,7 @@ export default {
 		submit() {
 			this.signup().then((resp) => {
 				var err = resp.data.error;
-				
+
 				if(err != undefined && resp.status == 200) {
 					this.form.error = err;
 				} 

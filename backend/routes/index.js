@@ -32,11 +32,12 @@ router.post('/signup', function(req, res) {
 	}
 
 	UserAuth.registerUser(req.body, function(err, token, user) {
-		if(err) res.send({ error: err });
+		result.errors.email.desc = err
+
+		if(err) res.send({ error: result.errors });
 		else {
 			UserAuth.send_verify_email(user.email, function(ok) {
-				if(require('../db/config/whitelist').includes(req.body.email)) res.status(ok ? 200 : 400).json({ status: ok, token: token, userInfo: user });
-				else res.status(ok ? 200 : 400).json({ status: ok });
+				res.status(ok ? 200 : 400).json({ status: ok, token: token, userInfo: user });
 			});
 		}
 	});

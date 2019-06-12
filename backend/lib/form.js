@@ -6,7 +6,7 @@ module.exports = {
 		var keys = Object.keys(form);
 		// errors should contain true if there IS an erorr
 		// ok indicates if the given FORM is OK
-		for(var i = 0; i < keys.length; i++) errors[keys[i]] = module.exports.is_empty(form[keys[i]]);
+		for(var i = 0; i < keys.length; i++) errors[keys[i]] = { ok: module.exports.is_empty(form[keys[i]]), desc: '' };
 		for(var i in errors) if(errors[i]) return { ok: false, errors: errors };
 
 		return { ok: true, errors: {} };

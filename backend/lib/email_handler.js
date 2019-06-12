@@ -37,8 +37,6 @@ module.exports = {
 				message: message
 			}
 
-			console.log(mail);
-
 			module.exports.authorize(JSON.parse(content), mail, module.exports.sendMessage);
 		});
 	},

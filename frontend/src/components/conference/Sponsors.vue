@@ -21,24 +21,25 @@
 		name: 'About',
 		data() {
 			return {
-				sponsors: [{
-						href: 'https://mitibmwatsonailab.mit.edu/',
-						tier: 'tier-two',
-						src: '/img/sponsors/ibm-logo.png',
-						alt: 'IBM'
-					},
+				sponsors: [
 					{
 						href: 'https://www.intel.com/',
 						tier: 'tier-one',
 						src: '/img/sponsors/intel-ai-logo.png',
-						alt: 'Intel Logo'
+						alt: 'Intel'
 					},
 					{
 						href: 'http://www.bu.edu/spark/',
 						tier: 'tier-one',
 						src: '/img/sponsors/spark-logo.png',
 						alt: 'BU Spark!'
-					}
+					},
+					{
+						href: 'https://sail.bu.edu/',
+						tier: 'tier-one',
+						src: '/img/sponsors/sail-logo.png',
+						alt: 'BU SAIL'
+					},
 				]
 			}
 		}
