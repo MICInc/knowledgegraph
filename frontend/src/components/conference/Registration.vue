@@ -49,8 +49,8 @@
 				<select :class="{ error: form.error.grade.ok }" name="grade" v-model="profile.grade">
 					<option v-for="grade in form.academic_year">{{ grade }}</option>
 				</select><br>
-				<label>Please list any food you're allergic to:</label><br>
-				<input v-model.trim="conf_resp.food_allergens"></input><br>
+				<label>Please list any dietary restrictions:</label><br>
+				<input v-model.trim="conf_resp.dietary"></input><br>
 				<label>Opt-in to <a href="https://www.dropbox.com/request/UEtnUpmQ5AHMOw8PmrvN" target="_blank">share</a> your skill sheet with sponsors</label><br>
 				<label>How did you hear about our conference?</label><br>
 				<textarea v-model.trim="conf_resp.q1"></textarea><br>
@@ -94,7 +94,7 @@ export default {
 	data() {
 		return {
 			conf_resp: {
-				food_allergens: '',
+				dietary: '',
 				q1: '',
 				q2: '',
 				q3: ''

@@ -79,7 +79,7 @@ var conference_schema = new Schema({
             type: Date,
             required: true
         },
-        food_allergens: {
+        dietary: {
             type: String,
             trim: true
         }, 
