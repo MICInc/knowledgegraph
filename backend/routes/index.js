@@ -38,9 +38,7 @@ router.post('/signup', function(req, res) {
 			res.send({ error: result.errors });
 		}
 		else {
-			UserAuth.send_verify_email(user.email, function(ok) {
-				res.status(ok ? 200 : 400).json({ status: ok, token: token, userInfo: user });
-			});
+			res.status(200).json({ status: true, token: token, userInfo: user });
 		}
 	});
 });

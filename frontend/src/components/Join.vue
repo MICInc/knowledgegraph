@@ -99,7 +99,7 @@ export default {
 			});
 		},
 		async signup() {
-			return await AuthService.signUpUser(this.profile);
+			return await AuthService.sign_up(this.profile);
 		},
 	}
 }

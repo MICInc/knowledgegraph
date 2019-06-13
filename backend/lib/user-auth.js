@@ -72,7 +72,7 @@ module.exports = {
 						else {
 							var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
 							message = email.verify_acct(user.first_name, ver_url, EXPIRE_DAYS);
-				
+							console.log('reg-email: '+user.email);
 							email.send(
 								from=email.welcome.email, 
 								to=user.email, 
@@ -348,7 +348,7 @@ module.exports = {
 
 				var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
 				message = email.verify_acct(user.first_name, ver_url, EXPIRE_DAYS);
-				
+
 				email.send(
 					from=email.welcome.email, 
 					to=user.email, 

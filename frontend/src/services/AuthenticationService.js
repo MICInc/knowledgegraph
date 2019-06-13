@@ -4,13 +4,13 @@ export default {
 		check_date(data) {
 			return Api().post('/api/index/date', data);
 		},
-		loginUser (data) {
+		login(data) {
 			return Api().post('/api/index/login', data)
 		},
-		signUpUser (data) {
+		sign_up(data) {
 			return Api().post('/api/index/signup', data)
 		},
-		logoutUser(data) {
+		logout(data) {
 			return Api().post('/api/index/logout', data)
 		},
 		retrieve_login(data) {

@@ -199,7 +199,7 @@ export default {
 			this.profile.dob = date;
 		},
 		async signup() {
-			return await AuthService.signUpUser(this.profile);
+			return await AuthService.sign_up(this.profile);
 		},
 		submit() {
 			this.signup().then((resp) => {

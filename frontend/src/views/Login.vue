@@ -36,7 +36,7 @@ export default {
 	},
 	methods: {
 		handleSubmit() {
-			this.loginUser()
+			this.login()
 			.then((resp) => {
 				this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
 				router.push({ name: 'home' });
@@ -48,8 +48,8 @@ export default {
 				}
 			});
 		},
-		async loginUser() {
-			return await AuthService.loginUser({
+		async login() {
+			return await AuthService.login({
 				email: this.formData.email, 
 				password: this.formData.password
 			})
