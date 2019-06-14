@@ -140,11 +140,11 @@ export default new Router({
 				}
 			]
 		},
-		{
-			path: '/forgot',
-			name: 'forgot',
-			component: () => import('./views/Forgot.vue')
-		},
+		// {
+		// 	path: '/forgot',
+		// 	name: 'forgot',
+		// 	component: () => import('./views/Forgot.vue')
+		// },
 		{
 			path: '/login',
 			name: 'login',

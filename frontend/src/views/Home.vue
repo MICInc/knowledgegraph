@@ -2,13 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
-			<nav>
-				<ul>
-					<li><router-link tag="a" to="/conference"><b>CONFERENCE</b></router-link></li>
-					<li><router-link tag="a" to="/community"><b>COMMUNITY</b></router-link></li>
-					<li><router-link tag="a" to="/add"><b>NEW ARTICLE</b></router-link></li>
-				</ul>
-			</nav>
+			<SubNav></SubNav>
 			<div class="linked-content-list">
 				<!-- <div class="linked-content" v-for="item in content" :key="item.id">
 					<LinkedContent :content="item"></LinkedContent>	
@@ -22,6 +16,7 @@
 
 <script>
 import PageNav from '@/components/PageNav.vue'
+import SubNav from '@/components/SubNav.vue'
 import LinkedContent from '@/components/LinkedContent.vue'
 import ContentService from '@/services/ContentService'
 import Footer from '@/components/Footer'
@@ -38,6 +33,7 @@ export default {
 	components: {
 		LinkedContent,
 		PageNav,
+		SubNav,
 		Footer
 	},
 	data () {
@@ -61,7 +57,6 @@ export default {
 
 
 <style scoped>
-
 .home {
 	display: flex;
 	flex-direction: column;
@@ -83,37 +78,6 @@ export default {
 
 .linked-content {
 	margin: 5px 0;
-}
-
-nav {
-	margin: 20px 0;
-}
-
-nav ul {
-	list-style: none;
-	display: flex;
-	align-items: center;
-	margin: 0;
-	padding: 0;
-}
-
-nav ul li {
-	margin-left: 15px;
-}
-
-nav ul li:first-child {
-	margin-left: 0;
-}
-
-nav ul li a {
-	text-decoration: none;
-	font-weight: 400;
-	font-size: 14px;
-	color: #000;
-}
-
-nav ul li a:hover {
-	color: #655ba5;
 }
 
 </style>
