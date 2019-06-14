@@ -1,6 +1,6 @@
 <template>
 	<div id="join">
-		<form v-on:submit.prevent="handleSubmit">
+		<form v-if="form.show" v-on:submit.prevent="handleSubmit">
 			<div class="input-row">
 				<input :class="{error: form.error.first_name }" type="text" placeholder="First name" v-model.trim="profile.first_name" required>
 				<input :class="{error: form.error.last_name }" type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
@@ -39,6 +39,9 @@
 			<Disclaimer></Disclaimer>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
+		<div v-else>
+			<h3 class='receipt'>Please check your email for a verification link.</h3>
+		</div>
 	</div>
 </template>
 
@@ -67,6 +70,7 @@ export default {
 					confirm_password: false
 				},
 				gender: ['Female', 'Male', 'Non-binary'],
+				show: true,
 				submitted: false
 			},
 			profile: {
@@ -94,7 +98,7 @@ export default {
 					// Login newly created l=user
 					// this.$store.dispatch('login', [response.data.token, response.data.userInfo]);
 					this.form.submitted = true;
-					router.push({ name: 'home' });
+					this.form.show = false;
 				}
 			});
 		},
@@ -107,6 +111,10 @@ export default {
 
 
 <style scoped>
+.receipt {
+	margin-top: 50%;
+}
+
 .error {
 	border: solid;
 	border-width: 0.5px;
