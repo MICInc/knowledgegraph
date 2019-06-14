@@ -39,10 +39,6 @@
 			<Disclaimer></Disclaimer>
 			<button v-on:click.prevent="submit">Submit</button>
 		</form>
-		<div v-if="form.submitted">
-			Check your email so we know it's you.<br>
-			If you didn't receive the verification email, please check your spam folder. Or, click <a href="">here</a> to resend it.
-		</div>
 	</div>
 </template>
 
@@ -98,11 +94,12 @@ export default {
 					// Login newly created l=user
 					// this.$store.dispatch('login', [response.data.token, response.data.userInfo]);
 					this.form.submitted = true;
+					router.push({ name: 'home' });
 				}
 			});
 		},
 		async signup() {
-			return await AuthService.signUpUser(this.profile);
+			return await AuthService.sign_up(this.profile);
 		},
 	}
 }

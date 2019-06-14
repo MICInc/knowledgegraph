@@ -6,9 +6,17 @@ var file_handler = require('../lib/file_handler');
 var UserAuth = require('../lib/user-auth');
 var ah = require('../lib/application_handler');
 var fh = require('../lib/feedback_handler');
+const email = require('../lib/email_handler');
 
 router.post('/register', function(req, res) {
 	ah.save(req.body, function(status) {
+		message = email.format_message(req.body.first_name, email.conf.message);
+
+		email.send(from=email.conf.email, 
+			to=req.body.email, 
+			subject=email.conf.subject+' '+(new Date()).getFullYear(), 
+			message=message);
+
 		res.send(status);
 	});
 });

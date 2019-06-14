@@ -16,7 +16,6 @@
 		<div class="content-wrapper">
 			<Jumbo></Jumbo>
 			<About></About>
-			<LocationInfo></LocationInfo>
 			<Community></Community>
 			<Committee></Committee>
 			<Sponsors></Sponsors>
@@ -53,10 +52,10 @@
 						name: 'About',
 						href: '#about'
 					},
-					{
-						name: 'Location Info',
-						href: '#location-info'
-					},
+					// {
+					// 	name: 'Location Info',
+					// 	href: '#location-info'
+					// },
 					{
 						name: 'Our Community',
 						href: '#our-community'

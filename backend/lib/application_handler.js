@@ -23,6 +23,10 @@ module.exports = {
 			callback({ status: false, error: 'Internal error'});
 		});
 	},
+
+	/*
+		API for admin console to view conference registrations
+	*/
 	flatten_demographic_and_resp: function(applications) {
 		var flat_apps = [];
 		var blacklist = ['$init'];
@@ -52,6 +56,7 @@ module.exports = {
 			}
 			flat_apps.push(app);
 		}
+
 		return flat_apps;
 	}
 }

@@ -3,7 +3,11 @@ const readline = require('readline');
 const {google} = require('googleapis');
 const credentials = abs_path('config/gmail/noreply/credentials.json');
 const TOKEN_PATH = abs_path('config/gmail/noreply/token.json');
+var conf = require('../email/conference.json');
+var welcome = require('../email/welcome.json');
+var pw_reset = require('../email/pw-reset.json');
 var utils = require('./utils');
+const signature = abs_path('email/mic_email_sig.png');
 
 // If modifying these scopes, delete token.json.
 // const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -19,6 +23,9 @@ var SCOPES = [
 // time.
 
 module.exports = {
+	welcome: welcome,
+	pw: pw_reset,
+	conf: conf,
 	send: function(from, to, subject, message) {
 		// Load client secrets from a local file.
 		fs.readFile(credentials, (err, content) => {
@@ -31,7 +38,7 @@ module.exports = {
 				message: message
 			}
 
-			module.exports.authorize(JSON.parse(content), mail, module.exports.sendMessage);
+			if(typeof to !== 'undefined') module.exports.authorize(JSON.parse(content), mail, module.exports.send_message);
 		});
 	},
 	authorize: function(credentials, mail, callback) {
@@ -47,12 +54,19 @@ module.exports = {
 
 		// Check if we have previously stored a token.
 		fs.readFile(TOKEN_PATH, (err, token) => {
-			if (err) return module.exports.getNewToken(oAuth2Client, callback);
+			if (err) return module.exports.get_new_token(oAuth2Client, callback);
 			oAuth2Client.setCredentials(JSON.parse(token));
 			callback(oAuth2Client, mail);
 		});
 	},
-	makeBody: function (to, from, subject, message) {
+	format_message: function(recipient, text) {
+		text = text.replace('${name}', recipient);
+		return text.replace('${year}', (new Date()).getFullYear());
+	},
+	verify_acct: function(name, ver_url, exp_days) {
+		return module.exports.format_message(name, welcome.message).replace('${ver_url}', ver_url).replace('${exp_days}', exp_days);
+	},
+	make_body: function (from, to, subject, message) {
 		var str = ["Content-Type: text/html; charset=\"UTF-8\"\n",
 			"MIME-Version: 1.0\n",
 			"Content-Transfer-Encoding: 7bit\n",
@@ -65,22 +79,24 @@ module.exports = {
 		var encodedMail = new Buffer.from(str, 'utf8').toString("base64").replace(/\+/g, '-').replace(/\//g, '_');
 		return encodedMail;
 	},
-	sendMessage: function(auth, mail) {
-		const gmail = google.gmail({version: 'v1', auth});
-		var raw = module.exports.makeBody(mail.from, mail.to, mail.subject, mail.message);
+	send_message: function(auth, mail) {
+		if(typeof mail.to !== 'undefined') {
+			const gmail = google.gmail({version: 'v1', auth});
+			var raw = module.exports.make_body(mail.from, mail.to, mail.subject, mail.message);
 
-		gmail.users.messages.send({
-			auth: auth,
-			userId: 'me',
-			resource: {
-				raw: raw
-			}
-		}, 
-		function(err, response) {
-			if(err) console.error(err);
-		});
+			gmail.users.messages.send({
+				auth: auth,
+				userId: 'me',
+				resource: {
+					raw: raw,
+				}
+			}, 
+			function(err, response) {
+				if(err) console.error(err);
+			});
+		}
 	},
-	getNewToken: function(oAuth2Client, callback) {
+	get_new_token: function(oAuth2Client, callback) {
 		/**
 		* Get and store new token after prompting for user authorization, and then
 		* execute the given callback with the authorized OAuth2 client.

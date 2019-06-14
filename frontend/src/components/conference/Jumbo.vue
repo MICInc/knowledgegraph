@@ -18,7 +18,9 @@
 						<h1>Machine Intelligence Conference</h1>
 					</div>
 					<div class="sub-heading">
-						<h2>Sep. 7th, 2019 - 6th Floor of MIT Media Lab </h2>
+						<h2>Sep. 7th, 2019</h2><br>
+						<h2>Boston University's Center for Integrated Life Sciences & Engineering and</h2>
+						<h2>Software & Application Innovation Lab</h2>
 					</div>
 				</div>
 			</div>
