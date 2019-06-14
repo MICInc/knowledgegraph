@@ -1,13 +1,11 @@
 <template>
-	<div class="container">
-		<nav id="subnav">
-			<ul>
-				<li><router-link tag="a" to="/conference"><b>CONFERENCE</b></router-link></li>
-				<li><router-link tag="a" to="/community"><b>COMMUNITY</b></router-link></li>
-				<li><router-link tag="a" to="/add"><b>NEW ARTICLE</b></router-link></li>
-			</ul>
-		</nav>
-	</div>
+	<nav id="subnav">
+		<ul>
+			<li><router-link tag="a" to="/conference"><b>CONFERENCE</b></router-link></li>
+			<li><router-link tag="a" to="/community"><b>COMMUNITY</b></router-link></li>
+			<li><router-link tag="a" to="/add"><b>NEW ARTICLE</b></router-link></li>
+		</ul>
+	</nav>
 </template>
 
 <script>
@@ -15,10 +13,12 @@
 
 <style>
 #subnav {
-	margin: 10px 0;
-	height: 1em;
+	margin: 5px 0;
+	height: 1.5em;
 	width: 100%;
-	padding-left: 33%;
+	padding-left: 25%;
+	position: fixed;
+	background-color: #fff;
 }
 
 #subnav ul {
@@ -38,7 +38,7 @@
 #subnav ul li a {
 	text-decoration: none;
 	font-weight: 400;
-	font-size: 14px;
+	font-size: 12px;
 	color: #000;
 }
 

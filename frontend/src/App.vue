@@ -95,6 +95,10 @@ ul {
 	padding: 0;
 }
 
+h1 {
+	margin-top: 50px;
+}
+
 #app {
 	display: flex;
 	flex-direction: column;
