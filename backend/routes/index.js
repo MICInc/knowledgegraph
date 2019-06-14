@@ -143,4 +143,9 @@ router.post('/verify_token', function(req, res, next) {
 	});
 });
 
+router.get('is_verified', function(req, res, next) {
+	// check if email is verified
+	// need to implement call in views/auth/Verify.vue created()
+});
+
 module.exports = router;

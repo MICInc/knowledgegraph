@@ -208,7 +208,11 @@ export default new Router({
 		{
 			path: '/verify',
 			name: 'verify',
-			component: () => import('./views/auth/Verify')
+			component: () => import('./views/auth/Verify.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) next({ name: 'home' })
+				next()
+			}
 		},
 		{
 			path: '/:id',

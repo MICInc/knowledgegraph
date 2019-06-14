@@ -72,7 +72,7 @@ module.exports = {
 						else {
 							var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
 							message = email.verify_acct(user.first_name, ver_url, EXPIRE_DAYS);
-							console.log('reg-email: '+user.email);
+
 							email.send(
 								from=email.welcome.email, 
 								to=user.email, 
@@ -295,14 +295,18 @@ module.exports = {
 		});
 	},
 	verify_email_url(code, callback) {
-		db.User.find({ 'verification.code': code, 'verification.status': false }, function(err, user) {
-			if(err || user.length != 1) {
+		db.User.findOne({ 'verification.code': code, 'verification.status': false }, function(err, user) {
+
+			if(err) {
 				console.error(err);
 				callback(false, '', {});
 				return;
 			}
 
-			user = user[0];
+			if(user == null) {
+				callback(false, '', {});
+				return;
+			}
 
 			var diff = Math.abs((new Date()).getTime() - user.verification.date.getTime());
 			var days = Math.ceil(diff / (1000 * 3600 * EXPIRE_DAYS));
@@ -333,13 +337,19 @@ module.exports = {
 		});
 	},
 	send_verify_email(email_addr, callback) {
-		db.User.find({ email: email_addr }, function(err, user) {
+		db.User.findOne({ email: email_addr }, function(err, user) {
 			if(err) {
 				console.error(err);
 				callback(false);
 				return;
 			}
 
+			if(user.verification.status) {
+				callback(true);
+				return;
+			}
+
+			// Update verification code and expiration date
 			var code = utils.uniqueID(128)
 			user.verification = { code: code, date: new Date(), status: false };
 

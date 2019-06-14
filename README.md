@@ -51,3 +51,8 @@ To remove a record via Mongo shell
 ```
 db.users.remove({ email: 'justin@machineintelligence.cc'})
 ```
+
+To export collections as json files e.g:
+```
+mongoexport --db profile --collection conferences --out conf_reg.json
+```
