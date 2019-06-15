@@ -15,6 +15,10 @@
 				v-on:keyup="save()" 
 				autofocus>
 			<br>
+			<div id="pre-sub-box">
+				<Prereq></Prereq>
+				<Subseq></Subseq>
+			</div>
 			<form>
 				<DynamicContent
 					v-on:edit="update_content($event)" 
@@ -34,6 +38,8 @@ import DynamicContent from '@/components/editor/DynamicContent';
 import AuthMixin from '@/mixins/AuthMixin';
 import router from '@/router';
 import Path from 'path';
+import Prereq from '@/components/editor/Prereq';
+import Subseq from '@/components/editor/Subseq'
 
 window.onbeforeunload = function() {
     return "Are you sure you want to close the window?";
@@ -43,7 +49,9 @@ export default {
 	name: 'add-article',
 	components: {
 		PageNav,
-		DynamicContent
+		DynamicContent,
+		Prereq,
+		Subseq
 	},
 
 	created() {
@@ -272,6 +280,12 @@ input {
 	padding: 0;
 	outline: none;
 	height: 1em;
+}
+
+#pre-sub-box {
+	display: flex;
+	margin: 0;
+	padding: 0;
 }
 
 </style>
