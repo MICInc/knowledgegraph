@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<div class="conference">
+		<div>
 			<h1>Machine Intelligence Conference 2019</h1>
 			<Registration v-if="form.registration" v-on:reveal="show_registration()"></Registration>
 			<Feedback v-if="form.feedback" v-on:reveal="show_feedback()"></Feedback>

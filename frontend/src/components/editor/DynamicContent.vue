@@ -136,4 +136,8 @@ export default {
 </script>
 
 <style scoped>
+button {
+	border: none;
+	color: #000;
+}
 </style>

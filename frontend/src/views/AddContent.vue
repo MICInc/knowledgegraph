@@ -213,6 +213,11 @@ export default {
 
 <style scoped>
 
+button {
+	border: none;
+	color: #000;
+}
+
 .main {
 	display: flex;
 	flex-direction: column;
