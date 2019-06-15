@@ -8,7 +8,9 @@
 export default {
 	name: 'Subseq',
 	data() {
-
+		return {
+			
+		}
 	}
 }
 </script>

@@ -8,7 +8,9 @@
 export default {
 	name: 'Prereq',
 	data() {
-
+		return {
+			
+		}
 	}
 }
 </script>
