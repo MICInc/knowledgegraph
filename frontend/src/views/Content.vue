@@ -2,13 +2,13 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div id="content" v-if="check_content()">
+			<h2>{{ content.title }}</h2>
 			<ControlBar 
 				:editable="editable" 
 				:url="url"
 				v-on:abuse=""
 				v-on:share="">
 			</ControlBar>
-			<h2>{{ content.title }}</h2>
 			<span class='author' v-for='author in content.authors'>
 				<a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a>
 			</span><br>
@@ -136,6 +136,11 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+	margin: 20px 0 0 0;
+	padding: 0;
+}
+
 button {
 	border: none;
 }
@@ -184,7 +189,6 @@ button {
 
 .edit {
 	font-size: 0.85em;
-	background-color: yellow;
 }
 
 .modal {

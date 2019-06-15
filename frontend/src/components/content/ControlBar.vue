@@ -31,11 +31,16 @@ button {
 }
 
 .article-control-bar {
-	border-bottom: 1px solid #dedede;
+	margin: 0 0 1em 0;
+	padding: 0;
+	/*border-bottom: 1px solid #dedede;*/
+	font-size: 0.8em;
+
 }
 
 .modal {
-	display: table-cell;
-	vertical-align: middle;
+	/*display: table-cell;
+	vertical-align: middle;*/
+	margin: 0;
 }
 </style>
