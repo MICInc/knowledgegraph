@@ -2,11 +2,12 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container" v-if="check_content()">
-			<div class="article-control-bar">
-				<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">Edit</router-link>
-				<button class="modal" type="button" v-on:click="share()">Share</button>
-				<button class="modal" type="button" v-on:click="report_abuse()">...</button>
-			</div>
+			<ControlBar 
+				:editable="editable" 
+				:url="url"
+				v-on:abuse=""
+				v-on:share="">
+			</ControlBar>
 			<h2>{{ content.title }}</h2>
 			<span class='author' v-for='author in content.authors'>
 				<a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a>
@@ -59,6 +60,7 @@ import Abuse from '@/components/form/AbuseModal'
 import Share from '@/components/form/ShareModal'
 import Prereq from '@/components/form/Prereq'
 import Subseq from '@/components/form/Subseq'
+import ControlBar from '@/components/content/ControlBar'
 
 export default {
 	name: 'Content',
@@ -77,7 +79,8 @@ export default {
 		Abuse,
 		Share,
 		Prereq,
-		Subseq
+		Subseq,
+		ControlBar
 	},
 	data () {
 		return {
@@ -116,11 +119,11 @@ export default {
 		check_content() {
 			return this.content != null && this.content.constructor === Object && Object.keys(this.content).length > 0;
 		},
-		share() {
-			this.isShareModalVisible = true;
-		},
-		report_abuse() {
+		open_report() {
 			this.isAbuseModalVisible = true;
+		},
+		open_share() {
+			this.isShareModalVisible = true;
 		},
 		close_report() {
 			this.isAbuseModalVisible = false;
@@ -135,10 +138,6 @@ export default {
 <style scoped>
 button {
 	border: none;
-}
-
-.article-control-bar {
-	border-bottom: 1px solid #dedede;
 }
 
 .article-info {

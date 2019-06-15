@@ -4,9 +4,6 @@
 		<ul>
 			<li v-for="(article, index) in publications">
 				<a :href="'/content/'+article.url">{{ article.title }}</a><span>{{ article.year }}</span><br>
-				<div>
-					<span>views: {{ article.num_views }}</span>
-				</div>
 				<p>{{ article.preview }}</p>
 			</li>
 		</ul>
