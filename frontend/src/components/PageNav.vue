@@ -38,15 +38,11 @@
 				</div>
 			</nav>
 		</div>
-		<div class="container">
-			<SubNav></SubNav>
-		</div>
 	</div>
 </template>
 
 <script>
 import router from '@/router';
-import SubNav from '@/components/SubNav.vue'
 
 export default {
 	name: 'PageNav',
@@ -55,9 +51,6 @@ export default {
 	},
 	created: function() {  
  		document.title = 'Machine Intelligence Community';
- 	},
- 	components: {
- 		SubNav
  	},
  	computed: {
 		isLoggedIn() {

@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<div class="container" v-if="check_content()">
+		<div id="content" v-if="check_content()">
 			<ControlBar 
 				:editable="editable" 
 				:url="url"
@@ -138,6 +138,10 @@ export default {
 <style scoped>
 button {
 	border: none;
+}
+
+#content {
+	margin-top: 10px;
 }
 
 .article-info {

@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div id="subseq">
 		<h4>Subsequent</h4>
 	</div>
 </template>
@@ -16,4 +16,8 @@ export default {
 </script>
 
 <style>
+#subseq {
+	width: 50%;
+	float: right;
+}
 </style>
