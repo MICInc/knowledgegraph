@@ -1,9 +1,9 @@
 <template>
 	<div id="subseq">
 		<h2>Subsequent</h2>
-		<input v-model="new_pre" v-on:keydown.enter="add($event)" placeholder="add subseq">
+		<input v-model="new_sub" v-on:keydown.enter="add()" placeholder="add subseq">
 		<ul>
-			<li v-for='item in subseq'>
+			<li v-for="item in subseq">
 				<router-link tag='a' :to="'/content/'+item">{{item}}</router-link>
 			</li>
 		</ul>
@@ -20,7 +20,7 @@ export default {
 	},
 	methods: {
 		add() {
-			subseq.push(this.new_sub);
+			this.subseq.splice(this.subseq.length-1, 0, this.new_sub);
 			this.new_sub = '';
 		}
 	}

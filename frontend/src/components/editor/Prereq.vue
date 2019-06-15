@@ -1,10 +1,10 @@
 <template>
 	<div id="prereq">
 		<h2>Prerequisites</h2>
-		<input v-model="new_pre" v-on:keydown.enter="add($event)" placeholder="add prereq">
+		<input v-model="new_pre" v-on:keydown.enter="add()" placeholder="add prereq">
 		<ul>
 			<li v-for="item in prereq">
-				<route-link tag='a' :to="'/content/'+item">{{item}}</route-link>
+				<router-link tag='a' :to="'/content/'+item">{{item}}</router-link>
 			</li>
 		</ul>
 	</div>
@@ -20,7 +20,7 @@ export default {
 	},
 	methods: {
 		add() {
-			prereq.push(this.new_pre);
+			this.prereq.splice(this.prereq.length-1, 0, this.new_pre);
 			this.new_pre = '';
 		}
 	}
