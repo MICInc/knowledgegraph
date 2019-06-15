@@ -91,7 +91,7 @@ export default {
 			token: this.$store.state.accessToken,
 			editable: false,
 			isShareModalVisible: false,
-			isAbuseModalVisible: false,
+			isAbuseModalVisible: false
 		}
 	},
 	methods: {
