@@ -148,7 +148,8 @@ module.exports = {
 		});
 	},
 	findByEmail: function(email, callback) {
-		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
+		var email = filter.filter_xss(email);
+		db.User.findOne({ email: email }, function(err, user) {
 			process.nextTick(function() {
 				callback(err, user);
 			});

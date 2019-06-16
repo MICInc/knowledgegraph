@@ -69,6 +69,8 @@ router.post('/', function(req, res, next) {
 				});
 
 				var user = { _id: req.body.user_id, token: req.body.token };
+				// console.log('token:');
+				// console.log(req.body.token);
 				
 				db.User.findOne(user, function(err, profile) {
 					// only store article id so that forced to get latest url and 
