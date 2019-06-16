@@ -251,6 +251,15 @@ button {
 	height: 20px;
 	font-size: 0.8em;
 	border: solid 1px #dede;
+	-o-transition:.5s;
+	-ms-transition:.5s;
+	-moz-transition:.5s;
+	-webkit-transition:.5s;
+	transition:.5s;
+}
+
+#publish button:hover {
+	border: solid 1px #777;
 }
 
 #status {
