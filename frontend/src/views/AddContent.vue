@@ -249,6 +249,12 @@ button {
 
 #publish button {
 	height: 20px;
+	font-size: 0.8em;
+	border: solid 1px #dede;
+}
+
+#status {
+	margin: 1em;
 }
 
 form {
