@@ -11,10 +11,15 @@ export default {
 			subseq: ''
 		}
 	},
-	methods: {
-		add() {
-			this.subseq.splice(this.subseq.length-1, 0, this.new_sub);
-			this.new_sub = '';
+	watch: {
+		subseq: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.$nextTick(function() {
+					this.$emit('update', this.subseq);
+				});
+			}
 		}
 	}
 }

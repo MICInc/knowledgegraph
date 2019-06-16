@@ -16,8 +16,8 @@
 				autofocus>
 			<br>
 			<div id="pre-sub-box">
-				<Prereq></Prereq>
-				<Subseq></Subseq>
+				<Prereq v-on:update="update_prereq($event)"></Prereq>
+				<Subseq v-on:update="update_subseq($event)"></Subseq>
 			</div>
 			<form>
 				<DynamicContent
@@ -184,6 +184,12 @@ export default {
 			this.data.cell = emit_save.cell;
 			this.data.update_cell = emit_save.update_cell;	
 			this.save();
+		},
+		update_prereq(prereq) {
+			this.data.prereq = prereq;
+		},
+		update_subseq(subseq) {
+			this.data.subseq = subseq;
 		},
 		upload_file(form_data) {
 			form_data.append('content_id', this.content_id);

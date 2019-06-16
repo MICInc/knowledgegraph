@@ -11,10 +11,15 @@ export default {
 			prereq: []
 		}
 	},
-	methods: {
-		add() {
-			this.prereq.splice(this.prereq.length-1, 0, this.new_pre);
-			this.new_pre = '';
+	watch: {
+		prereq: {
+			deep: true,
+			immediate: true,
+			handler(curr, prev) {
+				this.$nextTick(function() {
+					this.$emit('update', this.prereq);
+				});
+			}
 		}
 	}
 }
