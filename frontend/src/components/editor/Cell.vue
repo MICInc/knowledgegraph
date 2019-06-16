@@ -353,6 +353,12 @@ export default {
     outline: none;
 }
 
+button {
+	border: none;
+	font-size: 0.8em;
+	color: #000;
+}
+
 .editor-info {
 	width: 1080px;
 }
