@@ -1,12 +1,6 @@
 <template>
 	<div id="subseq">
-		<h2>Subsequent</h2>
-		<input v-model="new_sub" v-on:keydown.enter="add()" placeholder="add subseq">
-		<ul>
-			<li v-for="item in subseq">
-				<router-link tag='a' :to="'/content/'+item">{{item}}</router-link>
-			</li>
-		</ul>
+		<textarea v-model="subseq" placeholder="Subsequent"></textarea>
 	</div>
 </template>
 
@@ -14,8 +8,7 @@
 export default {
 	data() {
 		return {
-			subseq: [],
-			new_sub: ''
+			subseq: ''
 		}
 	},
 	methods: {

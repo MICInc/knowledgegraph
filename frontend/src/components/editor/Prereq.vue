@@ -1,12 +1,6 @@
 <template>
 	<div id="prereq">
-		<h2>Prerequisites</h2>
-		<input v-model="new_pre" v-on:keydown.enter="add()" placeholder="add prereq">
-		<ul>
-			<li v-for="item in prereq">
-				<router-link tag='a' :to="'/content/'+item">{{item}}</router-link>
-			</li>
-		</ul>
+		<textarea v-model="prereq" placeholder="Prerequisites"></textarea>
 	</div>
 </template>
 
@@ -14,8 +8,7 @@
 export default {
 	data() {
 		return {
-			prereq: [],
-			new_pre: ''
+			prereq: []
 		}
 	},
 	methods: {
