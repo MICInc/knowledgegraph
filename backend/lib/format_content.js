@@ -164,7 +164,7 @@ module.exports = {
 		return tgt;
 	},
 	generate_url: function(title) {
-		return title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : '';
+		return title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : utils.uniqueID();
 	},
 	preview(text, limit=151) {
 		if(text == null) return '';
