@@ -26,4 +26,9 @@ export default {
 	float: left;
 	margin: 0;
 }
+
+#prereq textarea {
+	height: 100%;
+	width: 95%;
+}
 </style>

@@ -26,4 +26,9 @@ export default {
 	float: right;
 	margin: 0;
 }
+
+#subseq textarea {
+	height: 100%;
+	width: 95%;
+}
 </style>
