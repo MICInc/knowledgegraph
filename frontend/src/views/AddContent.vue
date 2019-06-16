@@ -72,8 +72,8 @@ export default {
 				cell: undefined,
 				citations: '',
 				last_modified: undefined,
-				prereq: '',
-				subseq: '',
+				prereqs: '',
+				subseqs: '',
 				title: ''
 			},
 			reloaded: [],
@@ -185,11 +185,11 @@ export default {
 			this.data.update_cell = emit_save.update_cell;	
 			this.save();
 		},
-		update_prereq(prereq) {
-			this.data.prereq = prereq;
+		update_prereq(prereqs) {
+			this.data.prereqs = prereqs;
 		},
-		update_subseq(subseq) {
-			this.data.subseq = subseq;
+		update_subseq(subseqs) {
+			this.data.subseqs = subseqs;
 		},
 		upload_file(form_data) {
 			form_data.append('content_id', this.content_id);
