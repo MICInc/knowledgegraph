@@ -17,7 +17,7 @@ export default {
 	},
 	data() {
 		return {
-			concepts: ['Probability', 'Bayes Rule']
+			concepts: []
 		}
 	}
 }

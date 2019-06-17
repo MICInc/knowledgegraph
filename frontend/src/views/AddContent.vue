@@ -104,7 +104,7 @@ export default {
 		},
 		publish() {
 			if(this.data.title.length == 0) alert('Need a title');
-			else if(this.data.cell == undefined) alert('Your article is empty');
+			else if(this.data.cell == undefined && this.reloaded.length == 0) alert('Your article is empty');
 			else {
 				this.save_status = 'publishing...';
 				this.save(true);
@@ -127,6 +127,7 @@ export default {
 				this.content_id = data.data._id;
 				this.reloaded = data.data.content;
 				this.data.title = data.data.title;
+				console.log(this.reloaded);
 			})
 			.catch((error) => {
 			});
@@ -156,7 +157,7 @@ export default {
 					this.save_status = data.data.desc;
 					return;
 				}
-			
+
 				// only save if title is unique
 				this.save_error = false;
 				this.save_status = 'saving...';

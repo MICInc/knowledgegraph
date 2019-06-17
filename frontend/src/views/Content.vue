@@ -137,8 +137,10 @@ export default {
 
 <style scoped>
 h2 {
+	font-size: 2em;
 	margin: 20px 0 0 0;
 	padding: 0;
+	font-weight: 400;
 }
 
 button {

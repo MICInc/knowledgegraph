@@ -17,7 +17,7 @@ export default {
 	},
 	data() {
 		return {
-			concepts: ['Maximum a Posterior Learning', 'Probably Approximately Correct']		
+			concepts: []		
 		}
 	}
 }
