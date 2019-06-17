@@ -25,7 +25,7 @@
 						<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
 					</select><br>
 					<label>Where can we contact you?</label>
-					<span class="error-msg" v-if="form.error.email.ok">{{form.error.email.desc}}</span><br>
+					<span class="error-msg" v-if="form.error.email.ok">{{ form.error.email.desc }}</span><br>
 					<input :class="{ error: form.error.email.ok }" type="text" value="email" placeholder="email" autocomplete="email" v-model.trim="profile.email"><br>
 					<label>Password</label><br>
 					<input :class="{ error: form.error.password.ok }" type="password" value="password" placeholder="password" autocomplete="new-password" v-model="profile.password"><br>

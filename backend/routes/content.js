@@ -376,9 +376,9 @@ router.post('/title', function(req, res, next) {
 			return;
 		}
 
-		fc.is_title_unique(req.body.title, req.body.id, function(is_unique) {
-			if(is_unique) res.status(200).send({ ok: true });
-			else res.status(400).send({ ok: false });
+		var title = req.body.title;
+		fc.is_title_unique(title, req.body.id, function(is_unique) {
+			res.status(200).send({ ok: is_unique, desc: title+' already exists.' });
 		});
 	});
 });

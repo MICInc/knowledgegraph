@@ -4,7 +4,7 @@
 		<div id="editor">
 			<div id="publish">
 				<button v-on:click.prevent="publish()">Publish</button>
-				<span id="status" class="save-status">{{ save_status }}</span>
+				<span id="status" :class="{ error: save_error }" class="save-status">{{ save_status }}</span>
 			</div>
 			<input 
 				type="text" 
@@ -76,6 +76,7 @@ export default {
 				title: ''
 			},
 			reloaded: [],
+			save_error: false,
 			save_status: '',
 			tags: [],
 			upload: [],
@@ -150,11 +151,14 @@ export default {
 
 			ContentService.check_title({ id: this.content_id, title: this.data.title, email: this.email, token: this.token })
 			.then((data) => {
-				if(data.ok) {
+				if(!data.data.ok) {
+					this.save_error = true;
+					this.save_status = data.data.desc;
 					return;
 				}
-
+			
 				// only save if title is unique
+				this.save_error = false;
 				this.save_status = 'saving...';
 			
 				this.data.last_modified = new Date();
@@ -191,7 +195,6 @@ export default {
 				});
 			})
 			.catch(error => {
-				console.log(error);
 			});
 		},
 		update_content(emit_save) {
@@ -321,6 +324,10 @@ input {
 	display: flex;
 	margin: 0;
 	padding: 0;
+}
+
+.error {
+	color: red;
 }
 
 </style>
