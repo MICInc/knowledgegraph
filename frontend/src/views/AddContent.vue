@@ -53,7 +53,6 @@ export default {
 		Prereq,
 		Subseq
 	},
-
 	created() {
 		this.authors.push({	
 			first_name: this.$store.state.userInfo.first_name,

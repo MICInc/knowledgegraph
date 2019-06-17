@@ -55,6 +55,9 @@ export default {
 	components: {
 		Pancake
 	},
+	created() {
+		this.save();
+	},
 	data() {
 		return {
 			cell: {
@@ -308,6 +311,7 @@ export default {
 			immediate: true,
 			handler(curr, prev) {
 				this.$nextTick(function() {
+					console.log(this.index);
 					var el = document.getElementById('p-content-'+this.index);
 
 					if(el != null && curr != null && curr.length > 0) {
