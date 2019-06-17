@@ -42,7 +42,7 @@
 			</div>
 			<div id="bibtex" class="meta-info">
 				<h4>BibTeX citation</h4>
-				<span>bibtex</span>
+				<p>{{ content.bibtex }}</p>
 			</div>
 			<Footer></Footer>
 		</div>
@@ -207,6 +207,10 @@ button {
 
 #bibtex h4 {
 	margin-bottom: 0px;
+}
+
+#bibtex p {
+
 }
 
 </style>

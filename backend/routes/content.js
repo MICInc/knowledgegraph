@@ -157,6 +157,7 @@ router.get('/', function(req, res) {
 
 			if(article != null && article.is_published) {
 				var start = new Date();
+				article.bibtex = fc.bibtex(article);
 
 				res.status(200).send(fc.filter_results(article));
 				article.view_duration.push({ start: start });

@@ -6,6 +6,9 @@ var content_schema = new mongoose.Schema({
 		type: String
 	},
 	authors: [{}],
+	bibtex:{
+		type: String
+	},
 	citations: [{
 		type: String
 	}],
