@@ -55,9 +55,6 @@ export default {
 	components: {
 		Pancake
 	},
-	created() {
-		this.save();
-	},
 	data() {
 		return {
 			cell: {

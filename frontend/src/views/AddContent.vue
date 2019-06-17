@@ -103,6 +103,7 @@ export default {
 		},
 		publish() {
 			if(this.data.title.length == 0) alert('Need a title');
+			else if(this.data.cell == undefined) alert('Your article is empty');
 			else {
 				this.save_status = 'publishing...';
 				this.save(true);
