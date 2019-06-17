@@ -145,39 +145,53 @@ export default {
 			});
 		},
 		save(publish=false) {
-			this.save_status = 'saving...';
-			
-			this.data.last_modified = new Date();
-			
-			var article = { 
-				id: this.content_id, 
-				authors: this.authors, 
-				data: this.data, 
-				publish: publish, 
-				user_id: this.user_id,
-				token: this.token,
-				email: this.email
-			};
-			
-			ContentService.saveContent(article)
-			.then((data) => {
-				if(data.data.error != null) alert(data.data.error);
-				if(data != undefined) {
-					if(this.content_id.length == 0) this.content_id = data['data'].id;
-					if(this.url != data['data'].url) this.url = data['data'].url;
+			// check if article title exists before saving
+			if(this.data.title.length == 0) return;
 
-					this.save_status = 'saved';
+			ContentService.check_title({ id: this.content_id, title: this.data.title, email: this.email, token: this.token })
+			.then((data) => {
+				if(data.ok) {
+					return;
 				}
+
+				// only save if title is unique
+				this.save_status = 'saving...';
+			
+				this.data.last_modified = new Date();
+				
+				var article = { 
+					id: this.content_id, 
+					authors: this.authors, 
+					data: this.data, 
+					publish: publish, 
+					user_id: this.user_id,
+					token: this.token,
+					email: this.email
+				};
+				
+				ContentService.saveContent(article)
+				.then((data) => {
+					if(data.data.error != null) alert(data.data.error);
+					if(data != undefined) {
+						if(this.content_id.length == 0) this.content_id = data['data'].id;
+						if(this.url != data['data'].url) this.url = data['data'].url;
+
+						this.save_status = 'saved';
+					}
+				})
+				.catch((error) => {
+					var status = error.response.status;
+					if(status == 401) {
+						this.$store.dispatch('logout').then((response) => {
+							router.push({ name: 'home' })
+						}).catch((err) => {
+							router.push({ name: 'home' })
+						})
+					}
+				});
 			})
-			.catch((error) => {
-				var status = error.response.status;
-				if(status == 401) {
-					this.$store.dispatch('logout').then((response) => {
-						router.push({ name: 'home' })
-					}).catch((err) => {
-						router.push({ name: 'home' })
-					})
-				}
+			.catch(error => {
+				console.log(error);
 			});
 		},
 		update_content(emit_save) {

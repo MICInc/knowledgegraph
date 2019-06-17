@@ -52,10 +52,10 @@ module.exports = {
 			"year": data.date_created.split('-')[0]
 		};
 	},
-	check_title: function(id, title, callback) {
+	is_title_unique: function(title, id, callback) {
 		db.Content.find({ title: title }, function(err, results) {
 			if(err) console.error(err);
-			// if(results.length == 0) 
+			callback(results.length == 0 || (results.length == 1 && results[0]._id == id));
 		});
 	},
 	check_edges: function(edges) {

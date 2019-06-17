@@ -21,7 +21,6 @@ router.post('/', function(req, res, next) {
 	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
 		if(err) {
 			// call force logout here!
-			console.error(err);
 			res.status(401).send('unauthorized');
 			return;
 		}
@@ -360,6 +359,27 @@ router.post('/report', function(req, res, next) {
 	.catch(err => {
 		console.error(err);
 		res.status(400).send(false);
+	});
+});
+
+router.post('/title', function(req, res, next) {
+	token = req.body.token;
+
+	if(token == null) {
+		res.status(401).send('unauthorized');
+		return;
+	}
+
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(401).send('unauthorized');
+			return;
+		}
+
+		fc.is_title_unique(req.body.title, req.body.id, function(is_unique) {
+			if(is_unique) res.status(200).send({ ok: true });
+			else res.status(400).send({ ok: false });
+		});
 	});
 });
 
