@@ -27,6 +27,9 @@ router.post('/', function(req, res, next) {
 
 		var data = fc.extract(req);
 		var query = { _id: data._id };
+		
+		console.log(req.body.data.prereqs);
+
 		fc.check_edges(query, req.body.data.prereqs, 'prereqs');
 		fc.check_edges(query, req.body.data.subseqs, 'subseqs');
 

@@ -24,7 +24,10 @@ export default {
 			this.prereq.splice(index, 1);
 		},
 		update(node) {
-			if(!this.prereq.includes(node)) this.prereq.splice(0, 0, node);
+			if(!this.prereq.includes(node)) {
+				this.prereq.splice(0, 0, node);
+				this.$emit('update', this.prereq);
+			}
 		}
 	}
 }

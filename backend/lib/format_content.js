@@ -89,19 +89,17 @@ module.exports = {
 			if(err || node_a == null) return;
 			node_a = node_a.toObject();
 			node_a[direction] = {};
-			// edges.split(',')
 
-			db.Content.findOne({ title: { $in: ['a','b','c'] } }, function(err, node_b) {
-				console.log(node_b)
-				// href = '';
-				// if(!(err || node_b == null)) href = module.exports.generate_url(title);
-				// node_a[direction][title] = { href: href };
-				// console.log(node_a[direction]);
+			// db.Content.findOne({ title:  }, function(err, node_b) {
+			// 	href = '';
+			// 	if(!(err || node_b == null)) href = module.exports.generate_url(title);
+			// 	node_a[direction][title] = { href: href };
+			// 	console.log(node_a[direction]);
 
-				// db.Content.updateOne(node_id, node_a, function(err) {
-				// 	if(err) console.error(err);
-				// });
-			});
+			// 	db.Content.updateOne(node_id, node_a, function(err) {
+			// 		if(err) console.error(err);
+			// 	});
+			// });
 		});
 	},
 	compress_html: function(cell) {

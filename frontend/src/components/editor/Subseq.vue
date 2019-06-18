@@ -2,7 +2,7 @@
 	<div id="subseq">
 		<TypeAhead :placeholder="'Subsequent'" v-on:node="update($event)"></TypeAhead>
 		<ul>
-			<li v-for="(title, index) in subseq">{{ title }}</li>
+			<li v-for="(title, index) in subseq">{{ title }}<button v-on:click="remove(index)">x</button></li>
 		</ul>
 	</div>
 </template>
@@ -20,14 +20,24 @@ export default {
 		}
 	},
 	methods: {
+		remove(index) {
+			this.subseq.splice(index, 1);
+		},
 		update(node) {
-			if(!this.subseq.includes(node)) this.subseq.splice(0, 0, node);
+			if(!this.subseq.includes(node)) {
+				this.subseq.splice(0, 0, node);
+				this.$emit('update', this.subseq);
+			}
 		}
 	}
 }
 </script>
 
-<style>
+<style scoped>
+button {
+	border: none;
+}
+
 #subseq {
 	width: 50%;
 	float: right;
