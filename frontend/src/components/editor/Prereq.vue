@@ -1,36 +1,40 @@
 <template>
 	<div id="prereq">
-		<textarea v-model="prereq" placeholder="Prerequisites" :keydown="update()"></textarea>
+		<TypeAhead :placeholder="'Prerequisites'" v-on:node="update($event)"></TypeAhead>
+		<ul>
+			<li v-for="(title, index) in prereq">{{ title }}<button v-on:click="remove(index)">x</button></li>
+		</ul>
 	</div>
 </template>
 
 <script>
+import TypeAhead from '@/components/editor/TypeAhead.vue'
+
 export default {
+	components: {
+		TypeAhead
+	},
 	data() {
 		return {
-			prereq: ''
+			prereq: []
 		}
 	},
 	methods: {
-		update() {
-			this.$emit('update', this.prereq);
+		remove(index) {
+			this.prereq.splice(index, 1);
+		},
+		update(node) {
+			if(!this.prereq.includes(node)) this.prereq.splice(0, 0, node);
 		}
-	},
-	// watch: {
-	// 	prereq: {
-	// 		deep: true,
-	// 		immediate: true,
-	// 		handler(curr, prev) {
-	// 			this.$nextTick(function() {
-	// 				this.$emit('update', this.prereq);
-	// 			});
-	// 		}
-	// 	}
-	// }
+	}
 }
 </script>
 
-<style>
+<style scoped>
+button {
+	border: none;
+}
+
 #prereq {
 	width: 50%;
 	float: left;

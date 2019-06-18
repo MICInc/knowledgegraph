@@ -2,14 +2,15 @@
 	<div>
 		<div class="autocomplete">
 			<input 
-				class="school-input"
+				class="node-input"
 				type="text" 
 				v-model.trim="query"
 				v-on:keyup="suggest($event)"
-				v-on:keyup.esc="clear()">
+				v-on:keyup.esc="clear()"
+				:placeholder="placeholder">
 			<div class="typeahead" v-show="has_suggestions">
 				<ul>
-					<li v-for="(school, index) in filter" v-on:click="select(school.name)">{{ school.name }}</li>
+					<li v-for="(node, index) in filter" v-on:click="select(node.title)">{{ node.title }}</li>
 				</ul>
 			</div>
 		</div>
@@ -20,20 +21,20 @@
 import SearchService from '@/services/SearchService'
 
 export default {
-	name: 'school-type-ahead',
+	name: 'type-ahead',
 	computed: {
 		filter: function() {
 			var term = this.query;
 
-			return this.schools.filter(function(school) {
-				if(school.name != undefined) return school.name.match(new RegExp('('+term+')', 'i'));
+			return this.results.filter(function(node) {
+				if(node.title != undefined) return node.title.match(new RegExp('('+term+')', 'i'));
 				else return '';
 			}).splice(0, 5);
 		}
 	},
 	data() {
 		return {
-			schools: [],
+			results: [],
 			query: '',
 			has_suggestions: false
 		}
@@ -41,30 +42,29 @@ export default {
 	methods: {
 		clear() {
 			this.query = '';
-			this.schools = [];
+			this.results = [];
 			this.has_suggestions = false;
 		},
-		select(school) {
-			this.query = school;
+		select(node) {
 			this.has_suggestions = false;
+			this.$emit('node', node);
 		},
 		suggest(event) {
 			if(event.which == 27) return;
+			if(this.query.length == 0) {
+				this.clear();
+				return;
+			}
 
-			SearchService.find_school({ params: { name: this.query }})
+			SearchService.find_node({ params: { title: this.query }})
 			.then((resp) => {
-				this.schools = resp.data;
-				this.has_suggestions = this.schools.length > 0;
+				this.results = resp.data;
+				this.has_suggestions = this.results.length > 0;
 			})
 			.catch();
 		}
 	},
-	props: ['error'],
-	watch: {
-		query: function(sel, prev) {
-			this.$emit('school', sel);
-		}
-	}
+	props: ['error', 'placeholder']
 }
 </script>
 
@@ -79,7 +79,7 @@ export default {
 	width: flex;
 }
 
-.school-input {
+.node-input {
 	width: 50%;
 }
 
@@ -91,6 +91,10 @@ export default {
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
 	border-color: #ccc;
+}
+
+.typeahead ul {
+	background-color: #fff;
 }
 
 .typeahead ul li:hover {

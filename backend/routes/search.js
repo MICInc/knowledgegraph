@@ -65,4 +65,11 @@ router.get('/school', function(req, res) {
 	}).select('-_id -__v');
 });
 
+router.get('/node', function(req, res) {
+	db.Content.find({ title: new RegExp('^'+filter.alphanumeric(req.query.title), "i")}, function(err, results) {
+		if(results) res.status(200).send(results);
+		else res.status(400).send({});
+	}).select('-_id -__v');
+});
+
 module.exports = router;

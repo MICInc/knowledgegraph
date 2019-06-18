@@ -1,25 +1,27 @@
 <template>
 	<div id="subseq">
-		<textarea v-model="subseq" placeholder="Subsequent"></textarea>
+		<TypeAhead :placeholder="'Subsequent'" v-on:node="update($event)"></TypeAhead>
+		<ul>
+			<li v-for="(title, index) in subseq">{{ title }}</li>
+		</ul>
 	</div>
 </template>
 
 <script>
+import TypeAhead from '@/components/editor/TypeAhead.vue';
+
 export default {
+	components: {
+		TypeAhead
+	},
 	data() {
 		return {
-			subseq: ''
+			subseq: []
 		}
 	},
-	watch: {
-		subseq: {
-			deep: true,
-			immediate: true,
-			handler(curr, prev) {
-				this.$nextTick(function() {
-					this.$emit('update', this.subseq);
-				});
-			}
+	methods: {
+		update(node) {
+			if(!this.subseq.includes(node)) this.subseq.splice(0, 0, node);
 		}
 	}
 }
@@ -32,8 +34,9 @@ export default {
 	margin: 0;
 }
 
-#subseq textarea {
+#subseq ul {
 	height: 100%;
 	width: 95%;
+	z-index: -1;
 }
 </style>
