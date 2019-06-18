@@ -1,5 +1,9 @@
 var fs = require('fs');
 var jwt = require('jsonwebtoken');
+const expiration = "336h";
+const audience = "https://machineintelligence.cc";
+const algorithm = "RS256";
+const issuer = "Machine Intelligence Community";
 
 /*
 	Steps for generating ssh key in pem format without passphrase:
@@ -15,22 +19,22 @@ module.exports = {
 	},
 	sign: function(payload, user) {
 		var signOpt = {
-			issuer: "Machine Intelligence Community",
+			issuer: issuer,
 			subject: user,
-			audience: "http://machineintelligence.cc",
-			expiresIn: "24h",
-			algorithm: "RS256"
+			audience: audience,
+			expiresIn: expiration,
+			algorithm: algorithm
 		}
 
 		return jwt.sign(payload, private_key, signOpt);
 	},
 	verify: function(token, user, callback) {
 		verifyOpt = {
-			issuer: "Machine Intelligence Community",
+			issuer: issuer,
 			subject: user,
-			audience: "http://machineintelligence.cc",
-			expiresIn: "24h",
-			algorithms: ["RS256"]
+			audience: audience,
+			expiresIn: expiration,
+			algorithms: [algorithm]
 		}
 
 		jwt.verify(token, public_key, verifyOpt, callback);

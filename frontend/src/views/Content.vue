@@ -13,8 +13,14 @@
 				<a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a>
 			</span><br>
 			<div class="prereq-subseq-box">
-				<Prereq></Prereq>
-				<Subseq></Subseq>
+				<Prereq 
+					v-if="content.prereqs != undefined && content.prereqs.length > 0" 
+					:concepts="content.prereqs">
+				</Prereq>
+				<Subseq 
+					v-if="content.subseqs != undefined && content.subseqs.length > 0" 
+					:concepts="content.subseqs">
+				</Subseq>
 			</div>
 			<Abuse
 				:url="url"
