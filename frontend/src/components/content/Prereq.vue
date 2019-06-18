@@ -3,7 +3,7 @@
 		<h4>Prerequisites</h4>
 		<ul>
 			<li v-for='item in concepts'>
-				<router-link tag='a' :to="'/content/'+item">{{item}}</router-link>
+				<router-link tag='a' :to="'/content/'+item">{{ item.innerText }}</router-link>
 			</li>
 		</ul>
 	</div>
@@ -17,9 +17,10 @@ export default {
 	},
 	data() {
 		return {
-			concepts: []
+			// concepts: []
 		}
-	}
+	},
+	props: ['concepts']
 }
 </script>
 

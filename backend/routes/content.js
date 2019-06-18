@@ -27,6 +27,8 @@ router.post('/', function(req, res, next) {
 
 		var data = fc.extract(req);
 		var query = { _id: data._id };
+		fc.check_edges(query, req.body.data.prereqs, 'prereqs');
+		fc.check_edges(query, req.body.data.subseqs, 'subseqs');
 
 		db.Content.findOne(query, function (err, article) {
 			if(err) {

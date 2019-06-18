@@ -64,7 +64,7 @@ var content_schema = new mongoose.Schema({
 	original_url: {
 		type: String
 	},
-	prereqs: [{}],
+	prereqs: {},
 	preview: {
 		type: String,
 		trim: true
@@ -74,7 +74,7 @@ var content_schema = new mongoose.Schema({
 		type: String, //user-ids
 		required: true
 	}],
-	subseqs: [{}],
+	subseqs: {},
 	title: {
 		type: String,
 		trim: true
