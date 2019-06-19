@@ -213,7 +213,7 @@ export default {
 		update_prereq(prereq) {
 			ContentService.check_edges({ token: this.token, email: this.email, prereq: prereq, subseq: this.data.subseq })
 			.then(function(data) {
-				console.log(data.data);
+
 				if(!data.data.ok) {
 					this.save_error = true;
 					this.save_status = data.data.desc;
@@ -229,7 +229,7 @@ export default {
 		update_subseq(subseq) {
 			ContentService.check_edges({ token: this.token, email: this.email, prereq: this.data.prereq, subseq: subseq })
 			.then(function(data) {
-				console.log(data.data);
+
 				if(!data.data.ok) {
 					this.save_error = true;
 					this.save_status = data.data.desc;
