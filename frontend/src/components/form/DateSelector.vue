@@ -38,7 +38,6 @@ export default {
 				.then((resp) => {
 					var error = resp.data.error;
 					if(!error) this.$emit('date', new Date(`${this.year}-${this.month}-${this.day}`));
-					console.log(error)
 				});
 			}
 		},

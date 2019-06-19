@@ -156,7 +156,8 @@ export default {
 		save(publish=false) {
 			// check if article title exists before saving
 			if(this.data.title.length == 0) return;
-
+			if(this.data.cell == undefined) return;
+			
 			ContentService.check_title({ id: this.content_id, title: this.data.title, email: this.email, token: this.token })
 			.then((data) => {
 				if(!data.data.ok) {

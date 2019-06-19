@@ -82,8 +82,6 @@ router.post('/date', function(req, res, next) {
 	var month = req.body.month;
 	var day = req.body.day;
 	var date = new Date(`${year}-${month}-${day} 00:00`);
-	console.log(date);
-	console.log(date.getDate())
 
 	if(Boolean(+date) && date.getDate() == day) res.status(200).send({ error: false });
 	else res.status(200).send({ error: true });
