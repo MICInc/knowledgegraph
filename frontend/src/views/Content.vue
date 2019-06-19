@@ -217,7 +217,8 @@ button {
 }
 
 #bibtex p {
-
+	font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
+	font-size: 0.9em;
 }
 
 </style>
