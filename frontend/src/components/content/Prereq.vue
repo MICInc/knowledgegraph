@@ -3,7 +3,7 @@
 		<h4>Prerequisites</h4>
 		<ul>
 			<li v-for='item in concepts'>
-				<router-link tag='a' :to="'/content/'+item">{{ item.innerText }}</router-link>
+				<a :href="'/content/'+item.href">{{ item.innerText }}</a>
 			</li>
 		</ul>
 	</div>
@@ -12,12 +12,8 @@
 <script>
 export default {
 	name: 'Prereq',
-	beforeMount() {
-		//fetch data from backend
-	},
 	data() {
 		return {
-			// concepts: []
 		}
 	},
 	props: ['concepts']

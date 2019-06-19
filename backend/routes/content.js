@@ -36,6 +36,7 @@ router.post('/', function(req, res, next) {
 			}
 
 			if(article != null) {
+				// check that the title is unique
 				db.Content.countDocuments({ title: article.title }, function(err, total) {
 					if(total > 1 && req.body.publish) {
 						res.status(200).send({ error: data.title+' already exists' });

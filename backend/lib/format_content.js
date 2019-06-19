@@ -178,6 +178,10 @@ module.exports = {
 			tgt.publication = tgt.content;
 		}
 
+		// update prereqs and subseqs
+		tgt.prereqs = src.prereqs;
+		tgt.subseqs = src.subseqs;
+
 		return tgt;
 	},
 	generate_url: function(title) {
