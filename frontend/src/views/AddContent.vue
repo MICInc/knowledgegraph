@@ -213,9 +213,15 @@ export default {
 		update_prereq(prereq) {
 			ContentService.check_edges({ token: this.token, email: this.email, prereq: prereq, subseq: this.data.subseq })
 			.then(function(data) {
-				console.log(data);
-				if(data.ok) this.data.prereq = prereq;
-				// else // display error message in status section
+				console.log(data.data);
+				if(!data.data.ok) {
+					this.save_error = true;
+					this.save_status = data.data.desc;
+					return;
+				}
+
+				this.save_error = false;
+				this.data.prereq = prereq;
 			})
 			.catch(function(err) {
 			});
@@ -223,9 +229,15 @@ export default {
 		update_subseq(subseq) {
 			ContentService.check_edges({ token: this.token, email: this.email, prereq: this.data.prereq, subseq: subseq })
 			.then(function(data) {
-				console.log(data);
-				if(data.ok) this.data.subseq = subseq;
-				// else // display error message in status section
+				console.log(data.data);
+				if(!data.data.ok) {
+					this.save_error = true;
+					this.save_status = data.data.desc;
+					return;
+				}
+
+				this.save_error = false; 
+				this.data.subseq = subseq;
 			})
 			.catch(function(err) {
 			});

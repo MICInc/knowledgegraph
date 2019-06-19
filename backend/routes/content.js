@@ -399,9 +399,9 @@ router.post('/disjoint', function(req, res, next) {
 			return;
 		}
 
-		fc.is_disjoint(req.body.prereq, req.body.subseq, function(is_disjoint) {
-			res.status(200).send({ ok: is_disjoint, desc: 'Prerequisite and subsequent concepts must be disjoint.'})
-		});
+		var is_disjoint = fc.is_disjoint(req.body.prereq, req.body.subseq);
+		if(is_disjoint) res.status(200).send({ ok: true, desc: ''});
+		else res.status(200).send({ ok: false, desc: 'Prerequisite and subsequent concepts must be disjoint.'});
 	});
 });
 
