@@ -39,11 +39,11 @@ module.exports = {
 			"num_saves": 0,
 			"num_shares": 0,
 			"num_views": 0,
-			"prereqs": {},
+			"prereqs": module.exports.check_edges(data.prereqs),
 			"preview": '',
-			"publication": {},
+			"publication": [],
 			"save_by": [],
-			"subseqs": {},
+			"subseqs": module.exports.check_edges(data.subseqs),
 			"title": title,
 			"url": module.exports.generate_url(title),
 			"year": data.date_created.split('-')[0]
@@ -82,25 +82,13 @@ module.exports = {
 			callback(results.length == 0 || (results.length == 1 && results[0]._id == id));
 		});
 	},
-	check_edges: function(node_id, edges, direction) {
-		// @param prereqs (string)
+	check_edges: function(edges) {
+		// @param prereqs (array)
 		// @return 	(array)
-		db.Content.findOne(node_id, function(err, node_a) {
-			if(err || node_a == null) return;
-			node_a = node_a.toObject();
-			node_a[direction] = {};
-
-			// db.Content.findOne({ title:  }, function(err, node_b) {
-			// 	href = '';
-			// 	if(!(err || node_b == null)) href = module.exports.generate_url(title);
-			// 	node_a[direction][title] = { href: href };
-			// 	console.log(node_a[direction]);
-
-			// 	db.Content.updateOne(node_id, node_a, function(err) {
-			// 		if(err) console.error(err);
-			// 	});
-			// });
-		});
+		var hrefs = []
+		for(var i in edges) hrefs.push({ innerText: edges[i], href: module.exports.generate_url(edges[i])});
+		
+		return hrefs;
 	},
 	compress_html: function(cell) {
 		return cell;
