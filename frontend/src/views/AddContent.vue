@@ -211,18 +211,20 @@ export default {
 			this.save();
 		},
 		update_prereq(prereq) {
-			ContentService.check_edges({ token: this.token, email: this.email, prereq: prereq, subseq: subseq })
+			ContentService.check_edges({ token: this.token, email: this.email, prereq: prereq, subseq: this.data.subseq })
 			.then(function(data) {
-				if(data.is_disjoint) this.data.prereq = prereq;
+				console.log(data);
+				if(data.ok) this.data.prereq = prereq;
 				// else // display error message in status section
 			})
 			.catch(function(err) {
 			});
 		},
 		update_subseq(subseq) {
-			ContentService.check_edges({ token: this.token, email: this.email, prereq: prereq, subseq: subseq })
+			ContentService.check_edges({ token: this.token, email: this.email, prereq: this.data.prereq, subseq: subseq })
 			.then(function(data) {
-				if(data.is_disjoint) this.data.subseq = subseq;
+				console.log(data);
+				if(data.ok) this.data.subseq = subseq;
 				// else // display error message in status section
 			})
 			.catch(function(err) {

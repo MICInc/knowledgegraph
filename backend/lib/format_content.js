@@ -76,6 +76,9 @@ module.exports = {
 
 		return bibtex
 	},
+	is_disjoint: function(prereq, subseq) {
+		return prereq.filter(value => subseq.includes(value)).length == 0;
+	},
 	is_title_unique: function(title, id, callback) {
 		db.Content.find({ title: title }, function(err, results) {
 			if(err) console.error(err);
