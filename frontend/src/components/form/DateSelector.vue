@@ -6,20 +6,16 @@
 		</select>
 		<label>  Month: </label>
 		<select name="month" v-model.number="month" :input="emit()">
-			<option v-for="(value, index) in 12">{{ value }}</option>
+			<option v-for="month in 12">{{ month }}</option>
 		</select>
 		<label>  Day: </label>
-		<select :class="{ error: error }" name="day" v-model.number="day" :input="emit()">
-			<option v-for="(value, index) in 31">{{ value }}</option>
+		<select name="day" v-model.number="day" :input="emit()" :class="{ error: error }">
+			<option v-for="day in 31">{{ day }}</option>
 		</select>
 	</div>
 </template>
 
 <script>
-var years = function range(size, today) {
-	return [...Array(size).keys()].map(i => today - i);
-}
-
 import AuthenticationService from '@/services/AuthenticationService'
 
 export default {
@@ -27,7 +23,7 @@ export default {
 	data() {
 		return {
 			form: {
-				years: years(100, (new Date()).getFullYear())
+				years: this.years(100, (new Date()).getFullYear())
 			},
 			day: 0,
 			month: 0,
@@ -42,8 +38,12 @@ export default {
 				.then((resp) => {
 					var error = resp.data.error;
 					if(!error) this.$emit('date', new Date(`${this.year}-${this.month}-${this.day}`));
+					console.log(error)
 				});
 			}
+		},
+		years(size, today) {
+			return [...Array(size).keys()].map(i => today - i);
 		}
 	}
 }
