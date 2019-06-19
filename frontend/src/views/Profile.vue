@@ -26,6 +26,7 @@
 					</li>
 				</ul>
 			</nav>
+			<!-- <router-view :to="{ name: 'library', params: { editable: editable } }"></router-view> -->
 			<router-view></router-view>
 		</div>
 	</div>

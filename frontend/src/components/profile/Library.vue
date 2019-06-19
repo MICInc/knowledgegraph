@@ -43,7 +43,17 @@ export default {
 
 			});
 		}
-	}
+	},
+	// props: ['editable'],
+	// watch: {
+	// 	editable: {
+	// 		deep: true,
+	// 		immediate: true,
+	// 		handler(curr, prev) {
+	// 			console.log(curr);
+	// 		}
+	// 	},
+	// }
 }
 </script>
 

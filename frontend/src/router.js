@@ -249,7 +249,8 @@ export default new Router({
 					path: 'publications',
 					component: () => import('@/components/profile/Publications.vue')
 				}
-			]
+			],
+			// props: true
 		},
 		{
 			path: '*',
