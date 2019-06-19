@@ -19,7 +19,7 @@
 			<nav class="sections">
 				<ul>
 					<li class="tab" v-for="(sect, index) in sections">
-						<a :href="'/'+url+sect.href" v-on:click="switch_section(sect.name)">
+						<a :href="'/'+url+sect.href">
 							{{ sect.name.toUpperCase() }}
 							<span class="count">{{ profile[sect.name] }}</span>
 						</a>
@@ -34,11 +34,6 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import ProfileService from '@/services/ProfileService'
-import Comments from '@/components/profile/Comments'
-import Followers from '@/components/profile/Followers'
-import Following from '@/components/profile/Following'
-import Library from '@/components/profile/Library'
-import Publications from '@/components/profile/Publications'
 import ProfilePic from '@/components/profile/ProfilePic'
 import router from '@/router'
 
@@ -50,11 +45,6 @@ export default {
 	},
 	components: {
 		PageNav,
-		Comments,
-		Followers,
-		Following,
-		Library,
-		Publications,
 		ProfilePic
 	},
 	computed: {
@@ -74,10 +64,6 @@ export default {
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
 			editable: false,
-			// token: this.$store.state.accessToken,
-			// url: this.$route.params.id,
-			// user_id: this.$store.state.userInfo.id,
-			// logged_in: this.$store.state.isLoggedIn,
 			profile: {
 				comments: 0,
 				first_name: '',
@@ -140,10 +126,6 @@ export default {
 			.catch(function(err) {
 				router.push({ name: 'notfound' });
 			});
-		},
-		switch_section(name) {
-			// console.log(this.url);
-			// router.push({ path: '/profile/'+this.url+'/'+name });
 		},
 		save(profile) {
 		},
