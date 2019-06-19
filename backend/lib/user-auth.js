@@ -24,11 +24,11 @@ module.exports = {
 			dob: profile.dob,
 			email: profile.email,
 			ethnicity: filter.filter_xss(profile.ethnicity),
-			first_name: filter.filter_xss(profile.first_name),
+			first_name: module.exports.format_name(filter.filter_xss(profile.first_name)),
 			following: [],
 			grade: filter.filter_xss(profile.grade),
 			gender: filter.filter_xss(profile.gender),
-			last_name: filter.filter_xss(profile.last_name),
+			last_name: module.exports.format_name(filter.filter_xss(profile.last_name)),
 			library: [],
 			liked_articles: [],
 			liked_papers: [],
@@ -43,10 +43,13 @@ module.exports = {
 			verification: { code: utils.uniqueID(VERI_LENG), date: new Date(), status: false }
 		}
 	},
+	format_name: function(name) {
+		return name.charAt(0).toUpperCase() + name.slice(1);
+	},
 	// TODO: Update module.exports to match model - replace defaults
 	registerUser: function(profile, callback) {
-		module.exports.isEmailTaken(profile.email, function(err, available) {
-			if(available) {
+		module.exports.isEmailTaken(profile.email, function(err, exists) {
+			if(exists) {
 				callback('Email already in use', '', {});
 				return;
 			}
