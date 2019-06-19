@@ -40,13 +40,12 @@ button {
 
 #subseq {
 	width: 50%;
-	float: right;
+	float: left;
 	margin: 0;
 }
 
-#subseq ul {
-	height: 100%;
-	width: 95%;
-	z-index: -1;
+#subseq ul li button {
+	margin-left: auto;
+	margin: 0 0 5px 0;
 }
 </style>

@@ -44,8 +44,8 @@ button {
 	margin: 0;
 }
 
-#prereq textarea {
-	height: 100%;
-	width: 95%;
+#prereq ul li button {
+	margin-left: auto;
+	margin: 0 0 5px 0;
 }
 </style>

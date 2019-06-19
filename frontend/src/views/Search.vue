@@ -27,6 +27,9 @@ import ProfileCell from '@/components/search/ProfileCell';
 
 export default {
 	name: 'search',
+	beforeMount() {
+		window.onbeforeunload = null;
+	},
 	components: {
 		PageNav,
 		ArticleCell,
