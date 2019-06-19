@@ -137,7 +137,7 @@ router.post('/verify_token', function(req, res, next) {
 		}
 
 		UserAuth.findByEmail(user_email, function(ok, user) {
-			if(ok == null) res.status(200).send({ token: token, userInfo: user });
+			if(ok == null && user != null) res.status(200).send({ token: token, userInfo: user });
 			else res.status(401).send({ token: '', userInfo: {} });
 		});
 	});
