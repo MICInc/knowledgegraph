@@ -16,8 +16,14 @@
 				autofocus>
 			<br>
 			<div id="pre-sub-box">
-				<Prereq v-on:update="update_prereq($event)"></Prereq>
-				<Subseq v-on:update="update_subseq($event)"></Subseq>
+				<Prereq 
+					:prereq="data.prereq"
+					v-on:update="update_prereq($event)">
+				</Prereq>
+				<Subseq 
+					:subseq="data.subseq"
+					v-on:update="update_subseq($event)">
+				</Subseq>
 			</div>
 			<form>
 				<DynamicContent
@@ -71,8 +77,8 @@ export default {
 				cell: undefined,
 				citations: '',
 				last_modified: undefined,
-				prereqs: '',
-				subseqs: '',
+				prereq: [],
+				subseq: [],
 				title: ''
 			},
 			reloaded: [],
@@ -127,7 +133,8 @@ export default {
 				this.content_id = data.data._id;
 				this.reloaded = data.data.content;
 				this.data.title = data.data.title;
-				console.log(this.reloaded);
+				for(var i in data.data.prereqs) this.data.prereq.push(data.data.prereqs[i].innerText);
+				for(var i in data.data.subseqs) this.data.subseq.push(data.data.subseqs[i].innerText);
 			})
 			.catch((error) => {
 			});
@@ -203,11 +210,11 @@ export default {
 			this.data.update_cell = emit_save.update_cell;	
 			this.save();
 		},
-		update_prereq(prereqs) {
-			this.data.prereqs = prereqs;
+		update_prereq(prereq) {
+			this.data.prereq = prereq;
 		},
-		update_subseq(subseqs) {
-			this.data.subseqs = subseqs;
+		update_subseq(subseq) {
+			this.data.subseq = subseq;
 		},
 		upload_file(form_data) {
 			form_data.append('content_id', this.content_id);

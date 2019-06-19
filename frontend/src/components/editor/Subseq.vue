@@ -16,7 +16,6 @@ export default {
 	},
 	data() {
 		return {
-			subseq: []
 		}
 	},
 	methods: {
@@ -29,7 +28,8 @@ export default {
 				this.$emit('update', this.subseq);
 			}
 		}
-	}
+	},
+	props: ['subseq']
 }
 </script>
 

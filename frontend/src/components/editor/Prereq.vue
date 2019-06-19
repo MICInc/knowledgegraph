@@ -16,7 +16,6 @@ export default {
 	},
 	data() {
 		return {
-			prereq: []
 		}
 	},
 	methods: {
@@ -29,7 +28,8 @@ export default {
 				this.$emit('update', this.prereq);
 			}
 		}
-	}
+	},
+	props: ['prereq']
 }
 </script>
 
