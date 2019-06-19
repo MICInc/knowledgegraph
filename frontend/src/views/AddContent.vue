@@ -211,10 +211,22 @@ export default {
 			this.save();
 		},
 		update_prereq(prereq) {
-			this.data.prereq = prereq;
+			ContentService.check_edges({ token: this.token, email: this.email, prereq: prereq, subseq: subseq })
+			.then(function(data) {
+				if(data.is_disjoint) this.data.prereq = prereq;
+				// else // display error message in status section
+			})
+			.catch(function(err) {
+			});
 		},
 		update_subseq(subseq) {
-			this.data.subseq = subseq;
+			ContentService.check_edges({ token: this.token, email: this.email, prereq: prereq, subseq: subseq })
+			.then(function(data) {
+				if(data.is_disjoint) this.data.subseq = subseq;
+				// else // display error message in status section
+			})
+			.catch(function(err) {
+			});
 		},
 		upload_file(form_data) {
 			form_data.append('content_id', this.content_id);

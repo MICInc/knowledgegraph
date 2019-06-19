@@ -4,6 +4,9 @@ export default {
 		addContent(data) {
 			return Api().post('/api/content/add', data);
 		},
+		check_edges(data) {
+			return Api().post('/api/content/disjoint', data);
+		},
 		check_title(data) {
 			return Api().post('/api/content/title', data);
 		},

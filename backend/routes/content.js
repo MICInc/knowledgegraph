@@ -365,7 +365,7 @@ router.post('/report', function(req, res, next) {
 });
 
 router.post('/title', function(req, res, next) {
-	token = req.body.token;
+	var token = req.body.token;
 
 	if(token == null) {
 		res.status(401).send('unauthorized');
@@ -381,6 +381,26 @@ router.post('/title', function(req, res, next) {
 		var title = req.body.title;
 		fc.is_title_unique(title, req.body.id, function(is_unique) {
 			res.status(200).send({ ok: is_unique, desc: title+' already exists.' });
+		});
+	});
+});
+
+router.post('/disjoint', function(req, res, next) {
+	var token = req.body.token;
+
+	if(token == null) {
+		res.status(401).send('unauthorized');
+		return;
+	}
+
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(401).send('unauthorized');
+			return;
+		}
+
+		fc.is_disjoint(req.body.prereq, req.body.subseq, function(is_disjoint) {
+			res.status(200).send({ ok: is_disjoint, desc: 'Prerequisite and subsequent concepts must be disjoint.'})
 		});
 	});
 });
