@@ -6,6 +6,7 @@ var utils = require('../lib/utils');
 var db = require('../db/database');
 var path = require('path');
 var fs = require('fs-extra');
+var btx = require('../lib/bibtex');
 var vote = require('../lib/vote');
 var UserAuth = require('../lib/user-auth');
 const article_storage = './storage/content/article';
@@ -158,7 +159,7 @@ router.get('/', function(req, res) {
 
 			if(article != null && article.is_published) {
 				var start = new Date();
-				article.bibtex = fc.bibtex(article);
+				article.bibtex = btx.format(article);
 
 				res.status(200).send(fc.filter_results(article));
 				article.view_duration.push({ start: start });

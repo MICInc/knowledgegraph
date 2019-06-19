@@ -49,33 +49,6 @@ module.exports = {
 			"year": data.date_created.split('-')[0]
 		};
 	},
-	bibtex: function(article) {
-		// @param	article (object)
-		// @return 	article (object)
-		var auths = article.authors;
-
-		// format authors
-		var auth_formatted = 'author = {';
-
-		if(auths.length == 1) auth_formatted += auths[0].last_name+', '+auths[0].first_name;
-		else {
-			var last = auths.length-1;
-			
-			for(var i = 0; i < last; i++) {
-				auth_formatted += auths[i].last_name+', '+auths[i].first_name+' and ';
-			}
-
-			auth_formatted += auths[last];
-		}
-
-		auth_formatted += '},'
-
-		var title = article.title;
-		var bib_id = [auths[0].last_name.toLowerCase(), article.year, title.toLowerCase() ].join('');
-		var bibtex = '@article{'+bib_id+', '+auth_formatted+'}';
-
-		return bibtex
-	},
 	is_disjoint: function(prereq, subseq) {
 		return prereq.filter(value => subseq.includes(value)).length == 0;
 	},

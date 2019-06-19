@@ -209,6 +209,7 @@ button {
 
 #bibtex {
 	font-size: 0.85em;
+	white-space:pre-wrap;
 }
 
 #bibtex h4 {
