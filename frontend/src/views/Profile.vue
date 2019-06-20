@@ -36,7 +36,7 @@ import ProfilePic from '@/components/profile/ProfilePic'
 import router from '@/router'
 
 export default {
-	name: 'content',
+	name: 'profile',
 	beforeMount() {
 		this.edit();
 		this.getContent();
