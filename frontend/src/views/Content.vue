@@ -141,7 +141,14 @@ export default {
 			this.isShareModalVisible = false;
 		},
 		save() {
-			var article = { title: content.title, token: this.token, id: this.user_id, email: this.email };
+			var article = { 
+				title: this.content.title, 
+				content_id: this.content_id, 
+				token: this.token, 
+				id: this.user_id, 
+				email: this.email
+			};
+			
 			ProfileService.add_to_library(article)
 			.then((data) => {
 

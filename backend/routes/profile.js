@@ -374,9 +374,9 @@ router.post('/add_to_library', function(req, res) {
 		if(err) res.status(401).send('unauthorized');
 		else {
 			UserAuth.find_by_email(req.body.email, function(err, profile) {
-				profile.library.push(req.body.title);
+				profile.library.push({ id: req.body.content_id, title: req.body.title });
 
-				UserAuth.updateOne({ _id: profile._id }, profile, function(err) {
+				db.User.updateOne({ _id: profile._id }, profile, function(err) {
 					if(err) {
 						console.error(err);
 						res.status(400).send({ ok: false });
