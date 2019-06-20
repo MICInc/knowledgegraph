@@ -13,7 +13,7 @@
 					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
 				</div>
 				<div v-if="!editable && logged_in">
-					<button v-on:click="follow($event)">Follow</button>
+					<button id="follow-btn" v-on:click="follow($event)">{{ follow_text }}</button>
 				</div>
 			</div>
 			<nav class="sections">
@@ -51,6 +51,9 @@ export default {
 		editable() {
 			return this.can_edit;
 		},
+		follow_text() {
+			return this.profile.is_following ? 'Following' : 'Follow';
+		},
 		token() {
 			return this.$store.state.accessToken;
 		},
@@ -66,6 +69,7 @@ export default {
 	},
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
+			email: this.$store.state.userInfo.email,
 			can_edit: false,
 			profile: {
 				comments: 0,
@@ -74,7 +78,8 @@ export default {
 				following: 0,
 				last_name: '',
 				library: 0,
-				publications: 0
+				publications: 0,
+				is_following: false
 			},
 			sections: [
 				{
@@ -119,10 +124,11 @@ export default {
 			ProfileService.follow({ user_id: this.user_id, token: this.token, url: this.url })
 			.then((resp) => {
 				this.profile.followers = resp.data.followers;
+				this.profile.is_following = !this.profile.is_following;
 			});
 		},
 		async getContent() {
-			return await ProfileService.getProfile({ params: { url: this.url }})
+			return await ProfileService.getProfile({ params: { email: this.email, token: this.token, url: this.url }})
 			.then((resp) => {
 				if(resp.data != undefined && resp.status == 200) this.profile = resp.data;
 			})
@@ -185,6 +191,11 @@ nav ul li .count {
 	margin-top: 10px;
 	display: flex;
 	justify-content: flex-end;
+}
+
+#follow-btn {
+	width: 6em;
+	height: 1.5em;
 }
 
 </style>

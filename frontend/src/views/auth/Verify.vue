@@ -61,7 +61,7 @@ export default {
 				}
 			})
 			.catch((error) => {
-				if(error.response.status == 400) this.verified = false;
+				this.verified = false;
 			});
 		},
 		async resend() {

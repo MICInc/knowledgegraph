@@ -24,18 +24,31 @@ router.post('/', function(req, res) {
 
 router.get('/', function(req, res) {
 	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		var data = {
-			first_name: profile.first_name,
-			last_name: profile.last_name,
-			comments: profile.comments.length,
-			publications: profile.publications.length,
-			library: profile.library.length,
-			followers: profile.followers.length,
-			following: profile.following.length
-		};
+		UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+			var data = {
+				first_name: profile.first_name,
+				last_name: profile.last_name,
+				comments: profile.comments.length,
+				publications: profile.publications.length,
+				library: profile.library.length,
+				followers: profile.followers.length,
+				following: profile.following.length,
+				is_following: false
+			};
 
-		if(profile) res.status(200).send(data);
-		else res.status(400).send();
+			if(err) {
+				// if a non-user is looking at the profile
+				if(profile) res.status(200).send(data);
+				else res.status(400).send();
+			}
+			else {
+				// check if the loggined in user is already following this profile page
+				UserAuth.find_by_email({ email: req.body.email }, function(err, user) {
+					data['is_following'] = user.following.includes(profile._id);
+					res.status(200).send(data);
+				});
+			}
+		});
 	});
 });
 
@@ -185,8 +198,15 @@ router.post('/follow', function(req, res) {
 						return;
 					}
 
-					profile.following.push(user._id);
-					user.followers.push(req.body.user_id);
+					// if already following this user, assume they clicked againt to unfollow
+					if(profile.following.includes(user._id)) {
+						profile.following.splice(profile.following.indexOf(user._id), 1);
+						user.followers.splice(user.followers.indexOf(req.body.user_id), 1);
+					}
+					else {
+						profile.following.push(user._id);
+						user.followers.push(req.body.user_id);
+					}
 
 					db.User.updateOne({ _id: req.body.user_id }, profile, function(err) { 
 						if(err) console.error(err);
@@ -194,7 +214,7 @@ router.post('/follow', function(req, res) {
 					db.User.updateOne({ url: req.body.url }, user, function(err) {
 						if(err) console.error(err);
 					});
-
+					
 					res.status(200).send({ followers: user.followers.length });
 				});
 			});
