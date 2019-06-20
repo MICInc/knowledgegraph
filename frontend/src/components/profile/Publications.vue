@@ -3,8 +3,11 @@
 		<h2>PUBLICATIONS</h2>
 		<ul>
 			<li v-for="(article, index) in publications">
-				<a :href="'/content/'+article.url">{{ article.title }}</a><span>{{ article.year }}</span><br>
-				<p>{{ article.preview }}</p>
+				<div>
+					<a :href="'/content/'+article.url">{{ article.title }}</a><span>{{ article.year }}</span><br>
+					<p>{{ article.preview }}</p>
+					<button v-if="editable">x</button>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -21,7 +24,6 @@ export default {
 	},
 	data() {
 		return {
-			editable: false,
 			publications: [],
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,

@@ -172,7 +172,7 @@ module.exports = {
 			});
 		});
 	},
-	findByURL: function(url, callback) {
+	find_by_url: function(url, callback) {
 		db.User.findOne({ url: filter.filter_xss(url) }, function(err, user) {
 			process.nextTick(function() {
 				callback(err, user);
@@ -221,7 +221,7 @@ module.exports = {
 		else token.verify(t, email, callback);
 	},
 	is_editable(query, page, callback) {
-		var editable = page.url == query.url;
+		var editable = (page.url == query.url) && (query.user_id == page._id);	
 
 		if(editable) {
 			module.exports.verify_token(query.token, query.email, function(err, decoded) {

@@ -26,7 +26,6 @@
 					</li>
 				</ul>
 			</nav>
-			<!-- <router-view :to="{ name: 'library', params: { editable: editable } }"></router-view> -->
 			<router-view></router-view>
 		</div>
 	</div>
@@ -49,6 +48,9 @@ export default {
 		ProfilePic
 	},
 	computed: {
+		editable() {
+			return this.can_edit;
+		},
 		token() {
 			return this.$store.state.accessToken;
 		},
@@ -64,7 +66,7 @@ export default {
 	},
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
-			editable: false,
+			can_edit: false,
 			profile: {
 				comments: 0,
 				first_name: '',
@@ -107,10 +109,10 @@ export default {
 		async edit() {
 			ProfileService.canEdit({ user_id: this.user_id, token: this.token, url: this.url })
 			.then((resp) => {
-				if(resp.data.editable) this.editable = resp.data.editable;
+				if(resp.data.editable) this.can_edit = resp.data.editable;
 			})
 			.catch((resp) => {
-				this.editable = false;
+				this.can_edit = false;
 			});
 		},
 		async follow(event) {

@@ -74,7 +74,7 @@ router.post('/edit', function(req, res) {
 });
 
 router.get('/publications', function(req, res) {
-	UserAuth.findByURL(req.query.url, function(err, profile) {
+	UserAuth.find_by_url(req.query.url, function(err, profile) {
 		if(err) {
 			console.error(err);
 			res.status(400).send('Invalid request');
@@ -82,19 +82,21 @@ router.get('/publications', function(req, res) {
 		}
 
 		UserAuth.is_editable(req.query, profile, function(editable) {
-			db.Content.find({ _id: { $in: profile.publications }}, function(err, publications) {
+			var query = editable ? { _id: { $in: profile.publications }} : { $and: [{ _id: { $in: profile.publications }}, { is_published: true }] };
+
+			db.Content.find(query, function(err, publications) {
 				if(err) {
 					console.error(err);
 					res.status(200).send({ editable: false, publications: [] });
 				}
 				else res.status(200).send({ editable: editable, publications: publications });
-			}).select('title url preview year num_views').select('-_id');
+			}).select('title url preview year').select('-_id');
 		});
 	});
 });
 
 router.get('/library', function(req, res) {
-	UserAuth.findByURL(req.query.url, function(err, profile) {
+	UserAuth.find_by_url(req.query.url, function(err, profile) {
 		if(err) {
 			console.error(err);
 			res.status(400).send('Invalid request');
@@ -114,7 +116,7 @@ router.get('/library', function(req, res) {
 });
 
 router.get('/comments', function(req, res) {
-	UserAuth.findByURL(req.query.url, function(err, profile) {
+	UserAuth.find_by_url(req.query.url, function(err, profile) {
 		if(err) {
 			console.error(err);
 			res.status(400).send('Invalid request');
@@ -128,7 +130,7 @@ router.get('/comments', function(req, res) {
 });
 
 router.post('/picture', function(req, res) {
-	UserAuth.findByURL(req.body.url, function(err, profile) {
+	UserAuth.find_by_url(req.body.url, function(err, profile) {
 		if(err) {
 			console.error(err);
 			res.status(400).send('Invalid request');
@@ -152,7 +154,7 @@ router.post('/picture', function(req, res) {
 });
 
 router.get('/picture', function(req, res) {
-	UserAuth.findByURL(req.query.url, function(err, profile) {
+	UserAuth.find_by_url(req.query.url, function(err, profile) {
 		if(err) {
 			console.error(err);
 			res.status(400).send('Invalid request');
@@ -176,7 +178,7 @@ router.post('/follow', function(req, res) {
 					return;
 				}
 
-				UserAuth.findByURL(req.body.url, function(err, user) {
+				UserAuth.find_by_url(req.body.url, function(err, user) {
 					if(err) {
 						console.error(err);
 						res.status(400).send({ following: 0 });
@@ -201,7 +203,7 @@ router.post('/follow', function(req, res) {
 });
 
 router.get('/followers', function(req, res) {
-	UserAuth.findByURL(req.query.url, function(err, profile) {
+	UserAuth.find_by_url(req.query.url, function(err, profile) {
 		if(err) {
 			console.error(err);
 			res.status(400).send('Invalid request');
@@ -217,7 +219,7 @@ router.get('/followers', function(req, res) {
 });
 
 router.get('/following', function(req, res) {
-	UserAuth.findByURL(req.query.url, function(err, profile) {
+	UserAuth.find_by_url(req.query.url, function(err, profile) {
 		if(err) {
 			console.error(err);
 			res.status(400).send('Invalid request');

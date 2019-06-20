@@ -24,7 +24,6 @@ export default {
 	},
 	data() {
 		return {
-			editable: false,
 			library: [],
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
@@ -43,17 +42,7 @@ export default {
 
 			});
 		}
-	},
-	// props: ['editable'],
-	// watch: {
-	// 	editable: {
-	// 		deep: true,
-	// 		immediate: true,
-	// 		handler(curr, prev) {
-	// 			console.log(curr);
-	// 		}
-	// 	},
-	// }
+	}
 }
 </script>
 
