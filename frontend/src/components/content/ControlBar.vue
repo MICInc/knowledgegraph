@@ -1,6 +1,7 @@
 <template>
 	<div class="article-control-bar">
 		<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">Edit</router-link>
+		<button type="button" v-on:click="save()">Save</button>
 		<button class="modal" type="button" v-on:click="share()">Share</button>
 		<button class="modal" type="button" v-on:click="report_abuse()">...</button>
 	</div>

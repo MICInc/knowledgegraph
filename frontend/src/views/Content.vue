@@ -6,8 +6,8 @@
 			<ControlBar 
 				:editable="editable" 
 				:url="url"
-				v-on:abuse=""
-				v-on:share="">
+				v-on:abuse="open_report()"
+				v-on:share="open_share()">
 			</ControlBar>
 			<span class='author' v-for='author in content.authors'>
 				<a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a>
