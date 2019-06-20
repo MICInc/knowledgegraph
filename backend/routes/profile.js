@@ -110,7 +110,7 @@ router.get('/library', function(req, res) {
 					res.status(200).send({ editable: false, library: [] });
 				}
 				else res.status(200).send({ editable: editable, library: library });
-			}).select('title url preview year num_views').select('-_id');
+			}).select('title url preview year').select('-_id');
 		});
 	});
 });
@@ -374,7 +374,7 @@ router.post('/add_to_library', function(req, res) {
 		if(err) res.status(401).send('unauthorized');
 		else {
 			UserAuth.find_by_email(req.body.email, function(err, profile) {
-				profile.library.push({ id: req.body.content_id, title: req.body.title });
+				profile.library.push(req.body.content_id);
 
 				db.User.updateOne({ _id: profile._id }, profile, function(err) {
 					if(err) {

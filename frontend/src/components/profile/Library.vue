@@ -39,7 +39,6 @@ export default {
 				this.library = resp.data.library;
 			})
 			.catch((data) => {
-
 			});
 		}
 	}

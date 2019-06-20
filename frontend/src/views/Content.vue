@@ -141,8 +141,7 @@ export default {
 			this.isShareModalVisible = false;
 		},
 		save() {
-			var article = { 
-				title: this.content.title, 
+			var article = {
 				content_id: this.content_id, 
 				token: this.token, 
 				id: this.user_id, 
@@ -151,7 +150,7 @@ export default {
 			
 			ProfileService.add_to_library(article)
 			.then((data) => {
-
+				if(data.data.ok) alert('Saved to library');
 			})
 			.catch((err) => {
 
