@@ -8,23 +8,21 @@
 				:user_id="user_id"
 				:url="url">
 			</ProfilePic>
-			<div id="about">
-				<div id="left">
-					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
-				</div>
-				<div v-if="!editable && logged_in">
-					<button id="follow-btn" v-on:click="follow($event)">{{ follow_text }}</button>
-				</div>
+			<div id="name">
+				<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
 			</div>
 			<nav class="sections">
 				<ul>
 					<li class="tab" v-for="(sect, index) in sections">
 						<a :href="'/'+url+sect.href">
-							{{ sect.name.toUpperCase() }}
+							{{ sect.name | capitalize }}
 							<span class="count">{{ profile[sect.name] }}</span>
 						</a>
 					</li>
 				</ul>
+				<div id="follow" v-if="!editable && logged_in">
+					<button id="follow-btn" v-on:click="follow($event)">{{ follow_text }}</button>
+				</div>
 			</nav>
 			<router-view></router-view>
 		</div>
@@ -110,6 +108,13 @@ export default {
 			]
 		}
 	},
+	filters: {
+		capitalize: function(value) {
+			if(!value) return '';
+			value = value.toString()
+			return value.charAt(0).toUpperCase() + value.slice(1)
+		}
+	},
 	methods: {
 		async edit() {
 			ProfileService.canEdit({ user_id: this.user_id, token: this.token, url: this.url })
@@ -151,49 +156,52 @@ export default {
 	flex-direction: column;
 }
 
-nav ul {
+.sections {
+	display: flex;
+}
+
+.sections ul {
+	flex: 1;
 	list-style: none;
 	display: flex;
-	align-items: center;
 	margin: 0;
 	padding: 0;
 }
 
-nav ul li {
-	margin-left: 15px;
+.sections ul li {
+	margin-left: 2em;
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 1em;
 }
 
-nav ul li:first-child {
+.sections ul li:first-child {
 	margin-left: 0;
 }
 
-nav ul li a {
+.sections ul li a {
 	text-decoration: none;
 	color: #000;
 }
 
-nav ul li a:hover {
+.sections ul li a:hover {
 	color: #655ba5;
 }
 
-nav ul li .count {
+.sections ul li .count {
 	margin-left: 5px;
 }
 
-#about {
+#name {
 	display: flex;
 }
 
-#about #right {
-	width: 60%;
-	margin-top: 10px;
+#follow {
 	display: flex;
 	justify-content: flex-end;
 }
 
 #follow-btn {
+	margin: 0;
 	width: 6em;
 	height: 1.5em;
 }
