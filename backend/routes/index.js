@@ -67,7 +67,7 @@ router.post('/logout', function(req, res, next) {
 router.post('/retrieve_login', function(req, res, next) {
 	var email = req.body.email;
 
-	UserAuth.findByEmail(email, function(profile) {
+	UserAuth.find_by_email(email, function(profile) {
 		if(user != null) {
 			UserAuth.reset_password(email, function(ok) {
 				res.status(200).send({ status: 'Please check your email'});
@@ -102,7 +102,7 @@ router.post('/session', function(req, res, next) {
 			return;
 		}
 
-		UserAuth.findByEmail({ email: user_email }, function(ok, token, user) {
+		UserAuth.find_by_email({ email: user_email }, function(ok, token, user) {
 			if(ok) res.status(200).send({ token: token, userInfo: user });
 			else res.status(400).send({ token: '', userInfo: {} });
 		});
@@ -136,7 +136,7 @@ router.post('/verify_token', function(req, res, next) {
 			return;
 		}
 
-		UserAuth.findByEmail(user_email, function(ok, user) {
+		UserAuth.find_by_email(user_email, function(ok, user) {
 			if(ok == null && user != null) res.status(200).send({ token: token, userInfo: user });
 			else res.status(401).send({ token: '', userInfo: {} });
 		});

@@ -150,7 +150,7 @@ module.exports = {
 			}
 		});
 	},
-	findByEmail: function(email, callback) {
+	find_by_email: function(email, callback) {
 		var email = filter.filter_xss(email);
 		db.User.findOne({ email: email }, function(err, user) {
 			process.nextTick(function() {
@@ -180,7 +180,7 @@ module.exports = {
 		});
 	},
 	isEmailTaken: function(email, callback) {
-		module.exports.findByEmail(filter.filter_xss(email), function(err, user) {
+		module.exports.find_by_email(filter.filter_xss(email), function(err, user) {
 			callback(err, user != null);
 		});
 	},

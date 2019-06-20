@@ -17,6 +17,9 @@ export default {
 		report_abuse() {
 			this.$emit('abuse');
 		},
+		save() {
+			this.$emit('save');
+		},
 		share() {
 			this.$emit('share');
 		}

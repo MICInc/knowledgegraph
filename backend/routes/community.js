@@ -10,7 +10,7 @@ router.post('/', function(req, res) {
 		res.status(400).send('Invalid submission');
 	}
 
-	UserAuth.findByEmail(req.body.email, function(err, profile) {
+	UserAuth.find_by_email(req.body.email, function(err, profile) {
 		if(err || profile == null) {
 			console.error(err);
 			res.status(400).send('Invalid submission');

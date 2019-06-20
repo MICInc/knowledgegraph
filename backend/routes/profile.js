@@ -243,7 +243,7 @@ router.post('/update_email', function(req, res) {
 		if(err) res.status(401).send('unauthorized');
 		if(email.length == 0) res.status(400).send('Invalid email');
 		else {
-			UserAuth.findByEmail(email, function(err, profile) {
+			UserAuth.find_by_email(email, function(err, profile) {
 				if(err) {
 					console.error(err);
 					res.status(400).send('Invalid email');
@@ -277,7 +277,7 @@ router.post('/update_url', function(req, res) {
 		else {
 			console.log(url);
 			//check that this url is unique
-			UserAuth.findByEmail(email, function(err, profile) {
+			UserAuth.find_by_email(email, function(err, profile) {
 				if(profile == null) {
 					res.status(400).send('URL in use')
 					return;
@@ -304,7 +304,7 @@ router.post('/update_first_name', function(req, res) {
 		if(err) res.status(401).send('unauthorized');
 		if(first_name.length == 0) res.status(400).send('Invalid email');
 		else {
-			UserAuth.findByEmail(email, function(err, profile) {
+			UserAuth.find_by_email(email, function(err, profile) {
 				profile.first_name = first_name;
 
 				db.User.updateOne({ _id: profile._id }, profile, function(err) {
@@ -324,7 +324,7 @@ router.post('/update_last_name', function(req, res) {
 	UserAuth.verify_token(token, email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
 		else {
-			UserAuth.findByEmail(email, function(err, profile) {
+			UserAuth.find_by_email(email, function(err, profile) {
 				profile.last_name = last_name;
 
 				db.User.updateOne({ _id: profile._id }, profile, function(err) {
@@ -354,7 +354,7 @@ router.post('/deactivate', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
 		else {
-			UserAuth.findByEmail(req.body.email, function(err, profile) {
+			UserAuth.find_by_email(req.body.email, function(err, profile) {
 				if(err) {
 					console.error(err);
 					res.status(400).send('Invalid request');
@@ -367,6 +367,29 @@ router.post('/deactivate', function(req, res) {
 			});
 		}
 	});
+});
+
+router.post('/add_to_library', function(req, res) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		else {
+			UserAuth.find_by_email(req.body.email, function(err, profile) {
+				profile.library.push(req.body.title);
+
+				UserAuth.updateOne({ _id: profile._id }, profile, function(err) {
+					if(err) {
+						console.error(err);
+						res.status(400).send({ ok: false });
+					}
+					else res.status(200).send({ ok: true });
+				});
+			});
+		}
+	});
+});
+
+router.post('/remove_from_library', function(req, res) {
+	console.log('/remove_from_library');
 });
 
 module.exports = router;

@@ -6,6 +6,7 @@
 			<ControlBar 
 				:editable="editable" 
 				:url="url"
+				v-on:save="save()"
 				v-on:abuse="open_report()"
 				v-on:share="open_share()">
 			</ControlBar>
@@ -59,6 +60,7 @@
 <script>
 import PageNav from '@/components/PageNav'
 import ContentService from '@/services/ContentService'
+import ProfileService from '@/services/ProfileService'
 import Footer from '@/components/Footer'
 import NotFoundMsg from '@/components/NotFoundMsg'
 import Vote from '@/components/Vote'
@@ -95,6 +97,7 @@ export default {
 			content: {},
 			user_id: this.$store.state.userInfo.id,
 			token: this.$store.state.accessToken,
+			email: this.$store.state.userInfo.email,
 			editable: false,
 			isShareModalVisible: false,
 			isAbuseModalVisible: false
@@ -136,6 +139,16 @@ export default {
 		},
 		close_share() {
 			this.isShareModalVisible = false;
+		},
+		save() {
+			var article = { title: content.title, token: this.token, id: this.user_id, email: this.email };
+			ProfileService.add_to_library(article)
+			.then((data) => {
+
+			})
+			.catch((err) => {
+
+			});
 		}
 	}
 }
