@@ -173,5 +173,10 @@ module.exports = {
 	},
 	verify_vote(vote) {
 		return vote;
+	},
+	published_count(data) {
+		// @params (array) data
+		// @return (array) count of published articles
+		return data.filter((obj) => obj.published === true).length;
 	}
 }

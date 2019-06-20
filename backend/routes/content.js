@@ -51,6 +51,17 @@ router.post('/', function(req, res, next) {
 						if(err) console.error(err);
 						else res.send({ id: data._id.toString(), url: data.url });
 					});
+
+					// update user profile if an article published status changes
+					var user = { _id: req.body.user_id, token: req.body.token };
+					db.User.findOne(user, function(err, profile) {
+						var index = profile.publications.indexOf(data._id.toString());
+						profile.publications[index].published = req.body.publish;
+
+						db.User.updateOne(user, profile, function(err) {
+							if(err) console.error(err);
+						});
+					});
 				}).select();
 			}
 			else {
@@ -74,7 +85,7 @@ router.post('/', function(req, res, next) {
 				db.User.findOne(user, function(err, profile) {
 					// only store article id so that forced to get latest url and 
 					// content incase article renamed, which will generate url
-					profile.publications.push(data._id.toString());
+					profile.publications.push({ id: data._id.toString(), published: req.body.publish });
 					
 					db.User.updateOne(user, profile, function(err) {
 						if(err) console.error(err);

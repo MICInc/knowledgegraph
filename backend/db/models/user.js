@@ -79,10 +79,7 @@ var user_schema = new Schema({
         type: String,
         required: true
     },
-    publications: [{
-        type: String,
-        sparse: true
-    }],
+    publications: [{}],
     picture: {},
     rank: {
         type: Number,

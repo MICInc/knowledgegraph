@@ -5,6 +5,7 @@ var db = require('../db/database');
 var jwt = require('jsonwebtoken');
 var UserAuth = require('../lib/user-auth');
 var sh = require('../lib/search_handler');
+var fc = require('../lib/format_content');
 
 // This is acutally never hit from /signup. Account creation is executed in index.js
 // But forgot if this is hit with conference sign up.
@@ -29,7 +30,7 @@ router.get('/', function(req, res) {
 				first_name: profile.first_name,
 				last_name: profile.last_name,
 				comments: profile.comments.length,
-				publications: profile.publications.length,
+				publications: fc.published_count(profile.publications),
 				library: profile.library.length,
 				followers: profile.followers.length,
 				following: profile.following.length,
