@@ -37,6 +37,9 @@ export default {
 			.then((resp) => {
 				this.editable = resp.data.editable;
 				this.publications = resp.data.publications;
+				console.log('editable: '+this.editable);
+				console.log('publications: ');
+				console.log(this.publications);
 			})
 			.catch((data) => {
 
