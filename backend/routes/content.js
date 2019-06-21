@@ -56,7 +56,7 @@ router.post('/', function(req, res, next) {
 					var user = { _id: req.body.user_id, token: req.body.token };
 					db.User.findOne(user, function(err, profile) {
 						var index = profile.publications.indexOf(data._id.toString());
-						profile.publications[index].published = req.body.publish;
+						if(index > -1) profile.publications[index].published = req.body.publish;
 
 						db.User.updateOne(user, profile, function(err) {
 							if(err) console.error(err);
