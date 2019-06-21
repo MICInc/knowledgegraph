@@ -8,7 +8,10 @@
 				v-on:change="expand($event)">
 			</Pancake>
 			<div class="tag-type" v-if="is_empty">
-				<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
+				<label id="image_input">
+					<input ref="img-button" class="tag_switch" type="file" name="image" v-on:change="add_image($event)" accept="image/*">
+					img
+				</label>
 				<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
 			</div>
@@ -405,7 +408,7 @@ button {
 }
 
 .pancake {
-	margin: 17px 0;
+	margin: 20px 0;
 	width: 20px;
 	float: left;
 }
@@ -413,5 +416,19 @@ button {
 .content-row {
 	float: left;
 	width: 90%;
+}
+
+input[type="file"] {
+	display: none;
+	width: 1em;
+}
+
+#image_input {
+	/*opacity: 0;
+	filter: alpha(opacity=0);*/
+	/*display: inline-block;*/
+	width: 1em;
+	cursor: pointer;
+	font-size: 0.8em;
 }
 </style>
