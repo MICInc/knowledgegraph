@@ -8,7 +8,8 @@
 				:url="url"
 				v-on:save="save()"
 				v-on:abuse="open_report()"
-				v-on:share="open_share()">
+				v-on:share="open_share()"
+				v-on:unpublish="unpublish()">
 			</ControlBar>
 			<span class='author' v-for='author in content.authors'>
 				<a :href="'/'+author.url">{{ author.first_name+' '+author.last_name }}</a>
@@ -154,6 +155,15 @@ export default {
 			})
 			.catch((err) => {
 
+			});
+		},
+		unpublish() {
+			var article = { token: this.token, email: this.email, content_id: this.content_id };
+			ContentService.unpublish(article)
+			.then((data) => {
+				alert('Article unpublished');
+			})
+			.catch((err) => {
 			});
 		}
 	}

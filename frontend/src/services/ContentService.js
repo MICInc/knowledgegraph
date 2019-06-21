@@ -42,5 +42,8 @@ export default {
 		},
 		report(data) {
 			return Api().post('/api/content/report', data);
+		},
+		unpublish(data) {
+			return Api().post('/api/content/unpublish', data);
 		}
 }

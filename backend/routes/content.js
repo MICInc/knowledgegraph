@@ -211,13 +211,11 @@ router.get('/', function(req, res) {
 });
 
 router.get('/edit', function(req, res) {
-	console.log(req.query.user_id);
 	UserAuth.findById(req.query.user_id, function(err, profile) {
 		if(err) {
 			res.status(400).send('Invalid request');
 			return;
 		}
-		console.log({ url: req.query.url })
 
 		db.Content.findOne({ url: req.query.url }, function(err, article) {
 			if(err || article == null) {
@@ -225,15 +223,12 @@ router.get('/edit', function(req, res) {
 				return;
 			}
 
-			if(!profile.publications.includes(article._id)) {
-				console.log('here 3');
+			if(!profile.publications.some(item => item.id === article._id)) {
 				res.status(200).send({ editable: false });
 				return;
 			}
 
-			// req.query.url == article.url should be true in is_editable since the above block did not return
 			UserAuth.is_editable(req.query, article, function(editable) {
-				console.log('editable: '+editable);
 				if(editable) res.status(200).send({ editable: editable });
 				else res.status(200).send({ editable: editable });
 			});
@@ -423,6 +418,37 @@ router.post('/disjoint', function(req, res, next) {
 		var is_disjoint = fc.is_disjoint(req.body.prereq, req.body.subseq);
 		if(is_disjoint) res.status(200).send({ ok: true, desc: ''});
 		else res.status(200).send({ ok: false, desc: 'Prerequisite and subsequent concepts must be disjoint.'});
+	});
+});
+
+router.post('/unpublish', function(req, res, next) {
+	var token = req.body.token;
+
+	if(token == null) {
+		res.status(401).send('unauthorized');
+		return;
+	}
+
+	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+		if(err) {
+			res.status(401).send('unauthorized');
+			return;
+		}
+
+		var article_id = { _id: req.body.content_id };
+		db.Content.findOne(article_id, function(err, article) {
+			if(err) {
+				res.status(400).send();
+				return;
+			}
+
+			article.is_published = false;
+
+			db.Content.updateOne(article_id, article, function(err) {
+				if(err) res.status(400).send({ ok: false });
+				else res.status(200).send({ ok: true });
+			});
+		});
 	});
 });
 

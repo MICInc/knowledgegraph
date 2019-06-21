@@ -221,14 +221,11 @@ module.exports = {
 		else token.verify(t, email, callback);
 	},
 	is_editable(query, page, callback) {
-		var editable = (page.url == query.url) && (query.user_id == page._id);	
+		var editable = page.url == query.url;
 
-		if(editable) {
-			module.exports.verify_token(query.token, query.email, function(err, decoded) {
-				callback(editable && err == null);
-			});
-		}
-		else callback(editable);
+		module.exports.verify_token(query.token, query.email, function(err, decoded) {
+			callback(editable && err == null);
+		});
 	},
 	get_token(email, callback) {
 		callback(token.sign({ email: email }, email));

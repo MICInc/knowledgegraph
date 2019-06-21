@@ -1,5 +1,6 @@
 <template>
 	<div class="article-control-bar">
+		<button v-if="editable" type="button" v-on:click="unpublish()">Unpublish</button>
 		<router-link v-if="editable" tag="a" :to="'/add/'+url+'/edit'">Edit</router-link>
 		<button type="button" v-on:click="save()">Save</button>
 		<button class="modal" type="button" v-on:click="share()">Share</button>
@@ -22,6 +23,9 @@ export default {
 		},
 		share() {
 			this.$emit('share');
+		},
+		unpublish() {
+			this.$emit('unpublish');
 		}
 	},
 	props: ['editable', 'url']
