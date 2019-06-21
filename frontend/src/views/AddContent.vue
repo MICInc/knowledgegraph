@@ -102,6 +102,14 @@ export default {
 			.catch(error => {
 			});
 		},
+		is_empty() {
+			var cell = this.data.cell;
+			var cell_undef = (cell == undefined)
+			var cell_blank = !cell_undef && (cell.text.length == 0) && (cell.src.length == 0) && (cell.html.length == 0) && (cell.caption.length == 0);
+			var reload_err = (cell_undef && this.reloaded.length == 0);
+
+			return cell_undef || cell_blank || reload_err;
+		},
 		prevent_default(event) {
 			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
 				event.preventDefault();
@@ -110,7 +118,7 @@ export default {
 		},
 		publish() {
 			if(this.data.title.length == 0) alert('Need a title');
-			else if(this.data.cell == undefined && this.reloaded.length == 0) alert('Your article is empty');
+			else if(this.is_empty()) alert('Your article is empty');
 			else {
 				this.save_status = 'publishing...';
 				this.save(true);
@@ -154,9 +162,6 @@ export default {
 			});
 		},
 		save(publish=false) {
-			// check if article title exists before saving
-			if(this.data.title.length == 0) return;
-			if(this.data.cell == undefined) return;
 			
 			ContentService.check_title({ id: this.content_id, title: this.data.title, email: this.email, token: this.token })
 			.then((data) => {
