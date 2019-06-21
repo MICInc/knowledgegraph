@@ -14,6 +14,7 @@
 				</label>
 				<button class="tag_switch" v-on:click.prevent="switch_tag('hr', $event)">hr</button>
 				<button class="tag_switch" v-on:click.prevent="switch_tag('p', $event)">p</button>
+				<!-- <button class="tag_switch" v-on:click.prevent="switch_tag('ltx', $event)">ltx</button> -->
 			</div>
 			<div class="editor-info">
 				<figure v-if="'img' == cell.tag" v-on:click="set_active($event)">
