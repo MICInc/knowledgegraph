@@ -211,20 +211,29 @@ router.get('/', function(req, res) {
 });
 
 router.get('/edit', function(req, res) {
+	console.log(req.query.user_id);
 	UserAuth.findById(req.query.user_id, function(err, profile) {
 		if(err) {
 			res.status(400).send('Invalid request');
 			return;
 		}
+		console.log({ url: req.query.url })
 
 		db.Content.findOne({ url: req.query.url }, function(err, article) {
+			if(err || article == null) {
+				res.status(200).send({ editable: false });
+				return;
+			}
+
 			if(!profile.publications.includes(article._id)) {
+				console.log('here 3');
 				res.status(200).send({ editable: false });
 				return;
 			}
 
 			// req.query.url == article.url should be true in is_editable since the above block did not return
 			UserAuth.is_editable(req.query, article, function(editable) {
+				console.log('editable: '+editable);
 				if(editable) res.status(200).send({ editable: editable });
 				else res.status(200).send({ editable: editable });
 			});
