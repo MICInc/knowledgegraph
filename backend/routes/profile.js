@@ -26,17 +26,18 @@ router.post('/', function(req, res) {
 router.get('/', function(req, res) {
 	db.User.findOne({ url: req.query.url }, function(err, profile) {
 		UserAuth.is_editable(req.query, profile, function(editable) {
+			console.log(editable);
 			var data = {
 				first_name: profile.first_name,
 				last_name: profile.last_name,
 				comments: profile.comments.length,
-				publications: fc.published_count(profile.publications),
+				publications: fc.published_count(profile.publications, editable),
 				library: profile.library.length,
 				followers: profile.followers.length,
 				following: profile.following.length,
 				is_following: false
 			};
-			
+
 			if(editable) {
 				// check if the loggined in user is already following this profile page
 				UserAuth.find_by_email(req.query.email, function(err, user) {
@@ -96,13 +97,11 @@ router.get('/publications', function(req, res) {
 		}
 
 		UserAuth.is_editable(req.query, profile, function(editable) {
+
 			var query = editable ? { _id: { $in: profile.publications }} : { $and: [{ _id: { $in: profile.publications }}, { is_published: true }] };
 
 			db.Content.find(query, function(err, publications) {
-				if(err) {
-					console.error(err);
-					res.status(200).send({ editable: false, publications: [] });
-				}
+				if(err) res.status(200).send({ editable: false, publications: [] });
 				else res.status(200).send({ editable: editable, publications: publications });
 			}).select('title url preview year').select('-_id');
 		});

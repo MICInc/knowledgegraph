@@ -55,7 +55,8 @@ router.post('/', function(req, res, next) {
 					// update user profile if an article published status changes
 					var user = { _id: req.body.user_id, token: req.body.token };
 					db.User.findOne(user, function(err, profile) {
-						var index = profile.publications.indexOf(data._id.toString());
+						var index = profile.publications.map(function(e) { return e.id; }).indexOf(data._id.toString());
+
 						if(index > -1) profile.publications[index].published = req.body.publish;
 
 						db.User.updateOne(user, profile, function(err) {
