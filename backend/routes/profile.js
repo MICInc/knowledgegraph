@@ -26,7 +26,7 @@ router.post('/', function(req, res) {
 router.get('/', function(req, res) {
 	db.User.findOne({ url: req.query.url }, function(err, profile) {
 		UserAuth.is_editable(req.query, profile, function(editable) {
-			console.log(editable);
+			console.log('edit: '+editable);
 			var data = {
 				first_name: profile.first_name,
 				last_name: profile.last_name,
@@ -100,6 +100,11 @@ router.get('/publications', function(req, res) {
 
 			var query = editable ? { _id: { $in: profile.publications }} : { $and: [{ _id: { $in: profile.publications }}, { is_published: true }] };
 
+			console.log('query: ');
+			console.log(query);
+			
+			// if not author: retrieve only if the article is published i.e. { is_published: true }
+			// else is author: retrieve all articles
 			db.Content.find(query, function(err, publications) {
 				if(err) res.status(200).send({ editable: false, publications: [] });
 				else res.status(200).send({ editable: editable, publications: publications });
