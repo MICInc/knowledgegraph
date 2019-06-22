@@ -25,7 +25,7 @@ router.post('/', function(req, res) {
 
 router.get('/', function(req, res) {
 	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		UserAuth.is_editable(req.query, profile, function(editable) {
 			var data = {
 				first_name: profile.first_name,
 				last_name: profile.last_name,
@@ -36,18 +36,18 @@ router.get('/', function(req, res) {
 				following: profile.following.length,
 				is_following: false
 			};
-
-			if(err) {
-				// if a non-user is looking at the profile
-				if(profile) res.status(200).send(data);
-				else res.status(400).send();
-			}
-			else {
+			
+			if(editable) {
 				// check if the loggined in user is already following this profile page
-				UserAuth.find_by_email({ email: req.body.email }, function(err, user) {
+				UserAuth.find_by_email(req.query.email, function(err, user) {
 					data['is_following'] = user.following.includes(profile._id);
 					res.status(200).send(data);
 				});
+			}
+			else {
+				// if a non-user is looking at the profile
+				if(profile) res.status(200).send(data);
+				else res.status(400).send({});
 			}
 		});
 	});
@@ -61,13 +61,13 @@ router.post('/edit', function(req, res) {
 		return;
 	}
 
-	UserAuth.verify_token(token, req.body.email, function(err, decoded) {
-		if(err) {
-			// call force logout here!
-			console.error(err);
-			res.status(401).send({ status: false });
-			return;
-		}
+	// UserAuth.verify_token(token, req.body.email, function(err, decoded) {
+	// 	if(err) {
+	// 		// call force logout here!
+	// 		console.error(err);
+	// 		res.status(401).send({ status: false });
+	// 		return;
+	// 	}
 
 		UserAuth.findById({ _id: req.body.user_id }, function(err, profile) {
 			if(profile == null) {
@@ -84,7 +84,7 @@ router.post('/edit', function(req, res) {
 				else res.status(200).send({ editable: editable });
 			});
 		});
-	});
+	// });
 });
 
 router.get('/publications', function(req, res) {
@@ -296,7 +296,6 @@ router.post('/update_url', function(req, res) {
 		if(err) res.status(401).send('unauthorized');
 		if(url.length == 0) res.status(400).send('Invalid URL');
 		else {
-			console.log(url);
 			//check that this url is unique
 			UserAuth.find_by_email(email, function(err, profile) {
 				if(profile == null) {
@@ -319,7 +318,6 @@ router.post('/update_first_name', function(req, res) {
 	var email = req.body.email;
 	var token = req.body.token;
 	var first_name = req.body.first_name;
-	console.log(req.body);
 
 	UserAuth.verify_token(token, email, function(err, decoded) {
 		if(err) res.status(401).send('unauthorized');
@@ -410,7 +408,7 @@ router.post('/add_to_library', function(req, res) {
 });
 
 router.post('/remove_from_library', function(req, res) {
-	console.log('/remove_from_library');
+	// console.log('/remove_from_library');
 });
 
 module.exports = router;
