@@ -2,7 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div id="search">
-			<span id="result-count">results ({{results.length}})</span><br>
+			<span id="result-count">results ({{ total }})</span><br>
 			<div>
 				<ul>
 					<li v-for='item in results'>
@@ -34,6 +34,11 @@ export default {
 		PageNav,
 		ArticleCell,
 		ProfileCell
+	},
+	computed: {
+		total() {
+			return this.results.length + this.people.length;
+		}
 	},
 	created() {
 		this.query.term = this.$route.query.term;
