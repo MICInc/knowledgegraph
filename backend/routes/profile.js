@@ -25,8 +25,13 @@ router.post('/', function(req, res) {
 
 router.get('/', function(req, res) {
 	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		UserAuth.is_editable(req.query, profile, function(editable) {
-			console.log('edit: '+editable);
+		if(err) {
+			res.status(400).send({});
+			return;
+		}
+
+		UserAuth.is_editable(req.query.token, req.query.email, profile, function(editable) {
+
 			var data = {
 				first_name: profile.first_name,
 				last_name: profile.last_name,
@@ -80,7 +85,7 @@ router.post('/edit', function(req, res) {
 			//Note: have to check if editable because section tabs cannot receive props
 			// so if user views section tab via direct link, cannot receive prop from main vue component
 			// each tab section needs to query the backend itself and determine if it's editable.
-			UserAuth.is_editable(req.body, profile, function(editable) {
+			UserAuth.is_editable(req.body.token, req.body.email, profile, function(editable) {
 				if(editable) res.status(200).send({ editable: editable });
 				else res.status(200).send({ editable: editable });
 			});
@@ -96,16 +101,17 @@ router.get('/publications', function(req, res) {
 			return;
 		}
 
-		UserAuth.is_editable(req.query, profile, function(editable) {
-
-			var query = editable ? { _id: { $in: profile.publications }} : { $and: [{ _id: { $in: profile.publications }}, { is_published: true }] };
-
-			console.log('query: ');
-			console.log(query);
-			
+		UserAuth.is_editable(req.query.token, req.query.email, profile, function(editable) {
+			var pubs = [];
+			for(i = 0; i < profile.publications.length; i++) {
+				var article = profile.publications[i];
+				if(editable) pubs.push(article.id);
+				else if(article.is_published) pubs.push(article.id);
+			}
+				
 			// if not author: retrieve only if the article is published i.e. { is_published: true }
 			// else is author: retrieve all articles
-			db.Content.find(query, function(err, publications) {
+			db.Content.find({ _id: { $in: pubs }}, function(err, publications) {
 				if(err) res.status(200).send({ editable: false, publications: [] });
 				else res.status(200).send({ editable: editable, publications: publications });
 			}).select('title url preview year').select('-_id');
@@ -121,7 +127,7 @@ router.get('/library', function(req, res) {
 			return;
 		}
 
-		UserAuth.is_editable(req.query, profile, function(editable) {
+		UserAuth.is_editable(req.query.token, req.query.email, profile, function(editable) {
 			db.Content.find({ _id: { $in: profile.library }}, function(err, library) {
 				if(err) {
 					console.error(err);
@@ -141,7 +147,7 @@ router.get('/comments', function(req, res) {
 			return;
 		}
 
-		UserAuth.is_editable(req.query, profile, function(editable) {
+		UserAuth.is_editable(req.query.token, req.query.email, profile, function(editable) {
 			res.status(200).send({ editable: editable, comments: profile.comments });
 		});
 	});
@@ -155,7 +161,7 @@ router.post('/picture', function(req, res) {
 			return;
 		}
 
-		UserAuth.is_editable(req.body, profile, function(editable) {
+		UserAuth.is_editable(req.body.token, req.body.email, profile, function(editable) {
 			if(!editable) {
 				res.status(400).send('Invalid request');
 				return;
@@ -236,7 +242,7 @@ router.get('/followers', function(req, res) {
 		}
 
 		sh.find_users(profile.followers, 'first_name last_name url -_id', function(followers) {
-			UserAuth.is_editable(req.query, profile, function(editable) {
+			UserAuth.is_editable(req.query.token, req.query.email, profile, function(editable) {
 				res.status(200).send({ editable: editable, followers: followers });
 			});
 		});
@@ -252,7 +258,7 @@ router.get('/following', function(req, res) {
 		}
 
 		sh.find_users(profile.following, 'first_name last_name url -_id', function(following) {
-			UserAuth.is_editable(req.query, profile, function(editable) {
+			UserAuth.is_editable(req.query.token, req.query.email, profile, function(editable) {
 				res.status(200).send({ editable: editable, following: following });
 			});
 		});

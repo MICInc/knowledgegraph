@@ -220,11 +220,16 @@ module.exports = {
 		if(t == null || t.length == 0) callback(new Error('Empty token'), null);
 		else token.verify(t, email, callback);
 	},
-	is_editable(query, page, callback) {
-		var editable = page.url == query.url;
+	is_editable(token, email, page, callback) {
 
-		module.exports.verify_token(query.token, query.email, function(err, decoded) {
-			callback(editable && err == null);
+		module.exports.verify_token(token, email, function(err, decoded) {
+			if(err) callback(false);
+			else {
+				module.exports.find_by_email(email, function(err, user) {
+					if(err) callback(false);
+					else callback(user.url == page.url);
+				});
+			}
 		});
 	},
 	get_token(email, callback) {

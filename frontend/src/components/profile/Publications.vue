@@ -25,6 +25,7 @@ export default {
 	data() {
 		return {
 			publications: [],
+			email: this.$store.state.userInfo.email,
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
 			user_id: this.$store.state.userInfo.id
@@ -32,7 +33,7 @@ export default {
 	},
 	methods: {
 		async get_publications() {
-			var user = { user_id: this.user_id, token: this.token, url: this.url, email: this.$store.state.userInfo.email };
+			var user = { user_id: this.user_id, token: this.token, url: this.url, email: this.email };
 			ProfileService.get_publications({ params: user })
 			.then((resp) => {
 				this.editable = resp.data.editable;

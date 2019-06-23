@@ -82,28 +82,23 @@ export default {
 			sections: [
 				{
 					name: 'comments',
-					href: '/comments',
-					total: 0
+					href: '/comments'
 				},
 				{
 					name: 'publications',
-					href: '/publications',
-					total: 0
+					href: '/publications'
 				},
 				{
 					name: 'library',
-					href: '/library',
-					total: 0
+					href: '/library'
 				},
 				{
 					name: 'followers',
-					href: '/followers',
-					total: 0
+					href: '/followers'
 				},
 				{
 					name: 'following',
-					href: '/following',
-					total: 0
+					href: '/following'
 				}
 			]
 		}
@@ -136,6 +131,7 @@ export default {
 			return await ProfileService.getProfile({ params: { email: this.email, token: this.token, url: this.url }})
 			.then((resp) => {
 				if(resp.data != undefined && resp.status == 200) this.profile = resp.data;
+				console.log(this.profile);
 			})
 			.catch(function(err) {
 				router.push({ name: 'notfound' });

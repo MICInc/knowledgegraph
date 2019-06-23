@@ -57,7 +57,7 @@ router.post('/', function(req, res, next) {
 					db.User.findOne(user, function(err, profile) {
 						var index = profile.publications.map(function(e) { return e.id; }).indexOf(data._id.toString());
 
-						if(index > -1) profile.publications[index].published = req.body.publish;
+						if(index > -1) profile.publications[index].is_published = req.body.publish;
 
 						db.User.updateOne(user, profile, function(err) {
 							if(err) console.error(err);
@@ -86,7 +86,7 @@ router.post('/', function(req, res, next) {
 				db.User.findOne(user, function(err, profile) {
 					// only store article id so that forced to get latest url and 
 					// content incase article renamed, which will generate url
-					profile.publications.push({ id: data._id.toString(), published: req.body.publish });
+					profile.publications.push({ id: data._id.toString(), is_published: req.body.publish });
 					
 					db.User.updateOne(user, profile, function(err) {
 						if(err) console.error(err);
