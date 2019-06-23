@@ -151,6 +151,8 @@ module.exports = {
 		});
 	},
 	find_by_email: function(email, callback) {
+		if(typeof email == 'undefined') callback('Email undefined', {});
+
 		var email = filter.filter_xss(email);
 		db.User.findOne({ email: email }, function(err, user) {
 			process.nextTick(function() {

@@ -177,8 +177,7 @@ module.exports = {
 	published_count(data, editable) {
 		// @params (array) data
 		// @return (array) count of published articles
-		console.log('fc.published_count (editable): '+editable);
-		
+
 		if(editable) return data.length;
 		return data.filter((obj) => obj.is_published === true).length;
 	}

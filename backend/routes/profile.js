@@ -40,7 +40,8 @@ router.get('/', function(req, res) {
 				library: profile.library.length,
 				followers: profile.followers.length,
 				following: profile.following.length,
-				is_following: false
+				is_following: false,
+				can_edit: editable
 			};
 
 			if(editable) {

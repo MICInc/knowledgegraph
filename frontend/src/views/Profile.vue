@@ -38,7 +38,6 @@ import router from '@/router'
 export default {
 	name: 'profile',
 	beforeMount() {
-		this.edit();
 		this.getContent();
 	},
 	components: {
@@ -47,7 +46,7 @@ export default {
 	},
 	computed: {
 		editable() {
-			return this.can_edit;
+			return this.profile.can_edit;
 		},
 		follow_text() {
 			return this.profile.is_following ? 'Following' : 'Follow';
@@ -68,7 +67,6 @@ export default {
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
 			email: this.$store.state.userInfo.email,
-			can_edit: false,
 			profile: {
 				comments: 0,
 				first_name: '',
@@ -77,7 +75,8 @@ export default {
 				last_name: '',
 				library: 0,
 				publications: 0,
-				is_following: false
+				is_following: false,
+				can_edit: false
 			},
 			sections: [
 				{
@@ -111,15 +110,6 @@ export default {
 		}
 	},
 	methods: {
-		async edit() {
-			ProfileService.canEdit({ user_id: this.user_id, token: this.token, url: this.url })
-			.then((resp) => {
-				if(resp.data.editable) this.can_edit = resp.data.editable;
-			})
-			.catch((resp) => {
-				this.can_edit = false;
-			});
-		},
 		async follow(event) {
 			ProfileService.follow({ user_id: this.user_id, token: this.token, url: this.url })
 			.then((resp) => {
@@ -131,7 +121,6 @@ export default {
 			return await ProfileService.getProfile({ params: { email: this.email, token: this.token, url: this.url }})
 			.then((resp) => {
 				if(resp.data != undefined && resp.status == 200) this.profile = resp.data;
-				console.log(this.profile);
 			})
 			.catch(function(err) {
 				router.push({ name: 'notfound' });
