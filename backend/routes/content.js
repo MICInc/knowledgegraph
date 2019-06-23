@@ -169,31 +169,34 @@ router.get('/', function(req, res) {
 
 		db.Content.findOne(query, function(err, article) {
 
-			if(article != null && article.is_published) {
-				var start = new Date();
-				article.bibtex = btx.format(article);
+			UserAuth.is_article_editable(req.query.token, req.query.email, article, function(editable) {
 
-				res.status(200).send(fc.filter_results(article));
-				article.view_duration.push({ start: start });
-				article.num_views += 1;
+				if(editable || (article != null && article.is_published)) {
+					var start = new Date();
+					article.bibtex = btx.format(article);
 
-				db.Content.updateOne(query, article, function(err) {
-					if(err) console.error(err);
-				});
+					res.status(200).send({ article: fc.filter_results(article), editable: editable });
+					article.view_duration.push({ start: start });
+					article.num_views += 1;
 
-				if(user_id.length > 0) {
-					var user = { _id: user_id };
-
-					db.User.findOne(user, function(err, profile) {
-						profile.view_duration.push({ start: start, content: article._id});
-
-						db.User.updateOne(user, profile, function(err) {
-							if(err) console.error(err);
-						});
+					db.Content.updateOne(query, article, function(err) {
+						if(err) console.error(err);
 					});
+
+					if(user_id.length > 0) {
+						var user = { _id: user_id };
+
+						db.User.findOne(user, function(err, profile) {
+							profile.view_duration.push({ start: start, content: article._id});
+
+							db.User.updateOne(user, profile, function(err) {
+								if(err) console.error(err);
+							});
+						});
+					}
 				}
-			}
-			else res.status(404).send('Article not found');
+				else res.status(404).send('Article not found');
+			});
 		});
 	}
 	else if(req.query.id == -1) {

@@ -77,7 +77,6 @@ export default {
 		// window.addEventListener('beforeunload', this.cleanup);
 	},
 	beforeMount() {
-		this.edit();
 		this.get_content();
 	},
 	components: {
@@ -105,21 +104,13 @@ export default {
 		}
 	},
 	methods: {
-		async edit() {
-			ContentService.canEdit({ params: { user_id: this.user_id, token: this.token, url: this.url }})
-			.then((resp) => {
-				if(resp.data.editable) this.editable = resp.data.editable;
-			})
-			.catch((error) => {
-				this.editable = false;
-			});
-		},
 		async get_content() {
-			ContentService.getContent({ params: { user_id: this.user_id, url: this.url } })
+			ContentService.getContent({ params: { token: this.token, email: this.email, user_id: this.user_id, url: this.url } })
 			.then((data) => {
 				if(data.data) {
-					this.content_id = data.data.id;
-					this.content = data.data;
+					this.content_id = data.data.article.id;
+					this.content = data.data.article;
+					this.editable = data.data.editable;
 				}
 			})
 			.catch((error) => {

@@ -234,6 +234,18 @@ module.exports = {
 			}
 		});
 	},
+	is_article_editable(token, email, article, callback) {
+		// is this a valid user
+		module.exports.verify_token(token, email, function(err, decoded) {
+			if(err) callback(false);
+			else {
+				// if a valid user and this user's profile contains the article they're currently viewing
+				module.exports.find_by_email(email, function(err, user) {
+					callback(user.publications.filter((obj) => obj.id === article._id).length == 1);
+				});
+			}
+		});
+	},
 	get_token(email, callback) {
 		callback(token.sign({ email: email }, email));
 	},
