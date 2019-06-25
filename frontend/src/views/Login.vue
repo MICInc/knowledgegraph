@@ -2,6 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
+			<div class="g-signin2" id="google-signin-button"></div>
 			<form v-on:submit.prevent="handleSubmit">
 				<p>{{error}}</p>
 				<input type="email" placeholder="Email" v-model="formData.email" autocomplete="username" required>
@@ -34,6 +35,11 @@ export default {
 			error: ''
 		}
 	},
+	mounted() {
+		gapi.signin2.render('google-signin-button', {
+			onsuccess: this.onSignIn
+		});
+	},
 	methods: {
 		handleSubmit() {
 			this.login()
@@ -53,6 +59,9 @@ export default {
 				email: this.formData.email, 
 				password: this.formData.password
 			})
+		},
+		onSignIn (user) {
+			const profile = user.getBasicProfile()
 		}
 	}
 }
