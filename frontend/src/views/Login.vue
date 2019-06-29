@@ -58,15 +58,15 @@ export default {
 			return await AuthService.login({ email: email });
 		},
 		onSignIn(googleUser) {
-			console.log('oauth login');
 			var profile = googleUser.getBasicProfile();
 
 			if(profile) {
 				this.login(profile.getEmail())
 				.then((resp) => {
-					profile.getImageUrl();
-					profile.getName();
-					profile.getId();
+					if(resp.data.userInfo.picture.length == 0) resp.data.userInfo.picture = profile.getImageUrl();
+					resp.data.userInfo.first_name = profile.getGivenName();
+					resp.data.userInfo.last_name = profile.getFamilyName();
+
 					this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
 					router.push({ name: 'home' });
 				})

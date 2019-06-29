@@ -1,6 +1,5 @@
 <template>
   <div class="logout">
-  	<meta name="google-signin-client_id" content="1064842615025-4homcni5f40jkhq6rr4mursuun7jq7nv.apps.googleusercontent.com">
   </div>
 </template>
 
@@ -12,26 +11,50 @@ import router from '@/router'
 export default {
 	name: 'logout',
 	beforeMount() {
-		gapi.load('auth2', () => {
-			gapi.auth2.init();
-			this.signout();
+		AuthService.logout(this.$store.state.userInfo);
+
+		this.$store.dispatch('logout').then((response) => {
+			console.log('here');
+			router.push({ name: 'home' })
+		}).catch((err) => {
+			router.push({ name: 'home' })
 		});
+		// gapi.load('auth2', () => {
+		// 	// console.log('');
+		// 	// gapi.auth2.init();
+		// 	console.log(gapi == null)
+		// 	console.log(gapi.auth2)
+		// 	console.log(gapi.auth2.getAuthInstance == null)
+
+		// 	gapi.auth2.getAuthInstance.signOut()
+		// 	.then((resp) => {
+		// 		console.log('User signed out.');
+		// 		AuthService.logout(this.$store.state.userInfo);
+
+		// 		this.$store.dispatch('logout').then((response) => {
+		// 			console.log('here');
+		// 			router.push({ name: 'home' })
+		// 		}).catch((err) => {
+		// 			router.push({ name: 'home' })
+		// 		});
+		// 	});
+		// });
 	},
 	methods: {
-		signout() {
-			gapi.auth2.getAuthInstance().signOut()
-			.then((resp) => {
-				console.log('User signed out.');
-				AuthService.logout(this.$store.state.userInfo);
+		// signout() {
+		// 	gapi.auth2.getAuthInstance().signOut()
+		// 	.then((resp) => {
+		// 		console.log('User signed out.');
+		// 		AuthService.logout(this.$store.state.userInfo);
 
-				this.$store.dispatch('logout').then((response) => {
-					console.log('here');
-					router.push({ name: 'home' })
-				}).catch((err) => {
-					router.push({ name: 'home' })
-				});
-			});
-		}
+		// 		this.$store.dispatch('logout').then((response) => {
+		// 			console.log('here');
+		// 			router.push({ name: 'home' })
+		// 		}).catch((err) => {
+		// 			router.push({ name: 'home' })
+		// 		});
+		// 	});
+		// }
 	}
 }
 </script>
