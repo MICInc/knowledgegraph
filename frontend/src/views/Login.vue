@@ -2,8 +2,9 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
-			<div class="g-signin2" id="google-signin-button"></div>
-			<!-- <form v-on:submit.prevent="handleSubmit">
+			<div class="g-signin2" id="google-signin-button"></div><br>
+			<label v-if:>Sign in with MIC account</label>
+			<form v-on:submit.prevent="handleSubmit">
 				<p>{{error}}</p>
 				<input type="email" placeholder="Email" v-model="formData.email" autocomplete="username" required>
 				<input type="password" placeholder="Password" v-model="formData.password" autocomplete="current-password" required>
@@ -14,7 +15,7 @@
 				<span>
 					<router-link type="a" to="forgot">Forgot account?</router-link>
 				</span>
-			</form> -->
+			</form>
 		</div>
 	</div>
 </template>
@@ -41,19 +42,19 @@ export default {
 		});
 	},
 	methods: {
-		// handleSubmit() {
-		// 	this.login()
-		// 	.then((resp) => {
-		// 		this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
-		// 		router.push({ name: 'home' });
-		// 	})
-		// 	.catch((error) => {
-		// 		if(error.response != null) {
-		// 			this.error = error.response.data.error;
-		// 			if(error.response.status == 401) router.push({ name: 'verify' });
-		// 		}
-		// 	});
-		// },
+		handleSubmit() {
+			this.login()
+			.then((resp) => {
+				this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
+				router.push({ name: 'home' });
+			})
+			.catch((error) => {
+				if(error.response != null) {
+					this.error = error.response.data.error;
+					if(error.response.status == 401) router.push({ name: 'verify' });
+				}
+			});
+		},
 		async login(email) {
 			return await AuthService.login({ email: email });
 		},
@@ -101,6 +102,13 @@ export default {
 }
 
 .container .g-signin2 {
+	display: flex;
+	flex-direction: column;
+	width: 300px;
+	margin: 80px 0 0 0;
+}
+
+.container form {
 	display: flex;
 	flex-direction: column;
 	width: 300px;
