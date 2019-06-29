@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="623645022524-jp2r94h43enjp918mgl7u9epjscn5q6o.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback"></script>
+    <script>
+      window.onLoadCallback = function(){
+        gapi.auth2.init({
+          client_id: '1064842615025-4homcni5f40jkhq6rr4mursuun7jq7nv.apps.googleusercontent.com'
+        });
+      }
+    </script>
+    <meta name="google-signin-client_id" content="1064842615025-4homcni5f40jkhq6rr4mursuun7jq7nv.apps.googleusercontent.com">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">

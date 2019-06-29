@@ -44,17 +44,15 @@ router.post('/signup', function(req, res) {
 });
 
 router.post('/login', function(req, res, next) {
-	if(!require('../db/config/whitelist').includes(req.body.email)) {
-		res.status(400).send({ error: 'You are not registered for the beta' });
-		return;
-	}
 
 	var email = req.body.email;
-	var password = req.body.password;
+	// var password = req.body.password;
 
-	if(!(email && password)) res.status(200).send({ error: 'Please provide a email and password' });
+	// if(!(email && password)) res.status(200).send({ error: 'Please provide a email and password' });
+	if(email == null) res.status(200).send({ error: 'Invalid credentials' });
 
-	UserAuth.loginUser(email, password, function(err, token, user) {
+	// UserAuth.loginUser(email, password, function(err, token, user) {
+	UserAuth.loginUser(email, function(err, token, user) {
 		if(err != null && (err.code == 400 || err.code == 401)) res.status(err.code).send({ error: err.msg });
 		else res.json({ token: token, userInfo: user });
 	});

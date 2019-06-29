@@ -101,7 +101,8 @@ module.exports = {
 			});
 		});
 	},
-	loginUser: function(email, password, callback) {
+	// loginUser: function(email, password, callback) {
+	loginUser: function(email, callback) {
 		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
 			if(err) {
 				console.error(err);
@@ -115,39 +116,53 @@ module.exports = {
 				return;
 			}
 
-			if(user != null) {
-				// Salt password to see if hashes will match with the user's salt
-				crypto.pbkdf2(password, user.salt, 10000, VERI_LENG, 'sha512', function(err, key) {
-					if(err) console.error(err);
-					
-					// Want a constant time string comparison
-					if(user.password_hash == key.toString('hex')) {
-						user.token = token.sign({ email: user.email }, user.email);
+			user.token = token.sign({ email: user.email }, user.email);
 
-						process.nextTick(function() {
-							callback(null, user.token, {
-								id: user._id,
-								first_name: user.first_name,
-								last_name: user.last_name,
-								email: user.email,
-								sess_id: module.exports.start_session(user, user.token),
-								url: user.url,
-								picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
-							});
-						});
-					}
-					else {
-						process.nextTick(function() {
-							callback({ msg: 'Password was incorrect', code: 400 }, '', null);
-						});
-					}
+			process.nextTick(function() {
+				callback(null, user.token, {
+					id: user._id,
+					first_name: user.first_name,
+					last_name: user.last_name,
+					email: user.email,
+					sess_id: module.exports.start_session(user, user.token),
+					url: user.url,
+					picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
 				});
-			}
-			else {
-				process.nextTick(function() {
-					callback({message: 'Could not find the user: ' + email}, null);
-				});
-			}
+			});
+
+			// if(user != null) {
+			// 	// Salt password to see if hashes will match with the user's salt
+			// 	crypto.pbkdf2(password, user.salt, 10000, VERI_LENG, 'sha512', function(err, key) {
+			// 		if(err) console.error(err);
+					
+			// 		// Want a constant time string comparison
+			// 		if(user.password_hash == key.toString('hex')) {
+			// 			user.token = token.sign({ email: user.email }, user.email);
+
+			// 			process.nextTick(function() {
+			// 				callback(null, user.token, {
+			// 					id: user._id,
+			// 					first_name: user.first_name,
+			// 					last_name: user.last_name,
+			// 					email: user.email,
+			// 					sess_id: module.exports.start_session(user, user.token),
+			// 					url: user.url,
+			// 					picture: Object.keys(user.toObject()).includes('picture') ? user.picture.src : ''
+			// 				});
+			// 			});
+			// 		}
+			// 		else {
+			// 			process.nextTick(function() {
+			// 				callback({ msg: 'Password was incorrect', code: 400 }, '', null);
+			// 			});
+			// 		}
+			// 	});
+			// }
+			// else {
+			// 	process.nextTick(function() {
+			// 		callback({message: 'Could not find the user: ' + email}, null);
+			// 	});
+			// }
 		});
 	},
 	find_by_email: function(email, callback) {
