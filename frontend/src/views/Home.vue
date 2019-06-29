@@ -24,7 +24,6 @@ import Footer from '@/components/Footer'
 export default {
 	name: 'home',
 	beforeMount() {
-		console.log(this.$store.state.userInfo)
 		this.getContent().then(data => {
 			for(let k in data){
 				this.content.push(data[k]);

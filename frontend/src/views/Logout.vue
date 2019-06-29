@@ -1,5 +1,6 @@
 <template>
   <div class="logout">
+    <meta name="google-signin-client_id" content="1064842615025-4homcni5f40jkhq6rr4mursuun7jq7nv.apps.googleusercontent.com">
   </div>
 </template>
 
@@ -11,50 +12,25 @@ import router from '@/router'
 export default {
 	name: 'logout',
 	beforeMount() {
+		// logout of the backend node app
 		AuthService.logout(this.$store.state.userInfo);
 
-		this.$store.dispatch('logout').then((response) => {
-			console.log('here');
-			router.push({ name: 'home' })
-		}).catch((err) => {
-			router.push({ name: 'home' })
-		});
-		// gapi.load('auth2', () => {
-		// 	// console.log('');
-		// 	// gapi.auth2.init();
-		// 	console.log(gapi == null)
-		// 	console.log(gapi.auth2)
-		// 	console.log(gapi.auth2.getAuthInstance == null)
-
-		// 	gapi.auth2.getAuthInstance.signOut()
-		// 	.then((resp) => {
-		// 		console.log('User signed out.');
-		// 		AuthService.logout(this.$store.state.userInfo);
-
-		// 		this.$store.dispatch('logout').then((response) => {
-		// 			console.log('here');
-		// 			router.push({ name: 'home' })
-		// 		}).catch((err) => {
-		// 			router.push({ name: 'home' })
-		// 		});
-		// 	});
-		// });
+		// logout of the vue app
+		this.$store.dispatch('logout');
 	},
-	methods: {
-		// signout() {
-		// 	gapi.auth2.getAuthInstance().signOut()
-		// 	.then((resp) => {
-		// 		console.log('User signed out.');
-		// 		AuthService.logout(this.$store.state.userInfo);
+	mounted() {
+		// logout of google oauth
+		gapi.load('auth2', (resp) => {
+			gapi.auth2.init({
+				client_id: '1064842615025-4homcni5f40jkhq6rr4mursuun7jq7nv.apps.googleusercontent.com'
+			}).then(function (authInstance) {
+				var auth2 = gapi.auth2.getAuthInstance();
 
-		// 		this.$store.dispatch('logout').then((response) => {
-		// 			console.log('here');
-		// 			router.push({ name: 'home' })
-		// 		}).catch((err) => {
-		// 			router.push({ name: 'home' })
-		// 		});
-		// 	});
-		// }
+				auth2.signOut().then((resp) => {
+					router.push({ name: 'home' });
+				});
+			});
+		});
 	}
 }
 </script>
