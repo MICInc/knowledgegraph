@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-on:keyup="update()">
 		<span v-if="!$store.state.isLoggedIn">
 			<FirstName
 				:error="form.error.first_name.ok"
@@ -41,7 +41,7 @@
 		<span v-else>
 			<label>What school do you attend?</label><br>
 		</span>
-		<SchoolField v-on:school="update($event)"></SchoolField>
+		<SchoolField v-on:school="set_school($event)"></SchoolField>
 		<AcademicYear
 			:error="form.error.grade.ok"
 			:year="year"
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import AuthService from '@/services/AuthenticationService'
 import FirstName from '@/components/conference/registration/FirstName.vue'
 import LastName from '@/components/conference/registration/LastName.vue'
 import DOB from '@/components/conference/registration/DOB.vue'
@@ -145,35 +144,38 @@ export default {
 		set_conf_pwd(pwd) {
 			this.profile.confirm_pw = pwd;
 		},
-		update(data) {
+		set_school(data) {
 			this.profile.school = data;
 		},
-		async signup() {
-			return await AuthService.sign_up(this.profile);
-		},
-		submit() {
-			this.signup().then((resp) => {
-				var err = resp.data.error;
-
-				if(err != undefined && resp.status == 200) {
-					this.form.error = err;
-					alert('Please check over your application.');
-				} 
-				else if(resp.status == 200) {
-					var reg = { 
-						email: this.profile.email, 
-						first_name: this.profile.first_name,
-						last_name: this.profile.last_name,
-						reimbursements: null 
-					};
-			
-					this.$emit('ok', reg);
-				}
-			});
+		update() {
+			this.$emit('update', this.profile);
+		}
+	},
+	props: ['error'],
+	watch: {
+		error: function(curr, prev) {
+			this.form.error = curr;
 		}
 	}
 }
 </script>
 
 <style>
+label {
+	font-size: 13px;
+	font-weight: 600;
+	margin-right: 1em;
+}
+
+.error {
+	border: solid;
+	border-width: 0.5px;
+	border-color: red;
+}
+
+.error-msg {
+	color: red;
+	font-size: 13px;
+	font-weight: 600;
+}
 </style>

@@ -4,7 +4,10 @@
 		<p>An account will also be created for you by registering for the conference.</p>
 		<div v-if="!form.complete">
 			<form enctype="multipart/form-data">
-				<RegProfile v-on:ok="register($event)"></RegProfile>
+				<RegProfile 
+					:error="form.error"
+					v-on:update="update_profile($event)">
+				</RegProfile>
 				<Dietary v-on:dietary="set_dietary($event)"></Dietary>
 				<Skillsheet></Skillsheet>
 				<Questionaire v-on:resp="set_responses($event)"></Questionaire>
@@ -21,6 +24,7 @@
 </template>
 
 <script>
+import AuthService from '@/services/AuthenticationService'
 import RegistrationService from '@/services/RegistrationService.js'
 import RegProfile from '@/components/conference/registration/RegProfile.vue'
 import Dietary from '@/components/conference/registration/Dietary.vue'
@@ -50,26 +54,50 @@ export default {
 				questions: undefined
 			},
 			form: {
+				error: undefined,
 				complete: false,
 				years: years(100, (new Date()).getFullYear())
 			},
+			profile: undefined,
 			user_id: ''
 		}
 	},
 	methods: {
-		register(reg) {
-			reg.conf_resp = this.conf_resp;
-
-			RegistrationService.register(reg)
-			.then((data) => {
-				this.form.complete = data.data;
-			})
+		async signup() {
+			return await AuthService.sign_up(this.profile);
 		},
 		set_dietary(diet) {
 			this.conf_resp.dietary = diet;
 		},
 		set_responses(resp) {
 			this.conf_resp.questions = resp;
+		},
+		submit() {
+			this.signup().then((resp) => {
+				var err = resp.data.error;
+
+				if(err != undefined && resp.status == 200) {
+					this.form.error = err;
+					alert('Please check over your application.');
+				} 
+				else if(resp.status == 200) {
+					var reg = { 
+						email: this.profile.email, 
+						first_name: this.profile.first_name,
+						last_name: this.profile.last_name,
+						reimbursements: null,
+						conf_resp: this.conf_resp
+					};
+			
+					RegistrationService.register(reg)
+					.then((data) => {
+						this.form.complete = data.data;
+					});
+				}
+			});
+		},
+		update_profile(data) {
+			this.profile = data;
 		}
 	}
 }
@@ -103,18 +131,6 @@ ul li input {
 textarea {
 	width: calc(100% - 10px);
 	min-height: 75px;
-}
-
-.error {
-	border: solid;
-	border-width: 0.5px;
-	border-color: red;
-}
-
-.error-msg {
-	color: red;
-	font-size: 13px;
-	font-weight: 600;
 }
 
 .social-links {

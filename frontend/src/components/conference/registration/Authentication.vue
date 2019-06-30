@@ -44,7 +44,10 @@ export default {
 		},
 		confirm_pw: function(curr, prev) {
 			this.$emit('confirm_pwd', this.confirm_pw)
-		}
+		},
+		async signup() {
+			return await AuthService.sign_up(this.profile);
+		},
 	}
 }
 </script>
