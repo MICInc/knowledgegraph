@@ -13,12 +13,12 @@ export default {
 			last_name: ''
 		}
 	},
-	methods: {
-		set_name() {
-			this.$emit(this.last_name, 'last_name');
+	props: ['error'],
+	watch: {
+		last_name: function(curr, prev) {
+			this.$emit('last_name', this.last_name);
 		}
-	},
-	props: ['error']
+	}
 }
 </script>
 

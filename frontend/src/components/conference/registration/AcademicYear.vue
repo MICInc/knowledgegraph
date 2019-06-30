@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<label>What grade will you be in Fall of {{ year }}? (e.g. 2nd Year Undergraduate)</label><br>
-		<select :class="{ error: error }" name="grade" v-model="grade">
+		<select :class="{ error: error }" name="grade" v-model="grade" @change="set_grade($event)">
 			<option v-for="grade in academic_year">{{ grade }}</option>
 		</select>
 	</div>
@@ -17,13 +17,11 @@ export default {
 		}
 	},
 	methods: {
+		set_grade(grade) {
+			this.$emit('grade', this.grade);
+		}
 	},
 	props: ['error', 'year'],
-	watch: {
-		grade: function(curr, prev) {
-			this.$emit('grade', this.grade)
-		}
-	}
 }
 </script>
 

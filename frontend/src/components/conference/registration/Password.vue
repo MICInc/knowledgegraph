@@ -1,9 +1,21 @@
 <template>
 	<div>
 		<label>Password</label><br>
-		<input :class="{ error: err_pwd }" type="password" value="password" placeholder="password" autocomplete="new-password" v-model="password"><br>
+		<input 
+			:class="{ error: err_pwd }" 
+			type="password" 
+			value="password" 
+			placeholder="password" 
+			autocomplete="new-password" 
+			v-model="password"><br>
 		<label>Confirm password</label><br>
-		<input :class="{ error: err_pwd_conf }" type="password" value="password" placeholder="confirm password" autocomplete="new-password" v-model="confirm_pw"><br>
+		<input 
+			:class="{ error: err_pwd_conf }" 
+			type="password"
+			value="password" 
+			placeholder="confirm password" 
+			autocomplete="new-password" 
+			v-model="confirm_pw"><br>
 	</div>
 </template>
 
@@ -22,7 +34,7 @@ export default {
 			this.$emit('password', this.password);
 		},
 		confirm_pw: function(curr, prev) {
-			this.$emit('confirm_pw', this.confirm_pw)
+			this.$emit('confirm_pwd', this.confirm_pw)
 		}
 	}
 }

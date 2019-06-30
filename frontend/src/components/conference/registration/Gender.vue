@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<label>Gender</label><br>
-		<select :class="{ error: error }" name="gender" v-model="gender">
+		<select :class="{ error: error }" name="gender" v-model="gender" @change="set_gender()">
 			<option v-for="g in genders">{{ g }}</option>
 		</select><br>
 	</div>
@@ -21,12 +21,7 @@ export default {
 			this.$emit('gender', this.gender);
 		}
 	},
-	props: ['error'],
-	watch: {
-		gender: function(curr, prev) {
-			this.$emit('gender', this.gender);
-		}
-	}
+	props: ['error']
 }
 </script>
 

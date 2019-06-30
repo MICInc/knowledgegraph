@@ -24,9 +24,15 @@ export default {
 		}
 	},
 	watch: {
-		questions: function(curr, prev) {
+		'questions.q1': function(curr, prev) {
 			this.$emit('resp', this.questions);
-		}
+		},
+		'questions.q2': function(curr, prev) {
+			this.$emit('resp', this.questions);
+		},
+		'questions.q3': function(curr, prev) {
+			this.$emit('resp', this.questions);
+		},
 	}
 }
 </script>

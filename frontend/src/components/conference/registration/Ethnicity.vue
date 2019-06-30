@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<label>What is your ethnicity?</label><br>
-		<select :class="{ error: error }" name="ethnicity" v-model="ethnicity">
+		<select :class="{ error: error }" name="ethnicity" v-model="ethnicity" @change="set_eth($event)">
 			<option v-for="ethnicity in ethnicities">{{ ethnicity }}</option>
 		</select><br>
 	</div>
@@ -17,13 +17,11 @@ export default {
 		}
 	},
 	methods: {
-	},
-	props: ['error'],
-	watch: {
-		ethnicity: function(curr, prev) {
-			this.$emit('ethnicity', this.ethnicity);
+		set_eth(eth) {
+			this.$emit('ethnicity', this.ethnicity)
 		}
-	}
+	},
+	props: ['error']
 }
 </script>
 

@@ -3,7 +3,7 @@
 		<label :class="{ error_font: error }">Affiliation</label><br>
 		<ul>
 			<li v-for="aff in affiliations">
-				<input type="radio" v-bind:value="aff" v-model="selected">{{ aff }}
+				<input type="radio" v-bind:value="aff" v-model="selected" @change="set_aff($event)">{{ aff }}
 			</li>
 		</ul>
 	</div>
@@ -19,13 +19,11 @@ export default {
 		}
 	},
 	methods: {
-	},
-	props: ['error'],
-	watch: {
-		affiliation: function(curr, prev) {
-			this.$emit('aff', this.affiliation)
+		set_aff(aff) {
+			this.$emit('aff', this.selected);
 		}
-	}
+	},
+	props: ['error']
 }
 </script>
 

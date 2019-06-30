@@ -7,15 +7,15 @@
 				<span v-if="!$store.state.isLoggedIn">
 					<FirstName
 						:error="form.error.first_name.ok"
-						v-on:first_name="set_first_name()">
+						v-on:first_name="set_first_name($event)">
 					</FirstName>
 					<LastName
 						:error="form.error.last_name.ok"
-						v-on:first_name="set_last_name()">
+						v-on:last_name="set_last_name($event)">
 					</LastName>
-					<label v-if="profile.first_name.length > 0 && profile.last_name.length > 0">Hey {{ profile.first_name }} {{ profile.last_name }}, nice to meet you.</label>
+					<label v-if="has_name">Hey {{ profile.first_name }} {{ profile.last_name }}, nice to meet you.</label>
 					<DOB 
-						:error="form.error.dob"
+						:error="form.error.dob.ok"
 						v-on:dob="set_dob($event)">
 					</DOB>
 					<Gender
@@ -27,12 +27,13 @@
 						v-on:ethnicity="set_ethnicity($event)">
 					</Ethnicity>
 					<Email
-						:error="form.error.email">
+						:error="form.error.email"
+						v-on:emai="set_email($event)">
 					</Email>
 					<Password
 						:err_pwd="form.error.password.ok"
 						:err_pwd_conf="form.error.confirm_pw.ok"
-						v-on:err_pwd="set_pwd($event)"
+						v-on:password="set_pwd($event)"
 						v-on:confirm_pwd="set_conf_pwd($event)">
 					</Password>
 				</span>
@@ -111,6 +112,12 @@ export default {
 		Dietary,
 		Skillsheet,
 		Questionaire
+	},
+	computed: {
+		has_name: function() {
+			var is_null = this.profile.first_name == null || this.profile.last_name == null;
+			return !is_null && this.profile.first_name.length > 0 && this.profile.last_name.length > 0;
+		}
 	},
 	data() {
 		return {
@@ -215,6 +222,9 @@ export default {
 		set_dob(date) {
 			this.profile.dob = date;
 		},
+		set_email(email) {
+			this.profile.email = email;
+		},
 		set_ethnicity(eth) {
 			this.profile.ethnicity = eth;
 		},
@@ -227,7 +237,7 @@ export default {
 		set_gender(gender) {
 			this.profile.gender = gender;
 		},
-		set_last_name() {
+		set_last_name(name) {
 			this.profile.last_name = name;
 		},
 		set_pwd(pwd) {
@@ -245,6 +255,7 @@ export default {
 		submit() {
 			this.signup().then((resp) => {
 				var err = resp.data.error;
+				console.log(resp);
 
 				if(err != undefined && resp.status == 200) {
 					this.form.error = err;
