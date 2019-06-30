@@ -135,8 +135,20 @@ export default new Router({
 			component: () => import('./views/Conference.vue'),
 			children: [
 				{
+					path: 'feedback',
+					component: () => import('@/components/conference/Feedback.vue')
+				},
+				{
+					path: 'register',
+					component: () => import('@/components/conference/Registration.vue')
+				},
+				{
 					path: 'schedule/:id',
 					component: () => import('@/components/conference/Schedule.vue')
+				},
+				{
+					path: 'scholarship',
+					component: () => import('@/components/conference/Scholarship.vue')
 				}
 			]
 		},

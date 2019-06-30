@@ -3,12 +3,11 @@
 		<PageNav></PageNav>
 		<div>
 			<h1>Machine Intelligence Conference 2019</h1>
-			<Registration v-if="form.registration" v-on:reveal="show_registration()"></Registration>
-			<Feedback v-if="form.feedback" v-on:reveal="show_feedback()"></Feedback>
-			<div v-if="!form.registration && !form.feedback">
-				<button v-on:click.prevent="show_registration">Register</button>
-				<button v-on:click.prevent="show_feedback">Feedback</button>
-			</div>
+			<ul>
+				<li v-for="(sect, index) in sections">
+					<a :href="'/conference/'+sect.href">{{ sect.innerText }}</a>
+				</li>
+			</ul>
 		</div>
 		<router-view></router-view>
 	</div>
@@ -17,8 +16,6 @@
 
 <script>
 import PageNav from '@/components/PageNav'
-import Registration from '@/components/conference/Registration'
-import Feedback from '@/components/conference/Feedback'
 import Footer from '@/components/Footer'
 
 export default {
@@ -26,25 +23,16 @@ export default {
 
 	components: {
 		PageNav,
-		Registration,
-		Feedback,
 		Footer
 	},
 
 	data() {
 		return {
-			form: {
-				feedback: false,
-				registration: false
-			}
-		}
-	},
-	methods: {
-		show_feedback() {
-			this.form.feedback = !this.form.feedback
-		},
-		show_registration() {
-			this.form.registration = !this.form.registration;
+			sections: [
+				{ innerText: 'Register', href: 'register' },
+				{ innerText: 'Feedback', href: 'feedback' },
+				{ innerText: 'Scholarship', href: 'scholarship' }
+			]
 		}
 	}
 }
@@ -52,24 +40,20 @@ export default {
 
 <style scoped>
 
+li {
+	display:inline;
+	margin: 0 1em 0 0;
+}
+
 button {
 	width: 25%;
 	height: 40px;
 	font-size: 1em;
 }
 
-.main {
-	display: flex;
-	flex-direction: column;
-}
-
 .container {
 	flex: 1;
 	width: 1080px;
-}
-
-.top-message {
-	margin-bottom: 10px;
 }
 
 </style>

@@ -2,8 +2,6 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div class="container">
-			<div class="g-signin2" id="google-signin-button"></div><br>
-			<label v-if:>Sign in with MIC account</label>
 			<form v-on:submit.prevent="handleSubmit">
 				<p>{{error}}</p>
 				<input type="email" placeholder="Email" v-model="formData.email" autocomplete="username" required>
@@ -15,6 +13,7 @@
 				<span>
 					<router-link type="a" to="forgot">Forgot account?</router-link>
 				</span>
+				<div class="g-signin2" id="google-signin-button"></div>
 			</form>
 		</div>
 	</div>
@@ -101,11 +100,9 @@ export default {
 	flex-direction: 
 }
 
-.container .g-signin2 {
-	display: flex;
-	flex-direction: column;
-	width: 300px;
-	margin: 80px 0 0 0;
+.g-signin2 {
+	margin: 10 0 0 0px;
+	width: 100%;
 }
 
 .container form {

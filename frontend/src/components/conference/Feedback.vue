@@ -1,8 +1,9 @@
 <template>
 	<div id="feedback-form">
+		<h3>Help Us Democratize Machine Intelligence</h3>
+		<p>...</p>
 		<div v-if="!form.complete">
 			<form v-show="form.show">
-				<button v-on:click.prevent="reveal_form()">Hide form</button><br>
 				<div class="top-message">
 					Thanks for attending our 2019 Machine Intelligence Conference! Your feedback will help further our mission to democratize machine intelligence.
 				</div>
@@ -42,7 +43,7 @@ export default {
 			form: {
 				complete: false,
 				overall: ['0', 'Fair', 'Good', 'Excellent', '100'],
-				panels: ['Alumni', 'Gender Variance', 'Ethnic variance'],
+				panels: ['Community', 'Gender Diversity'],
 				show: true
 			},
 			feedback: {
@@ -54,9 +55,6 @@ export default {
 		}
 	},
 	methods: {
-		reveal_form() {
-			this.$emit('reveal')
-		},
 		submit() {
 			this.form.complete = true;
 			

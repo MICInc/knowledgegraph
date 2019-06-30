@@ -1,43 +1,45 @@
 <template>
 	<div id="container">
+		<h3>Register for MIConf</h3>
+		<p>An account will also be created for you by registering for the conference.</p>
 		<div v-if="!form.complete">
 			<form v-show="form.show" enctype="multipart/form-data">
-				<button v-on:click.prevent="reveal_form">Hide form</button><br>
-				<div class="top-message">
-					An account will also be created for you by registering for the conference.
-				</div>
 				<span v-if="!$store.state.isLoggedIn">
-					<label>What's your first name?</label><br>
-					<input :class="{ error: form.error.first_name.ok }" type="text" placeholder="First name" v-model.trim="profile.first_name" required><br>
-					<label>What's your last name?</label><br>
-					<input :class="{ error: form.error.last_name.ok }" type="text" placeholder="Last name" v-model.trim="profile.last_name" required><br>
+					<FirstName
+						:error="form.error.first_name.ok"
+						v-on:first_name="set_first_name()">
+					</FirstName>
+					<LastName
+						:error="form.error.last_name.ok"
+						v-on:first_name="set_last_name()">
+					</LastName>
 					<label v-if="profile.first_name.length > 0 && profile.last_name.length > 0">Hey {{ profile.first_name }} {{ profile.last_name }}, nice to meet you.</label>
-					<div class="birthday">
-						<label :class="{ error_font: form.error.dob }">Birthday</label>
-						<DateSelector v-on:date="set_dob($event)"></DateSelector>
-					</div>
-					<label>Gender</label><br>
-					<select :class="{ error: form.error.gender.ok }" name="gender" v-model="profile.gender">
-						<option v-for="gender in form.gender">{{ gender }}</option>
-					</select><br>
-					<label>What is your ethnicity?</label><br>
-					<select :class="{ error: form.error.ethnicity.ok }" name="ethnicity" v-model="profile.ethnicity">
-						<option v-for="ethnicity in form.ethnicity">{{ ethnicity }}</option>
-					</select><br>
-					<label>Where can we contact you?</label>
-					<span class="error-msg" v-if="form.error.email.ok">{{ form.error.email.desc }}</span><br>
-					<input :class="{ error: form.error.email.ok }" type="text" value="email" placeholder="email" autocomplete="email" v-model.trim="profile.email"><br>
-					<label>Password</label><br>
-					<input :class="{ error: form.error.password.ok }" type="password" value="password" placeholder="password" autocomplete="new-password" v-model="profile.password"><br>
-					<label>Confirm password</label><br>
-					<input :class="{ error: form.error.confirm_pw.ok }" type="password" value="password" placeholder="confirm password" autocomplete="new-password" v-model="profile.confirm_pw"><br>
+					<DOB 
+						:error="form.error.dob"
+						v-on:dob="set_dob($event)">
+					</DOB>
+					<Gender
+						:error="form.error.gender.ok"
+						v-on:gender="set_gender($event)">
+					</Gender>
+					<Ethnicity
+						:error="form.error.ethnicity.ok"
+						v-on:ethnicity="set_ethnicity($event)">
+					</Ethnicity>
+					<Email
+						:error="form.error.email">
+					</Email>
+					<Password
+						:err_pwd="form.error.password.ok"
+						:err_pwd_conf="form.error.confirm_pw.ok"
+						v-on:err_pwd="set_pwd($event)"
+						v-on:confirm_pwd="set_conf_pwd($event)">
+					</Password>
 				</span>
-				<label :class="{ error_font: form.error.affiliation }">Affiliation</label><br>
-				<ul>
-					<li v-for="affiliation in form.affiliation">
-						<input type="radio" v-bind:value="affiliation" v-model="profile.affiliation">{{ affiliation }}
-					</li>
-				</ul>
+				<Affiliation
+					:error="form.error.affiliation"
+					v-on:aff="set_aff($event)">
+				</Affiliation>
 				<span v-if="profile.affiliation==='MIC Alum'">
 					<label>What school did you attend?</label><br>
 				</span>
@@ -45,19 +47,14 @@
 					<label>What school do you attend?</label><br>
 				</span>
 				<SchoolField v-on:school="update($event)"></SchoolField>
-				<label>What grade will you be in Fall of {{ year }}? (e.g. 2nd Year Undergraduate)</label><br>
-				<select :class="{ error: form.error.grade.ok }" name="grade" v-model="profile.grade">
-					<option v-for="grade in form.academic_year">{{ grade }}</option>
-				</select><br>
-				<label>Please list any dietary restrictions:</label><br>
-				<input v-model.trim="conf_resp.dietary"></input><br>
-				<label>Opt-in to <a href="https://www.dropbox.com/request/UEtnUpmQ5AHMOw8PmrvN" target="_blank">share</a> your skill sheet with sponsors</label><br>
-				<label>How did you hear about our conference?</label><br>
-				<textarea v-model.trim="conf_resp.q1"></textarea><br>
-				<label>What future do you see for machine intelligence that others don't? (max 200 characters)</label><br>
-				<textarea v-model.trim="conf_resp.q2" maxlength="200"></textarea><br>
-				<label>What do you want out of this conference and anything else we should know? (max. 200 characters)</label><br>
-				<textarea v-model.trim="conf_resp.q3" maxlength="200"></textarea><br>
+				<AcademicYear
+					:error="form.error.grade.ok"
+					:year="year"
+					v-on:grade="set_grade($event)">
+				</AcademicYear>
+				<Dietary v-on:dietary="set_dietary($event)"></Dietary>
+				<Skillsheet></Skillsheet>
+				<Questionaire v-on:resp="set_responses($event)"></Questionaire>
 				<Disclaimer></Disclaimer>
 				<button v-on:click.prevent="submit">Submit</button>
 			</form>
@@ -74,10 +71,23 @@
 import axios from 'axios'
 import AuthService from '@/services/AuthenticationService'
 import RegistrationService from '@/services/RegistrationService.js'
-import DateSelector from '@/components/form/DateSelector'
 import SchoolField from '@/components/form/SchoolField'
 import SocialLinks from '@/components/form/SocialLinks'
 import Disclaimer from '@/components/form/Disclaimer'
+
+// Reg components
+import FirstName from '@/components/conference/registration/FirstName.vue'
+import LastName from '@/components/conference/registration/LastName.vue'
+import DOB from '@/components/conference/registration/DOB.vue'
+import Gender from '@/components/conference/registration/Gender.vue'
+import Ethnicity from '@/components/conference/registration/Ethnicity.vue'
+import Email from '@/components/conference/registration/Email.vue'
+import Password from '@/components/conference/registration/Password.vue'
+import Affiliation from '@/components/conference/registration/Affiliation.vue'
+import AcademicYear from '@/components/conference/registration/AcademicYear.vue'
+import Dietary from '@/components/conference/registration/Dietary.vue'
+import Skillsheet from '@/components/conference/registration/Skillsheet.vue'
+import Questionaire from '@/components/conference/registration/Questionaire.vue'
 
 var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
@@ -86,23 +96,29 @@ var years = function range(size, today) {
 export default {
 	name: 'signup_form',
 	components: {
-		DateSelector,
 		Disclaimer,
 		SchoolField,
-		SocialLinks
+		SocialLinks,
+		FirstName,
+		LastName,
+		DOB,
+		Gender,
+		Ethnicity, 
+		Email,
+		Password,
+		Affiliation,
+		AcademicYear,
+		Dietary,
+		Skillsheet,
+		Questionaire
 	},
 	data() {
 		return {
 			conf_resp: {
 				dietary: '',
-				q1: '',
-				q2: '',
-				q3: ''
+				questions: null
 			},
 			form: {
-				affiliation: ['MIC Alum', 'MIC Student', 'Non-MIC Student', 'Non-student', 'Sponsor'],
-				academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school',
-					'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
 				complete: false,
 				error: {
 					affiliation: { ok: false, desc: ''},
@@ -117,8 +133,6 @@ export default {
 					password: { ok: false, desc: ''},
 					school: { ok: false, desc: ''}
 				},
-				ethnicity: ['African', 'Asian', 'European', 'Hispanic', 'Multiracial', 'Native American', 'Pacific Islander'],
-				gender: ['Female', 'Male', 'Non-binary'],
 				months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 				schools: [],
 				show: true,
@@ -186,17 +200,44 @@ export default {
 		is_string(data) {
 			return (typeof data === 'string' || data instanceof String);
 		},
-		reveal_form() {
-			this.$emit('reveal');
-		},
 		reveal_travel() {
 			this.form.travel = !this.form.travel;
 		},
 		round(amount) {
 			return parseFloat(Math.round(amount * 100) / 100);
 		},
+		set_aff(aff) {
+			this.profile.affiliation = aff;
+		},
+		set_dietary(diet) {
+			this.conf_resp.dietary = diet;
+		},
 		set_dob(date) {
 			this.profile.dob = date;
+		},
+		set_ethnicity(eth) {
+			this.profile.ethnicity = eth;
+		},
+		set_grade(grade) {
+			this.profile.grade = grade;
+		},
+		set_first_name(name) {
+			this.profile.first_name = name;
+		},
+		set_gender(gender) {
+			this.profile.gender = gender;
+		},
+		set_last_name() {
+			this.profile.last_name = name;
+		},
+		set_pwd(pwd) {
+			this.profile.password = pwd;
+		},
+		set_conf_pwd(pwd) {
+			this.profile.confirm_pw = pwd;
+		},	
+		set_responses(resp) {
+			this.conf_resp.questions = resp;
 		},
 		async signup() {
 			return await AuthService.sign_up(this.profile);
@@ -263,10 +304,6 @@ ul li input {
 textarea {
 	width: calc(100% - 10px);
 	min-height: 75px;
-}
-
-.birthday select {
-	margin-right: 10px;
 }
 
 .error {
