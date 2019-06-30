@@ -10,21 +10,21 @@
 		</ul>
 		<div>
 			<h4>Application</h4>
-			<form>
-				<input type="text" placeholder="First name" required><br>
-				<input type="text" placeholder="Last name" required><br>
-				<input type="text" placeholder="Date of birth" required><br>
-				<input type="text" placeholder="Date of birth" required>
-			</form>
+			<RegProfile v-on:ok="save($event)"></RegProfile>
 		</div>
 	</div>
 </template>
 
 <script>
 import PageNav from '@/components/PageNav'
+
+// Reg components
+import RegProfile from '@/components/conference/registration/RegProfile.vue'
+
 export default {
 	components: {
-		PageNav
+		PageNav,
+		RegProfile
 	},
 	data() {
 		return {
@@ -33,6 +33,11 @@ export default {
 				'You must be at least 18 years old to apply.',
 				'Must be from an underrerepresented group.'
 			]
+		}
+	},
+	methods: {
+		save(profile) {
+			console.log(profile);
 		}
 	}
 }
