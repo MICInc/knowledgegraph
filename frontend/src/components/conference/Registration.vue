@@ -28,7 +28,7 @@
 					</Ethnicity>
 					<Email
 						:error="form.error.email"
-						v-on:emai="set_email($event)">
+						v-on:email="set_email($event)">
 					</Email>
 					<Password
 						:err_pwd="form.error.password.ok"
@@ -255,7 +255,6 @@ export default {
 		submit() {
 			this.signup().then((resp) => {
 				var err = resp.data.error;
-				console.log(resp);
 
 				if(err != undefined && resp.status == 200) {
 					this.form.error = err;
@@ -269,6 +268,8 @@ export default {
 						reimbursements: this.reimburse, 
 						conf_resp: this.conf_resp 
 					};
+
+					console.log(reg);
 			
 					RegistrationService.register(reg)
 					.then((data) => {
