@@ -104,7 +104,6 @@ export default {
 </script>
 
 <style scoped>
-
 label {
 	font-size: 13px;
 	font-weight: 600;
@@ -132,15 +131,4 @@ textarea {
 	width: calc(100% - 10px);
 	min-height: 75px;
 }
-
-.social-links {
-	margin-right: 10px;
-}
-
-.social-icon {
-	margin-left: 0;
-	width: 40px;
-	margin-left: 5px;
-}
-
 </style>
