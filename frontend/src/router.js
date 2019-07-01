@@ -212,11 +212,11 @@ export default new Router({
 				}
 			}
 		},
-		{
-			path: '/signup',
-			name: 'signup',
-			component: () => import('./views/SignUp.vue')
-		},
+		// {
+		// 	path: '/signup',
+		// 	name: 'signup',
+		// 	component: () => import('./views/SignUp.vue')
+		// },
 		{
 			path: '/verify',
 			name: 'verify',

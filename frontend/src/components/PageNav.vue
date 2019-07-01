@@ -17,7 +17,7 @@
 			<nav id=right>
 				<div v-if="!isLoggedIn">
 					<ul>
-						<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>
+						<!-- <li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li> -->
 						<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
 					</ul>
 				</div>
