@@ -9,8 +9,8 @@
 					v-on:update="update_profile($event)">
 				</RegProfile>
 				<Dietary v-on:dietary="set_dietary($event)"></Dietary>
-				<Skillsheet></Skillsheet>
 				<Scholarship :error="form.error" v-on:url="set_url($event)"></Scholarship>
+				<Skillsheet v-on:skills="set_skills($event)"></Skillsheet>
 				<Questionaire v-on:resp="set_responses($event)"></Questionaire>
 				<Disclaimer></Disclaimer>
 				<button v-on:click.prevent="submit">Submit</button>
@@ -54,7 +54,8 @@ export default {
 		return {
 			conf_resp: {
 				dietary: '',
-				questions: undefined
+				questions: undefined,
+				social_accts: undefined
 			},
 			form: {
 				error: undefined,
@@ -74,6 +75,9 @@ export default {
 		},
 		set_responses(resp) {
 			this.conf_resp.questions = resp;
+		},
+		set_skills(data) {
+			this.conf_resp.social_accts = data;
 		},
 		submit() {
 			this.signup().then((resp) => {

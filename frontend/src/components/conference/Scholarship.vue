@@ -2,7 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<h3>IBM Diversity Scholarship 2019</h3>
-		<p>The goal of our scholarship is to promote diversity in the field of machine intelligence and democratize educational content with our gender and ethnic diversity scholarships. If you already have an account, please login.</p>
+		<p>The goal of our scholarship is to promote diversity in the field of machine intelligence and democratize educational content with our gender and ethnic diversity scholarships. Develop an educational article on an artificial intelligence concept. This can also be research that you are working on. It does not need to have been published, but the original work should be available online and a link should be provided.</p>
 
 		<h3>Timeline</h3>
 		<table>
@@ -87,7 +87,9 @@ export default {
 				}
 			],
 			who: [
-				'You must be at least 18 years old to apply.'
+				'You must be at least 18 years old to apply.',
+				'You must identify as a female or non-binary junior researcher/ engineer studying artificial intelligence.',
+				
 			]
 		}
 	}

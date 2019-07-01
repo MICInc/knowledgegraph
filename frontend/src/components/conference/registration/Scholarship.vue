@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<label>Your education article</label><br>
-		<input :class="{ error: error }" type="text" placeholder="URL" v-model.trim="url" required>
+		<label>Your scholarship article</label><br>
+		<input :class="{ error: error }" type="text" placeholder="URL (optional)" v-model.trim="url" required><br>
 	</div>
 </template>
 
