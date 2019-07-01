@@ -33,9 +33,4 @@ router.post('/feedback', function(req, res) {
 	})
 });
 
-router.post('/scholarship', function(req, res) {
-	// email a copy of the scholarship to the applicant
-	var timestamp = (new Date());
-});
-
 module.exports = router;

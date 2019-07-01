@@ -55,7 +55,8 @@ export default {
 			conf_resp: {
 				dietary: '',
 				questions: undefined,
-				social_accts: undefined
+				social_accts: undefined,
+				scholarship_article: ''
 			},
 			form: {
 				error: undefined,
@@ -78,6 +79,9 @@ export default {
 		},
 		set_skills(data) {
 			this.conf_resp.social_accts = data;
+		},
+		set_url(url) {
+			this.conf_resp.scholarship_article = url;
 		},
 		submit() {
 			this.signup().then((resp) => {
