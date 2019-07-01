@@ -134,10 +134,10 @@ export default new Router({
 			name: 'conference',
 			component: () => import('./views/Conference.vue'),
 			children: [
-				{
-					path: 'feedback',
-					component: () => import('@/components/conference/Feedback.vue')
-				},
+				// {
+				// 	path: 'feedback',
+				// 	component: () => import('@/components/conference/Feedback.vue')
+				// },
 				{
 					path: 'register',
 					component: () => import('@/components/conference/Registration.vue')

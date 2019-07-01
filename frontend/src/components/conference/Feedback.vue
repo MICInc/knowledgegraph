@@ -1,12 +1,9 @@
 <template>
 	<div id="feedback-form">
 		<h3>Help Us Democratize Machine Intelligence</h3>
-		<p>...</p>
+		<p>Thanks for attending our 2019 Machine Intelligence Conference! Your feedback will help further our mission to democratize machine intelligence.</p>
 		<div v-if="!form.complete">
 			<form v-show="form.show">
-				<div class="top-message">
-					Thanks for attending our 2019 Machine Intelligence Conference! Your feedback will help further our mission to democratize machine intelligence.
-				</div>
 				<label>Overall how was the event?</label><br>
 				<span v-for="(value, index) in form.overall">
 					<input class="overall_button" v-model="feedback.overall" type="radio" name="overall" :value="value"/>
@@ -43,7 +40,7 @@ export default {
 			form: {
 				complete: false,
 				overall: ['0', 'Fair', 'Good', 'Excellent', '100'],
-				panels: ['Community', 'Gender Diversity'],
+				panels: ['Community', 'Diversity'],
 				show: true
 			},
 			feedback: {

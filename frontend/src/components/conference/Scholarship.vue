@@ -2,7 +2,12 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<h3>IBM Diversity Scholarship 2019</h3>
-		<p>The goal of our scholarship is to promote diversity in the field of machine intelligence and democratize educational content with our gender and ethnic diversity scholarships. Develop an educational article on an artificial intelligence concept. This can also be research that you are working on. It does not need to have been published, but the original work should be available online and a link should be provided.</p>
+		<p>
+			The thesis of our conference originally stemmed from the idea of demonstrating the value that could be achieved when students who are passionate about machine intelligence unite as a larger, more inclusive, and cognitively diverse community. Our conference serves as an even greater surface area for intellectual engagement for students outside of the classroom and beyond the boundaries of individual institutions. It is our mission and hope, that the Machine Intelligence Conference will empower students to take agency over the trajectory of their education, promote diversity that will fundamentally change the paradigm of our field, and catalyze connections to accelerate progress in research and engineering to burgeon great ideas as a single Machine Intelligence Community.
+		</p>
+		<p>
+			Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided.
+		</p>
 
 		<h3>Timeline</h3>
 		<table>
@@ -13,9 +18,10 @@
 				<td>{{ t.date }}</td>
 			</tr>
 		</table>
-		<h3>General Requirements</h3>
-		<h3>Diversity in Machine Intelligence</h3>
-		<p><a href="https://www.nsf.gov/statistics/2017/nsf17310/digest/introduction/"></a></p>
+		<h3>The Scholarship</h3>
+		<ul>
+			<li v-for="item in scholarship">{{ item }}</li>
+		</ul>
 		<h3>Help Us Materialize Knowledge</h3>
 		<p>Develop an educational article on a topic of your choice</p>
 		<ul>
@@ -28,8 +34,6 @@
 		<ul>
 			<li v-for="req in who">{{ req }}</li>
 		</ul>
-		<h3>Eligibility</h3>
-		<h3>Questions</h3>
 		<p>Email us at <a class="conf-email" href = "mailto: conference@machineintelligence.cc">conference@machineintelligence.cc</a></p>
 		<p><a class="apply" href="/conference/register">APPLY HERE</a></p>
 	</div>
@@ -45,24 +49,30 @@ export default {
 	data() {
 		return {
 			basics: [
-				'All images, diagrams, graphics, quotes, papers, resources and facts must be cited.',
+				'All images, diagrams, graphics, quotes, papers, resources and facts must be cited using in-text citations.',
 				'All content submitted must be original work.',
-				'Article cannot express opinions.',
+				'Articles cannot express opinions.',
 				'Must be a unique topic not yet on the platform.',
+				'No strict length requirement, but expect to write at least 2 - 3 pages in a standard word document.'
 			],
 			criteria: [
 				{ 
 					item: 'Relevant.', 
-					desc: 'Must only be on a single topic. Strong educational content should be able to intuitively convey technically challenging concepts in a more compressed representation. Topic is related to an algorithm in artificial intelligence.'
+					desc: 'Must focus on a single topic in artificial intelligence.'
 				},
 				{
 					item: 'Detailed.',
-					desc: 'Content should be clear and avoids hand-wavy explanations. All explanations are illustrated clearly and well-connected to the thesis.'
+					desc: 'Explanations are illustrated clearly and overall article is coherent.'
 				},
 				{
 					item: 'Challenging.',
-					desc: 'A well-explained advanced concept will be more likely to be accepted than a well-explained introductory topic.'
+					desc: 'Technically advanced concepts are self-contained. Could a reader with basic undergraduate math understand your article?'
 				}
+			],
+			scholarship: [
+				'Fully-paid round-trip flight for the conference',
+				'Fully-paid hotel for the conference',
+				'Night-before dinner with your IBM sponsors'
 			],
 			timeline: [
 				{
@@ -87,9 +97,8 @@ export default {
 				}
 			],
 			who: [
-				'You must be at least 18 years old to apply.',
-				'You must identify as a female or non-binary junior researcher/ engineer studying artificial intelligence.',
-				
+				'You are at least 18 years old.',
+				'You identify as an underrepresented junior researcher/ engineer studying artificial intelligence.',
 			]
 		}
 	}

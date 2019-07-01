@@ -32,7 +32,7 @@ export default {
 		return {
 			sections: [
 				{ innerText: 'Register', href: 'register' },
-				{ innerText: 'Feedback', href: 'feedback' },
+				// { innerText: 'Feedback', href: 'feedback' },
 				{ innerText: 'Scholarship', href: 'scholarship' }
 			]
 		}
