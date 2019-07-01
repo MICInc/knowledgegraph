@@ -1,84 +1,130 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<h3>MIC Gender Diversity Scholarship</h3>
-		<p>The goal of our scholarship is to promote diversity in the field of machine intelligence and democratize educational content with our gender and ethnic diversity scholarships.</p>
-		<span><b>Submission deadline</b>: July 31, 2019 11:59 PM EST</span><br>
-		<label>General Requirements</label>
+		<h3>IBM Diversity Scholarship 2019</h3>
+		<p>The goal of our scholarship is to promote diversity in the field of machine intelligence and democratize educational content with our gender and ethnic diversity scholarships. If you already have an account, please login.</p>
+
+		<h3>Timeline</h3>
+		<table>
+			<col width="300">
+			<col width="300">
+			<tr v-for="t in  timeline">
+				<td>{{ t.event }}</td>
+				<td>{{ t.date }}</td>
+			</tr>
+		</table>
+		<h3>General Requirements</h3>
+		<h3>Diversity in Machine Intelligence</h3>
+		<p><a href="https://www.nsf.gov/statistics/2017/nsf17310/digest/introduction/"></a></p>
+		<h3>Help Us Materialize Knowledge</h3>
+		<p>Develop an educational article on a topic of your choice</p>
 		<ul>
-			<li v-for="(r, i) in reqs">{{ i+1 }}. {{ r }}</li>
+			<li v-for="req in basics">{{ req }}</li>
 		</ul>
-		<div>
-			<h4>Application</h4>
-			<div v-if="!form.complete">
-				<RegProfile 
-					:error="form.error"
-					v-on:update="update_profile($event)">
-				</RegProfile>
-				<Dietary v-on:dietary="set_dietary($event)"></Dietary>
-				<Skillsheet></Skillsheet>
-				<Questionaire v-on:resp="set_responses($event)"></Questionaire>
-				<Disclaimer></Disclaimer>
-				<button v-on:click.prevent="submit">Submit</button>
-			</div>
-			<div v-if="form.complete">
-				Thanks for submititng your application for our conference scholarship!<br>
-				Stay updated with the Machine Intelligence Community<br>
-				<SocialLinks></SocialLinks>
-			</div>
-		</div>
+		<ul>
+			<li v-for="req in criteria"><b>{{ req.item }}</b> {{ req.desc }}</li>
+		</ul>
+		<h3>Who should apply?</h3>
+		<ul>
+			<li v-for="req in who">{{ req }}</li>
+		</ul>
+		<h3>Eligibility</h3>
+		<h3>Questions</h3>
+		<p>Email us at <a class="conf-email" href = "mailto: conference@machineintelligence.cc">conference@machineintelligence.cc</a></p>
+		<p><a class="apply" href="/conference/register">APPLY HERE</a></p>
 	</div>
 </template>
 
 <script>
 import PageNav from '@/components/PageNav'
 
-// Reg components
-import AuthService from '@/services/AuthenticationService'
-import RegistrationService from '@/services/RegistrationService.js'
-import RegProfile from '@/components/conference/registration/RegProfile.vue'
-import Dietary from '@/components/conference/registration/Dietary.vue'
-import Skillsheet from '@/components/conference/registration/Skillsheet.vue'
-import Questionaire from '@/components/conference/registration/Questionaire.vue'
-import Disclaimer from '@/components/form/Disclaimer'
-import SocialLinks from '@/components/form/SocialLinks'
-
 export default {
 	components: {
-		PageNav,
-		Disclaimer,
-		SocialLinks,
-		RegProfile,
-		Dietary,
-		Skillsheet,
-		Questionaire
+		PageNav
 	},
 	data() {
 		return {
-			form: {
-				error: undefined,
-				complete: false
-			},
-			reqs: [
-				'Applying for this scholarship will also apply you for the conference even if you are not selected for this scholarship.',
-				'You must be at least 18 years old to apply.',
-				'Must be from an underrerepresented group.'
+			basics: [
+				'All images, diagrams, graphics, quotes, papers, resources and facts must be cited.',
+				'All content submitted must be original work.',
+				'Article cannot express opinions.',
+				'Must be a unique topic not yet on the platform.',
+			],
+			criteria: [
+				{ 
+					item: 'Relevant.', 
+					desc: 'Must only be on a single topic. Strong educational content should be able to intuitively convey technically challenging concepts in a more compressed representation. Topic is related to an algorithm in artificial intelligence.'
+				},
+				{
+					item: 'Detailed.',
+					desc: 'Content should be clear and avoids hand-wavy explanations. All explanations are illustrated clearly and well-connected to the thesis.'
+				},
+				{
+					item: 'Challenging.',
+					desc: 'A well-explained advanced concept will be more likely to be accepted than a well-explained introductory topic.'
+				}
+			],
+			timeline: [
+				{
+					event: 'Application opens',
+					date: 'July 1, 2019'
+				},
+				{
+					event: 'Application closes',
+					date: 'July 31, 2019'
+				},
+				{
+					event: 'Acceptance emails',
+					date: 'August 3rd, 2019'
+				},
+				{
+					event: 'IBM Scholars Dinner',
+					date: 'September 6th, 2019'
+				},
+				{
+					event: 'Conference',
+					date: 'September 7th, 2019'
+				}
+			],
+			who: [
+				'You must be at least 18 years old to apply.'
 			]
-		}
-	},
-	methods: {
-		update_profile(data) {
-			console.log(profile);
 		}
 	}
 }
 </script>
 
 <style>
+.conf-email {
+	color: #000;
+	text-decoration: underline;
+}
+
+.conf-email:hover {
+	color: #655ba5;
+}
+
+.apply {
+	font-weight: 600;
+	font-size: 1em;
+	color: #000;
+}
+
+.apply:hover {
+	color: #655ba5;
+}
+
+ul {
+	list-style-type:circle;
+}
+
+li {
+	margin: 0 0 0 1.1em;
+}
+
 label {
 	font-size: 13px;
 	font-weight: 600;
 	margin-right: 1em;
 }
-
 </style>

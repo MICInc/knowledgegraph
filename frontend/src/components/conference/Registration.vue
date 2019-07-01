@@ -10,6 +10,7 @@
 				</RegProfile>
 				<Dietary v-on:dietary="set_dietary($event)"></Dietary>
 				<Skillsheet></Skillsheet>
+				<Scholarship :error="form.error" v-on:url="set_url($event)"></Scholarship>
 				<Questionaire v-on:resp="set_responses($event)"></Questionaire>
 				<Disclaimer></Disclaimer>
 				<button v-on:click.prevent="submit">Submit</button>
@@ -32,6 +33,7 @@ import Skillsheet from '@/components/conference/registration/Skillsheet.vue'
 import Questionaire from '@/components/conference/registration/Questionaire.vue'
 import Disclaimer from '@/components/form/Disclaimer'
 import SocialLinks from '@/components/form/SocialLinks'
+import Scholarship from '@/components/conference/registration/Scholarship.vue'
 
 var years = function range(size, today) {
 	return [...Array(size).keys()].map(i => today - i);
@@ -45,7 +47,8 @@ export default {
 		RegProfile,
 		Dietary,
 		Skillsheet,
-		Questionaire
+		Questionaire,
+		Scholarship
 	},
 	data() {
 		return {

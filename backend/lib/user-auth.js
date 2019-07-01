@@ -50,7 +50,7 @@ module.exports = {
 	registerUser: function(profile, callback) {
 		module.exports.isEmailTaken(profile.email, function(err, exists) {
 			if(exists) {
-				callback('Email already in use', '', {});
+				callback('Email already in use. Please login.', '', {});
 				return;
 			}
 
