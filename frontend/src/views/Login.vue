@@ -10,10 +10,10 @@
 					<input type="checkbox" checked="checked" name="remember"> Remember me
 				</label>
 				<button type="submit">Login</button>
-				<span>
+				<!-- <span>
 					<router-link type="a" to="forgot">Forgot account?</router-link>
-				</span>
-				<div class="g-signin2" id="google-signin-button"></div>
+				</span> -->
+				<!-- <div class="g-signin2" id="google-signin-button"></div> -->
 			</form>
 		</div>
 	</div>

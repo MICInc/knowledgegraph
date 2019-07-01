@@ -10,6 +10,9 @@
 					</li>
 				</ul>
 			</nav>
+			<p v-if="show">
+				The thesis of our conference originally stemmed from the idea of demonstrating the value that could be achieved when students who are passionate about machine intelligence unite as a larger, more inclusive, and cognitively diverse community. Our conference serves as an even greater surface area for intellectual engagement for students outside of the classroom and beyond the boundaries of individual institutions. It is our mission and hope, that the Machine Intelligence Conference will empower students to take agency over the trajectory of their education, promote diversity that will fundamentally change the paradigm of our field, and catalyze connections to accelerate progress in research and engineering to burgeon great ideas as a single Machine Intelligence Community.
+			</p>
 		</div>
 		<router-view></router-view>
 	</div>
@@ -27,7 +30,11 @@ export default {
 		PageNav,
 		Footer
 	},
-
+	computed: {
+		show: function() {
+			return window.location.pathname == '/conference';
+		}
+	},
 	data() {
 		return {
 			sections: [
