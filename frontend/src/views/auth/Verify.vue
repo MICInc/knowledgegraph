@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import router from '@/router';
 import PageNav from '@/components/PageNav';
 import AuthenticationService from '@/services/AuthenticationService'
 
@@ -42,27 +43,8 @@ export default {
 		}
 	},
 	methods: {
-		async verify() {			
-			AuthenticationService.verify_email({ code: this.$route.query.c })
-			.then((resp) => {
-				if(resp.data != null) {
-					this.verified = true;
-					this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
-					router.push({ name: 'non-beta' });
-				}
-				else {
-					AuthenticationService.logoutUser(this.$store.state.userInfo);
-		
-					this.$store.dispatch('logout')
-					.then((resp) => {
-					})
-					.catch((err) => {
-					});
-				}
-			})
-			.catch((error) => {
-				this.verified = false;
-			});
+		async verify_email() {			
+			return await AuthenticationService.verify_email({ code: this.$route.query.c });
 		},
 		async resend() {
 			AuthenticationService.resend_verification({ email: this.email })
@@ -70,6 +52,30 @@ export default {
 				this.sent = true;
 			})
 			.catch((error) => {
+			});
+		},
+		verify() {
+			this.verify_email().then((resp) => {
+				this.$nextTick(() => {
+					this.verified = resp.data.token.length > 0;
+					
+					if(this.verified) {
+						this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
+						router.push({ name: 'home' });
+					}
+					else {
+						AuthenticationService.logoutUser(this.$store.state.userInfo);
+			
+						this.$store.dispatch('logout')
+						.then((resp) => {
+						})
+						.catch((err) => {
+						});
+					}
+				});
+			})
+			.catch((error) => {
+				this.verified = false;
 			});
 		}
 	}

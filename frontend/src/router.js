@@ -178,11 +178,6 @@ export default new Router({
 			}
 		},
 		{
-			path: '/non-beta',
-			name: 'non-beta',
-			component: () => import('./views/NonBeta.vue')
-		},
-		{
 			path: '/search',
 			name: 'search',
 			component: () => import('./views/Search.vue'),
