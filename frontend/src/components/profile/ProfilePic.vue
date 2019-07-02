@@ -1,7 +1,7 @@
 <template>
 	<div id="profile_pic">
 		<div class="crop">
-			<img v-if="src.length > 0" :src="src">
+			<img v-if="img_src.length > 0" :src="img_src">
 			<div v-else></div>
 		</div>
 		<div v-if="editable" id="upload">
@@ -22,14 +22,15 @@ export default {
 		email() {
 			return this.$store.state.userInfo.email;
 		},
-		src() {
+		img_src() {
 			return this.$store.state.userInfo.picture;
 		}
 	},
 	data() {
 		return {
 			last_modified: undefined,
-			name: ''
+			name: '',
+			src: ''
 		}
 	},
 	methods: {
@@ -46,11 +47,12 @@ export default {
 					if(src.length > 0) {
 						this.name = el.files[0].name;
 						this.last_modified = new Date();
-						this.save();
+						this.src = src;
 						
 						var userInfo = this.$store.state.userInfo;
 						userInfo.picture = src;
 						this.$store.dispatch('set_user_info', [userInfo]);
+						this.save();
 					}
 				}
 				reader.readAsDataURL(el.files[0]);
@@ -62,7 +64,7 @@ export default {
 		async a_picture() {
 			ProfileService.getProfilePic({ params: { url: this.url }})
 			.then((resp) => {
-				if(resp.data.src.length > 0) this.src = resp.data.src;
+				if(resp.data.src.length > 0) this.$store.state.userInfo.picture = resp.data.src;
 			})
 			.catch((data) => {
 

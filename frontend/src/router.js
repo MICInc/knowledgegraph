@@ -99,36 +99,36 @@ export default new Router({
 				}
 			}
 		},
-		{
-			path: '/community',
-			name: 'community',
-			component: () => import('./views/Community.vue'),
-			beforeEnter: (to, from, next) => {
-				if (store.state.isLoggedIn) {
-					next()
-				} else {
-					next({
-						name: 'login',
-						params: { error: 'You need to log in to access this route.' }
-					})
-				}
-			}
-		},
-		{
-			path: '/community/start',
-			name: 'community-reg',
-			component: () => import('./views/CommunityReg.vue'),
-			beforeEnter: (to, from, next) => {
-				if (store.state.isLoggedIn) {
-					next()
-				} else {
-					next({
-						name: 'login',
-						params: { error: 'You need to log in to access this route.' }
-					})
-				}
-			}
-		},
+		// {
+		// 	path: '/community',
+		// 	name: 'community',
+		// 	component: () => import('./views/Community.vue'),
+		// 	beforeEnter: (to, from, next) => {
+		// 		if (store.state.isLoggedIn) {
+		// 			next()
+		// 		} else {
+		// 			next({
+		// 				name: 'login',
+		// 				params: { error: 'You need to log in to access this route.' }
+		// 			})
+		// 		}
+		// 	}
+		// },
+		// {
+		// 	path: '/community/start',
+		// 	name: 'community-reg',
+		// 	component: () => import('./views/CommunityReg.vue'),
+		// 	beforeEnter: (to, from, next) => {
+		// 		if (store.state.isLoggedIn) {
+		// 			next()
+		// 		} else {
+		// 			next({
+		// 				name: 'login',
+		// 				params: { error: 'You need to log in to access this route.' }
+		// 			})
+		// 		}
+		// 	}
+		// },
 		{
 			path: '/conference',
 			name: 'conference',
