@@ -21,13 +21,17 @@
 			Stay updated with the Machine Intelligence Community<br>
 			<SocialLinks></SocialLinks>
 		</div>
-		<div v-if="form.already_registered">
+		<div v-if="form.already_registered && !form.url_updated">
 			<h3>IBM Diversity Scholarship 2019</h3>
 			<p>You're registered for Machine Intelligence Conference 2019. Please consider applying for our conference scholarship. If you have already applied, submitting again will overwrite your previously submitted article url. See <a href="/conference/scholarship">here</a> for more details.</p>
 			<form>
-				<Scholarship :error="form.error" v-on:url="set_url($event)"></Scholarship>
+				<Scholarship :error="form.error_scholarship" v-on:url="set_url($event)"></Scholarship>
 				<button v-on:click.prevent="apply">Apply</button>
 			</form>
+		</div>
+		<div v-else>
+			<h3>IBM Diversity Scholarship 2019</h3>
+			<p>Thank you for applying to the IBM Diversity Scholarship! Your application has been updated.</p>
 		</div>
 	</div>
 </template>
@@ -79,6 +83,7 @@ export default {
 				complete: false,
 				already_registered: false,
 				error_scholarship: false,
+				url_updated: false,
 				years: years(100, (new Date()).getFullYear())
 			},
 			profile: {
@@ -113,8 +118,8 @@ export default {
 		apply() {
 			this.apply_for_scholarship()
 			.then((resp) => {
-				console.log(resp.data)
 				this.form.error_scholarship = resp.data.error;
+				if(!resp.data.error) this.form.url_updated = true;
 			});
 		},
 		set_dietary(diet) {

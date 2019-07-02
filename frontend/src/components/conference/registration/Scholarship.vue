@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<label>Your scholarship article</label><br>
-		<input :class="{ error: error }" type="text" placeholder="URL (optional)" v-model.trim="url" required><br>
+		<input type="text" placeholder="URL (optional)" v-model.trim="url" required><br>
+		<label class="error-msg" v-if="error">Invalid url</label>
 	</div>
 </template>
 
