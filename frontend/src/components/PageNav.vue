@@ -60,6 +60,8 @@ export default {
 			return this.$store.state.userInfo.picture;
 		},
 		url() {
+			console.log('userInfo: '+this.$store.state.userInfo);
+			console.log('url: '+this.$store.state.userInfo.url);
 			return this.$store.state.userInfo.url
 		}
 	},

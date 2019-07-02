@@ -101,15 +101,18 @@ module.exports = {
 			});
 		});
 	},
-	// loginUser: function(email, password, callback) {
-	loginUser: function(email, callback) {
+	loginUser: function(email, password, callback) {
+	// loginUser: function(email, callback) {
+		console.log('email: '+email);
+		console.log('filter.filter_xss(email): '+filter.filter_xss(email));
+
 		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
 			if(err) {
 				console.error(err);
 				callback({ msg: 'Login failed', code: 400 }, '', {});
 				return;
 			}
-
+			console.log(user);
 			// Remove error messages?
 			if(!user.verification.status) {
 				callback({ msg: 'Email has not been verified', code: 401 }, '', {});

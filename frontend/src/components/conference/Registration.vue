@@ -9,7 +9,7 @@
 					v-on:update="update_profile($event)">
 				</RegProfile>
 				<Dietary v-on:dietary="set_dietary($event)"></Dietary>
-				<Scholarship :error="form.error" v-on:url="set_url($event)"></Scholarship>
+				<Scholarship v-on:url="set_url($event)"></Scholarship>
 				<Skillsheet v-on:skills="set_skills($event)"></Skillsheet>
 				<Questionaire v-on:resp="set_responses($event)"></Questionaire>
 				<Disclaimer></Disclaimer>

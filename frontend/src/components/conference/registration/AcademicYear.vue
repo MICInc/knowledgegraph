@@ -12,7 +12,7 @@ export default {
 	name: 'AcademicYear',
 	data () {
 		return {
-			academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc'],
+			academic_year: ['Not in school', 'Elementary school', 'Middle school', 'High school', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Masters', 'PhD', 'Postdoc', 'Professor'],
 			grade: ''
 		}
 	},
