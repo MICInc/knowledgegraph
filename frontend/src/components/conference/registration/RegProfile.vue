@@ -100,7 +100,7 @@ export default {
 			profile: {
 				affiliation: '',
 				confirm_pw: '',
-				dob: undefined,
+				dob: '',
 				email: '',
 				ethnicity: '',
 				first_name: '',

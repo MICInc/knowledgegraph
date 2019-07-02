@@ -1,7 +1,7 @@
 <template>
 	<div class="birthday">
-		<label :class="{ error: error  }">Birthday</label>
-		<DateSelector v-on:date="set_dob($event)"></DateSelector>
+		<label>Birthday</label>
+		<DateSelector :error="error" v-on:date="set_dob($event)"></DateSelector>
 	</div>
 </template>
 

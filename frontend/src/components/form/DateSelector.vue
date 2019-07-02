@@ -27,8 +27,7 @@ export default {
 			},
 			day: 0,
 			month: 0,
-			year: 0,
-			error: false
+			year: 0
 		}
 	},
 	methods: {
@@ -36,15 +35,15 @@ export default {
 			if(this.year > 0 && this.month > 0 && this.day > 0) {
 				AuthenticationService.check_date({ year: this.year, month: this.month, day: this.day })
 				.then((resp) => {
-					var error = resp.data.error;
-					if(!error) this.$emit('date', new Date(`${this.year}-${this.month}-${this.day}`));
+					if(!resp.data.error) this.$emit('date', new Date(`${this.year}-${this.month}-${this.day}`));
 				});
 			}
 		},
 		years(size, today) {
 			return [...Array(size).keys()].map(i => today - i);
 		}
-	}
+	},
+	props: ['error']
 }
 </script>
 

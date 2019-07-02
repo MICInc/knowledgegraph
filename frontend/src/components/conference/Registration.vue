@@ -1,8 +1,8 @@
 <template>
 	<div id="container">
-		<h3>Register for MIConf</h3>
-		<p>An account will also be created for you by registering for the conference.</p>
-		<div v-if="!form.complete">
+		<div v-if="!form.complete && !form.already_registered">
+			<h3>Register for MIConf</h3>
+			<p>An account will also be created for you by registering for the conference.</p>
 			<form enctype="multipart/form-data">
 				<RegProfile 
 					:error="form.error"
@@ -20,6 +20,14 @@
 			Thanks for submititng your application for our conference! Please check your email to verify your account.<br>
 			Stay updated with the Machine Intelligence Community<br>
 			<SocialLinks></SocialLinks>
+		</div>
+		<div v-if="form.already_registered">
+			<h3>IBM Diversity Scholarship 2019</h3>
+			<p>You're registered for Machine Intelligence Conference 2019. Please consider applying for our conference scholarship. If you have already applied, submitting again will overwrite your previously submitted article url. See <a href="/conference/scholarship">here</a> for more details.</p>
+			<form>
+				<Scholarship :error="form.error" v-on:url="set_url($event)"></Scholarship>
+				<button v-on:click.prevent="apply">Apply</button>
+			</form>
 		</div>
 	</div>
 </template>
@@ -41,6 +49,14 @@ var years = function range(size, today) {
 
 export default {
 	name: 'signup_form',
+	beforeMount() {
+		if(this.$store.state.isLoggedIn) {
+			RegistrationService.am_i_registered({ token: this.$store.state.accessToken, email: this.$store.state.userInfo.email })
+			.then((resp) => {
+				this.form.already_registered = resp.data.ok;
+			});
+		}
+	},
 	components: {
 		Disclaimer,
 		SocialLinks,
@@ -61,15 +77,43 @@ export default {
 			form: {
 				error: undefined,
 				complete: false,
+				already_registered: false,
+				error_scholarship: false,
 				years: years(100, (new Date()).getFullYear())
 			},
-			profile: undefined,
+			profile: {
+				affiliation: '',
+				confirm_pw: '',
+				dob: '',
+				email: '',
+				ethnicity: '',
+				first_name: '',
+				gender: '',
+				grade: '',
+				last_name: '',
+				password: '',
+				school: ''
+			},
 			user_id: ''
 		}
 	},
 	methods: {
+		async apply_for_scholarship() {
+			var app = {
+				token: this.$store.state.accessToken, 
+				email: this.$store.state.userInfo.email,
+				url: this.conf_resp.scholarship_article
+			};
+
+			return await RegistrationService.apply_for_scholarship(app);
+		},
 		async signup() {
 			return await AuthService.sign_up(this.profile);
+		},
+		apply() {
+			this.apply_for_scholarship().then((resp) => {
+				this.form.error_scholarship = resp.data.ok;
+			});
 		},
 		set_dietary(diet) {
 			this.conf_resp.dietary = diet;

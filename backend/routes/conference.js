@@ -8,6 +8,43 @@ var ah = require('../lib/application_handler');
 var fh = require('../lib/feedback_handler');
 const email = require('../lib/email_handler');
 
+router.post('/am_i_registered', function(req, res) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		else {
+			db.Conference.find({ email: req.body.email }, function(err, app) {
+				if(err) res.status(200).send({ ok: false });
+				else res.status(200).send({ ok: true });
+			});
+		}
+	});
+});
+
+router.post('/apply_for_scholarship', function(req, res) {
+	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
+		if(err) res.status(401).send('unauthorized');
+		else {
+			db.Conference.find({ email: req.body.email }, function(err, app) {
+				if(err) res.status(400).send({ msg: 'bad request' });
+				else {
+					db.Content.findOne({ url: req.body.url }, function(err, article) {
+						if(article == null) {
+							res.status(400).send({ msg: 'invalid url' });
+							return;
+						}
+
+						app.conf_resp.scholarship_article = req.body.url;
+						db.Conference.updateOne({ _id: app._id }, app, function(err) {
+							if(err) console.error(err);
+							else res.send(200).send({ msg: 'Thank you for applying for the IBM Diversity Scholarship.' });
+						});
+					});
+				}
+			});
+		}
+	});
+});
+
 router.post('/register', function(req, res) {
 	ah.save(req.body, function(status) {
 		message = email.format_message(req.body.first_name, email.conf.message);
