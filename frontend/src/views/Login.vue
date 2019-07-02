@@ -37,7 +37,7 @@ export default {
 	},
 	mounted() {
 		gapi.signin2.render('google-signin-button', {
-			onsuccess: this.onSignIn
+			// onsuccess: this.onSignIn
 		});
 	},
 	methods: {
@@ -54,8 +54,8 @@ export default {
 				}
 			});
 		},
-		async login(email) {
-			return await AuthService.login({ email: email });
+		async login() {
+			return await AuthService.login({ email: this.formData.email, password: this.formData.password });
 		},
 		onSignIn(googleUser) {
 			var profile = googleUser.getBasicProfile();

@@ -17,7 +17,7 @@
 			</form>
 		</div>
 		<div v-if="form.complete">
-			Thanks for submititng your application for our conference!<br>
+			Thanks for submititng your application for our conference! Please check your email to verify your account.<br>
 			Stay updated with the Machine Intelligence Community<br>
 			<SocialLinks></SocialLinks>
 		</div>

@@ -48,6 +48,9 @@ router.post('/login', function(req, res, next) {
 	var email = req.body.email;
 	var password = req.body.password;
 
+	console.log('login.email: '+email);
+	console.log('login.pass: '+password);
+
 	if(!(email && password)) res.status(200).send({ error: 'Please provide a email and password' });
 	// if(email == null) res.status(200).send({ error: 'Invalid credentials' });
 

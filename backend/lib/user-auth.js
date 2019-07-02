@@ -102,10 +102,6 @@ module.exports = {
 		});
 	},
 	loginUser: function(email, password, callback) {
-	// loginUser: function(email, callback) {
-		console.log('email: '+email);
-		console.log('filter.filter_xss(email): '+filter.filter_xss(email));
-
 		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
 			if(err) {
 				console.error(err);
