@@ -111,8 +111,10 @@ export default {
 			return await AuthService.sign_up(this.profile);
 		},
 		apply() {
-			this.apply_for_scholarship().then((resp) => {
-				this.form.error_scholarship = resp.data.ok;
+			this.apply_for_scholarship()
+			.then((resp) => {
+				console.log(resp.data)
+				this.form.error_scholarship = resp.data.error;
 			});
 		},
 		set_dietary(diet) {

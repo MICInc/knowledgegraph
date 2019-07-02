@@ -25,18 +25,18 @@ router.post('/apply_for_scholarship', function(req, res) {
 		if(err) res.status(401).send('unauthorized');
 		else {
 			db.Conference.find({ email: req.body.email }, function(err, app) {
-				if(err) res.status(400).send({ msg: 'bad request' });
+				if(err) res.status(400).send('bad request');
 				else {
 					db.Content.findOne({ url: req.body.url }, function(err, article) {
 						if(article == null) {
-							res.status(400).send({ msg: 'invalid url' });
+							res.status(200).send({ error: true });
 							return;
 						}
 
 						app.conf_resp.scholarship_article = req.body.url;
 						db.Conference.updateOne({ _id: app._id }, app, function(err) {
 							if(err) console.error(err);
-							else res.send(200).send({ msg: 'Thank you for applying for the IBM Diversity Scholarship.' });
+							else res.send(200).send({ error: false });
 						});
 					});
 				}
