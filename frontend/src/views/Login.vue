@@ -6,9 +6,6 @@
 				<p>{{error}}</p>
 				<input type="email" placeholder="Email" v-model="formData.email" autocomplete="username" required>
 				<input type="password" placeholder="Password" v-model="formData.password" autocomplete="current-password" required>
-				<label>
-					<input type="checkbox" checked="checked" name="remember"> Remember me
-				</label>
 				<button type="submit">Login</button>
 				<!-- <span>
 					<router-link type="a" to="forgot">Forgot account?</router-link>
