@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<h3>IBM Diversity Scholarship 2019</h3>
 		<p>
-			This year we are offering ten travel scholarships. Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided.
+			This year we are offering ten travel scholarships. Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc/add">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided.
 		</p>
 
 		<h3>Timeline</h3>
@@ -19,11 +19,13 @@
 		<ul>
 			<li v-for="item in scholarship">{{ item }}</li>
 		</ul>
-		<h3>Help Us Materialize Knowledge</h3>
-		<p>Develop an educational article on a topic of your choice</p>
+		<h3>Help Us Materialize and Disseminate Knowledge</h3>
+		<p>Develop an educational article on a topic of your choice. Acceptable articles should adhere to the following:</p>
+		<h4>Basic requirements</h4>
 		<ul>
 			<li v-for="req in basics">{{ req }}</li>
 		</ul>
+		<h4>Technical evaluation</h4>
 		<ul>
 			<li v-for="req in criteria"><b>{{ req.item }}</b> {{ req.desc }}</li>
 		</ul>
@@ -31,7 +33,7 @@
 		<ul>
 			<li v-for="req in who">{{ req }}</li>
 		</ul>
-		<p>Email us at <a class="conf-email" href = "mailto: conference@machineintelligence.cc">conference@machineintelligence.cc</a></p>
+		<p>Email us with questions at <a class="conf-email" href = "mailto: conference@machineintelligence.cc">conference@machineintelligence.cc</a></p>
 		<p><a class="apply" href="/conference/register">APPLY HERE</a></p>
 	</div>
 </template>
@@ -46,11 +48,12 @@ export default {
 	data() {
 		return {
 			basics: [
-				'All images, diagrams, graphics, quotes, papers, resources and facts must be cited using in-text citations.',
+				'Final article must be published on the platform. You must click the "publish" button in the top-left of the editor for it to be publicly viewable.',
+				'All images, diagrams, graphics, quotes, research papers, resources and facts must be cited using eJournal in-text citation style (refer to Wikipedia or Distill.pub for examples).',
 				'All content submitted must be original work.',
-				'Articles cannot express opinions.',
-				'Must be a unique topic not yet on the platform.',
-				'No strict length requirement, but expect to write at least 2 - 3 pages in a standard word document.'
+				'Articles cannot be opinionative, including but not limited to politics, religions, ideologies, institutions, preferences, etc. Any content violating this condition will be removed from the platform and the author\'s account may be suspended.',
+				'Article must be a unique topic not yet on the platform.',
+				'There are no strict length requirements. However, you should expect to write the equivalent of at least 2 - 3 pages in a standard word document.'
 			],
 			criteria: [
 				{ 

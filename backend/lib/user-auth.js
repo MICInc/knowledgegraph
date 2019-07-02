@@ -38,6 +38,7 @@ module.exports = {
 			school: filter.filter_xss(profile.school),
 			search_history: [],
 			subjects: [],
+			suspended: false,
 			url: (profile.first_name+'-'+profile.last_name).toLowerCase(),
 			user_type: 0,
 			verification: { code: utils.uniqueID(VERI_LENG), date: new Date(), status: false }
@@ -108,7 +109,12 @@ module.exports = {
 				callback({ msg: 'Login failed', code: 400 }, '', {});
 				return;
 			}
-			console.log(user);
+
+			if(!user.suspended) {
+				callback({ msg: 'Account suspended', code: 400 });
+				return;
+			}
+			
 			// Remove error messages?
 			if(!user.verification.status) {
 				callback({ msg: 'Email has not been verified', code: 401 }, '', {});

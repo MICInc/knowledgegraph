@@ -94,12 +94,16 @@ var user_schema = new Schema({
         type: String,
         sparse: true
     },
+    search_history: [{}],
     session_history: [{}],
     subjects: [{
         type: String, // entity ids
         sparse: true
     }],
-    search_history: [{}],
+    suspended: {
+        type: Boolean,
+        required: true
+    },
     token: {
         type: String
     },
