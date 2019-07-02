@@ -40,6 +40,12 @@
 						src: '/img/sponsors/sail-logo.png',
 						alt: 'BU SAIL'
 					},
+					{
+						href: 'https://mitibmwatsonailab.mit.edu/',
+						tier: 'tier-two',
+						src: '/img/sponsors/ibm-logo.png',
+						alt: 'IBM'
+					},
 				]
 			}
 		}
