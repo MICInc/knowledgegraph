@@ -29,7 +29,7 @@
 				<button v-on:click.prevent="apply">Apply</button>
 			</form>
 		</div>
-		<div v-else>
+		<div v-if="form.url_updated">
 			<h3>IBM Diversity Scholarship 2019</h3>
 			<p>Thank you for applying to the IBM Diversity Scholarship! Your application has been updated.</p>
 		</div>
