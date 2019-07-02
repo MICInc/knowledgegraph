@@ -69,21 +69,21 @@ export default new Router({
 				}
 			}
 		},
-		{
-			path: '/admin',
-			name: 'admin-console',
-			component: () => import('./views/AdminConsole.vue'),
-			beforeEnter: (to, from, next) => {
-				if (store.state.isLoggedIn) {
-					next()
-				} else {
-					next({
-						name: 'login',
-						params: { error: 'You need to log in to access this route.' }
-					})
-				}
-			}
-		},
+		// {
+		// 	path: '/admin',
+		// 	name: 'admin-console',
+		// 	component: () => import('./views/AdminConsole.vue'),
+		// 	beforeEnter: (to, from, next) => {
+		// 		if (store.state.isLoggedIn) {
+		// 			next()
+		// 		} else {
+		// 			next({
+		// 				name: 'login',
+		// 				params: { error: 'You need to log in to access this route.' }
+		// 			})
+		// 		}
+		// 	}
+		// },
 		{
 			path: '/content/:id',
 			name: 'content',
@@ -134,17 +134,29 @@ export default new Router({
 			name: 'conference',
 			component: () => import('./views/Conference.vue'),
 			children: [
+				// {
+				// 	path: 'feedback',
+				// 	component: () => import('@/components/conference/Feedback.vue')
+				// },
+				{
+					path: 'register',
+					component: () => import('@/components/conference/Registration.vue')
+				},
 				{
 					path: 'schedule/:id',
 					component: () => import('@/components/conference/Schedule.vue')
+				},
+				{
+					path: 'scholarship',
+					component: () => import('@/components/conference/Scholarship.vue')
 				}
 			]
 		},
-		{
-			path: '/forgot',
-			name: 'forgot',
-			component: () => import('./views/Forgot.vue')
-		},
+		// {
+		// 	path: '/forgot',
+		// 	name: 'forgot',
+		// 	component: () => import('./views/Forgot.vue')
+		// },
 		{
 			path: '/login',
 			name: 'login',
@@ -164,11 +176,6 @@ export default new Router({
 					})
 				}
 			}
-		},
-		{
-			path: '/non-beta',
-			name: 'non-beta',
-			component: () => import('./views/NonBeta.vue')
 		},
 		{
 			path: '/search',
@@ -200,15 +207,19 @@ export default new Router({
 				}
 			}
 		},
-		{
-			path: '/signup',
-			name: 'signup',
-			component: () => import('./views/SignUp.vue')
-		},
+		// {
+		// 	path: '/signup',
+		// 	name: 'signup',
+		// 	component: () => import('./views/SignUp.vue')
+		// },
 		{
 			path: '/verify',
 			name: 'verify',
-			component: () => import('./views/auth/Verify')
+			component: () => import('./views/auth/Verify.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) next({ name: 'home' })
+				next()
+			}
 		},
 		{
 			path: '/:id',
@@ -245,7 +256,8 @@ export default new Router({
 					path: 'publications',
 					component: () => import('@/components/profile/Publications.vue')
 				}
-			]
+			],
+			// props: true
 		},
 		{
 			path: '*',

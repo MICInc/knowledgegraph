@@ -4,6 +4,12 @@ export default {
 		addContent(data) {
 			return Api().post('/api/content/add', data);
 		},
+		check_edges(data) {
+			return Api().post('/api/content/disjoint', data);
+		},
+		check_title(data) {
+			return Api().post('/api/content/title', data);
+		},
 		cleanup(data) {
 			return Api().post('/api/content/cleanup', data);
 		},
@@ -36,5 +42,8 @@ export default {
 		},
 		report(data) {
 			return Api().post('/api/content/report', data);
+		},
+		unpublish(data) {
+			return Api().post('/api/content/unpublish', data);
 		}
 }

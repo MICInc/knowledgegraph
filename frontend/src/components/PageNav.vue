@@ -1,42 +1,44 @@
 <template>
-	<header>
-		<span id="home">
-			<router-link class="logo" tag="a" to="/">
-				<img src="/img/mic-logo-nav.png"" alt="MIC Conference Logo" />
-			</router-link>
-		</span>
-		<input
-			v-if="isLoggedIn"
-			class="search" 
-			type="search"
-			name="q"
-			placeholder="SEARCH" 
-			v-on:keydown.enter.prevent="search()"
-			v-model="query">
-		<nav id=right>
-			<div v-if="!isLoggedIn">
-				<ul>
-					<li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li>
-					<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
-				</ul>
-			</div>
-			<div v-else>
-				<div class="menu">
-					<div class="prof-pic">
-						<a :href="'/'+url">
-							<img v-if="picture.length > 0" :src="picture">
-							<div v-else></div>
-						</a>
-					</div>
-					<ul class="dropdown">
-						<li v-for="(item, index) in menu">
-							<router-link tag="a" :to="item.href">{{ item.name }}</router-link>
-						</li>
+	<div>
+		<div id='main-nav'>
+			<span id="home">
+				<router-link class="logo" tag="a" to="/">
+					<img src="/img/mic-logo-nav.png"" alt="MIC Conference Logo" />
+				</router-link>
+			</span>
+			<input
+				v-if="isLoggedIn"
+				class="search" 
+				type="search"
+				name="q"
+				placeholder="SEARCH" 
+				v-on:keydown.enter.prevent="search()"
+				v-model="query">
+			<nav id=right>
+				<div v-if="!isLoggedIn">
+					<ul>
+						<!-- <li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li> -->
+						<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
 					</ul>
 				</div>
-			</div>
-		</nav>
-	</header>
+				<div v-else>
+					<div class="menu">
+						<div class="prof-pic">
+							<a :href="'/'+url">
+								<img v-if="picture.length > 0" :src="picture">
+								<div v-else></div>
+							</a>
+						</div>
+						<ul class="dropdown">
+							<li v-for="(item, index) in menu">
+								<router-link tag="a" :to="item.href">{{ item.name }}</router-link>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -90,7 +92,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-header {
+#main-nav {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

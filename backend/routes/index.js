@@ -44,10 +44,6 @@ router.post('/signup', function(req, res) {
 });
 
 router.post('/login', function(req, res, next) {
-	if(!require('../db/config/whitelist').includes(req.body.email)) {
-		res.status(400).send({ error: 'You are not registered for the beta' });
-		return;
-	}
 
 	var email = req.body.email;
 	var password = req.body.password;
@@ -67,7 +63,7 @@ router.post('/logout', function(req, res, next) {
 router.post('/retrieve_login', function(req, res, next) {
 	var email = req.body.email;
 
-	UserAuth.findByEmail(email, function(profile) {
+	UserAuth.find_by_email(email, function(profile) {
 		if(user != null) {
 			UserAuth.reset_password(email, function(ok) {
 				res.status(200).send({ status: 'Please check your email'});
@@ -81,10 +77,10 @@ router.post('/date', function(req, res, next) {
 	var year = req.body.year;
 	var month = req.body.month;
 	var day = req.body.day;
-	var date = new Date(`${year}-${month}-${day}`);
+	var date = new Date(`${year}-${month}-${day} 00:00`);
 
 	if(Boolean(+date) && date.getDate() == day) res.status(200).send({ error: false });
-	else res.status(400).send({ error: true });
+	else res.status(200).send({ error: true });
 });
 
 router.post('/session', function(req, res, next) {
@@ -102,7 +98,7 @@ router.post('/session', function(req, res, next) {
 			return;
 		}
 
-		UserAuth.findByEmail({ email: user_email }, function(ok, token, user) {
+		UserAuth.find_by_email({ email: user_email }, function(ok, token, user) {
 			if(ok) res.status(200).send({ token: token, userInfo: user });
 			else res.status(400).send({ token: '', userInfo: {} });
 		});
@@ -136,11 +132,16 @@ router.post('/verify_token', function(req, res, next) {
 			return;
 		}
 
-		UserAuth.findByEmail(user_email, function(ok, user) {
-			if(ok) res.status(200).send({ token: token, userInfo: user });
+		UserAuth.find_by_email(user_email, function(ok, user) {
+			if(ok == null && user != null) res.status(200).send({ token: token, userInfo: user });
 			else res.status(401).send({ token: '', userInfo: {} });
 		});
 	});
+});
+
+router.get('is_verified', function(req, res, next) {
+	// check if email is verified
+	// need to implement call in views/auth/Verify.vue created()
 });
 
 module.exports = router;

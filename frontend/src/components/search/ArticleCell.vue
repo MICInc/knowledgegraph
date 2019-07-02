@@ -1,9 +1,6 @@
 <template>
 	<div class='container'>
 		<div class="result">
-			<!-- <div class="vote">
-				<Vote :likes="item.likes" :dislikes="item.dislikes" :content_id="item.id" :abbrev="true"></Vote>
-			</div> -->
 			<div class="item">
 				<a :href="'/content/'+item.url">{{ item.title }}</a><br>
 				<span>{{ item.preview }}</span><br>
@@ -15,12 +12,8 @@
 </template>
 
 <script>
-// import Vote from '@/components/Vote'
 export default {
 	name: 'ArticleCell',
-	components: {
-		// Vote
-	},
 	data() {
 		return {
 		}

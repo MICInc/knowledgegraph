@@ -25,6 +25,7 @@ module.exports = {
 		return {
 			"_id": id.length > 0 ? id : mongoose.Types.ObjectId(),
 			"authors": authors,
+			"bibtex": '',
 			"citations": data.citations.split(','),
 			"content": data.cell,
 			"date_created": data.date_created,
@@ -38,21 +39,32 @@ module.exports = {
 			"num_saves": 0,
 			"num_shares": 0,
 			"num_views": 0,
-			"prereqs": [],
+			"prereqs": module.exports.check_edges(data.prereqs),
 			"preview": '',
-			"publication": {},
+			"publication": [],
 			"save_by": [],
-			"subseqs": [],
+			"subseqs": module.exports.check_edges(data.subseqs),
 			"title": title,
 			"url": module.exports.generate_url(title),
 			"year": data.date_created.split('-')[0]
 		};
 	},
-	check_title: function(id, title, callback) {
+	is_disjoint: function(prereq, subseq) {
+		return prereq.filter(value => subseq.includes(value)).length == 0;
+	},
+	is_title_unique: function(title, id, callback) {
 		db.Content.find({ title: title }, function(err, results) {
 			if(err) console.error(err);
-			// if(results.length == 0) 
+			callback(results.length == 0 || (results.length == 1 && results[0]._id == id));
 		});
+	},
+	check_edges: function(edges) {
+		// @param prereqs (array)
+		// @return 	(array)
+		var hrefs = []
+		for(var i in edges) hrefs.push({ innerText: edges[i], href: module.exports.generate_url(edges[i])});
+		
+		return hrefs;
 	},
 	compress_html: function(cell) {
 		return cell;
@@ -86,6 +98,7 @@ module.exports = {
 		return {
 			id: article._id,
 			authors: authors,
+			bibtex: article.bibtex,
 			citations: article.citations,
 			date_created: article.date_created,
 			last_modified: article.last_modified,
@@ -141,10 +154,14 @@ module.exports = {
 			tgt.publication = tgt.content;
 		}
 
+		// update prereqs and subseqs
+		tgt.prereqs = src.prereqs;
+		tgt.subseqs = src.subseqs;
+
 		return tgt;
 	},
 	generate_url: function(title) {
-		return title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : '';
+		return title.length > 0 ? title.toLowerCase().replace(/[^a-z0-9\s]/gi,'').replace(/\s/g, '-') : utils.uniqueID();
 	},
 	preview(text, limit=151) {
 		if(text == null) return '';
@@ -156,5 +173,12 @@ module.exports = {
 	},
 	verify_vote(vote) {
 		return vote;
+	},
+	published_count(data, editable) {
+		// @params (array) data
+		// @return (array) count of published articles
+
+		if(editable) return data.length;
+		return data.filter((obj) => obj.is_published === true).length;
 	}
 }

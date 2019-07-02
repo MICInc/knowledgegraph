@@ -4,7 +4,7 @@
 		<div id="editor">
 			<div id="publish">
 				<button v-on:click.prevent="publish()">Publish</button>
-				<span id="status" class="save-status">{{ save_status }}</span>
+				<span id="status" :class="{ error: save_error }" class="save-status">{{ save_status }}</span>
 			</div>
 			<input 
 				type="text" 
@@ -15,6 +15,16 @@
 				v-on:keyup="save()" 
 				autofocus>
 			<br>
+			<div id="pre-sub-box">
+				<Prereq 
+					:prereq="data.prereq"
+					v-on:update="update_prereq($event)">
+				</Prereq>
+				<Subseq 
+					:subseq="data.subseq"
+					v-on:update="update_subseq($event)">
+				</Subseq>
+			</div>
 			<form>
 				<DynamicContent
 					v-on:edit="update_content($event)" 
@@ -34,6 +44,8 @@ import DynamicContent from '@/components/editor/DynamicContent';
 import AuthMixin from '@/mixins/AuthMixin';
 import router from '@/router';
 import Path from 'path';
+import Prereq from '@/components/editor/Prereq';
+import Subseq from '@/components/editor/Subseq'
 
 window.onbeforeunload = function() {
     return "Are you sure you want to close the window?";
@@ -43,9 +55,10 @@ export default {
 	name: 'add-article',
 	components: {
 		PageNav,
-		DynamicContent
+		DynamicContent,
+		Prereq,
+		Subseq
 	},
-
 	created() {
 		this.authors.push({	
 			first_name: this.$store.state.userInfo.first_name,
@@ -64,11 +77,12 @@ export default {
 				cell: undefined,
 				citations: '',
 				last_modified: undefined,
-				prereq: '',
-				subseq: '',
+				prereq: [],
+				subseq: [],
 				title: ''
 			},
 			reloaded: [],
+			save_error: false,
 			save_status: '',
 			tags: [],
 			upload: [],
@@ -88,6 +102,14 @@ export default {
 			.catch(error => {
 			});
 		},
+		is_empty() {
+			var cell = this.data.cell;
+			var cell_undef = (cell == undefined)
+			var cell_blank = !cell_undef && (cell.text.length == 0) && (cell.src.length == 0) && (cell.html.length == 0) && (cell.caption.length == 0);
+			var reload_err = (cell_undef && this.reloaded.length == 0);
+
+			return cell_undef || cell_blank || reload_err;
+		},
 		prevent_default(event) {
 			if((event.which == 115 && event.ctrlKey) || (event.which == 19)) {
 				event.preventDefault();
@@ -96,6 +118,7 @@ export default {
 		},
 		publish() {
 			if(this.data.title.length == 0) alert('Need a title');
+			else if(this.is_empty()) alert('Your article is empty');
 			else {
 				this.save_status = 'publishing...';
 				this.save(true);
@@ -118,6 +141,8 @@ export default {
 				this.content_id = data.data._id;
 				this.reloaded = data.data.content;
 				this.data.title = data.data.title;
+				for(var i in data.data.prereqs) this.data.prereq.push(data.data.prereqs[i].innerText);
+				for(var i in data.data.subseqs) this.data.subseq.push(data.data.subseqs[i].innerText);
 			})
 			.catch((error) => {
 			});
@@ -137,45 +162,91 @@ export default {
 			});
 		},
 		save(publish=false) {
-			this.save_status = 'saving...';
 			
-			this.data.last_modified = new Date();
-			
-			var article = { 
-				id: this.content_id, 
-				authors: this.authors, 
-				data: this.data, 
-				publish: publish, 
-				user_id: this.user_id,
-				token: this.token,
-				email: this.email
-			};
-			
-			ContentService.saveContent(article)
+			ContentService.check_title({ id: this.content_id, title: this.data.title, email: this.email, token: this.token })
 			.then((data) => {
-				if(data.data.error != null) alert(data.data.error);
-				if(data != undefined) {
-					if(this.content_id.length == 0) this.content_id = data['data'].id;
-					if(this.url != data['data'].url) this.url = data['data'].url;
+				if(!data.data.ok) {
+					this.save_error = true;
+					this.save_status = data.data.desc;
+					return;
+				}
 
-					this.save_status = 'saved';
-				}
+				// only save if title is unique
+				this.save_error = false;
+				this.save_status = 'saving...';
+			
+				this.data.last_modified = new Date();
+				
+				var article = { 
+					id: this.content_id, 
+					authors: this.authors, 
+					data: this.data, 
+					publish: publish, 
+					user_id: this.user_id,
+					token: this.token,
+					email: this.email
+				};
+				
+				ContentService.saveContent(article)
+				.then((data) => {
+					if(data.data.error != null) alert(data.data.error);
+					if(data != undefined) {
+						if(this.content_id.length == 0) this.content_id = data['data'].id;
+						if(this.url != data['data'].url) this.url = data['data'].url;
+
+						this.save_status = 'saved';
+					}
+				})
+				.catch((error) => {
+					var status = error.response.status;
+					if(status == 401) {
+						this.$store.dispatch('logout').then((response) => {
+							router.push({ name: 'home' })
+						}).catch((err) => {
+							router.push({ name: 'home' })
+						})
+					}
+				});
 			})
-			.catch((error) => {
-				var status = error.response.status;
-				if(status == 401) {
-					this.$store.dispatch('logout').then((response) => {
-						router.push({ name: 'home' })
-					}).catch((err) => {
-						router.push({ name: 'home' })
-					})
-				}
+			.catch(error => {
 			});
 		},
 		update_content(emit_save) {
 			this.data.cell = emit_save.cell;
 			this.data.update_cell = emit_save.update_cell;	
 			this.save();
+		},
+		update_prereq(prereq) {
+			ContentService.check_edges({ token: this.token, email: this.email, prereq: prereq, subseq: this.data.subseq })
+			.then(function(data) {
+
+				if(!data.data.ok) {
+					this.save_error = true;
+					this.save_status = data.data.desc;
+					return;
+				}
+
+				this.save_error = false;
+				this.data.prereq = prereq;
+			})
+			.catch(function(err) {
+			});
+		},
+		update_subseq(subseq) {
+			ContentService.check_edges({ token: this.token, email: this.email, prereq: this.data.prereq, subseq: subseq })
+			.then(function(data) {
+
+				if(!data.data.ok) {
+					this.save_error = true;
+					this.save_status = data.data.desc;
+					return;
+				}
+
+				this.save_error = false; 
+				this.data.subseq = subseq;
+			})
+			.catch(function(err) {
+			});
 		},
 		upload_file(form_data) {
 			form_data.append('content_id', this.content_id);
@@ -213,6 +284,11 @@ export default {
 
 <style scoped>
 
+button {
+	border: none;
+	color: #000;
+}
+
 .main {
 	display: flex;
 	flex-direction: column;
@@ -230,6 +306,21 @@ export default {
 
 #publish button {
 	height: 20px;
+	font-size: 0.8em;
+	border: solid 1px #dede;
+	-o-transition:.5s;
+	-ms-transition:.5s;
+	-moz-transition:.5s;
+	-webkit-transition:.5s;
+	transition:.5s;
+}
+
+#publish button:hover {
+	border: solid 1px #777;
+}
+
+#status {
+	margin: 1em;
 }
 
 form {
@@ -267,6 +358,16 @@ input {
 	padding: 0;
 	outline: none;
 	height: 1em;
+}
+
+#pre-sub-box {
+	display: flex;
+	margin: 0;
+	padding: 0;
+}
+
+.error {
+	color: red;
 }
 
 </style>

@@ -8,23 +8,21 @@
 				:user_id="user_id"
 				:url="url">
 			</ProfilePic>
-			<div id="about">
-				<div id="left">
-					<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
-				</div>
-				<div v-if="!editable && logged_in">
-					<button v-on:click="follow($event)">Follow</button>
-				</div>
+			<div id="name">
+				<h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
 			</div>
 			<nav class="sections">
 				<ul>
 					<li class="tab" v-for="(sect, index) in sections">
-						<a :href="'/'+url+sect.href" v-on:click="switch_section(sect.name)">
-							{{ sect.name.toUpperCase() }}
+						<a :href="'/'+url+sect.href">
+							{{ sect.name | capitalize }}
 							<span class="count">{{ profile[sect.name] }}</span>
 						</a>
 					</li>
 				</ul>
+				<div id="follow" v-if="!editable && logged_in">
+					<button id="follow-btn" v-on:click="follow($event)">{{ follow_text }}</button>
+				</div>
 			</nav>
 			<router-view></router-view>
 		</div>
@@ -34,30 +32,25 @@
 <script>
 import PageNav from '@/components/PageNav.vue'
 import ProfileService from '@/services/ProfileService'
-import Comments from '@/components/profile/Comments'
-import Followers from '@/components/profile/Followers'
-import Following from '@/components/profile/Following'
-import Library from '@/components/profile/Library'
-import Publications from '@/components/profile/Publications'
 import ProfilePic from '@/components/profile/ProfilePic'
 import router from '@/router'
 
 export default {
-	name: 'content',
+	name: 'profile',
 	beforeMount() {
-		this.edit();
 		this.getContent();
 	},
 	components: {
 		PageNav,
-		Comments,
-		Followers,
-		Following,
-		Library,
-		Publications,
 		ProfilePic
 	},
 	computed: {
+		editable() {
+			return this.profile.can_edit;
+		},
+		follow_text() {
+			return this.profile.is_following ? 'Following' : 'Follow';
+		},
 		token() {
 			return this.$store.state.accessToken;
 		},
@@ -73,11 +66,7 @@ export default {
 	},
 	data () { // explicitely list all properties here for two-way binding so can later implementing editing feature
 		return {
-			editable: false,
-			// token: this.$store.state.accessToken,
-			// url: this.$route.params.id,
-			// user_id: this.$store.state.userInfo.id,
-			// logged_in: this.$store.state.isLoggedIn,
+			email: this.$store.state.userInfo.email,
 			profile: {
 				comments: 0,
 				first_name: '',
@@ -85,65 +74,57 @@ export default {
 				following: 0,
 				last_name: '',
 				library: 0,
-				publications: 0
+				publications: 0,
+				is_following: false,
+				can_edit: false
 			},
 			sections: [
 				{
 					name: 'comments',
-					href: '/comments',
-					total: 0
+					href: '/comments'
 				},
 				{
 					name: 'publications',
-					href: '/publications',
-					total: 0
+					href: '/publications'
 				},
 				{
 					name: 'library',
-					href: '/library',
-					total: 0
+					href: '/library'
 				},
 				{
 					name: 'followers',
-					href: '/followers',
-					total: 0
+					href: '/followers'
 				},
 				{
 					name: 'following',
-					href: '/following',
-					total: 0
+					href: '/following'
 				}
 			]
 		}
 	},
+	filters: {
+		capitalize: function(value) {
+			if(!value) return '';
+			value = value.toString()
+			return value.charAt(0).toUpperCase() + value.slice(1)
+		}
+	},
 	methods: {
-		async edit() {
-			ProfileService.canEdit({ user_id: this.user_id, token: this.token, url: this.url })
-			.then((resp) => {
-				if(resp.data.editable) this.editable = resp.data.editable;
-			})
-			.catch((resp) => {
-				this.editable = false;
-			});
-		},
 		async follow(event) {
 			ProfileService.follow({ user_id: this.user_id, token: this.token, url: this.url })
 			.then((resp) => {
 				this.profile.followers = resp.data.followers;
+				this.profile.is_following = !this.profile.is_following;
 			});
 		},
 		async getContent() {
-			return await ProfileService.getProfile({ params: { url: this.url }})
+			return await ProfileService.getProfile({ params: { email: this.email, token: this.token, url: this.url }})
 			.then((resp) => {
 				if(resp.data != undefined && resp.status == 200) this.profile = resp.data;
 			})
 			.catch(function(err) {
 				router.push({ name: 'notfound' });
 			});
-		},
-		switch_section(name) {
-			// console.log(this.url);
-			// router.push({ path: '/profile/'+this.url+'/'+name });
 		},
 		save(profile) {
 		},
@@ -160,46 +141,54 @@ export default {
 	flex-direction: column;
 }
 
-nav ul {
+.sections {
+	display: flex;
+}
+
+.sections ul {
+	flex: 1;
 	list-style: none;
 	display: flex;
-	align-items: center;
 	margin: 0;
 	padding: 0;
 }
 
-nav ul li {
-	margin-left: 15px;
+.sections ul li {
+	margin-left: 2em;
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 1em;
 }
 
-nav ul li:first-child {
+.sections ul li:first-child {
 	margin-left: 0;
 }
 
-nav ul li a {
+.sections ul li a {
 	text-decoration: none;
 	color: #000;
 }
 
-nav ul li a:hover {
+.sections ul li a:hover {
 	color: #655ba5;
 }
 
-nav ul li .count {
+.sections ul li .count {
 	margin-left: 5px;
 }
 
-#about {
+#name {
 	display: flex;
 }
 
-#about #right {
-	width: 60%;
-	margin-top: 10px;
+#follow {
 	display: flex;
 	justify-content: flex-end;
+}
+
+#follow-btn {
+	margin: 0;
+	width: 6em;
+	height: 1.5em;
 }
 
 </style>

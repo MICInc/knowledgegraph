@@ -51,7 +51,7 @@ export default {
 		suggest(event) {
 			if(event.which == 27) return;
 
-			SearchService.findSchool({ params: { name: this.query }})
+			SearchService.find_school({ params: { name: this.query }})
 			.then((resp) => {
 				this.schools = resp.data;
 				this.has_suggestions = this.schools.length > 0;

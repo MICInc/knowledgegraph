@@ -77,7 +77,7 @@ export default {
 .crop {
 	width: 150px;
 	height: 150px;
-	margin-top: 10px;
+	margin-top: 50px;
 }
 .crop img {
 	width: 100%;

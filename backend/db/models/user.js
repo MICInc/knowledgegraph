@@ -68,7 +68,10 @@ var user_schema = new Schema({
         required: true,
         trim: true
     },
-    library: [{}],
+    library: [{
+        type: String,
+        trim: true
+    }],
     num_citations: {
         type: Number
     },
@@ -76,10 +79,7 @@ var user_schema = new Schema({
         type: String,
         required: true
     },
-    publications: [{
-        type: String,
-        sparse: true
-    }],
+    publications: [{}],
     picture: {},
     rank: {
         type: Number,
@@ -94,12 +94,16 @@ var user_schema = new Schema({
         type: String,
         sparse: true
     },
+    search_history: [{}],
     session_history: [{}],
     subjects: [{
         type: String, // entity ids
         sparse: true
     }],
-    search_history: [{}],
+    suspended: {
+        type: Boolean,
+        required: true
+    },
     token: {
         type: String
     },

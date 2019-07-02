@@ -18,7 +18,7 @@
 						<h1>Machine Intelligence Conference</h1>
 					</div>
 					<div class="sub-heading">
-						<h2>Sep. 7th, 2019</h2><br>
+						<h2>Sep. 7th, 2019</h2><h3>9 AM - 5 PM</h3><br>
 						<h2>Boston University's Center for Integrated Life Sciences & Engineering and</h2>
 						<h2>Software & Application Innovation Lab</h2>
 					</div>
@@ -122,6 +122,14 @@
 
 .heading .sub-heading h2 {
 	font-size: 1.7em;
+	font-weight: 400;
+	letter-spacing: 1px;
+	color: #5d5499;
+	margin: 0
+}
+
+.heading .sub-heading h3 {
+	font-size: 1.5em;
 	font-weight: 400;
 	letter-spacing: 1px;
 	color: #5d5499;

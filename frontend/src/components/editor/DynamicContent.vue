@@ -1,12 +1,5 @@
 <template>
 	<div class="container" v-on:keydown.delete="remove($event)" v-on:keydown.enter="add_content($event)">
-		<div id="editbar">
-			<button class="toolbar" v-on:click.prevent="stylize('bold')">Bold</button>
-			<button class="toolbar" v-on:click.prevent="stylize('italic')">Italics</button>
-			<button class="toolbar" v-on:click.prevent="stylize('underline')">Underline</button>
-			<button class="toolbar" v-on:click.prevent="stylize('createLink')">Link</button>
-			<button class="toolbar" v-on:click.prevent="stylize('insertOrderedList')">Bullet</button>
-		</div>
 		<!-- can remove id, tabindex, key, and ref...maybe idk -->
 		<Cell v-for="(value, index) in cells"
 			  :id="'content-container-'+index" 
@@ -136,4 +129,8 @@ export default {
 </script>
 
 <style scoped>
+button {
+	border: none;
+	color: #000;
+}
 </style>

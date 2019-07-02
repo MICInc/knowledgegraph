@@ -6,13 +6,11 @@
 				<p>{{error}}</p>
 				<input type="email" placeholder="Email" v-model="formData.email" autocomplete="username" required>
 				<input type="password" placeholder="Password" v-model="formData.password" autocomplete="current-password" required>
-				<label>
-					<input type="checkbox" checked="checked" name="remember"> Remember me
-				</label>
 				<button type="submit">Login</button>
-				<span>
+				<!-- <span>
 					<router-link type="a" to="forgot">Forgot account?</router-link>
-				</span>
+				</span> -->
+				<!-- <div class="g-signin2" id="google-signin-button"></div> -->
 			</form>
 		</div>
 	</div>
@@ -34,6 +32,11 @@ export default {
 			error: ''
 		}
 	},
+	mounted() {
+		gapi.signin2.render('google-signin-button', {
+			// onsuccess: this.onSignIn
+		});
+	},
 	methods: {
 		handleSubmit() {
 			this.login()
@@ -49,10 +52,32 @@ export default {
 			});
 		},
 		async login() {
-			return await AuthService.login({
-				email: this.formData.email, 
-				password: this.formData.password
-			})
+			return await AuthService.login({ email: this.formData.email, password: this.formData.password });
+		},
+		onSignIn(googleUser) {
+			var profile = googleUser.getBasicProfile();
+
+			if(profile) {
+				this.login(profile.getEmail())
+				.then((resp) => {
+					if(resp.data.userInfo.picture.length == 0) resp.data.userInfo.picture = profile.getImageUrl();
+					resp.data.userInfo.first_name = profile.getGivenName();
+					resp.data.userInfo.last_name = profile.getFamilyName();
+
+					this.$store.dispatch('login', [resp.data.token, resp.data.userInfo]);
+					router.push({ name: 'home' });
+				})
+				.catch((error) => {
+					if(error.response != null) {
+						this.error = error.response.data.error;
+						if(error.response.status == 401) router.push({ name: 'verify' });
+					}
+				});
+			}
+			else {
+				this.error = error.response.data.error;
+				if(error.response.status == 401) router.push({ name: 'verify' });
+			}
 		}
 	}
 }
@@ -72,7 +97,12 @@ export default {
 	flex-direction: 
 }
 
-form {
+.g-signin2 {
+	margin: 10 0 0 0px;
+	width: 100%;
+}
+
+.container form {
 	display: flex;
 	flex-direction: column;
 	width: 300px;

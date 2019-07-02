@@ -1,14 +1,18 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<div class="conference">
+		<div>
 			<h1>Machine Intelligence Conference 2019</h1>
-			<Registration v-if="form.registration" v-on:reveal="show_registration()"></Registration>
-			<Feedback v-if="form.feedback" v-on:reveal="show_feedback()"></Feedback>
-			<div v-if="!form.registration && !form.feedback">
-				<button v-on:click.prevent="show_registration">Register</button>
-				<button v-on:click.prevent="show_feedback">Feedback</button>
-			</div>
+			<nav id="subnav">
+				<ul>
+					<li v-for="(sect, index) in sections">
+						<a :href="'/conference/'+sect.href">{{ sect.innerText }}</a>
+					</li>
+				</ul>
+			</nav>
+			<p v-if="show">
+				The thesis of our conference originally stemmed from the idea of demonstrating the value that could be achieved when students who are passionate about machine intelligence unite as a larger, more inclusive, and cognitively diverse community. Our conference serves as an even greater surface area for intellectual engagement for students outside of the classroom and beyond the boundaries of individual institutions. It is our mission and hope, that the Machine Intelligence Conference will empower students to take agency over the trajectory of their education, promote diversity that will fundamentally change the paradigm of our field, and catalyze connections to accelerate progress in research and engineering to burgeon great ideas as a single Machine Intelligence Community.
+			</p>
 		</div>
 		<router-view></router-view>
 	</div>
@@ -17,8 +21,6 @@
 
 <script>
 import PageNav from '@/components/PageNav'
-import Registration from '@/components/conference/Registration'
-import Feedback from '@/components/conference/Feedback'
 import Footer from '@/components/Footer'
 
 export default {
@@ -26,31 +28,31 @@ export default {
 
 	components: {
 		PageNav,
-		Registration,
-		Feedback,
 		Footer
 	},
-
-	data() {
-		return {
-			form: {
-				feedback: false,
-				registration: false
-			}
+	computed: {
+		show: function() {
+			return window.location.pathname == '/conference';
 		}
 	},
-	methods: {
-		show_feedback() {
-			this.form.feedback = !this.form.feedback
-		},
-		show_registration() {
-			this.form.registration = !this.form.registration;
+	data() {
+		return {
+			sections: [
+				{ innerText: 'Register', href: 'register' },
+				// { innerText: 'Feedback', href: 'feedback' },
+				{ innerText: 'Scholarship', href: 'scholarship' }
+			]
 		}
 	}
 }
 </script>
 
-<style>
+<style scoped>
+
+li {
+	display:inline;
+	margin: 0 1em 0 0;
+}
 
 button {
 	width: 25%;
@@ -58,18 +60,35 @@ button {
 	font-size: 1em;
 }
 
-.main {
-	display: flex;
-	flex-direction: column;
-}
-
 .container {
 	flex: 1;
 	width: 1080px;
 }
 
-.top-message {
-	margin-bottom: 10px;
+#subnav {
+	margin: 5px 0;
+	height: 1.5em;
+	width: 100%;
+	background-color: #fff;
+}
+
+#subnav ul li {
+	margin-left: 15px;
+}
+
+#subnav ul li:first-child {
+	margin-left: 0;
+}
+
+#subnav ul li a {
+	text-decoration: none;
+	font-weight: 500;
+	font-size: 1em;
+	color: #000;
+}
+
+#subnav ul li a:hover {
+	color: #655ba5;
 }
 
 </style>

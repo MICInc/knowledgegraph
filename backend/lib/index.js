@@ -43,11 +43,6 @@ router.post('/signup', function(req, res) {
 });
 
 router.post('/login', function(req, res, next) {
-	if(!require('../db/config/whitelist').includes(req.body.email)) {
-		res.status(400).send({ error: 'You are not registered for the beta' });
-		return;
-	}
-
 	var email = req.body.email;
 	var password = req.body.password;
 

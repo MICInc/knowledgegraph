@@ -24,7 +24,6 @@ export default {
 	},
 	data() {
 		return {
-			editable: false,
 			library: [],
 			token: this.$store.state.accessToken,
 			url: this.$route.params.id,
@@ -40,7 +39,6 @@ export default {
 				this.library = resp.data.library;
 			})
 			.catch((data) => {
-
 			});
 		}
 	}

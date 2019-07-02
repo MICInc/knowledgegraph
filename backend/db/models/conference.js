@@ -83,15 +83,31 @@ var conference_schema = new Schema({
             type: String,
             trim: true
         }, 
-        q1: {
-            type: String,
-            trim: true
+        questions: {
+            q1: {
+                type: String,
+                trim: true
+            },
+            q2: {
+                type: String,
+                trim: true
+            },
+            q3: {
+                type: String,
+                trim: true
+            }
         },
-        q2: {
-            type: String,
-            trim: true
+        social_accts: {
+            linkedin: {
+                type: String,
+                trim: true
+            },
+            github: {
+                type: String,
+                trim: true
+            }
         },
-        q3: {
+        scholarship_article: {
             type: String,
             trim: true
         }

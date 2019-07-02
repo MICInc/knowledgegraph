@@ -6,6 +6,9 @@ var content_schema = new mongoose.Schema({
 		type: String
 	},
 	authors: [{}],
+	bibtex:{
+		type: String
+	},
 	citations: [{
 		type: String
 	}],
@@ -61,10 +64,7 @@ var content_schema = new mongoose.Schema({
 	original_url: {
 		type: String
 	},
-	prereqs: [{
-		type: String, // content-ids
-		required: true
-	}],
+	prereqs: {},
 	preview: {
 		type: String,
 		trim: true
@@ -74,10 +74,7 @@ var content_schema = new mongoose.Schema({
 		type: String, //user-ids
 		required: true
 	}],
-	subseqs: [{
-		type: String, //content-ids
-		required: true
-	}],
+	subseqs: {},
 	title: {
 		type: String,
 		trim: true

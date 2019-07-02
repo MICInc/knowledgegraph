@@ -10,7 +10,17 @@ export const bus = new Vue();
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App)//,
+  // mounted() {
+  //   gapi.signin2.render('google-signin-button', {
+  //     onsuccess: this.onSignIn
+  //   })
+  // },
+  // methods: {
+  //   onSignIn (user) {
+  //     const profile = user.getBasicProfile()
+  //   }
+  // }
 }).$mount('#app')
 
 Vue.use(VueParticles)

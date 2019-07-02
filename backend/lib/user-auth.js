@@ -24,11 +24,11 @@ module.exports = {
 			dob: profile.dob,
 			email: profile.email,
 			ethnicity: filter.filter_xss(profile.ethnicity),
-			first_name: filter.filter_xss(profile.first_name),
+			first_name: module.exports.format_name(filter.filter_xss(profile.first_name)),
 			following: [],
 			grade: filter.filter_xss(profile.grade),
 			gender: filter.filter_xss(profile.gender),
-			last_name: filter.filter_xss(profile.last_name),
+			last_name: module.exports.format_name(filter.filter_xss(profile.last_name)),
 			library: [],
 			liked_articles: [],
 			liked_papers: [],
@@ -38,16 +38,20 @@ module.exports = {
 			school: filter.filter_xss(profile.school),
 			search_history: [],
 			subjects: [],
+			suspended: false,
 			url: (profile.first_name+'-'+profile.last_name).toLowerCase(),
 			user_type: 0,
 			verification: { code: utils.uniqueID(VERI_LENG), date: new Date(), status: false }
 		}
 	},
+	format_name: function(name) {
+		return name.charAt(0).toUpperCase() + name.slice(1);
+	},
 	// TODO: Update module.exports to match model - replace defaults
 	registerUser: function(profile, callback) {
-		module.exports.isEmailTaken(profile.email, function(err, available) {
-			if(available) {
-				callback('Email already in use', '', {});
+		module.exports.isEmailTaken(profile.email, function(err, exists) {
+			if(exists) {
+				callback('Email already in use. Please login.', '', {});
 				return;
 			}
 
@@ -72,7 +76,7 @@ module.exports = {
 						else {
 							var ver_url = utils.generate_verification_URL(innerText='here', hash=user.verification.code);
 							message = email.verify_acct(user.first_name, ver_url, EXPIRE_DAYS);
-							console.log('reg-email: '+user.email);
+
 							email.send(
 								from=email.welcome.email, 
 								to=user.email, 
@@ -106,6 +110,11 @@ module.exports = {
 				return;
 			}
 
+			if(user.suspended) {
+				callback({ msg: 'Account suspended', code: 400 });
+				return;
+			}
+			
 			// Remove error messages?
 			if(!user.verification.status) {
 				callback({ msg: 'Email has not been verified', code: 401 }, '', {});
@@ -147,8 +156,11 @@ module.exports = {
 			}
 		});
 	},
-	findByEmail: function(email, callback) {
-		db.User.findOne({ email: filter.filter_xss(email) }, function(err, user) {
+	find_by_email: function(email, callback) {
+		if(typeof email == 'undefined') callback('Email undefined', {});
+
+		var email = filter.filter_xss(email);
+		db.User.findOne({ email: email }, function(err, user) {
 			process.nextTick(function() {
 				callback(err, user);
 			});
@@ -168,7 +180,7 @@ module.exports = {
 			});
 		});
 	},
-	findByURL: function(url, callback) {
+	find_by_url: function(url, callback) {
 		db.User.findOne({ url: filter.filter_xss(url) }, function(err, user) {
 			process.nextTick(function() {
 				callback(err, user);
@@ -176,7 +188,7 @@ module.exports = {
 		});
 	},
 	isEmailTaken: function(email, callback) {
-		module.exports.findByEmail(filter.filter_xss(email), function(err, user) {
+		module.exports.find_by_email(filter.filter_xss(email), function(err, user) {
 			callback(err, user != null);
 		});
 	},
@@ -216,15 +228,29 @@ module.exports = {
 		if(t == null || t.length == 0) callback(new Error('Empty token'), null);
 		else token.verify(t, email, callback);
 	},
-	is_editable(query, page, callback) {
-		var editable = page.url == query.url;
+	is_editable(token, email, page, callback) {
 
-		if(editable) {
-			module.exports.verify_token(query.token, query.email, function(err, decoded) {
-				callback(editable && err == null);
-			});
-		}
-		else callback(editable);
+		module.exports.verify_token(token, email, function(err, decoded) {
+			if(err) callback(false);
+			else {
+				module.exports.find_by_email(email, function(err, user) {
+					if(err) callback(false);
+					else callback(user.url == page.url);
+				});
+			}
+		});
+	},
+	is_article_editable(token, email, article, callback) {
+		// is this a valid user
+		module.exports.verify_token(token, email, function(err, decoded) {
+			if(err) callback(false);
+			else {
+				// if a valid user and this user's profile contains the article they're currently viewing
+				module.exports.find_by_email(email, function(err, user) {
+					callback(user.publications.filter((obj) => obj.id === article._id).length == 1);
+				});
+			}
+		});
 	},
 	get_token(email, callback) {
 		callback(token.sign({ email: email }, email));
@@ -295,14 +321,18 @@ module.exports = {
 		});
 	},
 	verify_email_url(code, callback) {
-		db.User.find({ 'verification.code': code, 'verification.status': false }, function(err, user) {
-			if(err || user.length != 1) {
+		db.User.findOne({ 'verification.code': code, 'verification.status': false }, function(err, user) {
+
+			if(err) {
 				console.error(err);
 				callback(false, '', {});
 				return;
 			}
 
-			user = user[0];
+			if(user == null) {
+				callback(false, '', {});
+				return;
+			}
 
 			var diff = Math.abs((new Date()).getTime() - user.verification.date.getTime());
 			var days = Math.ceil(diff / (1000 * 3600 * EXPIRE_DAYS));
@@ -333,13 +363,19 @@ module.exports = {
 		});
 	},
 	send_verify_email(email_addr, callback) {
-		db.User.find({ email: email_addr }, function(err, user) {
+		db.User.findOne({ email: email_addr }, function(err, user) {
 			if(err) {
 				console.error(err);
 				callback(false);
 				return;
 			}
 
+			if(user.verification.status) {
+				callback(true);
+				return;
+			}
+
+			// Update verification code and expiration date
 			var code = utils.uniqueID(128)
 			user.verification = { code: code, date: new Date(), status: false };
 

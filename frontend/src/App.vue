@@ -9,6 +9,16 @@ import AuthenticationService from '@/services/AuthenticationService';
 import router from '@/router';
 
 export default {
+	beforeMount() {
+		if(this.token.length > 0) {
+			AuthenticationService.verify_token({ token: this.token, email: this.email })
+			.then((data) => {
+			})
+			.catch((err) => {
+				router.push({ path: '/logout' });
+			});
+		}
+	},
 	data() {
 		return {
 			token: this.$store.state.accessToken,
@@ -93,6 +103,10 @@ ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+h1 {
+	margin-top: 50px;
 }
 
 #app {
