@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<h3>IBM Diversity Scholarship 2019</h3>
 		<p>
-			This year we are offering ten travel scholarships. Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc/add">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided.
+			This year we are offering ten travel scholarships. Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc/add">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided. Here are some examples technical articles: <a href="https://blog.evjang.com/2018/08/dijkstras.html">Dijkstra's in Disguise</a>, <a href="https://distill.pub/2016/augmented-rnns/">Attention and Augmented Recurrent Neural Networks</a>, <a href="https://weightagnostic.github.io/">Weight Agnostic Neural Networks</a>, <a href="https://medium.com/@karpathy/yes-you-should-understand-backprop-e2f06eab496b">Yes you should understand backprop</a>, <a href="http://www.offconvex.org/2019/06/03/trajectories/">Is Optimization a Sufficient Language for Understanding Deep Learning?</a>
 		</p>
 
 		<h3>Timeline</h3>
@@ -51,14 +51,13 @@ export default {
 				'Final article must be published on the platform. You must click the "publish" button in the top-left of the editor for it to be publicly viewable.',
 				'All images, diagrams, graphics, quotes, research papers, resources and facts must be cited using eJournal in-text citation style (refer to Wikipedia or Distill.pub for examples).',
 				'All content submitted must be original work.',
-				'Articles cannot be opinionative, including but not limited to politics, religions, ideologies, institutions, preferences, etc. Any content violating this condition will be removed from the platform and the author\'s account may be suspended.',
 				'Article must be a unique topic not yet on the platform.',
 				'There are no strict length requirements. However, you should expect to write the equivalent of at least 2 - 3 pages in a standard word document.'
 			],
 			criteria: [
 				{ 
 					item: 'Relevant.', 
-					desc: 'Must focus on a single topic in artificial intelligence.'
+					desc: 'Article focuses on technical merit of a specific topic in artificial intelligence.'
 				},
 				{
 					item: 'Detailed.',
