@@ -87,6 +87,10 @@ export default {
 					date: 'August 3rd, 2019'
 				},
 				{
+					event: 'Applicant confirmation',
+					date: 'August 5th, 2019'
+				},
+				{
 					event: 'IBM Scholars Dinner',
 					date: 'September 6th, 2019'
 				},
