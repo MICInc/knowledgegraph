@@ -64,8 +64,12 @@ export default {
 					desc: 'Explanations are illustrated clearly and overall article is coherent.'
 				},
 				{
-					item: 'Challenging.',
-					desc: 'Technically advanced concepts are self-contained. Could a reader with basic undergraduate math understand your article?'
+					item: 'Complexity.',
+					desc: 'If topic requires background information, the concepts are self-contained.'
+				},
+				{
+					item: 'Clear.',
+					desc: 'Article provides a diverse set of explanations and motivations.'
 				}
 			],
 			scholarship: [
