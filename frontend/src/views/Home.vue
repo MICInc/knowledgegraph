@@ -4,9 +4,9 @@
 		<div class="container">
 			<SubNav></SubNav>
 			<div class="linked-content-list">
-				<!-- <div class="linked-content" v-for="item in content" :key="item.id">
+				<div class="linked-content" v-for="item in content" :key="item.id">
 					<LinkedContent :content="item"></LinkedContent>	
-				</div> -->
+				</div>
 			</div>
 			<div class="side-menu">
 			</div>
