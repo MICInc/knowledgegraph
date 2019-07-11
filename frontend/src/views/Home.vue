@@ -5,7 +5,7 @@
 			<SubNav></SubNav>
 			<div class="linked-content-list">
 				<div class="linked-content" v-for="item in content" :key="item.id">
-					<LinkedContent :content="item"></LinkedContent>	
+					<LinkedContent v-if="item.title.length > 0" :content="item"></LinkedContent>	
 				</div>
 			</div>
 			<div class="side-menu">
