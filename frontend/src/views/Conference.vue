@@ -40,7 +40,8 @@ export default {
 			sections: [
 				{ innerText: 'Register', href: 'register' },
 				// { innerText: 'Feedback', href: 'feedback' },
-				{ innerText: 'Scholarship', href: 'scholarship' }
+				{ innerText: 'Scholarship', href: 'scholarship' },
+				{ innerText: 'FAQ', href: 'faq'}
 			]
 		}
 	}

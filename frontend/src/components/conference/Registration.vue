@@ -2,14 +2,13 @@
 	<div id="container">
 		<div v-if="!form.complete && !form.already_registered">
 			<h3>Register for MIConf</h3>
-			<p>An account will also be created for you by registering for the conference.</p>
+			<p>Machine Intelligence Conference is free to attend and registration is limited to current students. An account will also be created for you by registering for the conference.</p>
 			<form enctype="multipart/form-data">
 				<RegProfile 
 					:error="form.error"
 					v-on:update="update_profile($event)">
 				</RegProfile>
 				<Dietary v-on:dietary="set_dietary($event)"></Dietary>
-				<Scholarship v-on:url="set_url($event)"></Scholarship>
 				<Skillsheet v-on:skills="set_skills($event)"></Skillsheet>
 				<Questionaire v-on:resp="set_responses($event)"></Questionaire>
 				<Disclaimer></Disclaimer>
