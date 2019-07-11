@@ -3,8 +3,11 @@
 		<PageNav></PageNav>
 		<h3>IBM Diversity Scholarship 2019</h3>
 		<p>
-			This year we are offering ten travel scholarships. Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc/add">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided. Here are some examples technical articles: <a href="https://blog.evjang.com/2018/08/dijkstras.html">Dijkstra's in Disguise</a>, <a href="https://distill.pub/2016/augmented-rnns/">Attention and Augmented Recurrent Neural Networks</a>, <a href="https://weightagnostic.github.io/">Weight Agnostic Neural Networks</a>, <a href="https://medium.com/@karpathy/yes-you-should-understand-backprop-e2f06eab496b">Yes you should understand backprop</a>, <a href="http://www.offconvex.org/2019/06/03/trajectories/">Is Optimization a Sufficient Language for Understanding Deep Learning?</a>
+			This year we are offering ten travel scholarships. Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc/add">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided. For examples, please refer to the following technical articles:
 		</p>
+		<ul>
+			<li v-for="article in examples"><span v-html="article"></span></li>
+		</ul>
 
 		<h3>Timeline</h3>
 		<table>
@@ -72,6 +75,13 @@ export default {
 					desc: 'Article provides a diverse set of explanations and motivations.'
 				}
 			],
+			examples: [
+				"<a href=\"https://blog.evjang.com/2018/08/dijkstras.html\" target=\"_blank\">Dijkstra's in Disguise</a>",
+				"<a href=\"https://distill.pub/2016/augmented-rnns/\" target=\"_blank\">Attention and Augmented Recurrent Neural Networks</a>",
+				"<a href=\"https://weightagnostic.github.io/\" target=\"_blank\">Weight Agnostic Neural Networks</a>", 
+				"<a href=\"https://medium.com/@karpathy/yes-you-should-understand-backprop-e2f06eab496b\" target=\"_blank\">Yes you should understand backprop</a>", 
+				"<a href=\"http://www.offconvex.org/2019/06/03/trajectories/\" target=\"_blank\">Is Optimization a Sufficient Language for Understanding Deep Learning?</a>"
+			],
 			scholarship: [
 				'Fully-paid round-trip flight for the conference',
 				'Fully-paid hotel for the conference',
@@ -80,7 +90,7 @@ export default {
 			timeline: [
 				{
 					event: 'Application opens',
-					date: 'July 1, 2019'
+					date: 'July 2, 2019'
 				},
 				{
 					event: 'Application closes',

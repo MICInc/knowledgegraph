@@ -149,6 +149,10 @@ export default new Router({
 				{
 					path: 'scholarship',
 					component: () => import('@/components/conference/Scholarship.vue')
+				},
+				{
+					path: 'faq',
+					component: () => import('@/components/conference/ScholarshipFAQ.vue')
 				}
 			]
 		},
