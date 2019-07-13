@@ -61,3 +61,13 @@ To export collections as json files e.g:
 ```
 mongoexport --db profile --collection conferences --out conf_reg.json
 ```
+
+To find user by school using wildcard:
+```
+db.users.find({ school: /Rutger/}).pretty()
+```
+
+To update all properties of a record or insert a new property to all records:
+```
+db.users.update({}, { $set: { suspended: false }}, { multi: true });
+```
