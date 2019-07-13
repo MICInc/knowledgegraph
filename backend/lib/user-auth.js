@@ -235,7 +235,7 @@ module.exports = {
 			else {
 				module.exports.find_by_email(email, function(err, user) {
 					if(err) callback(false);
-					else callback(user.url == page.url);
+					else callback(user != null && user.url == page.url);
 				});
 			}
 		});
@@ -370,7 +370,7 @@ module.exports = {
 				return;
 			}
 
-			if(user.verification.status) {
+			if(user != null && user.verification.status) {
 				callback(true);
 				return;
 			}
