@@ -110,7 +110,7 @@ module.exports = {
 				return;
 			}
 
-			if(user.suspended) {
+			if(user != null && user.suspended) {
 				callback({ msg: 'Account suspended', code: 400 });
 				return;
 			}
