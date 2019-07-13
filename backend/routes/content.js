@@ -55,6 +55,11 @@ router.post('/', function(req, res, next) {
 					// update user profile if an article published status changes
 					var user = { _id: req.body.user_id, token: req.body.token };
 					db.User.findOne(user, function(err, profile) {
+						if(err || profile == null) {
+							res.status(200).send({ error: 'Could not save '+data.title });
+							return;
+						}
+
 						var index = profile.publications.map(function(e) { return e.id; }).indexOf(data._id.toString());
 
 						if(index > -1) profile.publications[index].is_published = req.body.publish;
