@@ -8,8 +8,7 @@
 				<h3>This Conference</h3>
 				<p>Our mission for this conference is to democratize machine intelligence, promote diversity, build community, and inspire the next generation of
 				researchers and engineers.</p>
-				<p><strong>Application Timeline: </strong>Due to an exciting amount of interest and an unfortunate lack of space we will not be able to accept every attendee application. To ensure as many people as possible can attend, we are accepting applications on a rolling basis. Please be aware that if you are accepted but do not confirm your spot will be given to another. </p>
-				<p><strong>Please Note: </strong>There is a limit of 500 attendees to this inaugural conference. Student applications will be prioritized and non .edu emails will not receive a confirmation email, but will not lose a place in the application queue. Attendees must be 18 years of age or older - attendees in high school will be asked to show a photo ID.</p>
+				<p><strong>Please Note: </strong>There is a limit of 170 attendees to this inaugural conference. Student applications will be prioritized and non .edu emails. Attendees must be 18 years of age or older - attendees in high school will be asked to show a photo ID.</p>
 			</div>
 			<div class="about-mic">
 				<h3>The Machine Intelligence Community - MIC</h3>
