@@ -116,7 +116,7 @@ module.exports = {
 			}
 			
 			// Remove error messages?
-			if(!user.verification.status) {
+			if(user != null && !user.verification.status) {
 				callback({ msg: 'Email has not been verified', code: 401 }, '', {});
 				return;
 			}

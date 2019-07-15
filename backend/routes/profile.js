@@ -149,7 +149,12 @@ router.get('/comments', function(req, res) {
 		}
 
 		UserAuth.is_editable(req.query.token, req.query.email, profile, function(editable) {
-			res.status(200).send({ editable: editable, comments: profile.comments });
+			try {
+				res.status(200).send({ editable: editable, comments: profile.comments });
+			}
+			catch(e) {
+				console.error(err);
+			}
 		});
 	});
 });
