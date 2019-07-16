@@ -364,7 +364,7 @@ module.exports = {
 	},
 	send_verify_email(email_addr, callback) {
 		db.User.findOne({ email: email_addr }, function(err, user) {
-			if(err || !('verification' in user)) {
+			if(err || !user.hasOwnProperty('verification')) {
 				console.log(user);
 				console.error(err);
 				callback(false);
