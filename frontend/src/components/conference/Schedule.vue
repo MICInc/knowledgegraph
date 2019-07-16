@@ -21,7 +21,7 @@ export default{
 }
 </script>
 
-<style scoped>
+<style>
 li {
 	display: inline;
 	margin-right: 1em;
