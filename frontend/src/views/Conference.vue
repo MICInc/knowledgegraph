@@ -2,7 +2,7 @@
 	<div class="container">
 		<PageNav></PageNav>
 		<div>
-			<h1>Machine Intelligence Conference 2019</h1>
+			<h1>Machine Intelligence Conference</h1>
 			<nav id="subnav">
 				<ul>
 					<li v-for="(sect, index) in sections">
@@ -41,7 +41,8 @@ export default {
 				{ innerText: 'Register', href: 'register' },
 				// { innerText: 'Feedback', href: 'feedback' },
 				{ innerText: 'Scholarship', href: 'scholarship' },
-				{ innerText: 'FAQ', href: 'faq'}
+				{ innerText: 'FAQ', href: 'faq'},
+				{ innerText: 'Schedule', href: 'schedule/'+(new Date()).getFullYear()},
 			]
 		}
 	}

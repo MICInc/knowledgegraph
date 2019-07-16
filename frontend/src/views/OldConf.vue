@@ -68,10 +68,10 @@
 						name: 'Conference Committee',
 						href: '#committee'
 					},
-					// {
-					// 	name: 'Schedule',
-					// 	href: '/conference/schedule/'+(new Date()).getFullYear()
-					// }
+					{
+						name: 'Schedule',
+						href: '/conference/schedule/'+(new Date()).getFullYear()
+					}
 				],
 				viewSideNav: false,
 			}
