@@ -143,7 +143,8 @@ export default new Router({
 					component: () => import('@/components/conference/Registration.vue')
 				},
 				{
-					path: 'schedule/:id',
+					// refactor this later to use dynamic routes. Will need to save the schedule data in backend and load beforeMount()
+					path: 'schedule/2019',
 					component: () => import('@/components/conference/Schedule.vue')
 				},
 				{

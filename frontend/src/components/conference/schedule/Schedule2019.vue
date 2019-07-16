@@ -1,28 +1,22 @@
 <template>
-	<div class="container">
-		<ul class="schd_yrs">
-			<li v-for="(conf, index) in schedules">
-				<b><a :href="'/conference/schedule/'+conf">{{ conf }}</a></b>
-			</li>
-		</ul>
+	<div>
+		<PageNav></PageNav>
+		<div>
+		</div>
 	</div>
 </template>
 
 <script>
-export default{
-	name: 'schedule',
-	data() {
-		schedules: [2018]
+import PageNav from '@/components/PageNav'
+export default {
+	name: 'schedule2018',
+	components: {
+		PageNav
 	}
 }
 </script>
 
-<style scoped>
-li {
-	display: inline;
-	margin-right: 1em;
-}
-
+<style>
 :root {
 	--main-purple: #545f99;
 }
@@ -136,8 +130,31 @@ main p {
 	margin-right: 5px;
 }
 
-.schd_yrs li a {
-	text-decoration: none !important;
+.room-key, p {
+	margin-left: 5px;
+}
+
+.mpr, .ssr, .lh, .wgr {
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	margin-left: 5px;
+}
+
+.mpr {
+	background: #ffae76;
+}
+
+.ssr {
+	background: #ff688b;
+}
+
+.lh {
+	background: #ff94d0;
+}
+
+.wgr {
+	background: #d66fff;
 }
 
 /*--------------------
