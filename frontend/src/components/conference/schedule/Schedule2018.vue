@@ -66,7 +66,6 @@ export default{
 	},
 	data() {
 		return {
-			schedules: [2018],
 			schedule2018: [
 			{
 				rooms: ["wgr"],

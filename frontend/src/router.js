@@ -130,6 +130,7 @@ export default new Router({
 		// 	}
 		// },
 		{
+			// https://stackoverflow.com/questions/53993016/how-to-do-multiple-nested-route-with-vue-js
 			path: '/conference',
 			name: 'conference',
 			component: () => import('./views/Conference.vue'),
@@ -144,16 +145,32 @@ export default new Router({
 				},
 				{
 					// refactor this later to use dynamic routes. Will need to save the schedule data in backend and load beforeMount()
-					path: 'schedule/2019',
-					component: () => import('@/components/conference/Schedule.vue')
+					path: 'schedule/:id',
+					component: () => import('@/components/conference/Schedule.vue'),
+					children: [
+						{
+							path: '2018',
+							name: 'schedule2018',
+							component: () => import('@/components/conference/schedule/Schedule2018.vue')
+						},
+						{
+							path: '2019',
+							name: 'schedule2019',
+							component: () => import('@/components/conference/schedule/Schedule2019.vue')
+						}
+					]
 				},
 				{
 					path: 'scholarship',
-					component: () => import('@/components/conference/Scholarship.vue')
+					component: () => import('@/components/conference/Scholarship.vue'),
 				},
 				{
 					path: 'faq',
 					component: () => import('@/components/conference/ScholarshipFAQ.vue')
+				},
+				{
+					path: 'speakers/:id',
+					component: () => import('@/components/conference/speaker/Speaker.vue')
 				}
 			]
 		},

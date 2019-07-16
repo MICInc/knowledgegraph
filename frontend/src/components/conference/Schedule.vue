@@ -1,10 +1,13 @@
 <template>
 	<div class="container">
 		<ul class="schd_yrs">
+			Select year to view schedule:
 			<li v-for="(conf, index) in schedules">
 				<b><a :href="'/conference/schedule/'+conf">{{ conf }}</a></b>
+				<!-- <b><router-link :to="{ name: 'schedule'+conf}">{{ conf }}</router-link></b> -->
 			</li>
 		</ul>
+		<router-view name="year"></router-view>
 	</div>
 </template>
 
@@ -12,7 +15,9 @@
 export default{
 	name: 'schedule',
 	data() {
-		schedules: [2018]
+		return{
+			schedules: [2019, 2018]
+		}
 	}
 }
 </script>
@@ -134,6 +139,10 @@ main p {
 
 .room-key, .room-icon {
 	margin-right: 5px;
+}
+
+.schd_yrs {
+	margin: 1.5em 0 0 0;
 }
 
 .schd_yrs li a {
