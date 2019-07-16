@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<p>2019 is not yet available</p>
+		<p><h4>2019 is not yet available</h4></p>
 	</div>
 </template>
 

@@ -51,18 +51,6 @@
 export default{
 	name: 'schedule2018',
 	beforeMount() {
-		// When the user scrolls the page, execute myFunction 
-		var wrapper = document.getElementById("guide-wrapper");
-		var sticky = wrapper.offsetTop;
-
-		window.onscroll = () => {
-			if (window.pageYOffset > sticky) {
-				wrapper.classList.add("sticky");
-			}
-			else {
-				wrapper.classList.remove("sticky");
-			}
-		}
 	},
 	data() {
 		return {
