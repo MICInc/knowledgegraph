@@ -46,7 +46,12 @@ router.get('/', function(req, res, next){
 			var regx = new RegExp(term, "i");
 
 			db.User.find({ $or:[ { first_name: regx }, { last_name: regx }]}, function(err, profiles) {
-				if(err) console.error(err);
+				if(err) {
+					console.error(err);
+					res.status(400).send([]);
+					return;
+				}
+				
 				if(profiles.length > 0) results['users'] = sh.filter_users(profiles);
 				res.send(results);
 				// ch.find({ $or:[ { name: regx }, { school: regx }]}, function(communities) {
