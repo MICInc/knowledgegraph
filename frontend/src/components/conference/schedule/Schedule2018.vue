@@ -25,14 +25,14 @@
 					<p class="time">{{ event.time }}</p>
 					<p class="title">{{ event.title }}</p>
 					<div v-if="event.speaker != null">
-						<a v-if="event.speaker_id != null" :href="'/speakers/' + event.speaker_id.replace(/_/g, '-')">{{ event.speaker }}</a>
+						<a v-if="event.speaker_id != null" :href="'/conference/speakers/2018/' + event.speaker_id">{{ event.speaker }}</a>
 						<label v-else>{{ event.speaker }}</label>
 					</div>
 					<div v-else-if="event.panelists != null">
 						<div class="flex" v-for="(panelist, i) in event.panelists">
 							<a 
 								v-if="event.panelists_ids[i] != ''" 
-								:href="'/conference/speakers/' + event.panelists_ids[i].replace(/_/g, '-')">
+								:href="'/conference/speakers/2018/' + event.panelists_ids[i]">
 								{{ panelist }}
 							</a>
 							<label>{{ panelist }}</label>

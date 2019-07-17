@@ -168,8 +168,20 @@ export default new Router({
 					component: () => import('@/components/conference/ScholarshipFAQ.vue')
 				},
 				{
-					path: 'speakers/:id',
-					component: () => import('@/components/conference/speaker/Speaker.vue')
+					path: 'speakers',
+					component: () => import('@/components/conference/Speaker.vue'),
+					children: [
+						{
+							path: '2018/:id',
+							name: 'speakers2018',
+							component: () => import('@/components/conference/speakers/Speakers2018.vue')
+						},
+						{
+							path: '2019/:id',
+							name: 'speakers2019',
+							component: () => import('@/components/conference/speakers/Speakers2019.vue')
+						}
+					]
 				}
 			]
 		},
