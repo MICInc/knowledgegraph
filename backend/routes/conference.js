@@ -22,7 +22,10 @@ router.post('/am_i_registered', function(req, res) {
 
 router.post('/apply_for_scholarship', function(req, res) {
 	UserAuth.verify_token(req.body.token, req.body.email, function(err, decoded) {
-		if(err) res.status(401).send('unauthorized');
+		if(err) {
+			res.status(401).send('unauthorized');
+			return;
+		}
 		else {
 			UserAuth.find_by_email(req.body.email, function(err, profile) {
 				var url = req.body.url.split('/').slice(-1).pop();

@@ -48,7 +48,10 @@ router.post('/login', function(req, res, next) {
 	var email = req.body.email;
 	var password = req.body.password;
 
-	if(!(email && password)) res.status(200).send({ error: 'Please provide a email and password' });
+	if(!(email && password)) {
+		res.status(200).send({ error: 'Please provide a email and password' });
+		return;
+	}
 
 	UserAuth.loginUser(email, password, function(err, token, user) {
 		if(err != null && (err.code == 400 || err.code == 401)) res.status(err.code).send({ error: err.msg });

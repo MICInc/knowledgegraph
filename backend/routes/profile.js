@@ -25,7 +25,7 @@ router.post('/', function(req, res) {
 
 router.get('/', function(req, res) {
 	db.User.findOne({ url: req.query.url }, function(err, profile) {
-		if(err) {
+		if(err || profile == null) {
 			res.status(400).send({});
 			return;
 		}
@@ -277,7 +277,11 @@ router.post('/update_email', function(req, res) {
 	var token = req.body.token;
 
 	UserAuth.verify_token(token, email, function(err, decoded) {
-		if(err) res.status(401).send('unauthorized');
+		if(err) {
+			res.status(401).send('unauthorized');
+			return;
+		}
+
 		if(email.length == 0) res.status(400).send('Invalid email');
 		else {
 			UserAuth.find_by_email(email, function(err, profile) {
@@ -309,7 +313,11 @@ router.post('/update_url', function(req, res) {
 	var url = req.body.url;
 
 	UserAuth.verify_token(token, email, function(err, decoded) {
-		if(err) res.status(401).send('unauthorized');
+		if(err) {
+			res.status(401).send('unauthorized');
+			return;
+		}
+
 		if(url.length == 0) res.status(400).send('Invalid URL');
 		else {
 			//check that this url is unique
@@ -336,7 +344,11 @@ router.post('/update_first_name', function(req, res) {
 	var first_name = req.body.first_name;
 
 	UserAuth.verify_token(token, email, function(err, decoded) {
-		if(err) res.status(401).send('unauthorized');
+		if(err) {
+			res.status(401).send('unauthorized');
+			return;
+		}
+		
 		if(first_name.length == 0) res.status(400).send('Invalid email');
 		else {
 			UserAuth.find_by_email(email, function(err, profile) {
@@ -396,7 +408,7 @@ router.post('/deactivate', function(req, res) {
 					return;
 				}
 
-				UserAuth.deactivate(email, function(status) {
+				UserAuth.deactivate(req.body.email, function(status) {
 					res.status(200).send('deactivated');
 				});
 			});

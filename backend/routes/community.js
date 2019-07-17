@@ -8,6 +8,7 @@ router.post('/', function(req, res) {
 	if(req.body.token == null || req.body.token.length == 0) {
 		console.error('Invalid user');
 		res.status(400).send('Invalid submission');
+		return;
 	}
 
 	UserAuth.find_by_email(req.body.email, function(err, profile) {
