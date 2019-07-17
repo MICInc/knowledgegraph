@@ -23,6 +23,14 @@ export default {
 		return {
 			faq: [
 				{
+					q: 'I could not register.',
+					a: 'We apologize for any issues. Please use Google Chrome.'
+				},
+				{
+					q: 'I did not receive a conference registration confirmation email or account creation email.',
+					a: 'Please email conference@machineintelligence.cc if you have this issue and we will look into it.'
+				},
+				{
 					q: 'Can I write an article on a paper I published in another conference?',
 					a: 'Yes. Submissions will only be evaluated on the criteria listed on the scholarship page.'
 				},
