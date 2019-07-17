@@ -23,19 +23,26 @@
 			<div class="event" :class="event.type" v-for="event in schedule2018">
 				<div class="desc">
 					<p class="time">{{ event.time }}</p>
-					<p class="title">{{ event.title }}</p>
+					<p class="title">
+						<span v-if="event.video != null">
+							<b><a :href="event.video" target="_blank">{{ event.title }}</a></b>
+						</span>
+						<span v-else>
+							{{ event.title }}
+						</span>
+					</p>
 					<div v-if="event.speaker != null">
-						<a v-if="event.speaker_id != null" :href="'/speakers/' + event.speaker_id.replace(/_/g, '-')">{{ event.speaker }}</a>
+						<a v-if="event.speaker_id != null" :href="'/conference/speakers/2018/' + event.speaker_id">{{ event.speaker }}</a>
 						<label v-else>{{ event.speaker }}</label>
 					</div>
 					<div v-else-if="event.panelists != null">
 						<div class="flex" v-for="(panelist, i) in event.panelists">
 							<a 
 								v-if="event.panelists_ids[i] != ''" 
-								:href="'/conference/speakers/' + event.panelists_ids[i].replace(/_/g, '-')">
+								:href="'/conference/speakers/2018/' + event.panelists_ids[i]">
 								{{ panelist }}
 							</a>
-							<label>{{ panelist }}</label>
+							<label v-else>{{ panelist }}</label>
 						</div>
 					</div>
 				</div>
@@ -51,18 +58,6 @@
 export default{
 	name: 'schedule2018',
 	beforeMount() {
-		// When the user scrolls the page, execute myFunction 
-		var wrapper = document.getElementById("guide-wrapper");
-		var sticky = wrapper.offsetTop;
-
-		window.onscroll = () => {
-			if (window.pageYOffset > sticky) {
-				wrapper.classList.add("sticky");
-			}
-			else {
-				wrapper.classList.remove("sticky");
-			}
-		}
 	},
 	data() {
 		return {
@@ -97,6 +92,7 @@ export default{
 				speaker: "Matt Scott, Malong",
 				speaker_id: "matt_scott",
 				type: "keynote",
+				video: "https://www.youtube.com/watch?v=iJON8n3co-c"
 			},
 
 			{
@@ -106,6 +102,7 @@ export default{
 				speaker: "Leslie Kaelbling, MIT",
 				speaker_id: "leslie_kaelbling",
 				type: "keynote",
+				video: "https://www.youtube.com/watch?v=xDFpsu7_xSU"
 			},
 
 			{
@@ -115,6 +112,7 @@ export default{
 				type: "student-talk",
 				speaker: "Jessy Lin, MIT",
 				speaker_id: "jessy_lin",
+				video: "https://www.youtube.com/watch?v=XsqWIDyFm3c"
 			},  
 
 			{
@@ -124,15 +122,17 @@ export default{
 				panelists: ["Danil Kirsanov, Facebook", "Laurens van der Maaten"],
 				panelists_ids: ["danil_kirsanov", "laurens_van_der_maaten"],
 				type: "sponsor-talk",
+				video: "https://www.youtube.com/watch?v=tC3pFwe8xTs&t=1s"
 			},
 
 			{
 				rooms: ["ssr"],
 				time: "10am - 11am",
 				title: "Industry Panel",
-				panelists: ["Matt Scott, Malong", "Ellick Chan, Intel", "Hassan Kane, Sela", "Simanta Gautam, Synapse"],
+				panelists: ["Matt Scott, Malong", "Ellick Chan, Intel", "Mohamed Hassan Kane, Sela", "Simanta Gautam, Synapse"],
 				panelists_ids: ["matt_scott", "ellick_chan", "hassan_kane", "simanta_gautam"], 
 				type: "panel",
+				video: "https://www.youtube.com/watch?v=ZJTSK1Gb24s"
 			}, 
 
 			{
@@ -142,6 +142,7 @@ export default{
 				speaker: "Sarah Bargal, Boston University",
 				speaker_id: "sarah_bargal",
 				type: "student-talk",
+				video: "https://www.youtube.com/watch?v=2iA8jePZvQc"
 			}, 
 
 			{
@@ -155,9 +156,10 @@ export default{
 				rooms: ["mpr"],
 				time: "11am - noon",
 				title: "Women in MI Panel",
-				panelists: ["Kate Saenko", "Jacqueline Xu", "Sophie Watson", "Millie Liu"],
+				panelists: ["Kate Saenko, Boston University", "Jacqueline Xu, Facebook", "Sophie Watson, RedHat", "Millie Liu, First Star"],
 				panelists_ids: ["kate_saenko", "jacqueline_xu", "sophie_watson", "millie_liu"],
 				type: "panel",
+				video: "https://www.youtube.com/watch?v=qvAQF-7ZA-g"
 			},  
 
 			{
@@ -167,6 +169,7 @@ export default{
 				type: "student-talk",
 				speaker: "Vitali Petsiuk, Boston University",
 				speaker_id: "vitali_petsiuk",
+				video: "https://www.youtube.com/watch?v=HAsvgyEZNf8"
 			},  
 
 			{
@@ -176,6 +179,7 @@ export default{
 				panelists: ["Adam Lesnikowski", "Varun Jampani"],
 				panelists_ids: ["adam_lesnikowski", "varun_jampani"],
 				type: "sponsor-talk",
+				video: "https://www.youtube.com/watch?v=QeVlMtmOYQc"
 			},
 
 			{
@@ -184,6 +188,8 @@ export default{
 				title: "The Sounds of Pixels",
 				speaker: "Hang Zhou, MIT",
 				type: "student-talk",
+				speaker_id: "hang_zhou",
+				video: "https://www.youtube.com/watch?v=da_IwgfFZjA"
 			},
 
 			{
@@ -204,9 +210,10 @@ export default{
 				rooms: ["ssr"],
 				time: "noon - 1pm",
 				title: "Alumni Panel",
-				panelists: ["Ali-Amir Aldan", "Bristy Sikder", "Jacqueline Xu", "Jeremy Nixon", "Michael Chang", "Mohamed Hassan Kane", "Shraman Ray Chaudhuri", "Simanta Gautam", "Surya Bhupatiraju"],
+				panelists: ["Ali-Amir Aldan, MIT", "Bristy Sikder, MIT", "Jacqueline Xu, MIT", "Jeremy Nixon, Harvard", "Michael Chang, MIT", "Mohamed Hassan Kane, MIT", "Shraman Ray Chaudhuri, MIT", "Simanta Gautam, MIT", "Surya Bhupatiraju, MIT"],
 				panelists_ids: ["ali_amir_aldan", "bristy_sikder", "jacqueline_xu", "jeremy_nixon", "michael_chang", "hassan_kane", "shaman_ray_chaudhuri", "simanta_gautam", "surya_bhupatiraju"],
 				type: "panel",
+				video: "https://www.youtube.com/watch?v=ujc7m9cvTnA"
 			},  
 
 			{
@@ -215,7 +222,8 @@ export default{
 				title: "Your Children and AI",
 				type: "student-talk",
 				speaker: "Olivia Koshy, UC Berkeley",
-				speaker_id: "olivia_koshy"
+				speaker_id: "olivia_koshy",
+				video: "https://www.youtube.com/watch?v=0Y2l1Rk0TeM"
 			}, 
 
 			{
@@ -225,6 +233,7 @@ export default{
 				speaker: "Matt Scott, Malong",
 				speaker_id: "matt_scott",
 				type: "sponsor-talk",
+				video: "https://www.youtube.com/watch?v=YeRjYdHQtww"
 			}, 
 
 
@@ -235,6 +244,7 @@ export default{
 				type: "student-talk",
 				speaker: "Thalia Rossitter, Simmons University",
 				speaker_id: "thalia_rossitter",
+				video: "https://www.youtube.com/watch?v=CPRwODK_cOc"
 			}, 
 
 			{
@@ -243,7 +253,8 @@ export default{
 				title: "TimbreTron: A WaveNet(CycleGAN(CQT(Audio))) Pipeline for Musical Timbre Transfer",
 				type: "student-talk",
 				speaker: "Sheldon Huang, University of Toronto",
-				speaker_id: "sicong_sheldon_huang"
+				speaker_id: "sicong_sheldon_huang",
+				video: "https://www.youtube.com/watch?v=lwEwJURVdts"
 			}, 
 			
 			{
@@ -253,6 +264,7 @@ export default{
 				speaker: "Yada Pruksachatkun, NYU",
 				speaker_id: "yada_pruksachatkun",
 				type: "student-talk",
+				video: "https://www.youtube.com/watch?v=0D4PYf1gmN4"
 			},  
 
 			{
@@ -262,6 +274,7 @@ export default{
 				type: "student-talk",
 				speaker: "Ari Brown, Tufts University",
 				speaker_id: "ari_brown",
+				video: "https://www.youtube.com/watch?v=Aa2u3uVc96I"
 			},  
 
 			{
@@ -271,6 +284,7 @@ export default{
 				type: "student-talk",
 				speaker: "Guy Aridor, Columbia University",
 				speaker_id: "guy_aridor",
+				video: "https://www.youtube.com/watch?v=xMD5hpdlv5o"
 			},
 
 			{
@@ -287,6 +301,7 @@ export default{
 				type: "student-talk",
 				speaker: "Jessica Edwards, Harvard College",
 				speaker_id: "jessica_edwards",
+				video: "https://www.youtube.com/watch?v=gEafVfp__us"
 			}, 
 
 			{
@@ -296,6 +311,7 @@ export default{
 				panelists: ["Ellick Chan, Intel", "Jude Shavlik, Intel"],
 				panelists_ids: ["ellick_chan", ""],
 				type: "sponsor-talk",
+				video: "https://www.youtube.com/watch?v=1K8HfrBT5y8"
 			},  
 
 			{
@@ -314,6 +330,7 @@ export default{
 				speaker: "David Tao, McGill University",
 				speaker_id: "ruo_yu_david_tao",
 				type: "student-talk",
+				video: "https://www.youtube.com/watch?v=KRXit7rx0N8"
 			},
 
 			{
@@ -322,7 +339,8 @@ export default{
 				title: "Deep Learning for ELVO Stroke Detection",
 				type: "student-talk",
 				panelists: ["Mary Dong, Brown University", "Amy Wang, Brown University"],
-				panelists_ids: ["mary_dong", "amy_wang"]
+				panelists_ids: ["mary_dong", "amy_wang"],
+				video: "https://www.youtube.com/watch?v=eXfe-1K_sz0"
 			},  
 
 			{
@@ -331,7 +349,8 @@ export default{
 				title: "Targeted Dropout and Bitrot: Simple and Effective Techniques for Sparsification and Quantization",
 				type: "student-talk",
 				speaker: "Aidan Gomez, University of Oxford",
-				speaker_id: "aidan_gomez"
+				speaker_id: "aidan_gomez",
+				video: "https://www.youtube.com/watch?v=gjWkRfFt6CY"
 			}, 
 
 			{
@@ -341,6 +360,7 @@ export default{
 				type: "student-talk",
 				speaker: "Giulia Pintea, Simmons University",
 				speaker_id: "giulia_pintea",
+				video: "https://www.youtube.com/watch?v=7tN85xOddqk"
 			}, 
 
 			{
@@ -350,6 +370,7 @@ export default{
 				speaker: "Kenneth Stanley, University of Central Florida & Uber AI Labs",
 				speaker_id: "kenneth_stanley",
 				type: "keynote",
+				video: "https://www.youtube.com/watch?v=pEZYCnIj3xM"
 			},
 
 			{
@@ -373,6 +394,10 @@ export default{
 </script>
 
 <style scoped>
+.title {
+	color: #000;
+}
+
 .mpr, .ssr, .lh, .wgr {
 	width: 30px;
 	height: 30px;

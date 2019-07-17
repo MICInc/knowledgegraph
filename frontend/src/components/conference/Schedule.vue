@@ -4,10 +4,9 @@
 			Select year to view schedule:
 			<li v-for="(conf, index) in schedules">
 				<b><a :href="'/conference/schedule/'+conf">{{ conf }}</a></b>
-				<!-- <b><router-link :to="{ name: 'schedule'+conf}">{{ conf }}</router-link></b> -->
 			</li>
 		</ul>
-		<router-view name="year"></router-view>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -22,7 +21,7 @@ export default{
 }
 </script>
 
-<style scoped>
+<style>
 li {
 	display: inline;
 	margin-right: 1em;

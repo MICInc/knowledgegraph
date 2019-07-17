@@ -42,7 +42,7 @@ export default {
 				// { innerText: 'Feedback', href: 'feedback' },
 				{ innerText: 'Scholarship', href: 'scholarship' },
 				{ innerText: 'FAQ', href: 'faq'},
-				{ innerText: 'Schedule', href: 'schedule/'+(new Date()).getFullYear()},
+				{ innerText: 'Schedule', href: 'schedule/'+(new Date()).getFullYear()}
 			]
 		}
 	}
