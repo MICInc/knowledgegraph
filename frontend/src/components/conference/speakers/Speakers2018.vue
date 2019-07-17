@@ -128,6 +128,14 @@ export default {
 					headshot: 'guy_aridor.jpg'
 				},
 
+				hang_zhou: {
+					name: "Hang Zhou",
+					bio: "Hey, my name is Hang Zhao, I just got my Ph.D. at MIT. I work with Professor Antonio Torralba (the Great Torralba!). My research interests include computer vision/photography, cross modal machine learning and robotics.</br></br>I completed my master's thesis at MIT Media Lab with Professor Ramesh Raskar in 2015. Before coming to MIT, I received my B.S. from CKC Honors College, Zhejiang University in 2013.",
+					title: "The Sounds of Pixels",
+					abstract: "Sounds originate from object motions and vibrations of surrounding air. Inspired by the fact that humans is capable of interpreting sound sources from how objects move visually, we propose a novel system that explicitly captures such motion cues for the task of sound localization and separation. Our system is composed of an end-to-end learnable model called Deep Dense Trajectory (DDT), and a curriculum learning scheme. It exploits the inherent coherence of audio-visual signals from a large quantities of unlabeled videos. Quantitative and qualitative evaluations show that comparing to previous models that rely on visual appearance cues, our motion based system improves performance in separating musical instrument sounds. Furthermore, it separates sound components from duets of the same category of instruments, a challenging problem that has not been addressed before.",
+					headshot: "hang_zhou.jpg"
+				},
+
 				jessica_edwards: {
 					name: 'Jessica Edwards',
 					bio: "Jessica Edwards is a sophomore at Harvard College concentrating in Computer Science and intending to get a secondary in Educational Studies. This past summer she was a Research Assistant at Johns Hopkins University's Human Language Technology Center of Excellence and is currently participating in computer science research term-time through the Learning, Innovation, and Technology Lab in Harvard's Graduate School of Education. At Harvard, she is also involved in Harvard's Women in Computer Science organization, volunteers at Y2Y Harvard Square Homeless Shelter, and is a member of the Kuumba Singers of Harvard College.",
@@ -217,10 +225,11 @@ export default {
 				},
 
 				adam_lesnikowski: {
-					name: 'Adam Lesnikowski (Nvidia)',
+					name: 'Adam Lesnikowski',
 					bio: 'Adam Lesnikowski is a Machine Learning Scientist at Nvidia.',
 					title: 'Data-Driven Dataset Creation: Deep Active Learning for Autonomous Vehicles and Beyond',
 					abstract: 'In this talk, the audience will learn about deep active learning and how it has been successfully applied to the autonomous vehicle project at Nvidia, as well as future research directions on learning from limited labels and optimal construction of datasets. We will cover projects that we have done on autonomous vehicle and other datasets to learn using limited labels, and outline a vision of the importance of advanced data driven methods to build datasets. Time permitting we will cover more recent exploratory experiments towards the optimal construction of training sets for today’s AI and deep neural network models.',
+					headshot: 'adam_lesnikowski.jpeg'
 				},
 
 				varun_jampani: {
@@ -228,6 +237,7 @@ export default {
 					bio: 'Varun Jampani is a Research Scientist at Nvidia.',
 					title: 'Sparse High-Dimensional Neural Networks',
 					abstract: 'The recent years have witnessed a dramatic increase in the adoption of convolutional neural networks (CNN) for a wide range of computer vision problems. ‘Convolutions’,  which form the building blocks of most CNN architectures, are designed to process non-sparse data that lie on 1D, 2D or 3D grid. In this work, we propose a generalization of convolution operation to process sparse and high-dimensional data (for instance data that lies in 5D or 6D space). Specifically, we make use of permutohedral lattices, traditionally used for bilateral filtering, and hash table for efficient processing of sparse high-dimensional data while being able to learn generic N-dimensional filters. The ability to learn generic high-dimensional filters allows us to stack several parallel and sequential filters like in a CNN resulting in a new breed of neural networks which we call ‘Bilateral Neural Networks’ (BNN). We demonstrate the use of BNNs on several 2D, video and 3D vision tasks. Experiments on diverse datasets and tasks demonstrate the use of BNNs for a range of vision problems.',
+					headshot: 'varun_jampani.jpeg'
 				},
 
 				laurens_van_der_maaten: {
@@ -255,7 +265,7 @@ export default {
 				},
 
 				hassan_kane: {
-					name: 'Hassan Kané',
+					name: 'Mohamed Hassan Kané',
 					bio: 'Hassan Kané is part of the Class of 2017 at MIT where he studied Computer Science and Engineering with a minor in mathematics. His AI research experience spans NLP and includes work on clinical notes de-identification, medical concept embeddings (NIPS 2017 ML4HC workshop) as well as robotics R&D conducted as an intern in the radar perception group at Uber ATG. He also has a track record of combining visionary leadership and technical skills by notably co-founding then leading the machine intelligence community for 1.5 years. All these experiences help him in his current role as Chief Technology Officer (CTO) of Sela Labs, an 8 person startup working on using chatbots, satellite images, financial transactions to foster transparency and accountability in the international development sector. A fun fact is that he served as DJ for a NIPS 2017 party where he got Yann LeCun and Jeff Dean dancing to West African music.',
 					headshot: 'hassan_kane.jpg',
 				},
@@ -293,6 +303,7 @@ export default {
 				jacqueline_xu: {
 					name: "Jacqueline Xu",
 					bio: "Jackie Xu is a recent graduate from MIT, with a Bachelors in Computer Science and a Masters of Engineering in Artificial Intelligence. She will be joining Facebook as a software engineer. Jackie has previously researched at the Computational Cognitive Science group with Prof. Josh Tenenbaum and at the Affective Computing group with Prof. Rosalind Picard. Her interests include how AI can be applied to social issues and bettering public understanding of AI technologies.",
+					headshot: "jacqueline_xu.jpg"
 				},
 
 				jessy_lin: {

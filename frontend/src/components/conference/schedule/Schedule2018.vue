@@ -35,7 +35,7 @@
 								:href="'/conference/speakers/2018/' + event.panelists_ids[i]">
 								{{ panelist }}
 							</a>
-							<label>{{ panelist }}</label>
+							<label v-else>{{ panelist }}</label>
 						</div>
 					</div>
 				</div>
@@ -118,7 +118,7 @@ export default{
 				rooms: ["ssr"],
 				time: "10am - 11am",
 				title: "Industry Panel",
-				panelists: ["Matt Scott, Malong", "Ellick Chan, Intel", "Hassan Kane, Sela", "Simanta Gautam, Synapse"],
+				panelists: ["Matt Scott, Malong", "Ellick Chan, Intel", "Mohamed Hassan Kane, Sela", "Simanta Gautam, Synapse"],
 				panelists_ids: ["matt_scott", "ellick_chan", "hassan_kane", "simanta_gautam"], 
 				type: "panel",
 			}, 
@@ -143,7 +143,7 @@ export default{
 				rooms: ["mpr"],
 				time: "11am - noon",
 				title: "Women in MI Panel",
-				panelists: ["Kate Saenko", "Jacqueline Xu", "Sophie Watson", "Millie Liu"],
+				panelists: ["Kate Saenko, Boston University", "Jacqueline Xu, Facebook", "Sophie Watson, RedHat", "Millie Liu, First Star"],
 				panelists_ids: ["kate_saenko", "jacqueline_xu", "sophie_watson", "millie_liu"],
 				type: "panel",
 			},  
@@ -172,6 +172,7 @@ export default{
 				title: "The Sounds of Pixels",
 				speaker: "Hang Zhou, MIT",
 				type: "student-talk",
+				speaker_id: "hang_zhou"
 			},
 
 			{
@@ -192,7 +193,7 @@ export default{
 				rooms: ["ssr"],
 				time: "noon - 1pm",
 				title: "Alumni Panel",
-				panelists: ["Ali-Amir Aldan", "Bristy Sikder", "Jacqueline Xu", "Jeremy Nixon", "Michael Chang", "Mohamed Hassan Kane", "Shraman Ray Chaudhuri", "Simanta Gautam", "Surya Bhupatiraju"],
+				panelists: ["Ali-Amir Aldan, MIT", "Bristy Sikder, MIT", "Jacqueline Xu, MIT", "Jeremy Nixon, Harvard", "Michael Chang, MIT", "Mohamed Hassan Kane, MIT", "Shraman Ray Chaudhuri, MIT", "Simanta Gautam, MIT", "Surya Bhupatiraju, MIT"],
 				panelists_ids: ["ali_amir_aldan", "bristy_sikder", "jacqueline_xu", "jeremy_nixon", "michael_chang", "hassan_kane", "shaman_ray_chaudhuri", "simanta_gautam", "surya_bhupatiraju"],
 				type: "panel",
 			},  
