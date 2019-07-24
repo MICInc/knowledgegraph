@@ -110,18 +110,18 @@ module.exports = {
 				return;
 			}
 
-			if(user != null && user.suspended) {
+			if(user !== null && user.suspended) {
 				callback({ msg: 'Account suspended', code: 400 });
 				return;
 			}
 			
 			// Remove error messages?
-			if(user != null && !user.verification.status) {
+			if(user !== null && !user.verification.status) {
 				callback({ msg: 'Email has not been verified', code: 401 }, '', {});
 				return;
 			}
 
-			if(user != null) {
+			if(user !== null) {
 				// Salt password to see if hashes will match with the user's salt
 				crypto.pbkdf2(password, user.salt, 10000, VERI_LENG, 'sha512', function(err, key) {
 					if(err) console.error(err);
@@ -189,7 +189,7 @@ module.exports = {
 	},
 	isEmailTaken: function(email, callback) {
 		module.exports.find_by_email(filter.filter_xss(email), function(err, user) {
-			callback(err, user != null);
+			callback(err, user !== null);
 		});
 	},
 	start_session: function(user, token) {
@@ -210,7 +210,7 @@ module.exports = {
 		var user_id = { _id: user.id };
 
 		db.User.findOne(user_id, function(err, profile) {
-			if(profile != null) {
+			if(profile !== null) {
 				profile.token = '';
 				var index = utils.indexOf(profile.session_history, 'sess_id', user.sess_id);
 
@@ -235,7 +235,7 @@ module.exports = {
 			else {
 				module.exports.find_by_email(email, function(err, user) {
 					if(err) callback(false);
-					else callback(user != null && user.url == page.url);
+					else callback(user !== null && user.url == page.url);
 				});
 			}
 		});
@@ -371,7 +371,7 @@ module.exports = {
 				return;
 			}
 
-			if(user != null && user.verification.status) {
+			if(user !== null && user.verification.status) {
 				callback(true);
 				return;
 			}

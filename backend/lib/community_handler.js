@@ -26,7 +26,7 @@ module.exports = {
 	},
 	exists: function(community, callback) {
 		module.exports.find(community, function(org) {
-			callback(org != null);
+			callback(org !== null);
 		});
 	},
 	find: function(community, callback) {

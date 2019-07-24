@@ -54,7 +54,7 @@ router.post('/login', function(req, res, next) {
 	}
 
 	UserAuth.loginUser(email, password, function(err, token, user) {
-		if(err != null && (err.code == 400 || err.code == 401)) res.status(err.code).send({ error: err.msg });
+		if(err !== null && (err.code == 400 || err.code == 401)) res.status(err.code).send({ error: err.msg });
 		else res.json({ token: token, userInfo: user });
 	});
 });
@@ -67,7 +67,7 @@ router.post('/retrieve_login', function(req, res, next) {
 	var email = req.body.email;
 
 	UserAuth.find_by_email(email, function(profile) {
-		if(user != null) {
+		if(user !== null) {
 			UserAuth.reset_password(email, function(ok) {
 				res.status(200).send({ status: 'Please check your email'});
 			});
@@ -136,7 +136,7 @@ router.post('/verify_token', function(req, res, next) {
 		}
 
 		UserAuth.find_by_email(user_email, function(ok, user) {
-			if(ok == null && user != null) res.status(200).send({ token: token, userInfo: user });
+			if(ok == null && user !== null) res.status(200).send({ token: token, userInfo: user });
 			else res.status(401).send({ token: '', userInfo: {} });
 		});
 	});

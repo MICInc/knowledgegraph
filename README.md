@@ -71,3 +71,8 @@ To update all properties of a record or insert a new property to all records:
 ```
 db.users.update({}, { $set: { suspended: false }}, { multi: true });
 ```
+
+To manually remove an array element:
+```
+db.users.update({ email:"myemail@gmail.com" }, { $pull: { publications: { id: "5d351a6ca1bb7b48ac4b7426" } } });
+```

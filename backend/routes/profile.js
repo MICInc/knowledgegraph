@@ -191,7 +191,7 @@ router.get('/picture', function(req, res) {
 			return;
 		}
 		
-		if(profile != null && Object.keys(profile.toObject()).includes('picture')) res.status(200).send({ src: profile.picture.src });
+		if(profile !== null && Object.keys(profile.toObject()).includes('picture')) res.status(200).send({ src: profile.picture.src });
 		else res.status(200).send({ src: '' });
 	});
 });
