@@ -31,14 +31,14 @@
 						</span>
 					</p>
 					<div v-if="event.speaker != null">
-						<a v-if="event.speaker_id != null" :href="'/conference/speakers/2018/' + event.speaker_id">{{ event.speaker }}</a>
+						<a v-if="event.speaker_id != null" :href="'/conference/speakers/2019/' + event.speaker_id">{{ event.speaker }}</a>
 						<label v-else>{{ event.speaker }}</label>
 					</div>
 					<div v-else-if="event.panelists != null">
 						<div class="flex" v-for="(panelist, i) in event.panelists">
 							<a 
 								v-if="event.panelists_ids[i] != ''" 
-								:href="'/conference/speakers/2018/' + event.panelists_ids[i]">
+								:href="'/conference/speakers/2019/' + event.panelists_ids[i]">
 								{{ panelist }}
 							</a>
 							<label v-else>{{ panelist }}</label>
@@ -232,8 +232,8 @@ export default{
 				rooms: ["hariri"],
 				time: "3:30pm - 4:00pm",
 				title: "Learning Disentangled Neural Representations of Symmetry Transformations",
-				speaker: "Weishun Zong, MIT",
-				speaker_id: "weishun_zong"
+				speaker: "Weishun Zhong, MIT",
+				speaker_id: "weishun_zhong"
 			},
 			{
 				rooms: ["cilse"],
