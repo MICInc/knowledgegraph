@@ -101,8 +101,8 @@ export default{
 				rooms: ["cilse"],
 				time: "11:00am - 11:30am",
 				title: "Natural Language Understanding via Commonsense Reasoning and Sensemaking",
-				speaker: "Vasanth Sarathy",
-				speaker_id: "vasanth_sarathy, Tufts University"
+				speaker: "Vasanth Sarathy, Tufts University",
+				speaker_id: "vasanth_sarathy"
 			},
 			{
 				rooms: ["hariri"],
@@ -175,7 +175,7 @@ export default{
 				time: "1:20pm - 2:30pm",
 				title: "IBM Women in Machine Intelligence Panel",
 				panelists: ["Hong Yu, UMass Amherst", "Magy Seif El-Nasr, Northeastern", "Rosanne Liu, Uber AI", "Ruzena Bajcsy, UC Berkeley", "Isha Puri, Harvard University"],
-				panelists_ids: ["hong_yu", "magy_seif_el-nasr", "rosanne_liu", "ruzena_bajcsy", "isha_puri"],
+				panelists_ids: ["hong_yu", "magy_seif_elnasr", "rosanne_liu", "ruzena_bajcsy", "isha_puri"],
 				type: "panel"
 			},
 			{
@@ -196,8 +196,8 @@ export default{
 				rooms: ["hariri"],
 				time: "2:30pm - 3:00pm",
 				title: "Learning to Simulate",
-				speaker: "Nathaniel Ruiz, Boston University",
-				speaker_id: "nathan_ruiz"
+				speaker: "Nataniel Ruiz, Boston University",
+				speaker_id: "nataniel_ruiz"
 			},
 			{
 				rooms: ["breakout"],

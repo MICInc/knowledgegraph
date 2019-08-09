@@ -58,7 +58,7 @@ export default {
 
 				kate_saenko: {
 					name: 'Kate Saenko',
-					bio: 'Kate is an Associate Professor of Computer Science at Boston University and director of the <a href="http://ai.bu.edu/">Computer Vision and Learning Group</a>. Her research interests are in the broad area of Artificial Intelligence with a focus on Adaptive Machine Learning, Learning for Vision and Language Understanding, and Deep Learning.',
+					bio: 'Kate is an Associate Professor of Computer Science at Boston University and director of the <a href="http://ai.bu.edu/" target="_blank">Computer Vision and Learning Group</a>. Her research interests are in the broad area of Artificial Intelligence with a focus on Adaptive Machine Learning, Learning for Vision and Language Understanding, and Deep Learning.',
 					headshot: 'kate_saenko.jpg'
 				},
 
@@ -92,7 +92,7 @@ export default {
 					name: 'Andrew Rouditchenko',
 					bio: 'Andrew Rouditchenko is a senior at MIT majoring in Electrical Engineering and Computer Science, with a focus on machine learning and audio processing. Andrew has conducted research with MIT CSAIL’s Computer Vision Research Group, Intel’s Artificial Intelligence Research Group, and MIT BCS’s Computational Audition Research Group. Andrew is interested in advancing computational techniques for understanding perception and intelligence.',
 					title: 'The Sound of Pixels',
-					abstract: 'We introduce PixelPlayer, a deep learning system that, by leveraging large amounts of unlabeled videos, learns to locate image regions which produce sounds and separate the input sounds into aset of components that represents the sound from each pixel. Our approach capitalizes on the natural synchronization of the visual and audio modalities to learn models that jointly parse sounds and images, without requiring additional manual supervision. Experimental results on a newly collected MUSIC dataset show that our proposed Mix-and-Separate framework outperforms several baselines on source separation. Qualitative results suggest our model learns to ground sounds in vision, enabling applications such as independently adjusting the volume of sound sources. More information is available at <a href="http://sound-of-pixels.csail.mit.edu/">http://sound-of-pixels.csail.mit.edu/</a>.',
+					abstract: 'We introduce PixelPlayer, a deep learning system that, by leveraging large amounts of unlabeled videos, learns to locate image regions which produce sounds and separate the input sounds into aset of components that represents the sound from each pixel. Our approach capitalizes on the natural synchronization of the visual and audio modalities to learn models that jointly parse sounds and images, without requiring additional manual supervision. Experimental results on a newly collected MUSIC dataset show that our proposed Mix-and-Separate framework outperforms several baselines on source separation. Qualitative results suggest our model learns to ground sounds in vision, enabling applications such as independently adjusting the volume of sound sources. More information is available at <a href="http://sound-of-pixels.csail.mit.edu/" target="_blank">http://sound-of-pixels.csail.mit.edu/</a>.',
 					headshot: 'andrew_rouditchenko.jpg',
 				},
 
@@ -284,7 +284,7 @@ export default {
 
 				michael_chang: {
 					name: 'Michael Chang',
-					bio: 'Michael Chang is a 2nd year Ph.D. student at U.C. Berkeley advised by Sergey Levine and Tom Griffiths. At MIT he worked in Josh Tenenbaum’s lab on representation learning and intuitive physics. He has also interned with Jürgen Schmidhuber at IDSIA and Honglak Lee at the University of Michigan. He is currently interested in building learners that exploit compositionality in their internal representations as well as their internal computations in the hope that such compositionality would enable better extrapolation and knowledge transfer to future problems the learner encounters. Please see <a href="http://mbchang.github.io/">http://mbchang.github.io/</a> for more details.',
+					bio: 'Michael Chang is a 2nd year Ph.D. student at U.C. Berkeley advised by Sergey Levine and Tom Griffiths. At MIT he worked in Josh Tenenbaum’s lab on representation learning and intuitive physics. He has also interned with Jürgen Schmidhuber at IDSIA and Honglak Lee at the University of Michigan. He is currently interested in building learners that exploit compositionality in their internal representations as well as their internal computations in the hope that such compositionality would enable better extrapolation and knowledge transfer to future problems the learner encounters. Please see <a href="http://mbchang.github.io/" target="_blank">http://mbchang.github.io/</a> for more details.',
 					headshot: 'michael_chang.jpg',
 				},
 
