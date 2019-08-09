@@ -8,14 +8,14 @@ var filter = require('../lib/filter');
 router.get('/', function(req, res, next){
 	var term = req.query.term;
 	
-	if(term != undefined) {
+	if(term !== undefined) {
 		// save user's query if logged in and has an account
 		if('user' in req.query) {
 			var user = { _id: sh.filter_query(req.query.user) };
 			var log = { query: term, date: new Date() };
 
 			db.User.findOne(user, function(err, profile) {
-				if(profile != null) {
+				if(profile !== null) {
 					profile.search_history.push(log);
 					db.User.updateOne(user, profile, function(err) {
 						if(err) console.err(err);
@@ -55,7 +55,7 @@ router.get('/', function(req, res, next){
 				if(profiles.length > 0) results['users'] = sh.filter_users(profiles);
 				res.send(results);
 				// ch.find({ $or:[ { name: regx }, { school: regx }]}, function(communities) {
-				// 	if(communities != null && communities.length > 0) results['communities'] = communities;
+				// 	if(communities !== null && communities.length > 0) results['communities'] = communities;
 				// 	res.send(results);
 				// });
 			});

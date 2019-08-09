@@ -36,7 +36,7 @@ router.post('/', function(req, res, next) {
 				return;
 			}
 
-			if(article != null) {
+			if(article !== null) {
 				// check that the title is unique
 				db.Content.countDocuments({ title: article.title }, function(err, total) {
 					if(total > 1 && req.body.publish) {
@@ -120,7 +120,7 @@ router.post('/add', function(req, res) {
 		var query = { _id: data.id };
 
 		db.Content.findOne(query, function(err, article) {
-			if(article != null) {
+			if(article !== null) {
 				article.content.splice(data.index, 0, {});
 				
 				for(var i = data.index; i < article.content.length; i++) {
@@ -151,7 +151,7 @@ router.post('/remove', function(req, res) {
 		var query = { _id: data.id };
 
 		db.Content.findOne(query, function (err, article) {	
-			if(article != null) {
+			if(article !== null) {
 				if(data.index < article.content.length) article.content.splice(data.index, 1);
 
 				for(var i = 0; i < article.content.length; i++) {
@@ -176,7 +176,7 @@ router.get('/', function(req, res) {
 
 			UserAuth.is_article_editable(req.query.token, req.query.email, article, function(editable) {
 
-				if(editable || (article != null && article.is_published)) {
+				if(editable || (article !== null && article.is_published)) {
 					var start = new Date();
 					article.bibtex = btx.format(article);
 
@@ -266,7 +266,7 @@ router.get('/reload', function(req, res) {
 				return;
 			}
 
-			if(article != null) res.status(200).send(article);
+			if(article !== null) res.status(200).send(article);
 			else res.status(400);
 		});
 	});
@@ -332,7 +332,7 @@ router.options('/cleanup', function(req, res) {
 		var user_id = { _id: req.body.user_id };
 
 		db.Content.findOne(content_id, function(err, article) {
-			if(article != null) {
+			if(article !== null) {
 				article.view_duration['end'] = new Date();
 
 				db.Content.updateOne(content_id, article, function(err) {
@@ -342,7 +342,7 @@ router.options('/cleanup', function(req, res) {
 		});
 
 		db.User.findOne(user_id, function(err, profile) {
-			if(profile != null) {
+			if(profile !== null) {
 				profile.view_duration['end'] = new Date();
 				db.User.updateOne(user_id, profile, function(err) {
 					if(err) console.error(err);
