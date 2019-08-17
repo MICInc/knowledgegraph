@@ -39,15 +39,16 @@ export default {
 				},
 				aude_oliva: {
 					name: 'Aude Oliva',
-					bio: '',
-					headshot: ''
+					bio: 'Aude Oliva is the executive director of MIT Quest for Intelligence and the MIT–IBM Watson AI Lab. She is also a principal research scientist at the Computer Science and Artificial Intelligence Laboratory. She formerly served as an expert to the National Science Foundation, Directorate of Computer and Information Science and Engineering. Her research interests span computer vision, cognitive science and human neuroscience. She was honored with the National Science Foundation CAREER Award, a Guggenheim Fellowship and the Vannevar Bush Faculty Fellowship. She earned a MS and PhD in cognitive science from the Institut National Polytechnique de Grenoble, France.',
+					title: 'Closing keynote: Natural Deep Learning Networks',
+					headshot: 'aude_oliva.jpg'
 				},
 				david_cox: {
 					name: 'David Cox',
-					bio: '',
-					title: '',
-					abstract: '',
-					headshot: ''
+					bio: 'David Cox is the IBM Director of the MIT-IBM Watson AI Lab, a first of its kind industry-academic collaboration between IBM and MIT, focused on fundamental research in artificial intelligence. The Lab was founded with a $240m, 10 year commitment from IBM and brings together researchers at IBM with faculty at MIT to tackle hard problems at the vanguard of AI.<br><br>Prior to joining IBM, David was the John L. Loeb Associate Professor of the Natural Sciences and of Engineering and Applied Sciences at Harvard University, where he held appointments in Computer Science, the Department of Molecular and Cellular Biology and the Center for Brain Science. David\'s ongoing research is primarily focused on bringing insights from neuroscience into machine learning and computer vision research. His work has spanned a variety of disciplines, from imaging and electrophysiology experiments in living brains, to the development of machine learning and computer vision methods, to applied machine learning and high performance computing methods.<br><br>David is a Faculty Associate at the Berkman-Klein Center for Internet and Society at Harvard Law School and is an Agenda Contributor at the World Economic Forum. He has received a variety of honors, including the Richard and Susan Smith Foundation Award for Excellence in Biomedical Research, the Google Faculty Research Award in Computer Science, and the Roslyn Abramson Award for Excellence in Undergraduate Teaching. He led the development of "The Fundamentals of Neuroscience" (http://fundamentalsofneuroscience.org) one of Harvard\'s first massive open online courses, which has drawn over 750,000 students from around the world.  His academic lab has spawned several startups across a range of industries, ranging from AI for healthcare to autonomous vehicles.',
+					title: 'IBM Technical Talk',
+					abstract: 'TBA',
+					headshot: 'david_cox.jpg'
 				},
 				dat_huynh: {
 					name: 'Dat Huynh',
@@ -168,7 +169,7 @@ export default {
 					bio: 'Vasanth Sarathy is a fifth-year dual Ph.D. student in Computer Science and Cognitive Science at Tufts University. His current research is in Natural Language Understanding, focusing on linguistic and conversational phenomena that require commonsense knowledge and reasoning. Phenomena he studies include anaphora, indirect speech acts, and implicatures.  Broadly, his research interests include studying the computational principles behind sensemaking, commonsense reasoning, and creative problem solving, and building artificial agents that can apply these principles ethically.',
 					title: 'Natural Language Understanding via Commonsense Reasoning and Sensemaking',
 					abstract: 'In this talk, I will discuss two challenging natural language understanding tasks - pronoun resolution and indirect speech act classification. Pronouns and ISAs are pervasive in dialog and discourse, but it has been particularly difficult to interpret them correctly as they are known to require a substantial amount of commonsense knowledge and inference.  Moreover, even slight changes to situational and contextual information can significantly alter their interpretation. Current state-of-the-art statistical approaches and knowledge-based reasoning systems are insufficient to adequately address these tasks. I will introduce a multi-reasoner architecture using Answer Set Programming and uncertainty modeling to disambiguate pronouns and interpret ISAs. In doing so, I will discuss some general types of reasoning and knowledge that might be needed.',
-					headshot: ''//'vasanth_sarathy.jpg'
+					headshot: 'vasanth_sarathy.jpg'
 				},
 				weishun_zhong: {
 					name: 'Weishun Zhong',

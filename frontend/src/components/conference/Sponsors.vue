@@ -23,6 +23,12 @@
 			return {
 				sponsors: [
 					{
+						href: 'https://mitibmwatsonailab.mit.edu/',
+						tier: 'tier-two',
+						src: '/img/sponsors/mit-ibm-logo.png',
+						alt: 'IBM'
+					},
+					{
 						href: 'https://www.intel.com/',
 						tier: 'tier-one',
 						src: '/img/sponsors/intel-ai-logo.png',
@@ -30,22 +36,16 @@
 					},
 					{
 						href: 'http://www.bu.edu/spark/',
-						tier: 'tier-one',
+						tier: 'partner',
 						src: '/img/sponsors/spark-logo.png',
 						alt: 'BU Spark!'
 					},
 					{
 						href: 'https://sail.bu.edu/',
-						tier: 'tier-one',
+						tier: 'partner',
 						src: '/img/sponsors/sail-logo.png',
 						alt: 'BU SAIL'
-					},
-					{
-						href: 'https://mitibmwatsonailab.mit.edu/',
-						tier: 'tier-two',
-						src: '/img/sponsors/ibm-logo.png',
-						alt: 'IBM'
-					},
+					}
 				]
 			}
 		}
@@ -115,16 +115,21 @@
 	margin: 0 50px 20px 50px;
 }
 
-.sponsor-grid .sponsor-tile img.tier-one {
-	height: 80px;
+.sponsor-grid .sponsor-tile img.partner {
+	height: 70px;
 }
 
-.sponsor-grid .sponsor-tile img.tier-two {
+
+.sponsor-grid .sponsor-tile img.tier-one {
 	height: 100px;
 }
 
+.sponsor-grid .sponsor-tile img.tier-two {
+	height: 110px;
+}
+
 .sponsor-grid .sponsor-tile img.tier-three {
-	height: 120px;
+	height: 150px;
 }
 
 .become-sponsor {

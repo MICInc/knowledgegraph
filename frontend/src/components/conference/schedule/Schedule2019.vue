@@ -174,8 +174,8 @@ export default{
 				rooms: ["cilse"],
 				time: "1:20pm - 2:30pm",
 				title: "IBM Women in Machine Intelligence Panel",
-				panelists: ["Hong Yu, UMass Amherst", "Magy Seif El-Nasr, Northeastern", "Rosanne Liu, Uber AI", "Ruzena Bajcsy, UC Berkeley", "Isha Puri, Harvard University"],
-				panelists_ids: ["hong_yu", "magy_seif_elnasr", "rosanne_liu", "ruzena_bajcsy", "isha_puri"],
+				panelists: ["Hong Yu, UMass Amherst", "Magy Seif El-Nasr, Northeastern", "Rosanne Liu, Uber AI", "Isha Puri, Harvard University"],
+				panelists_ids: ["hong_yu", "magy_seif_elnasr", "rosanne_liu", "isha_puri"],
 				type: "panel"
 			},
 			{
@@ -247,7 +247,7 @@ export default{
 			},
 			{
 				rooms: ["cilse"],
-				time: "3:30pm - 4:00pm",
+				time: "4:10pm - 5:10pm",
 				title: "Closing Keynote",
 				speaker: "Aude Oliva, MIT",
 				speaker_id: "aude_oliva"
