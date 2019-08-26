@@ -93,6 +93,7 @@ export default {
 				justin_chen: {
 					name: 'Justin Chen',
 					bio: 'Justin first learned the words "artificial intelligence" from his aunt when he was seven and has been dreaming of a anime-inspired future ever since. He received both his Bachelor of Arts and Master of Science degrees in computer science from Boston University. During his graduate studies, he extensively researched decentralized asynchronous gradient-based optimization for deep neural networks. When not in class or doing research, he focused intensely on founding the Boston University Machine Intelligence Community. Today, he is a Director, the CEO, the Founder of the Machine Intelligence Community, Inc., which is a non-profit corporation in the process of becoming 501(c)(3), dedicated to democratizing machine intelligence by connecting communities, promoting diversity, providing mentorship, and developing educational material to empower the future leaders in machine intelligence.',
+					abstract: 'Machine intelligence is the most important endeavor humans will have ever pursued. Today, most accessible resources for learning occupy a small region of knowledge space in textbooks, classes, YouTube videos, and blog posts. Additionally, most of this knowledge is largely unstructured and difficult to traverse. Structuring, disseminating, and collaborating on a mechanism would ease accessibility, accelerate progress, inform communities as research continues to rapidly expand. Machine Intelligence Community\'s mission is to address this problem by developing a sustainable ecosystem of student communities, conference, and knowledge graph.',
 					headshot: 'justin_chen.jpg'
 				},
 				kate_saenko: {
@@ -170,13 +171,6 @@ export default {
 					title: 'Natural Language Understanding via Commonsense Reasoning and Sensemaking',
 					abstract: 'In this talk, I will discuss two challenging natural language understanding tasks - pronoun resolution and indirect speech act classification. Pronouns and ISAs are pervasive in dialog and discourse, but it has been particularly difficult to interpret them correctly as they are known to require a substantial amount of commonsense knowledge and inference.  Moreover, even slight changes to situational and contextual information can significantly alter their interpretation. Current state-of-the-art statistical approaches and knowledge-based reasoning systems are insufficient to adequately address these tasks. I will introduce a multi-reasoner architecture using Answer Set Programming and uncertainty modeling to disambiguate pronouns and interpret ISAs. In doing so, I will discuss some general types of reasoning and knowledge that might be needed.',
 					headshot: 'vasanth_sarathy.jpg'
-				},
-				weishun_zhong: {
-					name: 'Weishun Zhong',
-					bio: 'Weishun is a 3rd year (as 2019 Fall) MIT physics graduate student working on statistical physics, machine learning, and their intersections. Before going to MIT, he graduated from University of Michigan with highest honors in physics and pure math, and subsequently spent a year at University of Chicago as a physics masters student.',
-					title: 'Learning disentangled neural representations of symmetry transformations',
-					abstract: 'Coauthors: Sikka, Zhong, Yin, Pehlevan<br><br>Although data sampled from the natural world appear to have a rather high-dimensional structure, their variations can usually be explained using a much smaller number of latent factors. In many data analysis tasks, it is beneficial to learn representations where each latent factor is “disentangled” from the others. There is yet to be a consensus on a precise definition of disentangling, however, two major avenues can be identified: one based on information theory and statistical properties of latent factors, and another one based on group theory and symmetries of latent factors. In this work, we explore existing and new regularization schemes for learning disentangled representations in deep autoencoders, and assess their compatibility with the information and group theoretic approaches.',
-					headshot: 'weishun_zhong.jpg'
 				},
 			}
 		}

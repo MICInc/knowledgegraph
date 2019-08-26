@@ -229,13 +229,6 @@ export default{
 				speaker_id: "isha_puri"
 			},
 			{
-				rooms: ["hariri"],
-				time: "3:30pm - 4:00pm",
-				title: "Learning Disentangled Neural Representations of Symmetry Transformations",
-				speaker: "Weishun Zhong, MIT",
-				speaker_id: "weishun_zhong"
-			},
-			{
 				rooms: ["cilse"],
 				time: "4:00pm - 4:10pm",
 				title: "Intermission"
