@@ -6,7 +6,7 @@
 			</div>
 			<div class="sponsor-grid">
 				<div class="sponsor-tile">
-					<a v-for="(s, index) in sponsors" :href="s.href">
+					<a v-for="(s, index) in sponsors" :href="s.href" target="_blank">
 						<img :class="s.tier" :src="s.src" :alt="s.alt"/>
 					</a>
 				</div>
@@ -45,6 +45,12 @@
 						tier: 'partner',
 						src: '/img/sponsors/sail-logo.png',
 						alt: 'BU SAIL'
+					},
+					{
+						href: 'https://newyork.techtogether.io/',
+						tier: 'partner',
+						src: '/img/sponsors/tech-together.png',
+						alt: 'Tech Together'
 					}
 				]
 			}
@@ -112,7 +118,7 @@
 }
 
 .sponsor-grid .sponsor-tile a {
-	margin: 0 50px 20px 50px;
+	margin: 10px 50px 20px 50px;
 }
 
 .sponsor-grid .sponsor-tile img.partner {
