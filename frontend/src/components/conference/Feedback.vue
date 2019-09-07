@@ -4,19 +4,19 @@
 		<p>Thanks for attending our 2019 Machine Intelligence Conference! Your feedback will help further our mission to democratize machine intelligence.</p>
 		<div v-if="!form.complete">
 			<form v-show="form.show">
-				<label>Overall how was the event?</label><br>
+				<label><b>Overall how was the conference?</b></label><br>
 				<span v-for="(value, index) in form.overall">
 					<input class="overall_button" v-model="feedback.overall" type="radio" name="overall" :value="value"/>
 					<span class="overall_value">{{value}}</span>
-				</span><br>
-				<label>Which panels did you attend?</label><br>
+				</span><br><br>
+				<label><b>Which panels did you attend?</b></label><br>
 				<span id="panels" v-for="(value, index) in form.panels">
-					<input v-model="feedback.panels" type="checkbox" :name="value" :value="value"/> {{value}}
-				</span><br>
-				<label>What did you like about the conference?</label><br>
-				<textarea v-model="feedback.liked"></textarea><br>
-				<label>What changes could MIConf make to further democratize machine intelligence?</label><br>
-				<textarea v-model="feedback.changes"></textarea><br>
+					<input v-model="feedback.panels" type="checkbox" :name="value" :value="value"/> {{value}}<br>
+				</span><br><br>
+				<label><b>What did you like about the conference?</b></label><br>
+				<textarea v-model="feedback.liked" placeholder="..."></textarea><br><br>
+				<label><b>What changes could MIConf make to further democratize machine intelligence?</b></label><br>
+				<textarea v-model="feedback.changes" placeholder="..."></textarea><br><br>
 				<Disclaimer></Disclaimer>
 				<button v-on:click.prevent="submit">Submit</button>
 			</form>
@@ -39,8 +39,8 @@ export default {
 		return {
 			form: {
 				complete: false,
-				overall: ['0', 'Fair', 'Good', 'Excellent', '100'],
-				panels: ['Community', 'Diversity'],
+				overall: ['Bad', 'Fair', 'Good', 'Excellent', 'Loved it!'],
+				panels: ['Machine Intelligence Community Alum Panel', 'MIT-IBM Women in Machine Intelligence Panel', 'Machine Intelligence Community, Inc. A Roadmap to Democratizing AI', 'AI & Climate Change: What Role Can Machine Learning Students, Engineers and Scientists Play in Leading the Transition Towards A Sustainable Future?', 'Machine Intelligence in Research and Industry'],
 				show: true
 			},
 			feedback: {
@@ -79,6 +79,7 @@ textarea {
 }
 
 #panels {
-	diplay: block;
+	/*diplay: block;*/
+	vertical-align: middle;
 }
 </style>

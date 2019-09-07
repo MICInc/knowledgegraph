@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<h3>IBM Diversity Scholarship 2019</h3>
+		<h3>MIT-IBM Diversity Scholarship 2019</h3>
 		<p>
 			This year we are offering ten travel scholarships. Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc/add">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided. For examples, please refer to the following technical articles:
 		</p>
@@ -37,7 +37,7 @@
 			<li v-for="req in who">{{ req }}</li>
 		</ul>
 		<p>Email us with questions at <a class="conf-email" href = "mailto: conference@machineintelligence.cc">conference@machineintelligence.cc</a></p>
-		<p><a class="apply" href="/conference/register">APPLY HERE</a></p>
+		<!-- <p><a class="apply" href="/conference/register">APPLY HERE</a></p> -->
 	</div>
 </template>
 

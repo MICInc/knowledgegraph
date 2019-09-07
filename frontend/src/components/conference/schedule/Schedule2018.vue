@@ -4,6 +4,8 @@
 			<h2>2018 Schedule</h2>
 			<p><b>Location</b>: MIT Media Lab, 6th floor</p>
 			<p><b>Date</b>: November 3rd, 2018</p>
+			<p><b>Committee: </b>Justin Chen, Nikhil Murthy, Ajay Jain, Devin de Hueck, Daniel Pechi, Isaac Wolverton, Charles Ma, Chloe Kaubisch, Mirac Suzgun</p>
+			<p><b>Volunteers: </b>Sree Harsha Nelaturu, Sharon Jiang, Tyrone Hou, Zack Light, Matthew Feng, Moin Nadeem, Jinghu Lei, Parth Shah, Kate Saenko</p>
 			<div id="#guide-wrapper">
 				<div class="guide">
 					<div class="room-key">
