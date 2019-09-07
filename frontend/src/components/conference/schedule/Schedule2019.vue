@@ -6,6 +6,8 @@
 			<p>Rajen Kilachand Center for Integrated Life Sciences & Engineering and<br>Rafik B. Hariri Institute for Computing and Computational Science & Engineering</p>
 			<p>Please note these are two separate buildings.</p>
 			<p><b>Date</b>: September 7th, 2019</p>
+			<p><b>Committee: </b>Justin Chen, Lucia Vilallonga, Daniel Zhou, Richard Khan</p>
+			<p><b>Volunteers: </b>Justin Kwong, Julia Moseyko, Okoa Kinsey, Julio Nuñez, Ekaterina Gorbunova, Inhye Kim, Tabitha Oanda, Xiongxin Zen, Kate Saenkog</p>
 			<div id="#guide-wrapper">
 				<div class="guide">
 					<div class="room-key">
@@ -136,8 +138,8 @@ export default{
 				rooms: ["cilse"],
 				time: "12:00pm - 1:00pm",
 				title: "MIC Community Panel",
-				panelists: ["Hassan Kané, MIT Alum", "Rachel Manzelli, Boston University"],
-				panelists_ids: ["hassan_kane", "rachel_manzelli"],
+				panelists: ["Hassan Kané, MIT Alum", "Mehmet Efe Akengin, MIT Alum"],
+				panelists_ids: ["hassan_kane", "efe_akengin"],
 				type: "panel"
 			},
 			{
@@ -188,23 +190,23 @@ export default{
 			{
 				rooms: ["cilse"],
 				time: "2:30pm - 3:00pm",
-				title: "Towards Coherent and Abstractive Summarization",
-				speaker: "Eva Sharma, Northeastern University",
-				speaker_id: "eva_sharma"
-			},
-			{
-				rooms: ["hariri"],
-				time: "2:30pm - 3:00pm",
 				title: "Learning to Simulate",
 				speaker: "Nataniel Ruiz, Boston University",
 				speaker_id: "nataniel_ruiz"
 			},
 			{
+				rooms: ["hariri"],
+				time: "2:30pm - 3:00pm",
+				title: "Localizing and Amortizing: Efficient Inference For Gaussian Processes",
+				speaker: "Lingfen Liu, Tufts University",
+				speaker_id: "lingfen_liu"
+			},
+			{
 				rooms: ["breakout"],
 				time: "2:30pm - 3:30pm",
 				title: "Machine Intelligence in Research and Industry",
-				panelists: ["Julia Moseyko, MIT", "Rachel Manzelli, Boston University"],
-				panelists_ids: ["julia_moseyko", "rachel_manzelli"],
+				panelists: ["Julia Moseyko, MIT", "Efe Akengin, MIT Alum"],
+				panelists_ids: ["julia_moseyko", "efe_akengin"],
 				type: "panel"
 			},
 			{
@@ -213,13 +215,6 @@ export default{
 				title: "An Alternative Softmax Operator for Deep Reinforcement Learning",
 				speaker: "Seungchan Kim, Brown University",
 				speaker_id: "seungchan_kim"
-			},
-			{
-				rooms: ["hariri"],
-				time: "3:00pm - 3:30pm",
-				title: "Localizing and Amortizing: Efficient Inference For Gaussian Processes",
-				speaker: "Lingfen Liu, Tufts University",
-				speaker_id: "lingfen_liu"
 			},
 			{
 				rooms: ["cilse"],

@@ -28,10 +28,19 @@
 		data() {
 			return {
 				committee: [
-					{ name: 'Justin Chen', title: 'Head Coordinator' },
+					{ name: 'Justin Chen', title: 'Head Coordinator and Scholarship Director' },
 					{ name: 'Lucia Vilallonga', title: 'Director of Diversity' },
 					{ name: 'Daniel Zhou', title: 'Director of Programs' },
-					{ name: 'Justin Kwong', title: 'Volunteer'}
+					{ name: 'Richard Khan', title: 'Scholarship Committee'},
+					{ name: 'Kate Saenko', title: 'Director and Volunteer'},
+					{ name: 'Justin Kwong', title: 'Volunteer'},
+					{ name: 'Julia Moseyko', title: 'Volunteer'},
+					{ name: 'Okoa Kinsey', title: 'Volunteer'},
+					{ name: 'Julio Nuñez', title: 'Volunteer'},
+					{ name: 'Ekaterina Gorbunova', title: 'Volunteer'},
+					{ name: 'Inhye Kim', title: 'Volunteer'},
+					{ name: 'Tabitha Oanda', title: 'Volunteer'},
+					{ name: 'Xiongxin Zeng', title: 'Volunteer'},
 				]
 			}
 		}

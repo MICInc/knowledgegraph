@@ -57,12 +57,12 @@ export default {
 					abstract: 'Recent advances in machine learning, especially deep learning, have reached super-human performance such as on image classification (measured on ImageNet dataset). These learning techniques require an enormous amount of training data (thousand of training sample). However, humans only require a few sample images to learn new concepts. Remarkably, we can also recognize unseen objects based on their textual descriptions. In this talk, I will discuss different techniques for learning without a large amount of human supervision in order to bridge the gap between human and machine learning.<br><br>Ultimately, machine intelligence can only be achieved if the machine can efficiently learn without any human supervision (annotated data) since the machine will have to reason by itself as opposed to mimic human decision. Reducing the amount of training data is a step toward that goal.',
 					headshot: 'dat_huynh.jpg'
 				},
-				eva_sharma: {
-					name: 'Eva Sharma',
-					bio: 'Eva is a Computer Science PhD student in College of Computer and Information Science at Northeastern University, advised by Prof. Lu Wang. Her current research is in the area of Natural Language Processing, specifically in text summarization. Prior to Northeastern University, she completed her Master\'s degree in Computer Science from Cornell University and her Bachelor\'s degree (Gold Medalist) in Computer Science and Engineering from India.',
-					title: 'Towards Coherent and Abstractive Summarization',
-					abstract: 'There has been a growing interest in building neural abstractive summarization systems, which requires large-scale datasets with high quality summaries. A number of summarization datasets have been explored so far. However, as most of them are acquired from news articles, they share specific characteristics that limit current state-of-the-art models by making them more extractive rather than allowing them to understand input content and generate well-formed informative summaries. We introduce BIGPATENT, a new large-scale summarization dataset consisting of 1.3 million patent documents with human-written abstractive summaries. Compared to existing summarization datasets, BIGPATENT has the following properties: i) summaries contain a richer discourse structure with more recurring entities, ii) salient content is evenly distributed in the input, and iii) lesser and shorter extractive fragments are present in the summaries. BIGPATENT aims to guide the summarization research towards better understanding the input’s global structure and generating summaries with a more complex and coherent discourse structure.',
-					headshot: 'eva_sharma.jpg'
+				efe_akengin: {
+					name: 'Mehmet Efe Akengin',
+					bio: 'Mehmet Efe Akengin has graduated from MIT with double-major in Computer Science and Political Science. Efe is working at a stealth-mode startup ecosystem that internally builds and launches high-tech ventures. Before that, he worked on a Data Science and Machine Learning Consultancy called Q Labs to help Fortune 500 companies with their data transformation processes. He is the co-founder and executive chairman of a Turkish AI startup called Tria AI that builds state-of-the-art ML solutions for the most impactful businesses in the region. He started these two companies after seeing the transformative potential of using big data in traditional industries when he was doing an Innovation Fellowship with the CEO of Energy From Waste, where he has created the first data strategy for Europe\'s largest waste to energy company.\n\nAt MIT, he was the co-founder of the MIT Machine Intelligence Community, and founder of Nav Talent\'s MIT branch that connects talented engineers with high-growth startups.',
+					title: 'Machine Intelligence in Research and Industry',
+					abstract: 'This breakout will be a discussion-based session covering some of the key differences between machine intelligence research in academia and industry environments, as well as how progress in each can drive and influence innovation in the other. Our goal is to foster a community-sourced conversation about the interplay of research and product development. Especially as companies across the globe increase efforts to integrate artificial intelligence techniques into their day-to-day operations, we feel it is especially important to be cognizant of the societal and economic motivations that influence what research is done, and how quickly it is adopted into industry. We encourage participants to share anecdotal experiences as well as any aspirations or questions regarding future career paths.',
+					headshot: 'efe_akengin.png'
 				},
 				hassan_kane: {
 					name: 'Hassan Kané',
@@ -153,11 +153,6 @@ export default {
 					name: 'Rosanne Liu',
 					bio: '<a href="http://www.rosanneliu.com/" target="_blank">Rosanne</a> is a senior research scientist and a founding member of Uber AI. She obtained her PhD in Computer Science at Northwestern University, where she used neural networks to help discover novel materials. She is currently working on the multiple fronts where machine learning and neural networks are mysterious. She attempts to write in her spare time.',
 					headshot: 'rosanne_liu.jpg'
-				},
-				ruzena_bajcsy: {
-					name: 'Dr. Ruzena Bajcsy',
-					bio: '',
-					headshot: 'ruzena_bajcsy.jpg'
 				},
 				seungchan_kim: {
 					name: 'Seungchan Kim',

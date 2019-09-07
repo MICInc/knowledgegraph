@@ -38,11 +38,12 @@ export default {
 	data() {
 		return {
 			sections: [
-				{ innerText: 'Register', href: 'register' },
-				// { innerText: 'Feedback', href: 'feedback' },
+				// { innerText: 'Register', href: 'register' },
+				{ innerText: 'Feedback', href: 'feedback' },
 				{ innerText: 'Scholarship', href: 'scholarship' },
 				{ innerText: 'FAQ', href: 'faq'},
-				{ innerText: 'Schedule', href: 'schedule/'+(new Date()).getFullYear()}
+				{ innerText: 'Schedule', href: 'schedule/'+(new Date()).getFullYear()},
+				{ innerText: 'Scholars', href: 'scholars' }
 			]
 		}
 	}

@@ -69,21 +69,21 @@ export default new Router({
 				}
 			}
 		},
-		// {
-		// 	path: '/admin',
-		// 	name: 'admin-console',
-		// 	component: () => import('./views/AdminConsole.vue'),
-		// 	beforeEnter: (to, from, next) => {
-		// 		if (store.state.isLoggedIn) {
-		// 			next()
-		// 		} else {
-		// 			next({
-		// 				name: 'login',
-		// 				params: { error: 'You need to log in to access this route.' }
-		// 			})
-		// 		}
-		// 	}
-		// },
+		{
+			path: '/admin',
+			name: 'admin-console',
+			component: () => import('./views/AdminConsole.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' }
+					})
+				}
+			}
+		},
 		{
 			path: '/content/:id',
 			name: 'content',
@@ -99,48 +99,49 @@ export default new Router({
 				}
 			}
 		},
-		// {
-		// 	path: '/community',
-		// 	name: 'community',
-		// 	component: () => import('./views/Community.vue'),
-		// 	beforeEnter: (to, from, next) => {
-		// 		if (store.state.isLoggedIn) {
-		// 			next()
-		// 		} else {
-		// 			next({
-		// 				name: 'login',
-		// 				params: { error: 'You need to log in to access this route.' }
-		// 			})
-		// 		}
-		// 	}
-		// },
-		// {
-		// 	path: '/community/start',
-		// 	name: 'community-reg',
-		// 	component: () => import('./views/CommunityReg.vue'),
-		// 	beforeEnter: (to, from, next) => {
-		// 		if (store.state.isLoggedIn) {
-		// 			next()
-		// 		} else {
-		// 			next({
-		// 				name: 'login',
-		// 				params: { error: 'You need to log in to access this route.' }
-		// 			})
-		// 		}
-		// 	}
-		// },
+		{
+			path: '/community',
+			name: 'community',
+			component: () => import('./views/Community.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' }
+					})
+				}
+			}
+		},
+		{
+			path: '/community/start',
+			name: 'community-reg',
+			component: () => import('./views/CommunityReg.vue'),
+			beforeEnter: (to, from, next) => {
+				if (store.state.isLoggedIn) {
+					next()
+				} else {
+					next({
+						name: 'login',
+						params: { error: 'You need to log in to access this route.' }
+					})
+				}
+			}
+		},
 		{
 			path: '/conference',
 			name: 'conference',
 			component: () => import('./views/Conference.vue'),
 			children: [
-				// {
-				// 	path: 'feedback',
-				// 	component: () => import('@/components/conference/Feedback.vue')
-				// },
+				{
+					path: 'feedback',
+					component: () => import('@/components/conference/Feedback.vue')
+				},
 				{
 					path: 'register',
-					component: () => import('@/components/conference/Registration.vue')
+					// component: () => import('@/components/conference/Registration.vue')
+					redirect: '/conference'
 				},
 				{
 					// refactor this later to use dynamic routes. Will need to save the schedule data in backend and load beforeMount()
@@ -162,6 +163,10 @@ export default new Router({
 				{
 					path: 'scholarship',
 					component: () => import('@/components/conference/Scholarship.vue'),
+				},
+				{
+					path: 'scholars',
+					component: () => import('@/components/conference/Scholars.vue'),
 				},
 				{
 					path: 'faq',
@@ -193,7 +198,8 @@ export default new Router({
 		{
 			path: '/login',
 			name: 'login',
-			component: () => import('./views/Login.vue')
+			// component: () => import('./views/Login.vue'),
+			redirect: '/'
 		},
 		{
 			path: '/logout',

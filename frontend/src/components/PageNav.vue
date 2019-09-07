@@ -18,7 +18,7 @@
 				<div v-if="!isLoggedIn">
 					<ul>
 						<!-- <li><router-link tag="a" to="/signup"><b>JOIN</b></router-link></li> -->
-						<li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li>
+						<!-- <li><router-link tag="a" to="/login"><b>LOGIN</b></router-link></li> -->
 					</ul>
 				</div>
 				<div v-else>
@@ -31,7 +31,7 @@
 						</div>
 						<ul class="dropdown">
 							<li v-for="(item, index) in menu">
-								<router-link tag="a" :to="item.href">{{ item.name }}</router-link>
+								<a :href="item.href">{{ item.name }}</a>
 							</li>
 						</ul>
 					</div>
