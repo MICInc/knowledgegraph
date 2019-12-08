@@ -5,17 +5,17 @@
 				<h2>About</h2>
 			</div>
 			<div class="about-conference">
-				<h3>This Conference</h3>
-				<p>Our mission for this conference is to democratize machine intelligence, promote diversity, build community, and inspire the next generation of
-				researchers and engineers.</p>
+				<h3>Why our conference?</h3>
+				<p>
+				The thesis of our conference originally stemmed from the idea of demonstrating the value that could be achieved when students who are passionate about machine intelligence unite as a larger, more inclusive and cognitively diverse community. Our conference serves as an even greater surface area for intellectual engagement for students outside of the classroom and beyond the boundaries of individual institutions. It is our mission and hope that the Machine Intelligence Conference will empower the next generation of students to take agency over the trajectory of their education, promote diversity that will fundamentally change the paradigm of our field and catalyze connections to accelerate progress in research and engineering to burgeon great ideas together as a Machine Intelligence Community.</p>
 			</div>
 			<div class="about-mic">
-				<h3>The Machine Intelligence Community - MIC</h3>
-				<p>The idea behind the Machine Intelligence Community originated from the MIT Machine Learning Reading Group. The reading group started with students looking for an environment to learn about research advances in machine learning. The Machine Intelligence Community currently has branches at MIT, Boston University, Harvard College, and SRM Institute of Science and Technology.</p>
-				<p>The Machine Intelligence Community has a set of core values it stands to uphold. All Machine Intelligence Community organizations must uphold these values.</p>
-				<p><strong>1. Openness.</strong> The Machine Intelligence Community is inclusive and diverse.</p>
-				<p><strong>2. Education.</strong> We aim to provide surface area for intellectual engagement. Our primary focus is teaching members and the community at-large about machine intelligence.</p>
-				<p><strong>3. Community.</strong> By doing this, we hope to cultivate and connect communities and like-minded students to accelerate progress in machine intelligence.</p>
+				<h3>What is Machine Intelligence Community (M.I.C.)?</h3>
+				<p>Machine Intelligence Community originated from the MIT Machine Learning Reading Group, which was formed by undergraduate students looking for an environment to learn about research advances in machine learning outside the classroom. Today, MIC is a 501(c)(3) nonprofit with communities at MIT, Boston University, Harvard College and SRM Institute of Science and Technology.</p>
+				<p>Machine Intelligence Community has a set of core values it stands to uphold. All Machine Intelligence Community organizations must uphold these values.</p>
+				<p><strong>1. Openness.</strong> We are inclusive and diverse to welcome more minds to the field.</p>
+				<p><strong>2. Education.</strong> We provide a surface area for intellectual engagement with machine intelligence.</p>
+				<p><strong>3. Community.</strong> We cultivate and connect communities of students to accelerate progress in machine intelligence.</p>
 			</div>
 		</div>
 	</div>

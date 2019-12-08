@@ -3,7 +3,7 @@
 		<PageNav></PageNav>
 		<h3>MIT-IBM Diversity Scholarship 2019</h3>
 		<p>
-			This year we are offering ten travel scholarships. Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community <a href="https://machineintelligence.cc/add">platform</a>. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided. For examples, please refer to the following technical articles:
+			Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community platform. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided. For examples, please refer to the following technical articles:
 		</p>
 		<ul>
 			<li v-for="article in examples"><span v-html="article"></span></li>

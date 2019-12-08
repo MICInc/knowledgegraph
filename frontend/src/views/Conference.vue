@@ -39,7 +39,7 @@ export default {
 		return {
 			sections: [
 				// { innerText: 'Register', href: 'register' },
-				{ innerText: 'Feedback', href: 'feedback' },
+				// { innerText: 'Feedback', href: 'feedback' },
 				{ innerText: 'Scholarship', href: 'scholarship' },
 				{ innerText: 'FAQ', href: 'faq'},
 				{ innerText: 'Schedule', href: 'schedule/'+(new Date()).getFullYear()},
