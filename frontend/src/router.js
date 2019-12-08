@@ -157,6 +157,11 @@ export default new Router({
 							path: '2019',
 							name: 'schedule2019',
 							component: () => import('@/components/conference/schedule/Schedule2019.vue')
+						},
+						{
+							path: '2020',
+							name: 'schedule2020',
+							component: () => import('@/components/conference/schedule/Schedule2020.vue')
 						}
 					]
 				},

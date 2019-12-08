@@ -21,7 +21,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="event" :class="event.type" v-for="event in schedule2018">
+			<div class="event" :class="event.type" v-for="event in schedule2019">
 				<div class="desc">
 					<p class="time">{{ event.time }}</p>
 					<p class="title">
@@ -76,7 +76,7 @@ export default{
 	},
 	data() {
 		return {
-			schedule2018: [
+			schedule2019: [
 			{
 				rooms: ["cilse"],
 				time: "9am - 10am",

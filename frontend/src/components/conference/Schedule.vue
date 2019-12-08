@@ -15,7 +15,7 @@ export default{
 	name: 'schedule',
 	data() {
 		return{
-			schedules: [2019, 2018]
+			schedules: [2020, 2019, 2018]
 		}
 	}
 }
