@@ -52,6 +52,20 @@
 					<div v-for="room in event.rooms" :class="room"></div>
 				</div>
 			</div>
+			<div id="sponsors">
+				<div class="container">
+					<div class="section-head">
+						<h2>2018 Sponsors</h2>
+					</div>
+					<div class="sponsor-grid">
+						<div class="sponsor-tile">
+							<a v-for="(s, index) in sponsors" :href="s.href" target="_blank">
+								<img :class="s.tier" :src="s.src" :alt="s.alt"/>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -389,7 +403,51 @@ export default{
 				speaker: "Dan Pechi, Tufts University MIC",
 				type: "keynote",
 			}
-		]
+			],
+			sponsors: [
+				{
+					href: 'https://www.intel.com/',
+					tier: 'tier-three',
+					src: '/img/sponsors/intel-ai-logo.png',
+					alt: 'Intel'
+				},
+				{
+					href: 'https://www.malong.com/en/home',
+					tier: 'tier-three',
+					src: '/img/sponsors/malong-technologies-logo.png',
+					alt: 'Malong'
+				},
+				{
+					href: 'https://ai.facebook.com/',
+					tier: 'tier-two',
+					src: '/img/sponsors/facebook-logo.jpg',
+					alt: 'Facebook'
+				},
+				{
+					href: 'https://www.nvidia.com/en-us/',
+					tier: 'tier-two',
+					src: '/img/sponsors/nvidia-logo.jpg',
+					alt: 'Nvidia'
+				},
+				{
+					href: 'https://www.amazon.com',
+					tier: 'tier-one',
+					src: '/img/sponsors/amazon-logo.jpg',
+					alt: 'Amazon'
+				},
+				{
+					href: 'https://www.redhat.com',
+					tier: 'tier-one',
+					src: '/img/sponsors/redhat-logo.png',
+					alt: 'RedHat'
+				},
+				{
+					href: 'https://www.cra.com',
+					tier: 'tier-one',
+					src: '/img/sponsors/charles-river-analytics-logo.png',
+					alt: 'CRA'
+				},
+			]
 		}
 	}
 }
@@ -421,5 +479,65 @@ export default{
 
 .wgr {
 	background: #d66fff;
+}
+
+.container {
+	max-width: 1140px;
+	width: 90%;
+	margin: 0 auto;
+	/*border: 1px solid #5d5499;*/
+}
+
+.section-head {
+	padding: 40px 0 0 0;
+	margin: 0 50px;
+}
+
+.section-head h2 {
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 1.6em;
+	font-weight: 600;
+	padding: 20px;
+	margin: 0;
+	display: inline-block;
+}
+
+#sponsors .section-head  {
+	text-align: center;
+}
+
+#sponsors .section-head h2 {
+	color: #fff;
+	background: #5d5499;
+}
+
+#sponsors .sponsor-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	padding: 50px;
+}
+
+.sponsor-grid .sponsor-tile a {
+	margin: 10px 50px 20px 50px;
+}
+
+.sponsor-grid .sponsor-tile img.partner {
+	height: 70px;
+}
+
+
+.sponsor-grid .sponsor-tile img.tier-one {
+	height: 100px;
+}
+
+.sponsor-grid .sponsor-tile img.tier-two {
+	height: 110px;
+}
+
+.sponsor-grid .sponsor-tile img.tier-three {
+	height: 150px;
 }
 </style>

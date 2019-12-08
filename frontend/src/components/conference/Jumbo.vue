@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			<div class="cta">
-				<router-link class="cta-button" tag="a" to="/conference">Register</router-link>
+				<router-link class="cta-button" tag="a" to="/conference/register">Register</router-link>
 			</div>
 		</div>
 	</div>

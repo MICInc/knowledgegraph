@@ -7,7 +7,7 @@
 			<p>Please note these are two separate buildings.</p>
 			<p><b>Date</b>: September 7th, 2019</p>
 			<p><b>Committee: </b>Justin Chen, Lucia Vilallonga, Daniel Zhou, Richard Khan</p>
-			<p><b>Volunteers: </b>Justin Kwong, Julia Moseyko, Okoa Kinsey, Julio Nuñez, Ekaterina Gorbunova, Inhye Kim, Tabitha Oanda, Xiongxin Zen, Kate Saenkog</p>
+			<p><b>Volunteers: </b>Justin Kwong, Julia Moseyko, Okoa Kinsey, Julio Nuñez, Ekaterina Gorbunova, Inhye Kim, Tabitha Oanda, Xiongxin Zen, Kate Saenko</p>
 			<div id="#guide-wrapper">
 				<div class="guide">
 					<div class="room-key">
@@ -21,7 +21,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="event" :class="event.type" v-for="event in schedule2018">
+			<div class="event" :class="event.type" v-for="event in schedule2019">
 				<div class="desc">
 					<p class="time">{{ event.time }}</p>
 					<p class="title">
@@ -51,6 +51,20 @@
 					<div v-for="room in event.rooms" :class="room"></div>
 				</div>
 			</div>
+			<div id="sponsors">
+				<div class="container">
+					<div class="section-head">
+						<h2>2019 Sponsors</h2>
+					</div>
+					<div class="sponsor-grid">
+						<div class="sponsor-tile">
+							<a v-for="(s, index) in sponsors" :href="s.href" target="_blank">
+								<img :class="s.tier" :src="s.src" :alt="s.alt"/>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -62,7 +76,7 @@ export default{
 	},
 	data() {
 		return {
-			schedule2018: [
+			schedule2019: [
 			{
 				rooms: ["cilse"],
 				time: "9am - 10am",
@@ -247,7 +261,39 @@ export default{
 				speaker: "Justin Chen, MIC",
 				type: "keynote"
 			}
-		]
+			],
+			sponsors: [
+				{
+					href: 'https://mitibmwatsonailab.mit.edu/',
+					tier: 'tier-two',
+					src: '/img/sponsors/mit-ibm-logo.png',
+					alt: 'IBM'
+				},
+				{
+					href: 'https://www.intel.com/',
+					tier: 'tier-one',
+					src: '/img/sponsors/intel-ai-logo.png',
+					alt: 'Intel'
+				},
+				{
+					href: 'http://www.bu.edu/spark/',
+					tier: 'partner',
+					src: '/img/sponsors/spark-logo.png',
+					alt: 'BU Spark!'
+				},
+				{
+					href: 'https://sail.bu.edu/',
+					tier: 'partner',
+					src: '/img/sponsors/sail-logo.png',
+					alt: 'BU SAIL'
+				},
+				{
+					href: 'https://newyork.techtogether.io/',
+					tier: 'partner',
+					src: '/img/sponsors/tech-together.png',
+					alt: 'Tech Together'
+				}
+			]
 		}
 	}
 }
@@ -276,5 +322,65 @@ export default{
 .breakout {
 	background: #400578;
 
+}
+
+.container {
+	max-width: 1140px;
+	width: 90%;
+	margin: 0 auto;
+	/*border: 1px solid #5d5499;*/
+}
+
+.section-head {
+	padding: 40px 0 0 0;
+	margin: 0 50px;
+}
+
+.section-head h2 {
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 1.6em;
+	font-weight: 600;
+	padding: 20px;
+	margin: 0;
+	display: inline-block;
+}
+
+#sponsors .section-head  {
+	text-align: center;
+}
+
+#sponsors .section-head h2 {
+	color: #fff;
+	background: #5d5499;
+}
+
+#sponsors .sponsor-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	padding: 50px;
+}
+
+.sponsor-grid .sponsor-tile a {
+	margin: 10px 50px 20px 50px;
+}
+
+.sponsor-grid .sponsor-tile img.partner {
+	height: 70px;
+}
+
+
+.sponsor-grid .sponsor-tile img.tier-one {
+	height: 100px;
+}
+
+.sponsor-grid .sponsor-tile img.tier-two {
+	height: 110px;
+}
+
+.sponsor-grid .sponsor-tile img.tier-three {
+	height: 150px;
 }
 </style>
