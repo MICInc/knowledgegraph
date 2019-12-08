@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<PageNav></PageNav>
-		<h3>MIT-IBM Diversity Scholarship 2019</h3>
+		<h3>Diversity Scholarship</h3>
 		<p>
 			Our conference scholarships bring us one step closer in our mission. As part of the application, you are to develop an article on an artificial intelligence concept on the Machine Intelligence Community platform. This can be a summary of a reseach paper, an article explaining an algorithm or math concept, or research that you are working on. Your research does not need to have been published, but the original work should be available online and a link should be provided. For examples, please refer to the following technical articles:
 		</p>
@@ -55,7 +55,9 @@ export default {
 				'All images, diagrams, graphics, quotes, research papers, resources and facts must be cited using eJournal in-text citation style (refer to Wikipedia or Distill.pub for examples).',
 				'All content submitted must be original work.',
 				'Article must be a unique topic not yet on the platform.',
-				'There are no strict length requirements. However, you should expect to write the equivalent of at least 2 - 3 pages in a standard word document.'
+				'There are no strict length requirements. However, you should expect to write the equivalent of at least 2 - 3 pages in a standard word document.',
+				'Uses appropriate images and language (please do not use memes or non-standard terms).',
+				'Topic title is either the title of a research paper or a technical approach.'
 			],
 			criteria: [
 				{ 
@@ -80,37 +82,18 @@ export default {
 				"<a href=\"https://distill.pub/2016/augmented-rnns/\" target=\"_blank\">Attention and Augmented Recurrent Neural Networks</a>",
 				"<a href=\"https://weightagnostic.github.io/\" target=\"_blank\">Weight Agnostic Neural Networks</a>", 
 				"<a href=\"https://medium.com/@karpathy/yes-you-should-understand-backprop-e2f06eab496b\" target=\"_blank\">Yes you should understand backprop</a>", 
-				"<a href=\"http://www.offconvex.org/2019/06/03/trajectories/\" target=\"_blank\">Is Optimization a Sufficient Language for Understanding Deep Learning?</a>"
+				"<a href=\"http://www.offconvex.org/2019/06/03/trajectories/\" target=\"_blank\">Is Optimization a Sufficient Language for Understanding Deep Learning?</a>",
+				"<a href=\"https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html\" target=\"_blank\">Attention? Attention!</a>",
 			],
 			scholarship: [
 				'Fully-paid round-trip flight for the conference',
 				'Fully-paid hotel for the conference',
-				'Night-before dinner with your IBM sponsors'
+				'Night-before dinner with your sponsors'
 			],
 			timeline: [
 				{
 					event: 'Application opens',
-					date: 'July 2, 2019'
-				},
-				{
-					event: 'Application closes',
-					date: 'July 31, 2019'
-				},
-				{
-					event: 'Acceptance emails',
-					date: 'August 3rd, 2019'
-				},
-				{
-					event: 'Applicant confirmation',
-					date: 'August 5th, 2019'
-				},
-				{
-					event: 'IBM Scholars Dinner',
-					date: 'September 6th, 2019'
-				},
-				{
-					event: 'Conference',
-					date: 'September 7th, 2019'
+					date: 'TBA'
 				}
 			],
 			who: [
