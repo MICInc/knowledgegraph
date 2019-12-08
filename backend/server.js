@@ -48,6 +48,7 @@ if(cluster.isMaster)  {
 	});
 
 	//Ping no-reply indicating server started
+	// COMMENT OUT FOR TESTING B/C DONT HAVE CREDENTIALS.JSON HERE
 	var email_handler = require('./lib/email_handler');
 	var email = 'no-reply@machineintelligence.cc';
 	email_handler.send(

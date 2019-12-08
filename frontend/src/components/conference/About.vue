@@ -8,11 +8,10 @@
 				<h3>This Conference</h3>
 				<p>Our mission for this conference is to democratize machine intelligence, promote diversity, build community, and inspire the next generation of
 				researchers and engineers.</p>
-				<p><strong>Please Note: </strong>There is a limit of 170 attendees to this inaugural conference. Student applications will be prioritized and non .edu emails. Attendees must be 18 years of age or older - attendees in high school will be asked to show a photo ID.</p>
 			</div>
 			<div class="about-mic">
 				<h3>The Machine Intelligence Community - MIC</h3>
-				<p>The idea behind the Machine Intelligence Community originated from the MIT Machine Learning Reading Group. The reading group started with students looking for an environment to learn about research advances in machine learning. The Machine Intelligence Community currently has branches at MIT, Boston University, Harvard University, and SRM Institute of Science and Technology.</p>
+				<p>The idea behind the Machine Intelligence Community originated from the MIT Machine Learning Reading Group. The reading group started with students looking for an environment to learn about research advances in machine learning. The Machine Intelligence Community currently has branches at MIT, Boston University, Harvard College, and SRM Institute of Science and Technology.</p>
 				<p>The Machine Intelligence Community has a set of core values it stands to uphold. All Machine Intelligence Community organizations must uphold these values.</p>
 				<p><strong>1. Openness.</strong> The Machine Intelligence Community is inclusive and diverse.</p>
 				<p><strong>2. Education.</strong> We aim to provide surface area for intellectual engagement. Our primary focus is teaching members and the community at-large about machine intelligence.</p>
