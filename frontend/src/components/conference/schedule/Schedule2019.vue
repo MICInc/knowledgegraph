@@ -264,6 +264,12 @@ export default{
 			],
 			sponsors: [
 				{
+					href: 'https://mitibmwatsonailab.mit.edu/',
+					tier: 'tier-two',
+					src: '/img/sponsors/mit-ibm-logo.png',
+					alt: 'IBM'
+				},
+				{
 					href: 'https://www.intel.com/',
 					tier: 'tier-one',
 					src: '/img/sponsors/intel-ai-logo.png',

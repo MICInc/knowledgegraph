@@ -24,7 +24,7 @@ export default {
 			faq: [
 				{
 					q: 'I could not register.',
-					a: 'We apologize for any issues. Please use Google Chrome.'
+					a: 'We apologize for any issues. Please use either Firefox of Google Chrome.'
 				},
 				{
 					q: 'I did not receive a conference registration confirmation email or account creation email.',
@@ -36,7 +36,7 @@ export default {
 				},
 				{
 					q: 'Can I publish more than one article for the scholarship application?',
-					a: 'Only one article will be evaluated for your scholarship application. If you already applied for the conference, please return to the registration page and it will display a single input field where you should insert the link to your article. You can get the link to your article by first clicking the publish button in the top-left corner of the editor and then searching for the article title you used and going to the article page.'
+					a: 'Only one article will be evaluated for your scholarship application.'
 				},
 				{
 					q: 'What is meant by underrepresented?',
@@ -47,12 +47,8 @@ export default {
 					a: 'Your final submission must be published on our platform. All submissions must be your original work. We request articles are published on our platform so that MIC can continue to structure knowledge so that it can be further disseminated.'
 				},
 				{
-					q: 'Why is registration only open to students?',
-					a: 'Machine Intelligence Conference is dedicated to providing a surface area for students to share their work, engage with other students, and promote diversity. Existing conferences would better serve industry professionals and senior researchers. Additionally, we decided on this policy to ensure space for students and avoid the <a href=\"https://twitter.com/karpathy/status/1037011082777251841\" target=\"_blank\">hype</a>.'
-				},
-				{
 					q: 'Why did we choose this application format?',
-					a: 'Machine Intelligence Community\'s mission is to democratize artificial intelligence knowledge. Most content about AI currently occupies a small region of knowledge space around introductory concepts. This exists in the form of static media such as textbooks, blogs, classrooms, and videos. The remaining space is extremely sparse. We believe that to further democratize knowledge, spare regions must be further materialized dynamically with reproducibility in mind.'
+					a: 'Machine Intelligence Community\'s mission is to democratize artificial intelligence knowledge. Most content about AI currently occupies a small region of knowledge space around introductory concepts. This exists in the form of static media such as textbooks, blogs, classrooms, and videos. The remaining space is extremely sparse. We believe that to further democratize knowledge, sparse regions must be further materialized dynamically with reproducibility in mind.'
 				}
 			]
 		}
