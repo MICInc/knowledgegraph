@@ -4,6 +4,9 @@
 			<div class="section-head">
 				<h2>Thank You to Our Sponsors</h2>
 			</div>
+			<div class="tier-head">
+				<h2>Adam Sponsors</h2>
+			</div>
 			<div class="sponsor-grid">
 				<div class="sponsor-tile">
 					<a v-for="(s, index) in sponsors" :href="s.href" target="_blank">
@@ -76,7 +79,23 @@
 	display: inline-block;
 }
 
+.tier-head h2 {
+	padding: 40px 0 0 0;
+	margin: 0 50px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 1.6em;
+	font-weight: 600;
+	padding: 20px;
+	margin: 0;
+	display: inline-block;
+}
+
 #sponsors .section-head  {
+	text-align: center;
+}
+
+#sponsors .tier-head {
 	text-align: center;
 }
 
