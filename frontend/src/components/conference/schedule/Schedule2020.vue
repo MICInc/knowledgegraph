@@ -5,7 +5,7 @@
 			<b>Location</b>: MIT
 			<p><b>Date</b>: TBA</p>
 			<p><b>Committee: </b>Julia Moseyko, Kathleen Esfahany, Lucia Vilallonga, Chloe Loughridge, Justin Chen, Kate Saenko</p>
-			<h2>Schedule to be announced. Please check our social media for updates.</h2>
+			<h2>Schedule to be announced.</h2>
 			<div id="#guide-wrapper">
 				<div class="guide">
 					<div class="room-key">

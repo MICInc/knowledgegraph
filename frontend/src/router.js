@@ -140,8 +140,8 @@ export default new Router({
 				},
 				{
 					path: 'register',
-					// component: () => import('@/components/conference/Registration.vue')
-					redirect: '/conference'
+					component: () => import('@/components/conference/Registration.vue'),
+					// redirect: '/conference'
 				},
 				{
 					// refactor this later to use dynamic routes. Will need to save the schedule data in backend and load beforeMount()

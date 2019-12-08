@@ -1,6 +1,9 @@
 <template>
 	<div id="container">
-		<div v-if="!form.complete && !form.already_registered">
+		<div v-if="!open">
+			<h2>{{ year }} registration will open soon. Please follow our social media for updates!</h2>
+		</div>
+		<div v-if="open && !form.complete && !form.already_registered">
 			<h3>Register for MIC {{ this_year }}</h3>
 			<p>Machine Intelligence Conference is free to attend and registration is limited to current students. An account will also be created for you by registering for the conference.</p>
 			<form enctype="multipart/form-data">
@@ -71,6 +74,8 @@ export default {
 	},
 	data() {
 		return {
+			year: (new Date()).getFullYear()+1,
+			open: false,
 			conf_resp: {
 				dietary: '',
 				questions: undefined,
