@@ -27,30 +27,6 @@
 						tier: 'tier-two',
 						src: '/img/sponsors/mit-ibm-logo.png',
 						alt: 'IBM'
-					},
-					{
-						href: 'https://www.intel.com/',
-						tier: 'tier-one',
-						src: '/img/sponsors/intel-ai-logo.png',
-						alt: 'Intel'
-					},
-					{
-						href: 'http://www.bu.edu/spark/',
-						tier: 'partner',
-						src: '/img/sponsors/spark-logo.png',
-						alt: 'BU Spark!'
-					},
-					{
-						href: 'https://sail.bu.edu/',
-						tier: 'partner',
-						src: '/img/sponsors/sail-logo.png',
-						alt: 'BU SAIL'
-					},
-					{
-						href: 'https://newyork.techtogether.io/',
-						tier: 'partner',
-						src: '/img/sponsors/tech-together.png',
-						alt: 'Tech Together'
 					}
 				]
 			}
